@@ -13,3 +13,6 @@
 [submodule "itk"]
 	path = itk
 	url = https://github.com/tcltk/itk.git
+[submodule "binutils-gdb"]
+	path = binutils-gdb
+	url = git://sourceware.org/git/binutils-gdb.git
