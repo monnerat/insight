@@ -1,0 +1,108 @@
+diff -Nupr /home/rene/kbs.sf/sources/iwidgets4.0.2/generic/combobox.itk generic/combobox.itk
+--- /home/rene/kbs.sf/sources/iwidgets4.0.2/generic/combobox.itk	2007-05-25 01:06:45.000000000 +0200
++++ generic/combobox.itk	2012-05-21 10:35:15.933262250 +0200
+@@ -521,7 +521,8 @@ itcl::body iwidgets::Combobox::insert {c
+ 	    } else {
+ 		if {$itk_option(-state) == "normal"} {
+ 		    eval iwidgets::Entryfield::insert $index $args
+-		    [itcl::code $this _lookup ""]
++		    #RZ [itcl::code $this _lookup ""]
++		    eval [itcl::code $this _lookup ""]
+ 		}
+ 	    }
+ 	}
+diff -Nupr /home/rene/kbs.sf/sources/iwidgets4.0.2/generic/labeledframe.itk generic/labeledframe.itk
+--- /home/rene/kbs.sf/sources/iwidgets4.0.2/generic/labeledframe.itk	2001-08-15 20:32:51.000000000 +0200
++++ generic/labeledframe.itk	2012-05-21 12:23:03.849527914 +0200
+@@ -289,6 +289,7 @@ itcl::configbody iwidgets::Labeledframe:
+ #     {"-relx" "-rely" <rowconfigure|columnconfigure> <row/column number>}
+ # -----------------------------------------------------------------------------
+ itcl::body iwidgets::Labeledframe::_initTable {} {
++  if {![catch {set _LAYOUT_TABLE(nw-relx)}]} return ;#RZ
+   array set _LAYOUT_TABLE {
+     nw-relx 0.0  nw-rely 0.0  nw-wrap 0 nw-conf rowconfigure    nw-num 0
+     n-relx  0.5  n-rely  0.0  n-wrap  0 n-conf  rowconfigure    n-num  0
+@@ -313,7 +314,7 @@ itcl::body iwidgets::Labeledframe::_init
+   #
+   # NOTE: Be careful to use the "body" command, or the proc will get lost!
+   #
+-  itcl::body ::iwidgets::Labeledframe::_initTable {} {}
++  #RZ itcl::body ::iwidgets::Labeledframe::_initTable {} {}
+ }
+ 
+ # -----------------------------------------------------------------------------
+diff -Nupr /home/rene/kbs.sf/sources/iwidgets4.0.2/generic/menubar.itk generic/menubar.itk
+--- /home/rene/kbs.sf/sources/iwidgets4.0.2/generic/menubar.itk	2001-08-15 20:33:13.000000000 +0200
++++ generic/menubar.itk	2012-05-21 12:27:32.039459872 +0200
+@@ -160,6 +160,7 @@ itcl::class iwidgets::Menubar {
+ 
+ 	variable _menuOption          ;# The -menu option
+ 	variable _helpString          ;# The -helpstr optio
++	variable _fixed 0 ;#RZ bug fix
+     }
+ }
+ 
+@@ -198,7 +199,7 @@ itcl::body iwidgets::Menubar::constructo
+     set _pathMap(.) $itk_component(menubar)
+ 
+     eval itk_initialize $args
+-
++    set _fixed 1 ;#RZ
+     #
+     # HACK HACK HACK
+     # Tk expects some variables to be defined and due to some
+@@ -357,7 +358,8 @@ itcl::configbody iwidgets::Menubar::menu
+ 
+ 	# IF one exists already, delete the old one and create
+ 	# a new one
+-	if { ! [catch {_parsePath .0}] } {
++	#RZ if { ! [catch {_parsePath .0}] } 
++	if { $_fixed && ! [catch {_parsePath .0}] } {
+ 	    delete .0 .last
+ 	} 
+ 
+@@ -2071,9 +2073,7 @@ itcl::body iwidgets::Menubar::_parsePath
+ 
+     set concatPath ""
+     foreach seg $segments {
+-
+ 	set concatPath [_getSymbolicPath $concatPath $seg]
+-
+ 	if { [catch {set _pathMap($concatPath)} ] } {
+ 	    error "bad path: \"$path\" does not exist. \"$seg\" not valid"
+ 	}
+diff -Nupr /home/rene/kbs.sf/sources/iwidgets4.0.2/generic/scrolledhtml.itk generic/scrolledhtml.itk
+--- /home/rene/kbs.sf/sources/iwidgets4.0.2/generic/scrolledhtml.itk	2004-12-02 18:49:18.000000000 +0100
++++ generic/scrolledhtml.itk	2012-05-21 10:46:55.428543431 +0200
+@@ -139,7 +139,7 @@ itcl::class iwidgets::Scrolledhtml {
+   itk_option define -alink alink ALink red
+   itk_option define -linkhighlight alink ALink red
+   itk_option define -unknownimage unknownimage File {}
+-  itk_option define -textbackground textBackground Background {}
++  itk_option define -textbackground textBackground Background {#ffffff};#RZ
+   itk_option define -update update Update 1
+   itk_option define -debug debug Debug 0
+ 
+@@ -352,7 +352,8 @@ itcl::body iwidgets::Scrolledhtml::destr
+     foreach x $_images {
+       ::image delete $x
+     }
+-    if {$_unknownimg != $_defUnknownImg} {
++    #RZ if {$_unknownimg != $_defUnknownImg}
++    if {$_unknownimg != "" && $_unknownimg != $_defUnknownImg} {
+       ::image delete $_unknownimg
+     }
+ }
+diff -Nupr /home/rene/kbs.sf/sources/iwidgets4.0.2/generic/toolbar.itk generic/toolbar.itk
+--- /home/rene/kbs.sf/sources/iwidgets4.0.2/generic/toolbar.itk	2001-08-17 21:05:54.000000000 +0200
++++ generic/toolbar.itk	2012-05-21 10:59:31.804539052 +0200
+@@ -684,7 +684,8 @@ itcl::body iwidgets::Toolbar::_addWidget
+     foreach optionSet [$itk_component($name) configure] {
+ 	set option [lindex $optionSet 0]
+ 	if { [lsearch $_optionList $option] != -1 } {
+-	    itk_option add $name.$option
++	    #RZ itk_option add $name.$option
++	    itk_option add $name.[string range $option 1 end]
+ 	}
+     }
+     

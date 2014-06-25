@@ -1,0 +1,122 @@
+2014-01-13  Tom Tromey  <tromey@redhat.com>
+
+	* generic/gdbtk-main.c (main): Don't set use_windows.
+
+2014-01-09  Tom Tromey  <tromey@redhat.com>
+
+	* generic/gdbtk-hooks.c (gdbtk_add_hooks): Use
+	command_param_changed observer, not deprecated_set_hook.
+	(gdbtk_param_changed): Rename from gdbtk_set_hook.  Simplify.
+
+2013-09-20  Andrew Burgess  <aburgess@broadcom.com>
+
+	* generic/gdbtk-register.c (register_changed_p): Replace use of
+	deprecated_frame_register_read with get_frame_register_value.
+
+2013-09-20  Andrew Burgess  <aburgess@broadcom.com>
+
+	* generic/gdbtk.c: Add include of "main.h".
+	(gdbtk_init_1): Remove.
+	(argv0): Remove.
+	(_initialize_gdbtk): No longer set deprecated_init_ui_hook.
+	(gdbtk_init): Use get_gdb_program_name function from main.h.
+
+2013-09-06  Andrew Burgess  <aburgess@broadcom.com>
+
+	* library/interface.tcl (gdbtk_tcl_architecture_changed): Add call
+	to gdb_reg_arch_changed.
+	* library/regwin.itb (arch_changed): Remove call to
+	gdb_reg_arch_changed.
+
+2013-09-06  Andrew Burgess  <aburgess@broadcom.com>
+
+	* generic/gdbk-register.c (old_regs_count): New variable.
+	(register_changed_p): Add new assert.
+	(setup_architecture_data): Initialise old_regs_count.
+
+2013-09-05  Andrew Burgess  <aburgess@broadcom.com>
+
+	* generic/gdbk-register.c (old_regs): Move the comment about this
+	variable next to the definition.
+
+2013-09-05  Andrew Burgess  <aburgess@broadcom.com>
+
+	* generic/gdbtk-interp.c (gdbtk_command_loop): Change signature to
+	take interpreter cookie (ignored), mention parameter in comment.
+	(gdb_interpreter_resume): Remove use of
+	deprecated_command_loop_hook.
+	(_initialize_gdbtk_interp): Fill in logging proc and command loop
+	proc pointers.
+
+2013-08-15  Keith Seitz  <keiths@redhat.com>
+
+	* generic/gdbtk-cmds.c (gdb_search): Update for symbol
+	searching API update in gdb.
+	
+2013-07-30  Keith Seitz  <keiths@redhat.com>
+
+	* generic/gdbtk-cmds.c (gdb_clear_file): Remove use of pop_target,
+	which was recently removed from gdb.
+
+2013-07-23  Keith Seitz  <keiths@redhat.com>
+
+	* generic/gdbtk.c (close_bfds): Update declaration.
+
+2013-07-15  Roland Schwingel  <roland.schwingel@onevision.com>
+
+	* generic/gdbtk-register.c (get_register): Update
+	to reflect changes from upstream gdb. Prettyprinting
+	becomes prettyformatting now.
+	* generic/gdbtk-wrapper.c (GDB_val_print,wrap_val_print):
+	Likewise.
+	* generic/gdbtk-wrapper.h (GDB_val_print): Likewise.
+
+2013-07-02  Keith Seitz  <keiths@redhat.com>
+
+	* generic/gdbtk-cmds.c (gdb_listfuncs): Update declaration.
+	* generic/gdbtk-hooks.c (gdb_two_elem_cmd): Likewise.
+	(report_error): Likewise.
+	(gdbtk_readline_end, gdbtk_post_add_symbol, gdbtk_error_begin,
+	gdbtk_attach): Likewise.
+	* generic/gdbtk/gdbtk-register.c (setup_architecture_data):
+	Likewise.
+	* generic/gdbtk-wrapper.c (GDB_equal_value, GDB_reinit_frame_cache,
+	GDB_value-coerce_array): Likewise.
+	* generic/gdbtk.c (gdbtk_interactive, gdbtk_start_timer,
+	gdbtk_stop_timer, _initialize_gdbtk): Likewise.
+
+2013-06-05  Keith Seitz  <keiths@redhat.com>
+
+	* generic/gdbtk-stack.c (get_frame_name): Change type of 'funname'
+	to char * to follow recent API updates in gdb.
+	Free 'funname' after appending it to the list.
+	Remove check for NULL funname in a branch where it could only
+	ever be NULL.
+
+2013-06-05  Keith Seitz  <keiths@redhat.com>
+
+	* generic/gdbtk-register.c (map_arg_registers): Change type of
+	raw_buffer to gdb_byte to follow recent API changes in gdb.
+	* generic/gdbtk-cmds.c (gdb_update_mem): Likewise for ' mbfu',
+	'mptr', and 'cptr'.
+
+2013-06-05  Keith Seitz  <keiths@redhat.com>
+
+	* generic/gdbtk.c (tk_command): Use xfree instead of free.
+	* generic/gdbtk-hooks.c (gdbtk_call_command): Remove unused
+	cleanup.
+	* generic/gdbtk-cmds.c (gdb_load_info): If bfd_check_format
+	fails, run the cleanup.
+
+2013-04-13  Kevin Buettner  <kevinb@redhat.com>
+
+	* generic/gdbtk-cmds.c (pc_function_name): Adjust type of
+	`msym' to account for change in return type of
+	lookup_minimal_symbol_by_pc().
+
+2013-02-15  Keith Seitz  <keiths@redhat.com>
+
+	* generic/gdbtk-bp.c (gdb_find_bp_at_line): Update struct
+	bp_location changes wrt source_file from GDB.
+
+

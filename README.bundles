@@ -1,0 +1,19 @@
+Notes about bundles:
+
+- binutils-gtk, tcl, tk, itcl, itk are git submodules: they can be updated with:
+
+git submodule foreach --recursive git pull
+
+- iwidgets is no longer part of itk project and is not kept in a git
+  repositiory. The current snapshot has been obtained on 2014/06/25 with:
+
+fossil clone http://chiselapp.com/user/rene/repository/iwidgets iwidgets.fossil
+mkdir iwidgets
+cd iwidgets
+fossil open ../iwidgets.fossil
+
+- bfd, opcodes, texinfo, readline, libiberty, include, sim, cpu, intl and
+  libdecnumber are now bundles of binutils-gtk.
+
+- libgui does not appear in any other repository and thus is now part of
+  insight.

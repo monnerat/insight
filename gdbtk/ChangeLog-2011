@@ -1,0 +1,95 @@
+2011-12-17  Keith Seitz  <keiths@redhat.com>
+
+	* generic/gdbtk-cmds.c (gdb_listfiles): Update API changes
+	for map_partial_symbol_filenames.
+	(gdb_get_line_command): Update API changes for decode_line_1 in gdb.
+	(gdb_get_file_command): Likewise.
+	(gdb_get_function_command): Likewise.
+	* generic/gdbtk-stack.c (gdb_get_vars_command): Likewise.
+	* generic/gdbtk-bp.c (tracepoint_exists): Likewise.
+	(gdb_find_bp_at_line, gdb_get_breakpoint_info): Update breakpoint
+	API changes in gdb.
+
+2011-11-02  Keith Seitz  <keiths@redhat.com>
+
+	* generic/gdbtk-interp.c (struct gdbtk_interp_data)
+	<uiout>: New member.
+	(gdbtk_data): Remove global.
+	(gdbtk_interpreter_init): Update with GDB API changes.
+	Allocate private intepreter data.
+	(gdbtk_interpreter_ui_out): New function.
+	(_initialize_gdbtk_interp): Add gdbtk_interpreter_ui_out to
+	PROCS.
+	Remove gdbtk_data and related allocation/initialization.
+
+2011-09-11  Keith Seitz  <keiths@redhat.com>
+
+	* generic/gdbtk-cmds.c (gdb_prompt_command): get_prompt now
+	takes no arguments.
+
+2011-08-02  Keith Seitz  <keiths@redhat.com>
+
+	* generic/gdbtk-bp.c (gdb_set_bp): Pass a valid breakpoint_ops
+	to create_breakpoint.
+
+2011-08-01  Keith Seitz  <keiths@redhat.com>
+
+	* generic/gdbtk-bp.c (BREAKPOINT_IS_WATCHPOINT): Remove.
+	(gdb_get_breakpoint_info): Update with recent GDB API changes.
+	(gdb_actions_command): Likewise.
+	(gdb_get_tracepoint_info): Likewise.
+	(breakpoint_notify): Use get_breakpoint.
+
+	* generic/gdbtk-cmds.c (gdb_prompt_command): Update with recent
+	GDB API changes.
+
+2011-05-12  Keith Seitz  <keiths@redhat.com>
+
+	* generic/gdbtk-hooks.c (gdbtk_create_breakpoint): Change
+	parameter from `int' to `struct breakpoint *'.
+	(gdbtk_delete_breakpoint): Likewise.
+	(gdbtk_modify_breakpoint): Likewise.
+	* generic/gdbtk-bp.c (ALL_BREAKPOINTS): Define.
+	(breakpoint_list): Remove.
+	(breakpoint_list_size): Remove.
+	(Gdbtk_Breakpoint_Init): Remove initialization of breakpoint_list.
+	(gdb_find_bp_at_addr): Rewrite using ALL_BREAKPOINTS.
+	(gdb_find_bp_at_line): Likewise.
+	(gdb_get_breakpoint_info): Likewise.
+	(gdb_get_breakpoint_list): Likewise.
+	(gdbtk_create_breakpoint): Change parameter from `int' to
+	`struct breakpoint *' and update function.
+	(gdbtk_delete_breakpoint): Likewise.
+	(gdbtk_modify_breakpoint): Likewise.	
+	(breakpoint_notify): Rewrite using ALL_BREAKPOINTS.
+
+2011-04-11  Keith Seitz  <keiths@redhat.com>
+
+	* generic/gdbtk-bp.c (tracepoint_exists): Remove recently
+	removed "not_found_ptr" argument from call to decode_line_1.
+	* generic/gdbtk-stack.c (gdb_get_vars_command): Likewise.
+	* generic/gdbtk-cmds.c (gdb_get_line_command): Likewise.
+	(gdb_get_file_command): Likewise.
+	(gdb_get_function_command): Likewise.
+
+	From Kevin Buettner  <kevinb@redhat.com>
+	* generic/gdbtk-register.c (): Delete declaration of `buffer'.
+	Use `valaddr' in its place.
+
+2011-04-08  Keith Seitz  <keiths@redhat.com>
+
+	* generic/gdbtk-bp.c (tracepoint_exists): Update for
+	decode_line_1 API change.
+	* generic/gdbtk-cmds.c (gdb_eval): Use comman_val_print
+	instead of val_print.
+	(gdb_get_line_command): Update for decode_line_1 API
+	changes.
+	(gdb_get_file_command): Likewise.
+	(gdb_get_function_command): Likewise.
+	* generic/gdbtk-register.c (get_register_types): Use
+	get_frame_register_value instead of frame_register.
+	(get_register): Pass valid VALUE to val_print.
+	Consolidate calls to get_current_gdbarch.
+	* generic/gdbtk-stack.c (gdb_get_vars_command): Update
+	for decode_line_1 API change.
+

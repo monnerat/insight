@@ -1,0 +1,44 @@
+iwidgets 4.1 -- iwidgets for itk4
+=================================
+
+Slightly modified iwidgets implementation for itk4.
+For changes see the iwidgets.patch file.
+
+Sources
+-------
+
+The itk repository is hosted at:
+  http://chiselapp.com/user/rene/repository/itk/
+A slightly modified iwidgets (see iwidgets.patch) is hosted at:
+  http://chiselapp.com/user/rene/repository/iwidgets/
+
+Ready to run binaries (*-itk) can be found at:
+  https://sourceforge.net/projects/kbskit/files/itk/
+
+To load itk call:
+  package require itk 4.0
+and to load itk and iwidgets call:
+  package require iwidgets 4.1
+
+Install
+-------
+
+Copy the library directory as iwidgets4.1 in your tcl library path.
+  cp -r library <your-install-path>/iwidgets4.1
+
+Documentation
+-------------
+
+Please refer to the original documantation at
+  http://incrtcl.sourceforge.net/iwidgets/
+
+License & support
+-----------------
+
+This work is under BSD license (see file 'license.terms')
+
+Acknowledgements
+----------------
+
+This work is based on the original "iwidgets" work at
+  http://incrtcl.sourceforge.net/iwidgets/
