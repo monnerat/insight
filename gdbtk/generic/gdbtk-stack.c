@@ -89,7 +89,7 @@ static int
 gdb_block_vars (ClientData clientData, Tcl_Interp *interp,
 		int objc, Tcl_Obj *CONST objv[])
 {
-  struct block *block;
+  const struct block *block;
   struct block_iterator iter;
   struct symbol *sym;
   CORE_ADDR start, end;
@@ -159,7 +159,7 @@ static int
 gdb_get_blocks (ClientData clientData, Tcl_Interp *interp,
 		int objc, Tcl_Obj *CONST objv[])
 {
-  struct block *block;
+  const struct block *block;
   struct block_iterator iter;
   int junk;
   struct symbol *sym;
@@ -278,7 +278,7 @@ gdb_get_vars_command (ClientData clientData, Tcl_Interp *interp,
 {
   struct symtabs_and_lines sals;
   struct symbol *sym;
-  struct block *block;
+  const struct block *block;
   char *args;
   struct block_iterator iter;
   int i, arguments;
@@ -387,7 +387,7 @@ gdb_selected_block (ClientData clientData, Tcl_Interp *interp,
     }
   else
     {
-      struct block *block;
+      const struct block *block;
       block = get_frame_block (get_selected_frame (NULL), 0);
       start = xstrprintf ("%s", paddress (get_current_arch (),
 					  BLOCK_START (block)));

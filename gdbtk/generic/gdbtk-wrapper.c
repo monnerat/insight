@@ -52,7 +52,7 @@ gdb_result GDB_parse_exp_1 (char **stringptr, struct block *block, int comma,
 
 gdb_result GDB_evaluate_type (struct expression *exp, value_ptr * result);
 
-gdb_result GDB_block_for_pc (CORE_ADDR pc, struct block **result);
+gdb_result GDB_block_for_pc (CORE_ADDR pc, const struct block **result);
 
 gdb_result GDB_block_innermost_frame (struct block *block,
 				      struct frame_info **result);
@@ -73,7 +73,8 @@ gdb_result GDB_value_struct_elt (value_ptr * argp, value_ptr * args,
 gdb_result GDB_value_cast (struct type *type, value_ptr val,
 			   value_ptr * rval);
 
-gdb_result GDB_get_frame_block (struct frame_info *fi, struct block **rval);
+gdb_result GDB_get_frame_block (struct frame_info *fi,
+				const struct block **rval);
 
 gdb_result GDB_get_prev_frame (struct frame_info *fi,
 			       struct frame_info **result);
@@ -365,7 +366,7 @@ wrap_evaluate_type (char *opaque_arg)
 }
 
 gdb_result
-GDB_block_for_pc (CORE_ADDR pc, struct block **result)
+GDB_block_for_pc (CORE_ADDR pc, const struct block **result)
 {
   struct gdb_wrapper_arguments args;
   gdb_result r;
@@ -376,7 +377,7 @@ GDB_block_for_pc (CORE_ADDR pc, struct block **result)
   if (r != GDB_OK)
     return r;
 
-  *result = (struct block *) args.result.ptr;
+  *result = (const struct block *) args.result.cstptr;
   return GDB_OK;
 }
 
@@ -387,7 +388,7 @@ wrap_block_for_pc (char *opaque_arg)
   CORE_ADDR pc;
 
   pc = *(CORE_ADDR *) (*args)->args[0].ptr;
-  (*args)->result.ptr = block_for_pc (pc);
+  (*args)->result.cstptr = block_for_pc (pc);
   return 1;
 }
 
@@ -599,7 +600,7 @@ wrap_value_cast (char *opaque_arg)
 }
 
 gdb_result
-GDB_get_frame_block (struct frame_info *fi, struct block **rval)
+GDB_get_frame_block (struct frame_info *fi, const struct block **rval)
 {
   struct gdb_wrapper_arguments args;
   gdb_result r;
@@ -610,7 +611,7 @@ GDB_get_frame_block (struct frame_info *fi, struct block **rval)
   if (r != GDB_OK)
     return r;
 
-  *rval = (struct block *) args.result.ptr;
+  *rval = (const struct block *) args.result.cstptr;
   return GDB_OK;
 }
 
@@ -621,7 +622,7 @@ wrap_get_frame_block (char *opaque_arg)
   struct frame_info *fi;
 
   fi = (struct frame_info *) (*args)->args[0].ptr;
-  (*args)->result.ptr = get_frame_block (fi, NULL);
+  (*args)->result.cstptr = get_frame_block (fi, NULL);
 
   return 1;
 }

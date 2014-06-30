@@ -1529,7 +1529,7 @@ gdb_listfuncs (ClientData clientData, Tcl_Interp *interp,
 	       int objc, Tcl_Obj *CONST objv[])
 {
   struct symtab *symtab;
-  struct blockvector *bv;
+  const struct blockvector *bv;
   struct block *b;
   struct symbol *sym;
   int i;

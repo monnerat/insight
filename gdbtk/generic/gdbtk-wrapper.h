@@ -32,6 +32,7 @@ struct gdb_wrapper_arguments {
   {
     int integer;
     void *ptr;
+    const void *cstptr;
   } result;
 
   /* The list of arguments. */
@@ -70,7 +71,7 @@ extern gdb_result GDB_parse_exp_1 (char **stringptr, struct block *block,
 */
 extern gdb_result GDB_evaluate_type (struct expression *exp,
 				     value_ptr * result);
-extern gdb_result GDB_block_for_pc (CORE_ADDR pc, struct block **result);
+extern gdb_result GDB_block_for_pc (CORE_ADDR pc, const struct block **result);
 extern gdb_result GDB_block_innermost_frame (struct block *block,
 					     struct frame_info **result);
 extern gdb_result GDB_reinit_frame_cache (void);
@@ -83,7 +84,8 @@ extern gdb_result GDB_value_struct_elt (value_ptr * argp, value_ptr * args,
 					char *err, value_ptr * rval);
 extern gdb_result GDB_value_cast (struct type *type, value_ptr val,
 				  value_ptr * rval);
-gdb_result GDB_get_frame_block (struct frame_info *fi, struct block **rval);
+gdb_result GDB_get_frame_block (struct frame_info *fi,
+				const struct block **rval);
 extern gdb_result GDB_get_prev_frame (struct frame_info *fi,
 				      struct frame_info **result);
 extern gdb_result GDB_get_next_frame (struct frame_info *fi,
