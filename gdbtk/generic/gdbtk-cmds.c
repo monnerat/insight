@@ -1120,7 +1120,7 @@ gdb_find_file_command (ClientData clientData, Tcl_Interp *interp,
 		       int objc, Tcl_Obj *CONST objv[])
 {
   struct symtab *st;
-  char *filename, *fullname = NULL;
+  const char *filename, *fullname = NULL;
 
   if (objc != 2)
     {
@@ -2213,7 +2213,7 @@ compare_lines (const PTR mle1p, const PTR mle2p)
 static int
 gdb_loc (ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[])
 {
-  char *filename;
+  const char *filename;
   struct symtab_and_line sal;
   const char *fname;
   CORE_ADDR pc;
@@ -2714,7 +2714,8 @@ static int
 gdb_loadfile (ClientData clientData, Tcl_Interp *interp, int objc,
 	      Tcl_Obj *CONST objv[])
 {
-  char *file, *widget;
+  const char *file;
+  char *widget;
   int linenumbers, ln, lnum, ltable_size;
   FILE *fp;
   char *ltable;
@@ -3115,7 +3116,7 @@ gdb_CA_to_TAS (ClientData clientData, Tcl_Interp *interp,
  * with something similar, but different enough to break
  * Insight.
  */
-char *
+const char *
 symtab_to_filename (struct symtab *s)
 {
   int r;
