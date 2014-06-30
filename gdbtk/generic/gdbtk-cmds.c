@@ -589,7 +589,7 @@ gdb_stop (ClientData clientData, Tcl_Interp *interp,
     }
   else
     {
-      if (target_ignore != (void (*) (void)) current_target.to_stop)
+      if (NULL != (void (*) (void)) current_target.to_stop)
 	target_stop (gdbtk_get_ptid ());
       else
 	set_quit_flag ();		/* hope something sees this */
