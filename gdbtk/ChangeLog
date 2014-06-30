@@ -1,5 +1,11 @@
 2014-06-30  Patrick Monnerat <pm@datasphere.ch>
 
+	* generic/gdbtk-cmds.c: Minimal symbols have now their own
+	  MSYMBOL_* macros.
+	* generic/gdbtk.h: Define GDBTK_MSYMBOL_SOURCE_NAME macro.
+
+2014-06-30  Patrick Monnerat <pm@datasphere.ch>
+
 	* generic/gdbtk-cmds.c: map_partial_symbol_filenames renamed to
 	  map_symbol_filenames.
 

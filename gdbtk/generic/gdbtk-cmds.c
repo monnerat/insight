@@ -1486,7 +1486,7 @@ gdb_search (ClientData clientData, Tcl_Interp *interp,
 				      Tcl_NewStringObj (SYMBOL_PRINT_NAME (p->symbol), -1));
 	  else
 	    Tcl_ListObjAppendElement (interp, elem,
-				      Tcl_NewStringObj (SYMBOL_PRINT_NAME (p->msymbol.minsym), -1));
+				      Tcl_NewStringObj (MSYMBOL_PRINT_NAME (p->msymbol.minsym), -1));
 
 	  if (show_files)
 	    {
@@ -2993,7 +2993,7 @@ pc_function_name (CORE_ADDR pc)
 
       msym = lookup_minimal_symbol_by_pc (pc);
       if (msym.minsym != NULL)
-	funcname = GDBTK_SYMBOL_SOURCE_NAME (msym.minsym);
+	funcname = GDBTK_MSYMBOL_SOURCE_NAME (msym.minsym);
     }
 
   if (funcname == NULL)
