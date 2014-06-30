@@ -1,5 +1,9 @@
 2014-06-30  Patrick Monnerat <pm@datasphere.ch>
 
+	* library/main.tcl: upgrade required package versions.
+
+2014-06-30  Patrick Monnerat <pm@datasphere.ch>
+
 	* generic/gdbtk-cmds.c: gdb_listfuncs(): Make blockvector readonly.
 	* generic/gdbtk-stack.c: Support readonly block structures.
 	* generic/gdbtk-wrapper.[ch]: Likewise.
