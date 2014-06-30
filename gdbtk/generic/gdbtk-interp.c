@@ -70,7 +70,7 @@ gdbtk_interpreter_init (struct interp *interp, int top_level)
   struct cmd_list_element *prefix = NULL;
   struct gdbtk_interp_data *data;
 
-  data = XZALLOC (struct gdbtk_interp_data);
+  data = XCNEW (struct gdbtk_interp_data);
   data->_stdout = gdbtk_fileopen ();
   data->_stderr = gdbtk_fileopen ();
   data->_stdlog = gdbtk_fileopen ();
