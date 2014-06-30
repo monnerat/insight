@@ -1,5 +1,10 @@
 2014-06-30  Patrick Monnerat <pm@datasphere.ch>
 
+	* generic/gdbtk-interp.c: Field prompt_proc_p of structure
+	  interp_procs does not exist anymore.
+
+2014-06-30  Patrick Monnerat <pm@datasphere.ch>
+
 	* generic/gdbtk-interp.c: Macro XCNEW renames XZALLOC.
 
 2014-06-30  Patrick Monnerat <pm@datasphere.ch>

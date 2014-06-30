@@ -122,12 +122,6 @@ gdbtk_interpreter_suspend (void *data)
   return 1;
 }
 
-static int
-gdbtk_interpreter_display_prompt_p (void *data)
-{
-  return 1;
-}
-
 static struct gdb_exception
 gdbtk_interpreter_exec (void *data, const char *command_str)
 {
@@ -185,7 +179,6 @@ _initialize_gdbtk_interp (void)
     gdbtk_interpreter_resume,           /* resume_proc */
     gdbtk_interpreter_suspend,	        /* suspend_proc */
     gdbtk_interpreter_exec,             /* exec_proc */
-    gdbtk_interpreter_display_prompt_p, /* prompt_proc_p */
     gdbtk_interpreter_ui_out,		/* ui_out_proc */
     NULL,                               /* set_logging_proc */
     gdbtk_command_loop                  /* command_loop_proc */
