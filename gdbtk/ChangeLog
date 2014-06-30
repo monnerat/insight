@@ -1,5 +1,10 @@
 2014-06-30  Patrick Monnerat <pm@datasphere.ch>
 
+	* generic/gdbtk-cmds.c: map_partial_symbol_filenames renamed to
+	  map_symbol_filenames.
+
+2014-06-30  Patrick Monnerat <pm@datasphere.ch>
+
 	* generic/gdbtk-cmds.c: current_target callbacks no longer
 	  initialized: compare to_stop with NULL instead of target_ignore.
 

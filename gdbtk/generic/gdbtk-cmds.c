@@ -1187,7 +1187,7 @@ struct listfiles_info
 };
 
 /* This is a helper function for gdb_listfiles that is used via
-   map_partial_symbol_filenames.  */
+   map_symbol_filenames.  */
 
 static void
 do_listfiles (const char *filename, const char *fullname, void *data)
@@ -1259,7 +1259,7 @@ gdb_listfiles (ClientData clientData, Tcl_Interp *interp,
   info.filesp = &files;
   info.len = len;
   info.pathname = pathname;
-  map_partial_symbol_filenames (do_listfiles, &info, 0);
+  map_symbol_filenames (do_listfiles, &info, 0);
 
   ALL_SYMTABS (objfile, symtab)
     {
