@@ -65,7 +65,7 @@
 #include <sys/ioctl.h>
 #endif
 #include <sys/time.h>
-#include "gdb_stat.h"
+#include <sys/stat.h>
 
 #include <string.h>
 #include "dis-asm.h"

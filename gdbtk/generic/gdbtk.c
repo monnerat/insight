@@ -48,7 +48,7 @@
 #include "gdbtk.h"
 
 #include <fcntl.h>
-#include "gdb_stat.h"
+#include <sys/stat.h>
 #ifdef HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>
 #endif

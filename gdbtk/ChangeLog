@@ -1,5 +1,10 @@
 2014-06-30  Patrick Monnerat <pm@datasphere.ch>
 
+	* generic/gdbtk-cmds.c: include "gdb_stat.h" --> <sys/stat.h>
+	* generic/gdbtk.c: Likewise
+
+2014-06-30  Patrick Monnerat <pm@datasphere.ch>
+
 	* generic/gdbtk-bp.c: include "gdb_string.h" --> <string.h>
 	* generic/gdbtk.c: Likewise
 	* generic/gdbtk-cmds.c: Likewise
