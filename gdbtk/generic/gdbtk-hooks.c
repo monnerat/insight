@@ -56,7 +56,7 @@
 #endif
 #include <sys/time.h>
 
-#include "gdb_string.h"
+#include <string.h>
 #include "dis-asm.h"
 #include "gdbcmd.h"
 

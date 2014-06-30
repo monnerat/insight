@@ -22,7 +22,7 @@
 
 #include "defs.h"
 #include "main.h"
-#include "gdb_string.h"
+#include <string.h>
 
 int
 main (int argc, char **argv)

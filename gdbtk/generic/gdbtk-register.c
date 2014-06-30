@@ -24,7 +24,7 @@
 #include "reggroups.h"
 #include "value.h"
 #include "target.h"
-#include "gdb_string.h"
+#include <string.h>
 #include "language.h"
 #include "valprint.h"
 #include "arch-utils.h"

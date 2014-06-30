@@ -1,3 +1,14 @@
+2014-06-30  Patrick Monnerat <pm@datasphere.ch>
+
+	* generic/gdbtk-bp.c: include "gdb_string.h" --> <string.h>
+	* generic/gdbtk.c: Likewise
+	* generic/gdbtk-cmds.c: Likewise
+	* generic/gdbtk-hooks.c: Likewise
+	* generic/gdbtk-interp.c: Likewise
+	* generic/gdbtk-main.c: Likewise
+	* generic/gdbtk-register.c: Likewise
+	* generic/gdbtk-varobj.c: Likewise
+
 2014-01-13  Tom Tromey  <tromey@redhat.com>
 
 	* generic/gdbtk-main.c (main): Don't set use_windows.

@@ -25,7 +25,7 @@
 #include "ui-file.h"
 #include "ui-out.h"
 #include "cli-out.h"
-#include "gdb_string.h"
+#include <string.h>
 #include "cli/cli-cmds.h"
 #include "cli/cli-decode.h"
 #include "exceptions.h"

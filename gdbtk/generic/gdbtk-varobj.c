@@ -21,7 +21,7 @@
 
 #include "defs.h"
 #include "value.h"
-#include "gdb_string.h"
+#include <string.h>
 #include "varobj.h"
 #include "exceptions.h"
 
