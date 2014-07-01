@@ -56,7 +56,7 @@ if {[info exists auto_path]} {
 # Require the packages we need.  Most are loaded already, but this will catch 
 # any odd errors... :
 
-foreach p {{Tcl 8.6} {Tk 8.6} {Itcl 4.0} {Itk 4.0} {Iwidgets 4.0} {Gdbtk 1.0} {combobox 2.2} {debug 1.0}} {
+foreach p {{Tcl 8.6} {Tk 8.6} {itcl 4.0} {itk 4.0} {iwidgets 4.0} {Gdbtk 1.0} {combobox 2.2} {debug 1.0}} {
   if {[catch {package require [lindex $p 0] [lindex $p 1]} msg]} {
     if {![info exists ::env(GDBTK_TEST_RUNNING)] || $::env(GDBTK_TEST_RUNNING) == 0} {
       if {$::tcl_platform(platform) != "windows"} {

@@ -1,3 +1,8 @@
+2014-07-01  Patrick Monnerat <pm@datasphere.ch>
+
+	* library/main.tcl: adjust itcl/itk/iwidgets package names to
+	  all lowercase.
+
 2014-06-30  Patrick Monnerat <pm@datasphere.ch>
 
 	* library/main.tcl: upgrade required package versions.

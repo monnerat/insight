@@ -1,6 +1,3 @@
-[submodule "binutils-git"]
-	path = binutils-git
-	url = git://sourceware.org/git/binutils-gdb.git
 [submodule "tcl"]
 	path = tcl
 	url = https://github.com/tcltk/tcl.git
