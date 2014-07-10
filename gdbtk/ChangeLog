@@ -1,3 +1,8 @@
+2014-07-10  Patrick Monnerat <pm@datasphere.ch>
+
+	* generic/gdbtk-interp.c: disable target-async mode (not working).
+	* generic/gdbtk.c: Add native target name "native".
+
 2014-07-01  Patrick Monnerat <pm@datasphere.ch>
 
 	* library/main.tcl: adjust itcl/itk/iwidgets package names to

@@ -22,6 +22,7 @@
 
 #include "defs.h"
 #include "interps.h"
+#include "target.h"
 #include "ui-file.h"
 #include "ui-out.h"
 #include "cli-out.h"
@@ -183,5 +184,7 @@ _initialize_gdbtk_interp (void)
     NULL,                               /* set_logging_proc */
     gdbtk_command_loop                  /* command_loop_proc */
   };
+  /* Does not run in target-async mode. */
+  target_async_permitted = 0;
   interp_add (interp_new ("insight", &procs));
 }

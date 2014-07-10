@@ -332,7 +332,8 @@ target_is_native (struct target_ops *t)
       || strcmp (name, "child") == 0 || strcmp (name, "procfs") == 0
       || strcmp (name, "solaris-threads") == 0
       || strcmp (name, "linuxthreads") == 0
-      || strcmp (name, "multi-thread") == 0)
+      || strcmp (name, "multi-thread") == 0
+      || strcmp (name, "native") == 0)
     return 1;
 
   return 0;
