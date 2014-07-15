@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in.
 
-AUTOMAKE_OPTIONS = foreigh no-dist
+AUTOMAKE_OPTIONS = foreign no-dist
 
 noinst_LIBRARIES = libgui.a
 
