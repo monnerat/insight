@@ -1,0 +1,17 @@
+* Fri Jul 11 2014 Patrick Monnerat <pm@datasphere.ch>
+- If RANLIB is set in environment, its value is used even for shared libraries,
+  causing a make failure. This patch ignores the ranlib error.
+
+diff --git a/Makefile.in b/Makefile.in
+index 4183474..a63b07d 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -269,7 +268,7 @@ depend:
+ $(PKG_LIB_FILE): $(PKG_OBJECTS)
+ 	-rm -f $(PKG_LIB_FILE)
+ 	${MAKE_LIB}
+-	$(RANLIB) $(PKG_LIB_FILE)
++	-$(RANLIB) $(PKG_LIB_FILE)
+ 
+ $(PKG_STUB_LIB_FILE): $(PKG_STUB_OBJECTS)
+ 	-rm -f $(PKG_STUB_LIB_FILE)

@@ -1,0 +1,16 @@
+* Fri Jul 11 2014 Patrick Monnerat <pm@datasphere.ch>
+- itk_initialize destroys preset options. Fix it.
+
+diff --git a/generic/itkArchetype.c b/generic/itkArchetype.c
+index ef7e889..f2da061 100644
+--- a/generic/itkArchetype.c
++++ b/generic/itkArchetype.c
+@@ -589,7 +589,7 @@ Itk_ArchInitCmd(dummy, interp, objc, objv)
+                         (ClientData)ivPtr);
+ 
+                     val = Itcl_GetInstanceVar(interp,
+-		            Tcl_GetString(ivPtr->fullNamePtr),
++		            Tcl_GetString(ivPtr->namePtr),
+                             contextObj, contextObj->iclsPtr);
+ 
+                     result = Itk_AddOptionPart(interp, info,

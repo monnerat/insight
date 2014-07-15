@@ -1,11 +1,18 @@
 Notes about bundles:
 
+The GUI part of insight is now maintained outside the gdb tree. Bundles are
+therefore needed to get the whole code embedded. They are implemented as:
+
 - binutils-gtk, tcl, tk, itcl, itk are git submodules: they can be updated with:
 
 git submodule foreach --recursive git pull
 
+  Alternatively, the local git repository can be configured with:
+
+git config fetch.recurseSubmodules true
+
 - iwidgets is no longer part of itk project and is not kept in a git
-  repositiory. The current snapshot has been obtained on 2014/06/25 with:
+  repository. The current snapshot has been obtained on 2014/06/25 with:
 
 fossil clone http://chiselapp.com/user/rene/repository/iwidgets iwidgets.fossil
 mkdir iwidgets
@@ -17,3 +24,33 @@ fossil open ../iwidgets.fossil
 
 - libgui does not appear in any other repository and thus is now part of
   insight.
+
+
+Building:
+- Prepare the configuration scripts with:
+aclocal
+autoconf
+
+- Configure the package with the needed options. In example:
+./configure	--prefix=/usr						\
+		--enable-sim						\
+		--disable-rpath						\
+		--with-gdb-datadir=/usr/share/insight			\
+		--with-jit-reader-dir=/usr/lib64/insight		\
+		--with-separate-debug-dir='/usr/lib/debug'		\
+		 --with-expat						\
+		--with-python=yes					\
+		--without-libunwind
+
+  There is no need to specify '--enable-gdbtk': this is always true.
+
+  Some new configuration options have been provided to ease use of
+  system-installed submodules:
+    --disable-bundled-xxx
+  where xxx can be tcl, tk, itcl, itk or iwidgets.
+
+  The configure script builds the "bundle" directory where the rest of
+  the build will be performed.
+
+- run make: the top Makefile is only a stub recursively making in the
+  "bundle" directory".

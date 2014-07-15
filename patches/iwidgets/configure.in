@@ -1,0 +1,30 @@
+#	Configure file for iwidgets when bundled to insight.
+
+TOPDIR="`dirname \"${0}\"`"
+TOPDIR=`cd "${TOPDIR}"; pwd`
+
+
+#	Get the version number.
+VERSION=`sed	-e '/variable version /!d'
+		-e 's/.* //' < "${TOPDIR}/library/pkgindex.tcl"`
+
+#	Create the Makefile.
+cat > "${TOPDIR}/Makefile" << EOF
+DESTDIR		=
+PKG_DIR		= iwidgets${VERSION}
+exec_prefix	= /usr/local
+libdir		= \$(exec_prefix)/lib
+pkglibdir	= \$(libdir)/\$(PKG_DIR)
+
+MAKEFILEDIR := \$(abspath \$(dir \$(lastword \$(MAKEFILE_LIST))))
+
+notarget:
+	#	Nothing to do.
+
+.DEFAULT:
+	#	Nothing to do.
+
+install:
+	test -d \$(DESTDIR)\$(pkglibdir) || mkdir \$(DESTDIR)\$(pkglibdir)
+	cp -a \$(MAKEFILEDIR)/library/* \$(DESTDIR)\$(pkglibdir)/
+EOF

@@ -1,0 +1,18 @@
+* Fri Jul 11 2014 Patrick Monnerat <pm@datasphere.ch>
+- Setting the CFLAGS in environment overrides the automake computed CFLAGS.
+  This patch allows to keep both.
+
+diff --git a/Makefile.in b/Makefile.in
+index fec9923..064f3c1 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -166,8 +166,7 @@ CONFIG_CLEAN_FILES = @CONFIG_CLEAN_FILES@ Makefile itkConfig.sh pkgIndex.tcl
+ CPPFLAGS	= @CPPFLAGS@
+ LIBS		= @PKG_LIBS@ @LIBS@
+ AR		= @AR@
+-CFLAGS		= @CFLAGS@
+-COMPILE		= $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
++COMPILE		= $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) @CFLAGS@ $(CFLAGS)
+ 
+ #========================================================================
+ # Start of user-definable TARGETS section

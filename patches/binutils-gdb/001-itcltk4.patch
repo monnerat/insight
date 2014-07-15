@@ -1,0 +1,117 @@
+* Fri Jul 11 2014 Patrick Monnerat <pm@datasphere.ch>
+- tcl/tk 8.6 and itcl/itk/iwidgets 4.0 tree structure has changed.
+  Update build files accordingly.
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index dd8601b..1dd2151 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -91,7 +91,7 @@ texinfo/texinfo.tex
+ 	imported at any (reasonable) time.
+ 	Please not use GCC's texinfo.  Please do not import texinfo.
+ 
+-tcl/; tix/; itcl/; tk/; libgui/
++tcl/; tk/; itcl/; itk/; iwidgets/; libgui/
+ 	insight: http://sourceware.org/insight/
+ 	Contact insight@sourceware.org.
+ 
+diff --git a/Makefile.def b/Makefile.def
+index ec2b0f2..0dc4242 100644
+--- a/Makefile.def
++++ b/Makefile.def
+@@ -78,6 +78,8 @@ host_modules= { module= intl; bootstrap=true; };
+ host_modules= { module= tcl;
+                 missing=mostlyclean; };
+ host_modules= { module= itcl; };
++host_modules= { module= itk; };
++host_modules= { module= iwidgets; };
+ host_modules= { module= ld; bootstrap=true; };
+ host_modules= { module= libbacktrace; bootstrap=true; };
+ host_modules= { module= libcpp; bootstrap=true; };
+@@ -369,6 +371,7 @@ dependencies = { module=configure-libgui; on=configure-tk; };
+ dependencies = { module=all-libgui; on=all-tcl; };
+ dependencies = { module=all-libgui; on=all-tk; };
+ dependencies = { module=all-libgui; on=all-itcl; };
++dependencies = { module=all-libgui; on=all-itk; };
+ 
+ // Host modules specific to binutils.
+ dependencies = { module=configure-bfd; on=configure-libiberty; hard=true; };
+@@ -454,9 +457,17 @@ dependencies = { module=all-itcl; on=all-tk; };
+ dependencies = { module=install-itcl; on=install-tcl; };
+ dependencies = { module=install-strip-itcl; on=install-strip-tcl; };
+ 
++// Same for itk
++dependencies = { module=configure-itk; on=configure-itcl; };
++dependencies = { module=all-itk; on=all-itcl; };
++dependencies = { module=install-itk; on=install-itcl; };
++dependencies = { module=install-strip-itk; on=install-strip-itcl; };
++
+ dependencies = { module=configure-tk; on=configure-tcl; };
+ dependencies = { module=all-tk; on=all-tcl; };
+ 
++dependencies = { module=install-iwidgets; on=install-tcl; };
++
+ dependencies = { module=all-sid; on=all-libiberty; };
+ dependencies = { module=all-sid; on=all-bfd; };
+ dependencies = { module=all-sid; on=all-opcodes; };
+diff --git a/configure.ac b/configure.ac
+index 07c3a66..f583648 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -133,7 +133,7 @@ build_tools="build-texinfo build-flex build-bison build-m4 build-fixincludes"
+ 
+ # these libraries are used by various programs built for the host environment
+ #
+-host_libs="intl libiberty opcodes bfd readline tcl tk itcl libgui zlib libbacktrace libcpp libdecnumber gmp mpfr mpc isl cloog libelf libiconv"
++host_libs="intl libiberty opcodes bfd readline tcl tk itcl itk iwidgets libgui zlib libbacktrace libcpp libdecnumber gmp mpfr mpc isl cloog libelf libiconv"
+ 
+ # these tools are built for the host environment
+ # Note, the powerpc-eabi build depends on sim occurring before gdb in order to
+@@ -2109,10 +2109,16 @@ done
+ # is now the case.
+ build_configdirs_all="$build_configdirs"
+ build_configdirs=
++case "${target_os}" in
++cygwin|windows|win32|win64) targos=win;;
++*) targos=unix
++esac
+ for i in ${build_configdirs_all} ; do
+   j=`echo $i | sed -e s/build-//g` 
+   if test -f ${srcdir}/$j/configure ; then
+     build_configdirs="${build_configdirs} $i"
++  elif test -f ${srcdir}/$j/$targos/configure ; then
++    build_configdirs="${build_configdirs} $i"
+   fi
+ done
+ 
+@@ -2121,6 +2127,8 @@ configdirs=
+ for i in ${configdirs_all} ; do
+   if test -f ${srcdir}/$i/configure ; then
+     configdirs="${configdirs} $i"
++  elif test -f ${srcdir}/$i/$targos/configure ; then
++    configdirs="${configdirs} $i/$targos"
+   fi
+ done
+ 
+@@ -2130,6 +2138,8 @@ for i in ${target_configdirs_all} ; do
+   j=`echo $i | sed -e s/target-//g` 
+   if test -f ${srcdir}/$j/configure ; then
+     target_configdirs="${target_configdirs} $i"
++  elif test -f ${srcdir}/$j/$targos/configure ; then
++    target_configdirs="${target_configdirs} $i"
+   fi
+ done
+ 
+diff --git a/src-release b/src-release
+index b28597c..b2219d7 100644
+--- a/src-release
++++ b/src-release
+@@ -303,7 +303,7 @@ sim.tar.bz2: $(DIST_SUPPORT) $(SIM_SUPPORT_DIRS) sim
+ 		SUPPORT_FILES="$(SIM_SUPPORT_DIRS)"
+ 
+ .PHONY: insight.tar.bz2
+-INSIGHT_SUPPORT_DIRS= $(GDB_SUPPORT_DIRS) tcl tk itcl libgui
++INSIGHT_SUPPORT_DIRS= $(GDB_SUPPORT_DIRS) tcl tk itcl itk iwidgets libgui
+ insight.tar.bz2: $(DIST_SUPPORT) $(GDB_SUPPORT_DIRS) gdb
+ 	$(MAKE) -f $(SELF) gdb-taz TOOL=gdb PACKAGE=insight \
+ 		MD5PROG="$(MD5PROG)" \
