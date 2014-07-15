@@ -105,12 +105,12 @@ cp -a gdbtk bundle/gdb/
 cp -a testsuite bundle/gdb/
 cp -a libgui bundle/
 
-if test "${enabled_bundled_tcl}" != no
+if test "${enable_bundled_tcl}" != no
 then	cp -a tcl bundle/
 else	rm -rf bundle/tcl
 fi
 
-if test "${enabled_bundled_tk}" != no
+if test "${enable_bundled_tk}" != no
 then	cp -a tk bundle/
 else	rm -rf bundle/tk
 fi
@@ -120,12 +120,12 @@ then	cp -a itcl bundle/
 else	rm -rf bundle/itcl
 fi
 
-if test "${enabled_bundled_itk}" != no
+if test "${enable_bundled_itk}" != no
 then	cp -a itk bundle/
-else	rm bundle/itk
+else	rm -rf bundle/itk
 fi
 
-if test "${enabled_bundled_iwidgets}" != no
+if test "${enable_bundled_iwidgets}" != no
 then	cp -a iwidgets bundle/
 else	rm -rf bundle/iwidgets
 fi
@@ -142,7 +142,9 @@ dnl Configure files
 for infn in `cd patches; find . -name '*.in'`
 do	outfn=`echo "${infn}" |
 	    sed -e 's#^\./##' -e 's/\.in$//' -e 's#^binutils-gdb/##'`
-	AC_CONFIG_FILES([bundle/${outfn}:patches/${infn}]) dnl
+	if test -d bundle/`dirname "${outfn}"`
+	then	AC_CONFIG_FILES([bundle/${outfn}:patches/${infn}]) dnl
+	fi
 done
 
 dnl Since the binutils-gdb configure files have to be regenerated, we define

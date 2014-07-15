@@ -28,7 +28,6 @@ fossil open ../iwidgets.fossil
 
 Building:
 - Prepare the configuration scripts with:
-aclocal
 autoconf
 
 - Configure the package with the needed options. In example:
@@ -38,7 +37,7 @@ autoconf
 		--with-gdb-datadir=/usr/share/insight			\
 		--with-jit-reader-dir=/usr/lib64/insight		\
 		--with-separate-debug-dir='/usr/lib/debug'		\
-		 --with-expat						\
+		--with-expat						\
 		--with-python=yes					\
 		--without-libunwind
 
