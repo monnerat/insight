@@ -5,8 +5,8 @@ TOPDIR=`cd "${TOPDIR}"; pwd`
 
 
 #	Get the version number.
-VERSION=`sed	-e '/variable version /!d'
-		-e 's/.* //' < "${TOPDIR}/library/pkgindex.tcl"`
+VERSION=`sed	-e '/variable version /!d'				\
+		-e 's/.* //' < "${TOPDIR}/library/pkgIndex.tcl"`
 
 #	Create the Makefile.
 cat > "${TOPDIR}/Makefile" << EOF
