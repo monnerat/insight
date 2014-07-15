@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in.
 
-AUTOMAKE_OPTIONS = cygnus
+AUTOMAKE_OPTIONS = foreign no-dist
 
 ## Convenience variables.
 TCL = advice.tcl balloon.tcl bbox.tcl bindings.tcl \

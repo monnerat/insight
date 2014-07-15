@@ -1,5 +1,14 @@
 2014-07-15  Patrick Monnerat <pm@datasphere.ch>
 
+	* generic/Makefile.am: Replace "cygnus" by "foreign no-dist" in
+	  AUTOMAKE_OPTIONS.
+	* gdbtk/plugins/Makefile.am: Likewise.
+	* libgui/Makefile.am: Likewise.
+	* libgui/library/Makefile.am: Likewise.
+	* libgui/src/Makefile.am: Likewise.
+
+2014-07-15  Patrick Monnerat <pm@datasphere.ch>
+
 	* generic/gdbtk-cmds.c: Use const for another readonly function arg.
 
 2014-07-10  Patrick Monnerat <pm@datasphere.ch>
