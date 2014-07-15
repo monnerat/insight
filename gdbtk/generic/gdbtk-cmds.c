@@ -1335,7 +1335,7 @@ gdb_search (ClientData clientData, Tcl_Interp *interp,
   char *regexp;
   int static_only, nfiles;
   Tcl_Obj **file_list;
-  char **files;
+  const char **files;
   static const char *search_options[] =
     {"functions", "variables", "types", (char *) NULL};
   static const char *switches[] =
@@ -1385,7 +1385,7 @@ gdb_search (ClientData clientData, Tcl_Interp *interp,
 
   static_only = 0;
   nfiles = 0;
-  files = (char **) NULL;
+  files = (const char **) NULL;
   while (switch_objc > 0)
     {
       if (Tcl_GetIndexFromObj (interp, switch_objv[0], switches,
@@ -1431,7 +1431,7 @@ gdb_search (ClientData clientData, Tcl_Interp *interp,
 	    if (result != TCL_OK)
 	      return result;
 
-	    files = (char **) xmalloc (nfiles * sizeof (char *));
+	    files = (const char **) xmalloc (nfiles * sizeof (char *));
 	    for (i = 0; i < nfiles; i++)
 	      files[i] = Tcl_GetStringFromObj (file_list[i], NULL);
 	    switch_objc--;
