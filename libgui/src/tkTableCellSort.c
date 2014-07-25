@@ -98,7 +98,7 @@ char *
 TableCellSort(Table *tablePtr, char *str)
 {
     int listArgc;
-    char **listArgv;
+    const char **listArgv;
     char *result;
 
     if (Tcl_SplitList(tablePtr->interp, str, &listArgc, &listArgv) != TCL_OK) {

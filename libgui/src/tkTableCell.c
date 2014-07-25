@@ -446,11 +446,11 @@ TableAtBorder(Table * tablePtr, int x, int y, int *row, int *col)
  *
  *----------------------------------------------------------------------
  */
-char *
+const char *
 TableGetCellValue(Table *tablePtr, int r, int c)
 {
     register Tcl_Interp *interp = tablePtr->interp;
-    char *result = NULL;
+    const char *result = NULL;
     char buf[INDEX_BUFSIZE];
     Tcl_HashEntry *entryPtr = NULL;
     int new = 1;
@@ -561,7 +561,7 @@ VALUE:
  *----------------------------------------------------------------------
  */
 int
-TableSetCellValue(Table *tablePtr, int r, int c, char *value)
+TableSetCellValue(Table *tablePtr, int r, int c, const char *value)
 {
     register Tcl_Interp *interp = tablePtr->interp;
     char buf[INDEX_BUFSIZE];
@@ -892,7 +892,7 @@ Table_SetCmd(ClientData clientData, register Tcl_Interp *interp,
 {
     register Table *tablePtr = (Table *)clientData;
     int row, col, len, i, j, max;
-    char *str;
+    const char *str;
 
     /* sets any number of tags/indices to a given value */
     if (objc < 3) {

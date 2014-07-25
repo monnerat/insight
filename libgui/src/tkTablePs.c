@@ -459,7 +459,7 @@ Table_PostscriptCmd(clientData, interp, objc, objv)
     Tcl_HashEntry *hPtr;
     CONST char * CONST *chunk;
     Tk_TextLayout textLayout = NULL;
-    char *value;
+    const char *value;
     int rowHeight, total, *colWidths, iW, iH;
     TableTag *tagPtr, *colPtr, *rowPtr, *titlePtr;
     Tcl_DString postscript, buffer;

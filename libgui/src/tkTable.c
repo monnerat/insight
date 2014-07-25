@@ -1612,7 +1612,7 @@ TableDisplay(ClientData clientdata)
 	numBytes, new, boundW, boundH, maxW, maxH, cellType,
 	originX, originY, activeCell, shouldInvert, ipadx, ipady, padx, pady;
     GC tagGc = NULL, topGc, bottomGc;
-    char *string = NULL;
+    const char *string = NULL;
     char buf[INDEX_BUFSIZE];
     TableTag *tagPtr = NULL, *titlePtr, *selPtr, *activePtr, *flashPtr,
 	*rowPtr, *colPtr;
@@ -1830,7 +1830,8 @@ TableDisplay(ClientData clientdata)
 	     * let's see if we have the value cached already
 	     * if not, run the findColTag routine and cache the value
 	     */
-	    entryPtr = Tcl_CreateHashEntry(colTagsCache, (char *)ucol, &new);
+	    entryPtr = Tcl_CreateHashEntry(colTagsCache, (char *)(size_t)ucol,
+	                                   &new);
 	    if (new) {
 		colPtr = FindRowColTag(tablePtr, ucol, COL);
 		Tcl_SetHashValue(entryPtr, colPtr);
@@ -2442,7 +2443,7 @@ TableFlashEvent(ClientData clientdata)
     entries = 0;
     for (entryPtr = Tcl_FirstHashEntry(tablePtr->flashCells, &search);
 	 entryPtr != NULL; entryPtr = Tcl_NextHashEntry(&search)) {
-	count = (int) Tcl_GetHashValue(entryPtr);
+	count = (ssize_t) Tcl_GetHashValue(entryPtr);
 	if (--count <= 0) {
 	    /* get the cell address and invalidate that region only */
 	    TableParseArrayIndex(&row, &col,
@@ -2454,7 +2455,7 @@ TableFlashEvent(ClientData clientdata)
 	    TableRefresh(tablePtr, row-tablePtr->rowOffset,
 		    col-tablePtr->colOffset, CELL);
 	} else {
-	    Tcl_SetHashValue(entryPtr, (ClientData) count);
+	    Tcl_SetHashValue(entryPtr, (ClientData) (ssize_t) count);
 	    entries++;
 	}
     }
@@ -2499,7 +2500,7 @@ TableAddFlash(Table *tablePtr, int row, int col)
 
     /* add the flash to the hash table */
     entryPtr = Tcl_CreateHashEntry(tablePtr->flashCells, buf, &dummy);
-    Tcl_SetHashValue(entryPtr, tablePtr->flashTime);
+    Tcl_SetHashValue(entryPtr, (ClientData)(ssize_t)tablePtr->flashTime);
 
     /* now set the timer if it's not already going and invalidate the area */
     if (tablePtr->flashTimer == NULL) {
@@ -2552,7 +2553,7 @@ TableSetActiveIndex(register Table *tablePtr)
 void
 TableGetActiveBuf(register Table *tablePtr)
 {
-    char *data = "";
+    const char *data = "";
 
     if (tablePtr->flags & HAS_ACTIVE) {
 	data = TableGetCellValue(tablePtr,
@@ -2645,7 +2646,7 @@ TableVarProc(clientData, interp, name, index, flags)
 	    update = 0;
 	} else {
 	    /* modified TableGetActiveBuf */
-	    char *data = "";
+	    const char *data = "";
 
 	    row = tablePtr->activeRow;
 	    col = tablePtr->activeCol;
@@ -2672,7 +2673,8 @@ TableVarProc(clientData, interp, name, index, flags)
 	}
 	if (tablePtr->caching) {
 	    Tcl_HashEntry *entryPtr;
-	    char *val, *data = NULL;
+	    char *val;
+	    const char *data = NULL;
 
 	    data = Tcl_GetVar2(interp, name, index, TCL_GLOBAL_ONLY);
 	    if (!data) data = "";
@@ -2889,13 +2891,13 @@ TableAdjustParams(register Table *tablePtr)
     numPixels = 0;
     unpreset = 0;
     for (i = 0; i < tablePtr->cols; i++) {
-	entryPtr = Tcl_FindHashEntry(tablePtr->colWidths, (char *) i);
+	entryPtr = Tcl_FindHashEntry(tablePtr->colWidths, (char *) (size_t) i);
 	if (entryPtr == NULL) {
 	    tablePtr->colPixels[i] = -1;
 	    unpreset++;
 	    lastUnpreset = i;
 	} else {
-	    value = (int) Tcl_GetHashValue(entryPtr);
+	    value = (ssize_t) Tcl_GetHashValue(entryPtr);
 	    if (value > 0) {
 		tablePtr->colPixels[i] = value * tablePtr->charWidth + px;
 	    } else {
@@ -2983,13 +2985,14 @@ TableAdjustParams(register Table *tablePtr)
 	numPixels	= 0;
 	unpreset	= 0;
 	for (i = 0; i < tablePtr->rows; i++) {
-	    entryPtr = Tcl_FindHashEntry(tablePtr->rowHeights, (char *) i);
+	    entryPtr = Tcl_FindHashEntry(tablePtr->rowHeights,
+	                                 (char *) (size_t) i);
 	    if (entryPtr == NULL) {
 		tablePtr->rowPixels[i] = -1;
 		unpreset++;
 		lastUnpreset = i;
 	    } else {
-		value = (int) Tcl_GetHashValue(entryPtr);
+		value = (ssize_t) Tcl_GetHashValue(entryPtr);
 		if (value > 0) {
 		    tablePtr->rowPixels[i] = value * tablePtr->charHeight + py;
 		} else {
@@ -3361,7 +3364,8 @@ TableFetchSelection(clientData, offset, buffer, maxBytes)
 {
     register Table *tablePtr = (Table *) clientData;
     Tcl_Interp *interp = tablePtr->interp;
-    char *value, *data, *rowsep = tablePtr->rowSep, *colsep = tablePtr->colSep;
+    char *value, *rowsep = tablePtr->rowSep, *colsep = tablePtr->colSep;
+    const char *data;
     Tcl_DString selection;
     Tcl_HashEntry *entryPtr;
     Tcl_HashSearch search;
@@ -3537,7 +3541,7 @@ TableRestrictProc(serial, eventPtr)
      XEvent *eventPtr;
 {
     if ((eventPtr->type == KeyRelease || eventPtr->type == KeyPress) &&
-	((eventPtr->xany.serial-(unsigned int)serial) > 0)) {
+	((eventPtr->xany.serial-(size_t)serial) > 0)) {
 	return TK_DEFER_EVENT;
     } else {
 	return TK_PROCESS_EVENT;
@@ -3661,10 +3665,10 @@ TableValidateChange(tablePtr, r, c, old, new, index)
 void
 ExpandPercents(tablePtr, before, r, c, old, new, index, dsPtr, cmdType)
      Table *tablePtr;		/* Table that needs validation. */
-     char *before;		/* Command containing percent
+     const char *before;	/* Command containing percent
 				 * expressions to be replaced. */
      int r, c;			/* row,col index of cell */
-     char *old;                 /* current value of cell */
+     const char *old;           /* current value of cell */
      char *new;                 /* potential new value of cell */
      int index;                 /* index of insert/delete */
      Tcl_DString *dsPtr;        /* Dynamic string in which to append
@@ -3677,7 +3681,8 @@ ExpandPercents(tablePtr, before, r, c, old, new, index, dsPtr, cmdType)
 #else
     char ch;
 #endif
-    char *string, buf[INDEX_BUFSIZE];
+    const char *string;
+    char buf[INDEX_BUFSIZE];
 
     /* This returns the static value of the string as set in the array */
     if (old == NULL && cmdType == CMD_VALIDATE) {

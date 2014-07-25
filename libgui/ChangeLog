@@ -1,3 +1,14 @@
+2014-07-25 Patrick Monnerat <pm@datasphere.ch>
+
+	* src/tkTable.[ch]: Support 64-bit int/pointer casts;
+	resolve const warnings.
+	* src/tkTableCell.c: Likewise.
+	* src/tkTableCellSort.c: Likewise.
+	* src/tkTableCmds.c: Likewise.
+	* src/tkTableEdit.c: Likewise.
+	* src/tkTablePs.c: Likewise.
+	* src/tkTableTag.c: Likewise.
+
 2012-08-08  Roland Schwingel <roland.schwingel@onevision.com>
 
 	* src/subcommand.c,src/subcommand.h

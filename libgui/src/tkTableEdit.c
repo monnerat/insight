@@ -565,25 +565,28 @@ TableModifyRC(tablePtr, doRows, flags, tagTblPtr, dimTblPtr,
      * dimensions appropriately
      */
     if (!(flags & HOLD_TAGS)) {
-	entryPtr = Tcl_FindHashEntry(tagTblPtr, (char *)from);
+	entryPtr = Tcl_FindHashEntry(tagTblPtr, (char *) (size_t) from);
 	if (entryPtr != NULL) {
 	    Tcl_DeleteHashEntry(entryPtr);
 	}
-	entryPtr = Tcl_FindHashEntry(dimTblPtr, (char *)from-offset);
+	entryPtr = Tcl_FindHashEntry(dimTblPtr, (char *)(size_t)(from-offset));
 	if (entryPtr != NULL) {
 	    Tcl_DeleteHashEntry(entryPtr);
 	}
 	if (!outOfBounds) {
-	    entryPtr = Tcl_FindHashEntry(tagTblPtr, (char *)to);
+	    entryPtr = Tcl_FindHashEntry(tagTblPtr, (char *)(size_t)to);
 	    if (entryPtr != NULL) {
-		newPtr = Tcl_CreateHashEntry(tagTblPtr, (char *)from, &new);
+		newPtr = Tcl_CreateHashEntry(tagTblPtr,
+					     (char *)(size_t)from, &new);
 		Tcl_SetHashValue(newPtr, Tcl_GetHashValue(entryPtr));
 		Tcl_DeleteHashEntry(entryPtr);
 	    }
-	    entryPtr = Tcl_FindHashEntry(dimTblPtr, (char *)to-offset);
+	    entryPtr = Tcl_FindHashEntry(dimTblPtr,
+					 (char *) (size_t) (to - offset));
 	    if (entryPtr != NULL) {
-		newPtr = Tcl_CreateHashEntry(dimTblPtr, (char *)from-offset,
-			&new);
+		newPtr = Tcl_CreateHashEntry(dimTblPtr,
+					     (char *) (size_t) (from - offset),
+					     &new);
 		Tcl_SetHashValue(newPtr, Tcl_GetHashValue(entryPtr));
 		Tcl_DeleteHashEntry(entryPtr);
 	    }

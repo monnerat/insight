@@ -543,9 +543,10 @@ extern void	TableWhatCell _ANSI_ARGS_((register Table *tablePtr,
 			int x, int y, int *row, int *col));
 extern int	TableAtBorder _ANSI_ARGS_((Table *tablePtr, int x, int y,
 			int *row, int *col));
-extern char *	TableGetCellValue _ANSI_ARGS_((Table *tablePtr, int r, int c));
+extern const char *
+		TableGetCellValue _ANSI_ARGS_((Table *tablePtr, int r, int c));
 extern int	TableSetCellValue _ANSI_ARGS_((Table *tablePtr, int r, int c,
-			char *value));
+			const char *value));
 extern int    TableMoveCellValue _ANSI_ARGS_((Table *tablePtr,
 			int fromr, int fromc, char *frombuf,
 			int tor, int toc, char *tobuf, int outOfBounds));
@@ -599,8 +600,8 @@ EXTERN int Tktable_Init		_ANSI_ARGS_((Tcl_Interp *interp));
 EXTERN int Tktable_SafeInit	_ANSI_ARGS_((Tcl_Interp *interp));
 
 extern void	TableGetActiveBuf _ANSI_ARGS_((register Table *tablePtr));
-extern void	ExpandPercents _ANSI_ARGS_((Table *tablePtr, char *before,
-			int r, int c, char *oldVal, char *newVal, int idx,
+extern void	ExpandPercents _ANSI_ARGS_((Table *tablePtr, const char *before,
+			int r, int c, const char *oldVal, char *newVal, int idx,
 			Tcl_DString *dsPtr, int cmdType));
 extern void	TableInvalidate _ANSI_ARGS_((Table *tablePtr, int x, int y,
 			int width, int height, int force));
