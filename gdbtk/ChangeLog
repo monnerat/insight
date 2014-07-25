@@ -1,3 +1,7 @@
+2014-07-25  Patrick Monnerat <pm@datasphere.ch>
+
+	* generic/gdbtk.c: target_is_native(): use "const" for name.
+
 2014-07-15  Patrick Monnerat <pm@datasphere.ch>
 
 	* generic/Makefile.am: Replace "cygnus" by "foreign no-dist" in

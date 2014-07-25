@@ -326,7 +326,7 @@ target_should_use_timer (struct target_ops *t)
 int
 target_is_native (struct target_ops *t)
 {
-  char *name = t->to_shortname;
+  const char *name = t->to_shortname;
 
   if (strcmp (name, "exec") == 0 || strcmp (name, "hpux-threads") == 0
       || strcmp (name, "child") == 0 || strcmp (name, "procfs") == 0
