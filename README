@@ -1,4 +1,5 @@
-Notes about bundles:
+		insight: the gdb tcl/tk graphic interface
+		-----------------------------------------
 
 The GUI part of insight is now maintained outside the gdb tree. Bundles are
 therefore needed to get the whole code embedded. They are implemented as:
