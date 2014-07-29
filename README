@@ -32,7 +32,7 @@ Building:
 autoconf
 
 - Configure the package with the needed options. In example:
-./configure	--prefix=/usr						\
+./configure	--prefix=/usr/.						\
 		--enable-sim						\
 		--disable-rpath						\
 		--with-gdb-datadir=/usr/share/insight			\
@@ -54,3 +54,11 @@ autoconf
 
 - run make: the top Makefile is only a stub recursively making in the
   "bundle" directory".
+
+
+To produce a source release tarball:
+- Start from a FRESH recursive clone. Work in its top directory.
+- autoconf
+- configure
+- make -C bundle -f src-release insight.tar.bz2
+Tarball is left in file bundle/insight-VE.RS.ION.DATE.tar.bz2
