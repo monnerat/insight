@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Insight
+GenericName=Insight Debugger
+Comment=GDB Debugger GUI
+Exec=insight
+Icon=insight
+Terminal=true
+Type=Application
+Categories=Development;Debugger;
