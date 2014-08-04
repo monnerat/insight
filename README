@@ -53,7 +53,7 @@ autoconf
   the build will be performed.
 
 - run make: the top Makefile is only a stub recursively making in the
-  "bundle" directory".
+  "bundle" directory.
 
 
 To produce a source release tarball:

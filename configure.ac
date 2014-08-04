@@ -134,8 +134,10 @@ dnl Apply patches
 for patchfile in patches/*/*.patch
 do	patchdir=`basename \`dirname "${patchfile}"\``
 	test "${patchdir}" = binutils-gdb && patchdir=.
-	test -d "bundle/${patchdir}" &&
-	    (cd "bundle/${patchdir}"; patch -p1;) < "${patchfile}"
+	test -d "bundle/${patchdir}" && (
+		cd "bundle/${patchdir}"
+		patch --no-backup-if-mismatch -p1
+	) < "${patchfile}"
 done
 
 dnl Configure files
