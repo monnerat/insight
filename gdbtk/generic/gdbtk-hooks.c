@@ -78,7 +78,7 @@ static void gdbtk_trace_start_stop (int, int);
 static void gdbtk_attach (void);
 static void gdbtk_detach (void);
 static void gdbtk_file_changed (char *);
-static void gdbtk_exec_file_display (char *);
+static void gdbtk_exec_file_display (const char *);
 static void gdbtk_call_command (struct cmd_list_element *, char *, int);
 static ptid_t gdbtk_wait (ptid_t, struct target_waitstatus *, int);
 int x_event (int);
@@ -194,7 +194,7 @@ gdbtk_restore_result_ptr (void *old_result_ptr)
 /* This allows you to Tcl_Eval a tcl command which takes
    a command word, and then a single argument. */
 int
-gdbtk_two_elem_cmd (char *cmd_name, char *argv1)
+gdbtk_two_elem_cmd (char *cmd_name, const char *argv1)
 {
   char *command;
   int result, flags_ptr, arg_len, cmd_len;
@@ -723,7 +723,7 @@ gdbtk_file_changed (char *filename)
 
 /* Called from exec_file_command */
 static void
-gdbtk_exec_file_display (char *filename)
+gdbtk_exec_file_display (const char *filename)
 {
   gdbtk_two_elem_cmd ("gdbtk_tcl_exec_file_display", filename);
 }

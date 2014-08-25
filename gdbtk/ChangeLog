@@ -1,3 +1,10 @@
+2014-08-29  Patrick Monnerat <pm@datasphere.ch>
+
+	* generic/gdbtk-hooks.c: gdbtk_exec_file_display(): Use const for
+	  filename.
+	* generic/gdbtk-hooks.c: gdbtk_two_elem_cmd(): Use const for argv1.
+	* generic/gdbtk.h: Likewise.
+
 2014-08-01  Patrick Monnerat <pm@datasphere.ch>
 
 	* insight.desktop (new file): freedesktop standard launcher.
