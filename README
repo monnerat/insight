@@ -25,13 +25,13 @@ therefore needed to get the whole code embedded. They are implemented as:
 Cloning:
   After a simple clone, submodules have to be initialized and downloaded. This
 is done as:
-	git clone https://github.com/monnerat/insight.git
+	git clone <url>
 	cd insight.git
 	git submodule init
 	git submodule update
 
 Alternatively, initial cloning can be performed as:
-	git clone --recursive https://github.com/monnerat/insight.git
+	git clone --recursive <url>
 
 Updating:
   For automatic submodule pulls upon main module pull, set
@@ -61,8 +61,6 @@ autoconf
 		--with-expat						\
 		--with-python=yes					\
 		--without-libunwind
-
-  There is no need to specify '--enable-gdbtk': this is always true.
 
   Some new configuration options have been provided to ease use of
   system-installed submodules:
