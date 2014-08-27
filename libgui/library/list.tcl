@@ -23,24 +23,6 @@ proc lvarpop {listVar {index 0}} {
   return $result
 }
 
-proc lassign {list args} {
-  set len [expr {[llength $args] - 1}]
-
-  # Special-case last element: if LIST is longer than ARGS, assign a
-  # list of leftovers to the last variable.
-  if {[llength $list] - 1 > $len} then {
-    upvar [lindex $args $len] local
-    set local [lrange $list $len end]
-    incr len -1
-  }
-
-  while {$len >= 0} {
-    upvar [lindex $args $len] local
-    set local [lindex $list $len]
-    incr len -1
-  }
-}
-
 # Remove duplicates and sort list.  ARGS are arguments to lsort, eg
 # --increasing.
 proc lrmdups {list args} {

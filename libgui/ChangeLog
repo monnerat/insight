@@ -1,3 +1,8 @@
+2014-08-27 Patrick Monnerat <pm@datasphere.ch>
+
+	* library/list.tcl: remove procedure lassign (now part of tcl).
+	* library/tclIndex: Likewise
+
 2014-07-25 Patrick Monnerat <pm@datasphere.ch>
 
 	* src/tkTable.[ch]: Support 64-bit int/pointer casts;
