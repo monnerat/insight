@@ -78,5 +78,6 @@ To produce a source release tarball:
 - Start from a FRESH recursive clone. Work in its top directory.
 - autoconf
 - configure
-- make -C bundle -f src-release insight.tar.bz2
-Tarball is left in file bundle/insight-VE.RS.ION.DATE.tar.bz2
+- (cd bundle; ./src-release.sh [-b|-g|-x] insight)
+  -b, -g and -x compress the tarball with bzip2, gzip and xz respectively.
+Tarball is left in file bundle/insight-VE.RS.ION.DATE.tar[.suffix]

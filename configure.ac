@@ -135,6 +135,7 @@ for patchfile in patches/*/*.patch
 do	patchdir=`basename \`dirname "${patchfile}"\``
 	test "${patchdir}" = binutils-gdb && patchdir=.
 	test -d "bundle/${patchdir}" && (
+		echo "Applying patch ${patchfile}"
 		cd "bundle/${patchdir}"
 		patch --no-backup-if-mismatch -p1
 	) < "${patchfile}"

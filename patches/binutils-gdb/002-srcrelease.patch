@@ -1,0 +1,31 @@
+* Mon Sep  1 2014 Patrick Monnerat <pm@linuxdev.datasphere.ch>
+- Reintroduce insight in the release script.
+
+--- a/src-release.sh	2014-09-01 14:30:28.755141563 +0200
++++ b/src-release.sh	2014-09-01 15:18:34.535809761 +0200
+@@ -294,6 +294,16 @@ gdb_release()
+     gdb_tar_compress $package $tool "$GDB_SUPPORT_DIRS" "$compressors"
+ }
+ 
++# Insight: gui interface to gdb.
++INSIGHT_SUPPORT_DIRS="${GDB_SUPPORT_DIRS} tcl tk itcl itk iwidgets libgui"
++insight_release()
++{
++    compressors=$1
++    package=insight
++    tool=gdb
++    tar_compress $package $tool "$INSIGHT_SUPPORT_DIRS" "$compressors"
++}
++
+ # Corresponding to the CVS "sim" module.
+ SIM_SUPPORT_DIRS="bfd opcodes libiberty include intl gdb/version.in makefile.vms"
+ sim_release()
+@@ -325,6 +335,8 @@ build_release()
+ 	    gas_release "$compressors";;
+ 	gdb)
+ 	    gdb_release "$compressors";;
++	insight)
++	    insight_release "$compressors";;
+ 	sim)
+ 	    sim_release "$compressors";;
+ 	*)

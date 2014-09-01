@@ -6,7 +6,7 @@ diff --git a/Makefile.in b/Makefile.in
 index fec9923..064f3c1 100644
 --- a/Makefile.in
 +++ b/Makefile.in
-@@ -252,7 +251,7 @@ depend:
+@@ -251,7 +251,7 @@ depend:
  $(PKG_LIB_FILE): $(PKG_OBJECTS)
  	-rm -f $(PKG_LIB_FILE)
  	${MAKE_LIB}
