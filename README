@@ -42,7 +42,8 @@ else use
 
 	git submodule foreach --recursive git pull
 
-when submodule pulls are required. In any case, finish update by
+when submodule pulls are required.
+If upgrade of submodules is needed, finish update by
 
 	git submodule update --remote
 
