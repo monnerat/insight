@@ -64,7 +64,7 @@ diff -Naurp a/configure.ac b/configure.ac
  
  # these tools are built for the host environment
  # Note, the powerpc-eabi build depends on sim occurring before gdb in order to
-@@ -2119,10 +2119,16 @@ done
+@@ -2120,10 +2120,16 @@ done
  # is now the case.
  build_configdirs_all="$build_configdirs"
  build_configdirs=
@@ -81,7 +81,7 @@ diff -Naurp a/configure.ac b/configure.ac
    fi
  done
  
-@@ -2131,6 +2137,8 @@ configdirs=
+@@ -2132,6 +2138,8 @@ configdirs=
  for i in ${configdirs_all} ; do
    if test -f ${srcdir}/$i/configure ; then
      configdirs="${configdirs} $i"
@@ -90,7 +90,7 @@ diff -Naurp a/configure.ac b/configure.ac
    fi
  done
  
-@@ -2140,6 +2148,8 @@ for i in ${target_configdirs_all} ; do
+@@ -2141,6 +2149,8 @@ for i in ${target_configdirs_all} ; do
    j=`echo $i | sed -e s/target-//g` 
    if test -f ${srcdir}/$j/configure ; then
      target_configdirs="${target_configdirs} $i"
