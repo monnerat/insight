@@ -1,5 +1,5 @@
 /* Tcl/Tk command definitions for Insight - Stack.
-   Copyright (C) 2001-2013 Free Software Foundation, Inc.
+   Copyright (C) 2001-2014 Free Software Foundation, Inc.
 
    This file is part of GDB.
 
@@ -161,7 +161,7 @@ gdb_get_blocks (ClientData clientData, Tcl_Interp *interp,
 {
   const struct block *block;
   struct block_iterator iter;
-  int junk;
+  int flags;
   struct symbol *sym;
   CORE_ADDR pc;
 
@@ -175,7 +175,7 @@ gdb_get_blocks (ClientData clientData, Tcl_Interp *interp,
       pc = get_frame_pc (frame);
       while (block != 0)
 	{
-	  junk = 0;
+	  flags = 0;
 	  ALL_BLOCK_SYMBOLS (block, iter, sym)
 	    {
 	      switch (SYMBOL_CLASS (sym))
@@ -189,7 +189,7 @@ gdb_get_blocks (ClientData clientData, Tcl_Interp *interp,
 		case LOC_CONST_BYTES:	  /* loc. byte seq.        */
 		case LOC_UNRESOLVED:      /* unresolved static     */
 		case LOC_OPTIMIZED_OUT:   /* optimized out         */
-		  junk = 1;
+		  flags |= 02;	/* Displayable. */
 		  break;
 
 		case LOC_ARG:		  /* argument              */
@@ -200,7 +200,7 @@ gdb_get_blocks (ClientData clientData, Tcl_Interp *interp,
 		case LOC_STATIC:	  /* static                */
 		case LOC_REGISTER:        /* register              */
 		case LOC_COMPUTED:	  /* computed location     */
-		  junk = 0;
+		  flags |= 01;	/* Junk. */
 		  break;
 		}
 	    }
@@ -209,7 +209,7 @@ gdb_get_blocks (ClientData clientData, Tcl_Interp *interp,
 	     Note that the ranges of start and end address for blocks
 	     are exclusive, so double-check against the PC */
 	  
-	  if (!junk && pc < BLOCK_END (block))
+	  if (flags != 02 /* Not only junk. */ && pc < BLOCK_END (block))
 	    {
 	      char *addr;
 
