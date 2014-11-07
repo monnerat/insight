@@ -5,7 +5,7 @@
 diff -Naurp a/MAINTAINERS b/MAINTAINERS
 --- a/MAINTAINERS	2014-06-25 18:56:13.000000000 +0200
 +++ b/MAINTAINERS	2014-09-01 14:41:03.711359375 +0200
-@@ -91,7 +91,7 @@ texinfo/texinfo.tex
+@@ -94,7 +94,7 @@ texinfo/texinfo.tex
  	imported at any (reasonable) time.
  	Please not use GCC's texinfo.  Please do not import texinfo.
  
