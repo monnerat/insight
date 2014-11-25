@@ -1,3 +1,9 @@
+2914-11-25  Patrick Monnerat <pm@datasphere.ch>
+
+	* generic/gdbtk-bp.c: adjust code to the new compunit_symtab/symtab
+	  split structures.
+	* generic/gdbtk-cmds.c: Likewise, and use new macros.
+
 2014-10-16  Patrick Monnerat <pm@datasphere.ch>
 
 	* generic/gdbtk-stack.c: gdb_get_blocks(): Do not reject blocks ending

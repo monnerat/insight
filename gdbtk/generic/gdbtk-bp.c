@@ -816,11 +816,11 @@ tracepoint_exists (char *args)
   if (sals.nelts == 1)
     {
       resolve_sal_pc (&sals.sals[0]);
-      file = xmalloc (strlen (sals.sals[0].symtab->dirname)
+      file = xmalloc (strlen (SYMTAB_DIRNAME (sals.sals[0].symtab))
 		      + strlen (sals.sals[0].symtab->filename) + 1);
       if (file != NULL)
 	{
-	  strcpy (file, sals.sals[0].symtab->dirname);
+	  strcpy (file, SYMTAB_DIRNAME (sals.sals[0].symtab));
 	  strcat (file, sals.sals[0].symtab->filename);
 
 	  tp_vec = all_tracepoints ();

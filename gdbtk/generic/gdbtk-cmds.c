@@ -1237,6 +1237,7 @@ gdb_listfiles (ClientData clientData, Tcl_Interp *interp,
   struct objfile *objfile;
   struct partial_symtab *psymtab;
   struct symtab *symtab;
+  struct compunit_symtab *cu;
   const char *lastfile, *pathname = NULL;
   const char **files;
   int files_size;
@@ -1261,7 +1262,7 @@ gdb_listfiles (ClientData clientData, Tcl_Interp *interp,
   info.pathname = pathname;
   map_symbol_filenames (do_listfiles, &info, 0);
 
-  ALL_SYMTABS (objfile, symtab)
+  ALL_FILETABS (objfile, cu, symtab)
     {
       if (numfiles == files_size)
 	{
@@ -1560,7 +1561,7 @@ gdb_listfuncs (ClientData clientData, Tcl_Interp *interp,
 
   Tcl_SetListObj (result_ptr->obj_ptr, 0, NULL);
 
-  bv = BLOCKVECTOR (symtab);
+  bv = SYMTAB_BLOCKVECTOR (symtab);
   for (i = GLOBAL_BLOCK; i <= STATIC_BLOCK; i++)
     {
       b = BLOCKVECTOR_BLOCK (bv, i);
@@ -2063,6 +2064,7 @@ gdb_disassemble_driver (CORE_ADDR low, CORE_ADDR high,
       /* The idea here is to present a source-O-centric view of a function to
          the user.  This means that things are presented in source order, with
          (possibly) out of order assembly immediately following.  */
+      struct compunit_symtab *cu;
       struct symtab *symtab;
       struct linetable_entry *le;
       int nlines;
@@ -2073,16 +2075,22 @@ gdb_disassemble_driver (CORE_ADDR low, CORE_ADDR high,
       int out_of_order;
       int next_line;
       
-      /* Assume symtab is valid for whole PC range */
-      symtab = find_pc_symtab (low); 
+      /* Assume compunit_symtab is valid for whole PC range */
+      cu = find_pc_compunit_symtab (low);
 
-      if (!symtab || !symtab->linetable)
+      if (!cu)
+        goto assembly_only;
+
+      /* Use main file */
+      symtab = COMPUNIT_FILETABS (cu);
+
+      if (!symtab || !SYMTAB_LINETABLE (symtab))
         goto assembly_only;
 
       /* First, convert the linetable to a bunch of my_line_entry's.  */
 
-      le = symtab->linetable->item;
-      nlines = symtab->linetable->nitems;
+      le = SYMTAB_LINETABLE (symtab)->item;
+      nlines = SYMTAB_LINETABLE (symtab)->nitems;
 
       if (nlines <= 0)
         goto assembly_only;
@@ -2770,8 +2778,8 @@ gdb_loadfile (ClientData clientData, Tcl_Interp *interp, int objc,
       return TCL_ERROR;
     }
 
-  if (symtab && symtab->objfile && symtab->objfile->obfd)
-    mtime = bfd_get_mtime(symtab->objfile->obfd);
+  if (symtab && SYMTAB_OBJFILE (symtab) && SYMTAB_OBJFILE (symtab)->obfd)
+    mtime = bfd_get_mtime (SYMTAB_OBJFILE (symtab)->obfd);
   else if (exec_bfd)
     mtime = bfd_get_mtime(exec_bfd);
  
@@ -2797,10 +2805,10 @@ gdb_loadfile (ClientData clientData, Tcl_Interp *interp, int objc,
 
   memset (ltable, 0, LTABLE_SIZE);
 
-  if (symtab->linetable && symtab->linetable->nitems)
+  if (SYMTAB_LINETABLE (symtab) && SYMTAB_LINETABLE (symtab)->nitems)
     {
-      le = symtab->linetable->item;
-      for (ln = symtab->linetable->nitems ;ln > 0; ln--, le++)
+      le = SYMTAB_LINETABLE (symtab)->item;
+      for (ln = SYMTAB_LINETABLE(symtab)->nitems ;ln > 0; ln--, le++)
         {
           lnum = le->line >> 3;
           if (lnum >= ltable_size)
