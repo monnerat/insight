@@ -1,4 +1,9 @@
-2914-11-25  Patrick Monnerat <pm@datasphere.ch>
+2014-12-16  Simon Marchi <simon.marchi@ericsson.com>
+
+        * generic/gdbtk-hooks: gdbtk_readline(): Use const for prompt to
+	  match gdb hook signature.
+
+2014-11-25  Patrick Monnerat <pm@datasphere.ch>
 
 	* generic/gdbtk-bp.c: adjust code to the new compunit_symtab/symtab
 	  split structures.

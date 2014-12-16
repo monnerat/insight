@@ -84,7 +84,7 @@ static ptid_t gdbtk_wait (ptid_t, struct target_waitstatus *, int);
 int x_event (int);
 static int gdbtk_query (const char *, va_list);
 static void gdbtk_warning (const char *, va_list);
-static char *gdbtk_readline (char *);
+static char *gdbtk_readline (const char *);
 static void gdbtk_readline_begin (char *format,...);
 static void gdbtk_readline_end (void);
 static void gdbtk_pre_add_symbol (const char *);
@@ -493,7 +493,7 @@ gdbtk_readline_begin (char *format,...)
 }
 
 static char *
-gdbtk_readline (char *prompt)
+gdbtk_readline (const char *prompt)
 {
   int result;
 
