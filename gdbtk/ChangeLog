@@ -1,3 +1,7 @@
+2014-12-19  Patrick Monnerat <pm@datasphere.ch>
+
+        * generic/gdbtk-cmds.c: use SYMBOL_SYMTAB() macro.
+
 2014-12-16  Simon Marchi <simon.marchi@ericsson.com>
 
         * generic/gdbtk-hooks: gdbtk_readline(): Use const for prompt to
