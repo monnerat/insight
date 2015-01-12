@@ -1491,11 +1491,11 @@ gdb_search (ClientData clientData, Tcl_Interp *interp,
 
 	  if (show_files)
 	    {
-	      if ((SYMBOL_SYMTAB(p->symbol) != NULL) &&
-                  (SYMBOL_SYMTAB(p->symbol)->filename != NULL))
+	      if ((symbol_symtab(p->symbol) != NULL) &&
+                  (symbol_symtab(p->symbol)->filename != NULL))
 		{
 		  Tcl_ListObjAppendElement (interp, elem, Tcl_NewStringObj
-					    (SYMBOL_SYMTAB(p->symbol)->filename,
+					    (symbol_symtab(p->symbol)->filename,
                                             -1));
 		}
 	      else

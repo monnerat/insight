@@ -26,7 +26,7 @@ diff -Naurp a/Makefile.def b/Makefile.def
  host_modules= { module= ld; bootstrap=true; };
  host_modules= { module= libbacktrace; bootstrap=true; };
  host_modules= { module= libcpp; bootstrap=true; };
-@@ -369,6 +371,7 @@ dependencies = { module=configure-libgui
+@@ -370,6 +372,7 @@ dependencies = { module=configure-libgui
  dependencies = { module=all-libgui; on=all-tcl; };
  dependencies = { module=all-libgui; on=all-tk; };
  dependencies = { module=all-libgui; on=all-itcl; };
@@ -34,7 +34,7 @@ diff -Naurp a/Makefile.def b/Makefile.def
  
  // Host modules specific to binutils.
  dependencies = { module=configure-bfd; on=configure-libiberty; hard=true; };
-@@ -454,9 +457,17 @@ dependencies = { module=all-itcl; on=all
+@@ -455,9 +458,17 @@ dependencies = { module=all-itcl; on=all
  dependencies = { module=install-itcl; on=install-tcl; };
  dependencies = { module=install-strip-itcl; on=install-strip-tcl; };
  
