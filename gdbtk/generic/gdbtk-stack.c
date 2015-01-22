@@ -189,7 +189,7 @@ gdb_get_blocks (ClientData clientData, Tcl_Interp *interp,
 		case LOC_CONST_BYTES:	  /* loc. byte seq.        */
 		case LOC_UNRESOLVED:      /* unresolved static     */
 		case LOC_OPTIMIZED_OUT:   /* optimized out         */
-		  flags |= 02;	/* Displayable. */
+		  flags |= 02;	/* Junk. */
 		  break;
 
 		case LOC_ARG:		  /* argument              */
@@ -200,7 +200,7 @@ gdb_get_blocks (ClientData clientData, Tcl_Interp *interp,
 		case LOC_STATIC:	  /* static                */
 		case LOC_REGISTER:        /* register              */
 		case LOC_COMPUTED:	  /* computed location     */
-		  flags |= 01;	/* Junk. */
+		  flags |= 01;	/* Displayable. */
 		  break;
 		}
 	    }
