@@ -1,3 +1,9 @@
+2015-01-23 Patrick Monnerat <pm@datasphere.ch>
+
+	* libgui/src/tkTable.c: Set NO_XSETCLIP universally as Tk 8.5/Xft
+	seems to ignore XSetClipRectangles. This may slow things down
+	a little, but draws correctly.
+
 2014-08-27 Patrick Monnerat <pm@datasphere.ch>
 
 	* library/list.tcl: remove procedure lassign (now part of tcl).

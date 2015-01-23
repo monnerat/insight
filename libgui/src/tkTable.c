@@ -1573,7 +1573,14 @@ TableUndisplay(register Table *tablePtr)
     seen[3] = col;
 }
 
-#ifdef MAC_TCL
+
+/*
+ * Generally we should be able to use XSetClipRectangles on X11, but
+ * the addition of Xft drawing to Tk 8.5+ completely ignores the clip
+ * rectangles. Thus turn it off for all cases until clip rectangles
+ * are known to be respected. [Bug 1805350]
+ */
+#if 1 || defined(MAC_TCL) || defined(UNDER_CE) || (defined(WIN32) && defined(TCL_THREADS)) || defined(MAC_OSX_TK)
 #define NO_XSETCLIP
 #endif
 /*
