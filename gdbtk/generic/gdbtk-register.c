@@ -476,8 +476,9 @@ setup_architecture_data (void)
   xfree (regformat);
   xfree (regtype);
 
-  numregs = (gdbarch_num_regs (get_current_arch ())
-	     + gdbarch_num_pseudo_regs (get_current_arch ()));
+  /* Always use target architecture: has just been set. */
+  numregs = (gdbarch_num_regs (target_gdbarch ())
+	     + gdbarch_num_pseudo_regs (target_gdbarch ()));
   old_regs_count = numregs;
   old_regs = xcalloc (1, numregs * MAX_REGISTER_SIZE + 1);
   regformat = (int *)xcalloc (numregs, sizeof(int));
@@ -505,15 +506,17 @@ gdb_regformat (ClientData clientData, Tcl_Interp *interp,
   if (Tcl_GetIntFromObj (interp, objv[0], &regno) != TCL_OK)
     return TCL_ERROR;
 
-  #ifdef _WIN64
+#ifdef _WIN64
   type = (struct type *)strtoll (Tcl_GetStringFromObj (objv[1], NULL), NULL, 16);  
-  #else
+#else
   type = (struct type *)strtol (Tcl_GetStringFromObj (objv[1], NULL), NULL, 16);  
-  #endif
+#endif
+
   fm = (int)*(Tcl_GetStringFromObj (objv[2], NULL));
 
   numregs = (gdbarch_num_regs (get_current_arch ())
 	     + gdbarch_num_pseudo_regs (get_current_arch ()));
+  gdb_assert (numregs == old_regs_count);
   if (regno >= numregs)
     {
       gdbtk_set_result (interp, "Register number %d too large", regno);

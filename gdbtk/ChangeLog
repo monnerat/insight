@@ -1,3 +1,8 @@
+2015-01-23  Patrick Monnerat <pm@datasphere.ch>
+
+        * generic/gdbtk-register.c: Use target architecture instead of
+	  current (frame) architecture for allocation upon architecture change.
+
 2015-01-12  Patrick Monnerat <pm@datasphere.ch>
 
         * generic/gdbtk-cmds.c: use symbol_symtab() function instead of
