@@ -1,20 +1,25 @@
+2015-01-30  Patrick Monnerat <pm@datasphere.ch>
+
+	* generic/gdbtk-cmds.c: gdb_search(): fix a null pointer derefernce
+	  that makes function browser segfaulting.
+
 2015-01-23  Patrick Monnerat <pm@datasphere.ch>
 
-        * generic/gdbtk-register.c: Use target architecture instead of
+	* generic/gdbtk-register.c: Use target architecture instead of
 	  current (frame) architecture for allocation upon architecture change.
 
 2015-01-12  Patrick Monnerat <pm@datasphere.ch>
 
-        * generic/gdbtk-cmds.c: use symbol_symtab() function instead of
+	* generic/gdbtk-cmds.c: use symbol_symtab() function instead of
 	  macro SYMBOL_SYMTAB().
 
 2014-12-19  Patrick Monnerat <pm@datasphere.ch>
 
-        * generic/gdbtk-cmds.c: use SYMBOL_SYMTAB() macro.
+	* generic/gdbtk-cmds.c: use SYMBOL_SYMTAB() macro.
 
 2014-12-16  Simon Marchi <simon.marchi@ericsson.com>
 
-        * generic/gdbtk-hooks: gdbtk_readline(): Use const for prompt to
+	* generic/gdbtk-hooks: gdbtk_readline(): Use const for prompt to
 	  match gdb hook signature.
 
 2014-11-25  Patrick Monnerat <pm@datasphere.ch>
