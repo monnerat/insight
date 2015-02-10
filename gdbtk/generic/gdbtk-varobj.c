@@ -23,6 +23,9 @@
 #include "value.h"
 #include <string.h>
 #include "varobj.h"
+#include "valprint.h"
+#include "ui-file.h"
+#include "language.h"
 #include "exceptions.h"
 
 #include <tcl.h>
@@ -63,6 +66,9 @@ static int variable_type (Tcl_Interp *, int, Tcl_Obj * CONST[],
 			  struct varobj *);
 
 static int variable_value (Tcl_Interp *, int, Tcl_Obj * CONST[],
+			   struct varobj *);
+
+static int variable_print (Tcl_Interp *, int, Tcl_Obj * CONST[],
 			   struct varobj *);
 
 static Tcl_Obj *variable_update (Tcl_Interp * interp, struct varobj **var);
@@ -163,6 +169,7 @@ gdb_variable_command (ClientData clientData, Tcl_Interp *interp,
    - format        query/set the display format of this variable
    - type          get the type of this variable
    - value         get/set the value of this variable
+   - print         get the variable value for printing
    - editable      is this variable editable?
 */
 static int
@@ -177,6 +184,7 @@ variable_obj_command (ClientData clientData, Tcl_Interp *interp,
       VARIABLE_FORMAT,
       VARIABLE_TYPE,
       VARIABLE_VALUE,
+      VARIABLE_PRINT,
       VARIABLE_NAME,
       VARIABLE_EDITABLE,
       VARIABLE_UPDATE
@@ -189,6 +197,7 @@ variable_obj_command (ClientData clientData, Tcl_Interp *interp,
       "format",
       "type",
       "value",
+      "print",
       "name",
       "editable",
       "update",
@@ -197,13 +206,13 @@ variable_obj_command (ClientData clientData, Tcl_Interp *interp,
   struct varobj *var;
   char *varobj_name;
   int index, result;
-  
+
   /* Get the current handle for this variable token (name). */
   varobj_name = Tcl_GetStringFromObj (objv[0], NULL);
   if (varobj_name == NULL)
     return TCL_ERROR;
   var = varobj_get_handle (varobj_name);
-  
+
 
   if (objc < 2)
     {
@@ -255,6 +264,10 @@ variable_obj_command (ClientData clientData, Tcl_Interp *interp,
       result = variable_value (interp, objc, objv, var);
       break;
 
+    case VARIABLE_PRINT:
+      result = variable_print (interp, objc, objv, var);
+      break;
+
     case VARIABLE_NAME:
       {
 	char *name = varobj_get_expression (var);
@@ -264,7 +277,7 @@ variable_obj_command (ClientData clientData, Tcl_Interp *interp,
       break;
 
     case VARIABLE_EDITABLE:
-      Tcl_SetObjResult (interp, 
+      Tcl_SetObjResult (interp,
 			Tcl_NewIntObj (varobj_get_attributes (var) & 0x00000001 /* Editable? */ ));
       break;
 
@@ -479,7 +492,7 @@ variable_update (Tcl_Interp *interp, struct varobj **var)
 /* This implements the format object command allowing
    the querying or setting of the object's display format. */
 static int
-variable_format (Tcl_Interp *interp, int objc, 
+variable_format (Tcl_Interp *interp, int objc,
 		 Tcl_Obj *CONST objv[], struct varobj *var)
 {
   if (objc > 2)
@@ -611,6 +624,46 @@ variable_value (Tcl_Interp *interp, int objc,
     }
 }
 
+/* This function implements the print object command, which allows an object's
+   value to be formatted for printing. */
+static int
+variable_print (Tcl_Interp *interp, int objc,
+		Tcl_Obj *CONST objv[], struct varobj *var)
+{
+  struct ui_file *stream = NULL;
+  int ret = TCL_ERROR;
+  volatile struct gdb_exception except;
+
+  stream = mem_fileopen ();
+  if (!stream)
+    {
+      gdbtk_set_result (interp, "Allocation error");
+      return TCL_ERROR;
+    }
+
+  TRY_CATCH (except, RETURN_MASK_ERROR)
+    {
+      struct value_print_options opts;
+
+      get_user_print_options (&opts);
+      opts.deref_ref = 1;
+      common_val_print (var->value, stream, 0, &opts, current_language);
+    }
+  if (except.reason < 0)
+    gdbtk_set_result (interp, "<error reading variable: %s>", except.message);
+  else
+    {
+      char * r = ui_file_xstrdup (stream, NULL);
+
+      Tcl_SetObjResult (interp, Tcl_NewStringObj (r, -1));
+      xfree (r);
+      ret = TCL_OK;
+    }
+
+  ui_file_delete (stream);
+  return ret;
+}
+
 /* Helper functions for the above */
 
 /* Install the given variable VAR into the tcl interpreter with
@@ -622,10 +675,9 @@ install_variable (Tcl_Interp *interp, char *name)
 			NULL, NULL);
 }
 
-/* Unistall the object VAR in the tcl interpreter. */
+/* Uninstall the object VAR in the tcl interpreter. */
 static void
 uninstall_variable (Tcl_Interp *interp, char *varname)
 {
   Tcl_DeleteCommand (interp, varname);
 }
-

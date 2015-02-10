@@ -1,3 +1,9 @@
+2015-02-10  Patrick Monnerat <pm@datasphere.ch>
+
+	* generic/gdbtk-varobj.c: variable_print(): implement pretty printers
+	  in local variables and watch windows.
+	* library/vartree.itb: Likewise.
+
 2015-01-30  Patrick Monnerat <pm@datasphere.ch>
 
 	* generic/gdbtk-cmds.c: gdb_search(): fix a null pointer derefernce

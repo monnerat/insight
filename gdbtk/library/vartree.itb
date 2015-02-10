@@ -71,7 +71,7 @@ itcl::body  VarTree::buildlayer {tlist in} {
     set x [expr [lindex [$c bbox $j1] 2] + 5]
     set j2 [$c create text $x $y -text "([$var type])" -fill $colors(type) -anchor w -font global/fixed]
     set x [expr [lindex [$c bbox $j2] 2] + 5]
-    if {[catch {$var value} val]} {
+    if {[catch {$var print} val]} {
       # error accessing memory, etc.
       set j3 [$c create text $x $y -text $val -fill $colors(error) -anchor w -font global/fixed]      
     } else {
@@ -132,7 +132,7 @@ itcl::body  VarTree::update_var {var enabled check} {
     $c itemconfigure $nam -fill $colors(name)
     $c itemconfigure $typ -fill $colors(type)
 
-    if {[catch {$var value} value]} {
+    if {[catch {$var print} value]} {
       set color $colors(error)      
     } elseif {[$c itemcget $val -text] != $value} {
       set color $::Colors(change)
