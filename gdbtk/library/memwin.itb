@@ -475,7 +475,11 @@ itcl::body MemWin::update_address {addr} {
   set saved_addr $current_addr
   if {[string match {[a-zA-Z_&0-9\*]*} $addr]} {
     # Looks like an expression
-    set retVal [catch {gdb_eval "$addr" x} current_addr]
+    # Try to get its address, in case it's an lvalue. Else get the value.
+    set retVal [catch {gdb_eval "&($addr)" x} current_addr]
+    if {$retVal || [string match "Attempt to take address *" $current_addr]} {
+      set retVal [catch {gdb_eval "$addr" x} current_addr]
+    }
     #debug "retVal=$retVal current_addr=$current_addr"
     if {$retVal || [string match "No symbol*" $current_addr] || \
 	  [string match "Invalid *" $current_addr]} {
@@ -507,10 +511,13 @@ itcl::body MemWin::update_address {addr} {
   }
 
   # Check for spaces - this can happen with gdb_eval and $pc, for example.
-  set index [string first \  $current_addr]
-  if {$index != -1} {
-    incr index -1
-    set current_addr [string range $current_addr 0 $index]
+  set current_addr [regsub {^(?:.* )?(.*)$} $current_addr {\1}]
+ 
+  # Check if it can be interpreted as an address.
+  set retVal [catch {gdb_incr_addr $current_addr 0} x]
+  if {$retVal} {
+    BadExpr "\"$addr\" is not an address"
+    return
   }
   
   set addr_exp $addr

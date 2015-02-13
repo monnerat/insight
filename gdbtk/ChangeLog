@@ -1,3 +1,12 @@
+2015-02-13  Patrick Monnerat <pm@datasphere.ch>
+
+	* library/memwin.itb: update_address: try to use expressions as
+	  lvalues (use expression address). If it fails, fall back to
+	  expression value.
+	* library/memwin.itb: use string after last space as address (instead
+	  of string before first space).
+	* library/memwin.itb: update_address: check address syntax.
+
 2015-02-10  Patrick Monnerat <pm@datasphere.ch>
 
 	* generic/gdbtk-varobj.c: variable_print(): implement pretty printers
