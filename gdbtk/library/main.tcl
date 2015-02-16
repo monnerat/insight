@@ -56,18 +56,25 @@ if {[info exists auto_path]} {
 # Require the packages we need.  Most are loaded already, but this will catch 
 # any odd errors... :
 
-foreach p {{Tcl 8.6} {Tk 8.6} {itcl 4.0} {itk 4.0} {iwidgets 4.0} {Gdbtk 1.0} {combobox 2.2} {debug 1.0}} {
-  if {[catch {package require [lindex $p 0] [lindex $p 1]} msg]} {
+foreach p {{tcl 8.5} {tk 8.5} {itcl 3.4} {itk 3.4} {iwidgets 4.0} {gdbtk 1.0} {combobox 2.2} {debug 1.0}} {
+  set failed [catch {package require [lindex $p 0]} msg]
+  if {$failed} {
+    set failed [catch {package require [string toupper [lindex $p 0] 0 0]} msg]
+  }
+  if {!$failed} {
+    set failed [expr [package vcompare $msg [lindex $p 1]] < 0]
+  }
+  if {$failed} {
+    catch {package require [lindex $p 0] [lindex $p 1]} msg
     if {![info exists ::env(GDBTK_TEST_RUNNING)] || $::env(GDBTK_TEST_RUNNING) == 0} {
       if {$::tcl_platform(platform) != "windows"} {
-	puts stderr "Error: $msg"
+        puts stderr "Error: $msg"
       }
       catch {tk_messageBox -title Error -message $msg -icon error -type ok}
     }
     exit -1
-  } else {
-    #puts "Loaded [lindex $p 0] $msg"
   }
+  #puts "Loaded [lindex $p 0] $msg"
 }
 
 namespace import itcl::*

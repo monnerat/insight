@@ -1,6 +1,8 @@
 2015-02-16  Patrick Monnerat <pm@datasphere.ch>
 
 	* library/interface.tcl: Do not issue target command if empty.
+	* library/main.tcl: Accept lowercase and capitalized package names.
+          Be more tolerant about package versions (no max).
 
 2015-02-13  Patrick Monnerat <pm@datasphere.ch>
 
