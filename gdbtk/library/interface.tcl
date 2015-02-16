@@ -1124,7 +1124,10 @@ proc set_target {} {
     catch {gdb_cmd "detach"}
     debug "CONNECTING TO TARGET: $gdb_target_cmd"
     gdbtk_busy
-    set err [catch {gdb_immediate "target $gdb_target_cmd"} msg ]
+    set err false
+    if {$gdb_target_cmd != ""} {
+      set err [catch {gdb_immediate "target $gdb_target_cmd"} msg ]
+    }
     $srcWin set_status
     gdbtk_idle
 
