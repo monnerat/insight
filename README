@@ -10,20 +10,13 @@ therefore needed to get the whole code embedded. They are implemented as:
 - libgui does not appear in any other repository and thus is now part of
   insight.
 
-- binutils-gdb, tcl, tk, itcl, itk are included as git submodules.
+- binutils-gdb is included as a git submodule.
 
-- iwidgets is no longer part of itk project and is not kept in a git
-  repository. The current snapshot has been obtained on 2014/06/25 with:
-
-	fossil clone http://chiselapp.com/user/rene/repository/iwidgets	\
-		iwidgets.fossil
-	mkdir iwidgets
-	cd iwidgets
-	fossil open ../iwidgets.fossil
+- tcl, tk, itcl, itk and iwidgets must be provided externally.
 
 
 Cloning:
-  After a simple clone, submodules have to be initialized and downloaded. This
+  After a simple clone, the submodule has to be initialized and downloaded. This
 is done as:
 	git clone <url>
 	cd insight.git
@@ -54,6 +47,11 @@ autoconf
 
 - Configure the package with the needed options. In example:
 ./configure	--prefix=/usr/.						\
+		--libdir=/usr/lib64					\
+		--disable-gas						\
+		--disable-gold						\
+		--disable-gprof						\
+		--disable-ld						\
 		--enable-sim						\
 		--disable-rpath						\
 		--with-gdb-datadir=/usr/share/insight			\
@@ -62,11 +60,6 @@ autoconf
 		--with-expat						\
 		--with-python=yes					\
 		--without-libunwind
-
-  Some new configuration options have been provided to ease use of
-  system-installed submodules:
-    --disable-bundled-xxx
-  where xxx can be tcl, tk, itcl, itk or iwidgets.
 
   The configure script builds the "bundle" directory where the rest of
   the build will be performed.

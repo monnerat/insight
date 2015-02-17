@@ -90,26 +90,12 @@ cd ${srcdir}/..
 topdir=`pwd`
 cd ${here}
 
-if test "${TCL_SRC_DIR}" = "${topdir}/tcl"; then
-  # Using in-tree Tcl/Tk
-  case "${host}" in
-    *-*-cygwin*) platDir="win" ;;
-    *) platDir="unix" ;;
-  esac
-
-  TCL_INCLUDES="-I${TCL_SRC_DIR}/generic -I${TCL_SRC_DIR}/${platDir}"
-  TCL_LIBRARY=${TCL_BUILD_LIB_SPEC}
-  TK_INCLUDES="-I${TK_SRC_DIR}/generic -I${TK_SRC_DIR}/${platDir}"
-  TK_LIBRARY=${TK_BUILD_LIB_SPEC}
-else
-  # Using installed Tcl/Tk
-  CY_AC_TCL_PRIVATE_HEADERS
-  CY_AC_TK_PRIVATE_HEADERS
-  TCL_INCLUDES="${TCL_INCLUDE_SPEC} ${TCL_PRIVATE_INCLUDE}"
-  TCL_LIBRARY=${TCL_LIB_SPEC}
-  TK_INCLUDES="${TK_INCLUDE_SPEC} ${TK_PRIVATE_INCLUDE}"
-  TK_LIBRARY=${TK_LIB_SPEC}
-fi
+CY_AC_TCL_PRIVATE_HEADERS
+CY_AC_TK_PRIVATE_HEADERS
+TCL_INCLUDES="${TCL_INCLUDE_SPEC} ${TCL_PRIVATE_INCLUDE}"
+TCL_LIBRARY=${TCL_LIB_SPEC}
+TK_INCLUDES="${TK_INCLUDE_SPEC} ${TK_PRIVATE_INCLUDE}"
+TK_LIBRARY=${TK_LIB_SPEC}
 
 AC_SUBST(TCL_DEFS)
 AC_SUBST(TCL_INCLUDES)
@@ -126,6 +112,3 @@ AM_CONDITIONAL(TCL_SHARED, test x$TCL_SHARED_BUILD = x1)
 AC_SUBST(RPATH_ENVVAR)
 
 AC_OUTPUT([Makefile library/Makefile src/Makefile])
-
-
-

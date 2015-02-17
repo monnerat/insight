@@ -1,5 +1,5 @@
 dnl Autoconf configure script for insight, the GNU debugger GUI.
-dnl Copyright (C) 1995-2014 Free Software Foundation, Inc.
+dnl Copyright (C) 1995-2015 Free Software Foundation, Inc.
 dnl
 dnl This file is part of GDB.
 dnl
@@ -47,50 +47,6 @@ AC_DISABLE_OPTION_CHECKING dnl
 AC_CONFIG_SRCDIR([gdbtk/generic/gdbtk.c]) dnl
 AC_CONFIG_MACRO_DIR([binutils-gdb/config])
 
-dnl Determine target OS.
-TARGETOS=unix
-case "${target_os}" in
-interix|winnt*|cygwin|msys|mingw*|mks)
-	TARGETOS=win;;
-macos*)
-	TARGETOS=macosx;;
-esac
-AC_SUBST([TARGETOS])
-
-dnl Check if using the bundled tcl/tk/itcl/itk/iwidgets.
-AC_ARG_ENABLE([bundled-tcl],
-    [--disable-bundled-tcl to use system installed tcl],,
-    [enable_bundled_tcl=yes]) dnl
-if test "${enable_bundled_tcl}" != no
-then	with_tclinclude="`pwd`/bundle/tcl/generic"
-	with_tcl="`pwd`/bundle/tcl/${TARGETOS}"
-fi
-AC_ARG_ENABLE([bundled-tk],
-    [--disable-bundled-tk to use system installed tk],,
-    [enable_bundled_tk=yes]) dnl
-if test "${enable_bundled_tk}" != no
-then	with_tkinclude="`pwd`/bundle/tk/generic"
-	with_tk="`pwd`/bundle/tk/${TARGETOS}"
-fi
-AC_ARG_ENABLE([bundled-itcl],
-    [--disable-bundled-itcl to use system installed itcl],,
-    [enable_bundled_itcl=yes]) dnl
-AC_ARG_ENABLE([bundled-itk],
-    [--disable-bundled-itk to use system installed itk],,
-    [enable_bundled_itk=yes]) dnl
-AC_ARG_ENABLE([bundled-iwidgets],
-    [--disable-bundled-iwidgets to use system installed iwidgets],,
-    [enable_bundled_iwidgets=yes]) dnl
-
-dnl Add configure options according to enabled bundles.
-test "${with_tcl}" &&
-	CONFARGS="${CONFARGS} --with-tcl=${with_tcl}"
-test "${with_tclinclude}" &&
-	CONFARGS="${CONFARGS} --with-tclinclude=${with_tclinclude}"
-test "${with_tk}" &&
-	CONFARGS="${CONFARGS} --with-tk=${with_tk}"
-test "${with_tkinclude}" &&
-	CONFARGS="${CONFARGS} --with-tkinclude=${with_tkinclude}"
 CONFARGS="${CONFARGS} --enable-gdbtk"
 
 dnl Remove the initial space we introduced and, as these will be
@@ -104,31 +60,6 @@ cp -a -T binutils-gdb bundle
 cp -a gdbtk bundle/gdb/
 cp -a testsuite bundle/gdb/
 cp -a libgui bundle/
-
-if test "${enable_bundled_tcl}" != no
-then	cp -a tcl bundle/
-else	rm -rf bundle/tcl
-fi
-
-if test "${enable_bundled_tk}" != no
-then	cp -a tk bundle/
-else	rm -rf bundle/tk
-fi
-
-if test "${enable_bundled_itcl}" != no
-then	cp -a itcl bundle/
-else	rm -rf bundle/itcl
-fi
-
-if test "${enable_bundled_itk}" != no
-then	cp -a itk bundle/
-else	rm -rf bundle/itk
-fi
-
-if test "${enable_bundled_iwidgets}" != no
-then	cp -a iwidgets bundle/
-else	rm -rf bundle/iwidgets
-fi
 
 dnl Apply patches
 for patchfile in patches/*/*.patch
@@ -181,38 +112,6 @@ dnl Now regenerate the configure files
 	automake
 	autoconf --force
 )
-if test "${enable_bundled_tcl}" != no
-then	(
-		cd bundle/tcl/"${TARGETOS}";
-		echo "Regenerate `pwd`"
-		aclocal -I . -I ../../config
-		autoconf --force
-	)
-fi
-if test "${enable_bundled_tk}" != no
-then	(
-		cd bundle/tk/"${TARGETOS}"
-		echo "Regenerate `pwd`"
-		aclocal -I . -I ../../config
-		autoconf --force
-	)
-fi
-if test "${enable_bundled_itcl}" != no
-then	(
-		cd bundle/itcl
-		echo "Regenerate `pwd`"
-		ln -s -f itclWidget/tclconfig ./
-		autoconf --force
-	)
-fi
-if test "${enable_bundled_itk}" != no
-then	(
-		cd bundle/itk
-		echo "Regenerate `pwd`"
-		ln -s -f ../itcl/itclWidget/tclconfig ./
-		autoconf --force
-	)
-fi
 
 dnl Prepare to configure in the bundle directory.
 AC_CONFIG_COMMANDS([config_bundle],

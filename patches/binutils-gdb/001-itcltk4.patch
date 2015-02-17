@@ -1,101 +1,201 @@
-* Fri Jul 11 2014 Patrick Monnerat <pm@datasphere.ch>
-- tcl/tk 8.6 and itcl/itk/iwidgets 4.0 tree structure has changed.
-  Update build files accordingly.
+* Tue Feb 17 2015 Patrick Monnerat <pm@datasphere.ch>
+- Unbundle tcl/tk/itcl/itk/iwidgets.
 
 diff -Naurp a/MAINTAINERS b/MAINTAINERS
---- a/MAINTAINERS	2014-06-25 18:56:13.000000000 +0200
-+++ b/MAINTAINERS	2014-09-01 14:41:03.711359375 +0200
-@@ -94,7 +94,7 @@ texinfo/texinfo.tex
+--- a/MAINTAINERS	2014-11-07 12:15:56.725831919 +0100
++++ b/MAINTAINERS	2015-02-17 15:32:09.424611801 +0100
+@@ -94,10 +94,6 @@ texinfo/texinfo.tex
  	imported at any (reasonable) time.
  	Please not use GCC's texinfo.  Please do not import texinfo.
  
 -tcl/; tix/; itcl/; tk/; libgui/
-+tcl/; tk/; itcl/; itk/; iwidgets/; libgui/
- 	insight: http://sourceware.org/insight/
- 	Contact insight@sourceware.org.
- 
+-	insight: http://sourceware.org/insight/
+-	Contact insight@sourceware.org.
+-
+ winsup/
+ 	cygwin: http://sourceware.org/cygwin
+ 	Patches to cygwin-patches@cygwin.com.
 diff -Naurp a/Makefile.def b/Makefile.def
---- a/Makefile.def	2014-06-25 18:56:13.000000000 +0200
-+++ b/Makefile.def	2014-09-01 14:41:03.711359375 +0200
-@@ -78,6 +78,8 @@ host_modules= { module= intl; bootstrap=
- host_modules= { module= tcl;
-                 missing=mostlyclean; };
- host_modules= { module= itcl; };
-+host_modules= { module= itk; };
-+host_modules= { module= iwidgets; };
+--- a/Makefile.def	2015-01-12 16:06:07.970816448 +0100
++++ b/Makefile.def	2015-02-17 15:42:19.867028522 +0100
+@@ -75,9 +75,6 @@ host_modules= { module= libelf; lib_path
+ host_modules= { module= gold; bootstrap=true; };
+ host_modules= { module= gprof; };
+ host_modules= { module= intl; bootstrap=true; };
+-host_modules= { module= tcl;
+-                missing=mostlyclean; };
+-host_modules= { module= itcl; };
  host_modules= { module= ld; bootstrap=true; };
  host_modules= { module= libbacktrace; bootstrap=true; };
  host_modules= { module= libcpp; bootstrap=true; };
-@@ -370,6 +372,7 @@ dependencies = { module=configure-libgui
- dependencies = { module=all-libgui; on=all-tcl; };
- dependencies = { module=all-libgui; on=all-tk; };
- dependencies = { module=all-libgui; on=all-itcl; };
-+dependencies = { module=all-libgui; on=all-itk; };
+@@ -102,7 +99,6 @@ host_modules= { module= zlib; no_install
+ host_modules= { module= gdb; };
+ host_modules= { module= expect; };
+ host_modules= { module= guile; };
+-host_modules= { module= tk; };
+ host_modules= { module= libtermcap; no_check=true; 
+                 missing=mostlyclean;
+                 missing=clean;
+@@ -365,12 +361,6 @@ dependencies = { module=all-gdb; on=all-
+ dependencies = { module=all-gdb; on=all-libdecnumber; };
+ dependencies = { module=all-gdb; on=all-libtermcap; };
  
+-dependencies = { module=configure-libgui; on=configure-tcl; };
+-dependencies = { module=configure-libgui; on=configure-tk; };
+-dependencies = { module=all-libgui; on=all-tcl; };
+-dependencies = { module=all-libgui; on=all-tk; };
+-dependencies = { module=all-libgui; on=all-itcl; };
+-
  // Host modules specific to binutils.
  dependencies = { module=configure-bfd; on=configure-libiberty; hard=true; };
-@@ -455,9 +458,17 @@ dependencies = { module=all-itcl; on=all
- dependencies = { module=install-itcl; on=install-tcl; };
- dependencies = { module=install-strip-itcl; on=install-strip-tcl; };
+ dependencies = { module=configure-bfd; on=configure-intl; };
+@@ -438,35 +428,11 @@ dependencies = { module=all-opcodes; on=
+ dependencies = { module=all-opcodes; on=all-intl; };
  
-+// Same for itk
-+dependencies = { module=configure-itk; on=configure-itcl; };
-+dependencies = { module=all-itk; on=all-itcl; };
-+dependencies = { module=install-itk; on=install-itcl; };
-+dependencies = { module=install-strip-itk; on=install-strip-itcl; };
-+
- dependencies = { module=configure-tk; on=configure-tcl; };
- dependencies = { module=all-tk; on=all-tcl; };
+ // Other host modules in the 'src' repository.
+-dependencies = { module=all-dejagnu; on=all-tcl; };
+ dependencies = { module=all-dejagnu; on=all-expect; };
+-dependencies = { module=all-dejagnu; on=all-tk; };
+-dependencies = { module=configure-expect; on=configure-tcl; };
+-dependencies = { module=configure-expect; on=configure-tk; };
+-dependencies = { module=all-expect; on=all-tcl; };
+-dependencies = { module=all-expect; on=all-tk; };
+-
+-// We put install-tcl before install-itcl because itcl wants to run a
+-// program on installation which uses the Tcl libraries.
+-dependencies = { module=configure-itcl; on=configure-tcl; };
+-dependencies = { module=configure-itcl; on=configure-tk; };
+-dependencies = { module=all-itcl; on=all-tcl; };
+-dependencies = { module=all-itcl; on=all-tk; };
+-dependencies = { module=install-itcl; on=install-tcl; };
+-dependencies = { module=install-strip-itcl; on=install-strip-tcl; };
+-
+-dependencies = { module=configure-tk; on=configure-tcl; };
+-dependencies = { module=all-tk; on=all-tcl; };
  
-+dependencies = { module=install-iwidgets; on=install-tcl; };
-+
  dependencies = { module=all-sid; on=all-libiberty; };
  dependencies = { module=all-sid; on=all-bfd; };
  dependencies = { module=all-sid; on=all-opcodes; };
+-dependencies = { module=all-sid; on=all-tcl; };
+-dependencies = { module=all-sid; on=all-tk; };
+-dependencies = { module=install-sid; on=install-tcl; };
+-dependencies = { module=install-strip-sid; on=install-strip-tcl; };
+-dependencies = { module=install-sid; on=install-tk; };
+-dependencies = { module=install-strip-sid; on=install-strip-tk; };
+ 
+ dependencies = { module=configure-sim; on=configure-intl; };
+ dependencies = { module=all-sim; on=all-intl; };
 diff -Naurp a/configure.ac b/configure.ac
---- a/configure.ac	2014-07-28 13:44:59.252153231 +0200
-+++ b/configure.ac	2014-09-01 14:41:03.712359383 +0200
+--- a/configure.ac	2015-01-30 14:27:58.312174443 +0100
++++ b/configure.ac	2015-02-17 15:57:20.737229469 +0100
 @@ -133,7 +133,7 @@ build_tools="build-texinfo build-flex bu
  
  # these libraries are used by various programs built for the host environment
  #
 -host_libs="intl libiberty opcodes bfd readline tcl tk itcl libgui zlib libbacktrace libcpp libdecnumber gmp mpfr mpc isl cloog libelf libiconv"
-+host_libs="intl libiberty opcodes bfd readline tcl tk itcl itk iwidgets libgui zlib libbacktrace libcpp libdecnumber gmp mpfr mpc isl cloog libelf libiconv"
++host_libs="intl libiberty opcodes bfd readline libgui zlib libbacktrace libcpp libdecnumber gmp mpfr mpc isl cloog libelf libiconv"
  
  # these tools are built for the host environment
  # Note, the powerpc-eabi build depends on sim occurring before gdb in order to
-@@ -2126,10 +2126,16 @@ done
- # is now the case.
- build_configdirs_all="$build_configdirs"
- build_configdirs=
-+case "${target_os}" in
-+cygwin|windows|win32|win64) targos=win;;
-+*) targos=unix
-+esac
- for i in ${build_configdirs_all} ; do
-   j=`echo $i | sed -e s/build-//g` 
-   if test -f ${srcdir}/$j/configure ; then
-     build_configdirs="${build_configdirs} $i"
-+  elif test -f ${srcdir}/$j/$targos/configure ; then
-+    build_configdirs="${build_configdirs} $i"
-   fi
- done
+@@ -256,7 +256,7 @@ fi
+ case ${with_x} in
+   yes | "") ;; # the default value for this tree is that X11 is available
+   no)
+-    skipdirs="${skipdirs} tk itcl libgui"
++    skipdirs="${skipdirs} libgui"
+     # We won't be able to build gdbtk without X.
+     enable_gdbtk=no 
+     ;;
+@@ -381,21 +381,6 @@ case "${host}" in
+     configdirs="$configdirs libtermcap" ;;
+ esac
  
-@@ -2138,6 +2144,8 @@ configdirs=
- for i in ${configdirs_all} ; do
-   if test -f ${srcdir}/$i/configure ; then
-     configdirs="${configdirs} $i"
-+  elif test -f ${srcdir}/$i/$targos/configure ; then
-+    configdirs="${configdirs} $i/$targos"
-   fi
- done
+-# A target can indicate whether a language isn't supported for some reason.
+-# Only spaces may be used in this macro; not newlines or tabs.
+-unsupported_languages=
+-
+-# Remove more programs from consideration, based on the host or 
+-# target this usually means that a port of the program doesn't
+-# exist yet.
+-
+-case "${host}" in
+-  i[[3456789]]86-*-msdosdjgpp*)
+-    noconfigdirs="$noconfigdirs tcl tk itcl"
+-    ;;
+-esac
+-
+-
+ AC_ARG_ENABLE(libquadmath,
+ AS_HELP_STRING([--disable-libquadmath],
+   [do not build libquadmath directory]),
+@@ -942,7 +927,7 @@ case "${target}" in
+     ;;
+     # The tpf target doesn't support gdb yet.
+   *-*-tpf*)
+-    noconfigdirs="$noconfigdirs gdb tcl tk libgui itcl"
++    noconfigdirs="$noconfigdirs gdb libgui"
+     ;;
+   *-*-uclinux*)
+     noconfigdirs="$noconfigdirs target-rda"
+@@ -962,7 +947,7 @@ case "${target}" in
+     noconfigdirs="$noconfigdirs target-newlib target-libgloss"
+     ;;
+   sh*-*-pe|mips*-*-pe|*arm-wince-pe)
+-    noconfigdirs="$noconfigdirs tcl tk itcl libgui sim"
++    noconfigdirs="$noconfigdirs libgui sim"
+     ;;
+   arc-*-*|arceb-*-*)
+     noconfigdirs="$noconfigdirs target-libgloss"
+@@ -1031,15 +1016,15 @@ case "${target}" in
+     ;;
+   ia64*-*-elf*)
+     # No gdb support yet.
+-    noconfigdirs="$noconfigdirs readline libgui itcl gdb"
++    noconfigdirs="$noconfigdirs readline libgui gdb"
+     ;;
+   ia64*-**-hpux*)
+     # No ld support yet.
+-    noconfigdirs="$noconfigdirs libgui itcl ld"
++    noconfigdirs="$noconfigdirs libgui ld"
+     ;;
+   ia64*-*-*vms*)
+     # No ld support yet.
+-    noconfigdirs="$noconfigdirs libgui itcl ld"
++    noconfigdirs="$noconfigdirs libgui ld"
+     ;;
+   i[[3456789]]86-w64-mingw*)
+     ;;
+@@ -1091,13 +1076,13 @@ case "${target}" in
+     ;;
+   powerpc*-*-winnt* | powerpc*-*-pe*)
+     target_configdirs="$target_configdirs target-winsup"
+-    noconfigdirs="$noconfigdirs gdb tcl tk target-libgloss itcl"
++    noconfigdirs="$noconfigdirs gdb target-libgloss"
+     # always build newlib.
+     skipdirs=`echo " ${skipdirs} " | sed -e 's/ target-newlib / /'`
+     ;;
+     # This is temporary until we can link against shared libraries
+   powerpcle-*-solaris*)
+-    noconfigdirs="$noconfigdirs gdb sim tcl tk itcl"
++    noconfigdirs="$noconfigdirs gdb sim"
+     ;;
+   powerpc-*-beos*)
+     noconfigdirs="$noconfigdirs gdb"
+@@ -2576,7 +2561,7 @@ if echo " ${target_configdirs} " | grep
+   bootstrap_target_libs=${bootstrap_target_libs}target-libvtv,
+ fi
  
-@@ -2147,6 +2155,8 @@ for i in ${target_configdirs_all} ; do
-   j=`echo $i | sed -e s/target-//g` 
-   if test -f ${srcdir}/$j/configure ; then
-     target_configdirs="${target_configdirs} $i"
-+  elif test -f ${srcdir}/$j/$targos/configure ; then
-+    target_configdirs="${target_configdirs} $i"
-   fi
- done
+-# Determine whether gdb needs tk/tcl or not.
++# Determine whether gdb needs tcl/tk or not.
+ # Use 'maybe' since enable_gdbtk might be true even if tk isn't available
+ # and in that case we want gdb to be built without tk.  Ugh!
+ # In fact I believe gdb is the *only* package directly dependent on tk,
+@@ -2584,7 +2569,7 @@ fi
+ # leave out the maybe dependencies when enable_gdbtk is false.  I'm not
+ # 100% sure that that's safe though.
  
+-gdb_tk="maybe-all-tcl maybe-all-tk maybe-all-itcl maybe-all-libgui"
++gdb_tk="maybe-all-libgui"
+ case "$enable_gdbtk" in
+   no)
+     GDB_TK="" ;;
