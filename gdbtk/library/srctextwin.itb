@@ -331,6 +331,10 @@ itcl::body SrcTextWin::SetRunningState {state} {
   foreach elem $popups(run_disabled) {
     $popups([lindex $elem 0]) entryconfigure [lindex $elem 1] -state $state
   }
+  if {$state != "normal"} {
+    catch {$_balloon_var delete}
+    set _balloon_var {}
+  }
 }
 
 # ------------------------------------------------------------------
@@ -843,7 +847,7 @@ itcl::body SrcTextWin::updateBalloon {} {
 
 itcl::body SrcTextWin::balloon_value {variable} {
 
-  catch {$variable value} value
+  catch {$variable print} value
   set value [string trim $value \ \r\t\n]
 
   # Insert the variable's type for things like ptrs, etc.
