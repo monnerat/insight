@@ -1,3 +1,8 @@
+2015-02-18  Patrick Monnerat <pm@datasphere.ch>
+
+	* library/srctextwin.itb: Pretty printers in tooltips.
+	* library/prefs.tcl: Lighter checkbox background.
+
 2015-02-16  Patrick Monnerat <pm@datasphere.ch>
 
 	* library/interface.tcl: Do not issue target command if empty.
