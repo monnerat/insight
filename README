@@ -48,17 +48,19 @@ autoconf
 - Configure the package with the needed options. In example:
 ./configure	--prefix=/usr/.						\
 		--libdir=/usr/lib64					\
+		--disable-binutils					\
+		--disable-elfcpp					\
 		--disable-gas						\
 		--disable-gold						\
 		--disable-gprof						\
 		--disable-ld						\
-		--enable-sim						\
 		--disable-rpath						\
+		--enable-sim						\
 		--with-gdb-datadir=/usr/share/insight			\
 		--with-jit-reader-dir=/usr/lib64/insight		\
 		--with-separate-debug-dir='/usr/lib/debug'		\
 		--with-expat						\
-		--with-python=yes					\
+		--with-python						\
 		--without-libunwind
 
   The configure script builds the "bundle" directory where the rest of
