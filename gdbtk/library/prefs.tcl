@@ -150,7 +150,7 @@ proc pref_read {} {
     global Colors
     set Colors(textfg) black
     set Colors(fg) black
-    set Colors(sbg) \#4c59a5
+    set Colors(sbg) \#7488fc
     set Colors(sfg) white
     set_bg_colors
   }

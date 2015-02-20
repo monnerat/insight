@@ -1,6 +1,7 @@
 2015-02-18  Patrick Monnerat <pm@datasphere.ch>
 
-	* library/srctextwin.itb: Print printer in tooltip
+	* library/srctextwin.itb: Pretty printers in tooltips.
+	* library/prefs.tcl: Lighter checkbox background.
 
 2015-02-16  Patrick Monnerat <pm@datasphere.ch>
 
