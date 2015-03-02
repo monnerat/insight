@@ -21,9 +21,9 @@ itcl::class About {
   constructor {args} {
     global gdb_ImageDir
     set f [frame $itk_interior.f]
-    label $f.image1 -bg #ee0000 -image \
+    label $f.image1 -bg #000000 -image \
       [image create photo -file [file join $gdb_ImageDir insight.gif]]
-    message $f.m -bg #ee0000 -fg white -text [gdb_cmd {show version}] \
+    message $f.m -bg #000000 -fg white -text [gdb_cmd {show version}] \
       -aspect 500 -relief flat
     pack $f.image1 $f.m $itk_interior.f -fill both -expand yes
     pack  $itk_interior
