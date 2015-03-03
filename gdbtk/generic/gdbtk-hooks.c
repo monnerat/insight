@@ -527,7 +527,7 @@ gdbtk_call_command (struct cmd_list_element *cmdblk,
 		    char *arg, int from_tty)
 {
   running_now = 0;
-  if (cmdblk->class == class_run || cmdblk->class == class_trace)
+  if (cmdblk->theclass == class_run || cmdblk->theclass == class_trace)
     {
 
       running_now = 1;

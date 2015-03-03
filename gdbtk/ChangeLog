@@ -1,6 +1,7 @@
 2015-03-03  Patrick Monnerat <pm@datasphere.ch>
 
 	* library/managedwin.itb: Set top window icon.
+	* generic/gdbtk-hooks.c: adjust to gdb update.
 
 2015-03-02  Patrick Monnerat <pm@datasphere.ch>
 
