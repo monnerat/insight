@@ -1,9 +1,13 @@
+2015-03-03  Patrick Monnerat <pm@datasphere.ch>
+
+	* library/managedwin.itb: Set top window icon.
+
 2015-03-02  Patrick Monnerat <pm@datasphere.ch>
 
-	* library/images/insight/images/gdbtk_icon.gif: replaced with new look.
-	* library/images/insight/images2/gdbtk_icon.gif: likewise.
-	* library/images/insight/images/insight.gif: replaced with new look.
-	* library/images/insight/images2/insight.gif: likewise.
+	* library/images/gdbtk_icon.gif: replaced with new look.
+	* library/images2/gdbtk_icon.gif: likewise.
+	* library/images/insight.gif: replaced with new look.
+	* library/images2/insight.gif: likewise.
 	* library/about.tcl: adjust background color to new logo.
 
 2015-02-18  Patrick Monnerat <pm@datasphere.ch>

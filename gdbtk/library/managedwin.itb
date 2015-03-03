@@ -236,6 +236,7 @@ itcl::body ManagedWin::_open { class args } {
 #  PRIVATE PROC:  _create
 # ------------------------------------------------------------
 itcl::body ManagedWin::_create { class args } {
+  global gdb_ImageDir
   
   set win [string tolower $class]
   debug "win=$win args=$args"
@@ -298,12 +299,18 @@ itcl::body ManagedWin::_create { class args } {
       set w .
     }
     wm transient $top $w
-  } elseif {$::gdbtk_platform(platform) == "unix"} {
-    # Modal dialogs DONT get Icons...
-    if {[pref get gdb/use_icons] && ![$newwin isa ModalDialog]} {
-      set icon [_make_icon_window ${top}_icon]
-      wm iconwindow $top $icon
-      bind $icon <Double-1> "$newwin reveal"
+  } else {
+    if {[info commands "gdbtk_icon_img"] == {}} {
+      image create photo gdbtk_icon_img -file [file join $gdb_ImageDir gdbtk_icon.gif]
+    }
+    wm iconphoto $top gdbtk_icon_img
+    if {$::gdbtk_platform(platform) == "unix"} {
+      # Modal dialogs DONT get Icons...
+      if {[pref get gdb/use_icons] && ![$newwin isa ModalDialog]} {
+        set icon [_make_icon_window ${top}_icon]
+        wm iconwindow $top $icon
+        bind $icon <Double-1> "$newwin reveal"
+      }
     }
   }
   
