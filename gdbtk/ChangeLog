@@ -1,3 +1,11 @@
+2015-03-05  Patrick Monnerat <pm@datasphere.ch>
+
+	* generic/gdbtk-hooks.c: new procedure gdbtk_getpid().
+	* generic/gdbtk.h: likewise.
+	* generic/gdbtk.c: set main process id in new global gdbtk_pid.
+	* generic/gdbtk-hooks.c (gdbtk_warning()): if called from a child
+	  process, restore default gdb warning response to stderr.
+
 2015-03-03  Patrick Monnerat <pm@datasphere.ch>
 
 	* library/managedwin.itb: Set top window icon.

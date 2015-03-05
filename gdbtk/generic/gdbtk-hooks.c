@@ -339,16 +339,53 @@ gdbtk_fputs (const char *ptr, struct ui_file *stream)
 }
 
 /*
+ * This gets the current process id in a portable way.
+ */
+
+long
+gdbtk_getpid(void)
+{
+  long mypid = -1;
+
+  if (Tcl_Eval (gdbtk_interp, "pid") == TCL_OK)
+    {
+      Tcl_Obj *pidobj = Tcl_GetObjResult (gdbtk_interp);
+
+      if (pidobj)
+        {
+          if (Tcl_GetLongFromObj (gdbtk_interp, pidobj, &mypid) != TCL_OK)
+            mypid = -1;
+        }
+    }
+
+  return mypid;
+}
+
+/*
  * This routes all warnings to the Tcl function "gdbtk_tcl_warning".
  */
 
 static void
 gdbtk_warning (const char *warning, va_list args)
 {
-  char *buf;
-  buf = xstrvprintf (warning, args);
-  gdbtk_two_elem_cmd ("gdbtk_tcl_warning", buf);
-  free(buf);
+  /* This procedure may be called in a child process before it has exec'ed.
+     In such condition, the X server is no longer reachable and thus the
+     warning may not be presented as a dialog.
+     Therefore this condition is checked here (using process ids) and
+     if detected, vwarning() is called recursively after resetting the hook. */
+
+  if (gdbtk_getpid () != gdbtk_pid)
+    {
+      deprecated_warning_hook = NULL;
+      gdb_stderr = stderr_fileopen ();
+      vwarning (warning, args);
+    }
+  else
+    {
+      char *buf = xstrvprintf (warning, args);
+      gdbtk_two_elem_cmd ("gdbtk_tcl_warning", buf);
+      free(buf);
+    }
 }
 
 

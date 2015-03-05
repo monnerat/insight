@@ -72,6 +72,10 @@ extern int disassemble_from_exec;
 
 extern int running_now;
 
+/* This variable holds the main process id. */
+
+extern long gdbtk_pid;
+
 /* These two control how the GUI behaves when tracing or loading
    They are defined in gdbtk-cmds.c */
 
@@ -153,6 +157,7 @@ extern int gdbtk_force_detach;
 extern int Gdbtk_Init (Tcl_Interp * interp);
 extern void gdbtk_stop_timer (void);
 extern void gdbtk_start_timer (void);
+extern long gdbtk_getpid(void);
 extern void gdbtk_ignorable_warning (const char *, const char *);
 extern void gdbtk_interactive (void);
 extern int x_event (int);

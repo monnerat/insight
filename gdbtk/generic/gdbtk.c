@@ -79,6 +79,10 @@ x_event_wrapper (int signo)
 }
 #endif
 
+/* This variable holds the main process id. */
+
+long gdbtk_pid = -1;
+
 /*
  * This variable controls the interaction with an external editor.
  */
@@ -518,6 +522,9 @@ gdbtk_init (void)
       Tcl_EvalObj (gdbtk_interp, command_obj);
       Tcl_DecrRefCount (command_obj);
     }
+
+  /* Get the main process id. */
+  gdbtk_pid = gdbtk_getpid();
 
   /*
    * These are the commands to do some Windows Specific stuff...
