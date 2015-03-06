@@ -28,10 +28,10 @@ CONFARGS=
 for ac_arg
 do
   case "$ac_arg" in
-  *" "*|*"      "*|*[[\[\]\~\#\$\^\&\*\(\)\{\}\\\|\;\<\>\?\']]*)
+  *" "*|*"	"*|*[[\[\]\~\#\$\^\&\*\(\)\{\}\\\|\;\<\>\?\']]*)
     ac_arg=`echo "$ac_arg" | sed "s/'/'\\\\\\\\''/g"`
     # if the argument is of the form -foo=baz, quote the baz part only
-    ac_arg=`echo "'$ac_arg'" | sed "s/^'\([[-a-zA-Z0-9]]*=\)/\\1'/"` ;;
+    ac_arg=`echo "'$ac_arg'" | sed "s/^'\([[-a-zA-Z0-9_]]*=\)/\\1'/"` ;;
   *) ;;
   esac
   dnl Add the quoted argument to the list.
