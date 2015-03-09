@@ -485,6 +485,7 @@ static int
 gdb_set_bp (ClientData clientData, Tcl_Interp *interp,
 	    int objc, Tcl_Obj *CONST objv[])
 {
+  int ret = TCL_ERROR;
   int temp, ignore_count, thread, pending, enabled;
   char *address, *typestr, *condition;
   struct gdb_exception e;
@@ -498,14 +499,14 @@ gdb_set_bp (ClientData clientData, Tcl_Interp *interp,
   if (objc != 3 && objc != 4)
     {
       Tcl_WrongNumArgs (interp, 1, objv, "addr type ?thread?");
-      return TCL_ERROR;
+      return ret;
     }
 
   address = Tcl_GetStringFromObj (objv[1], NULL);
   if (address == NULL)
     {
       result_ptr->flags = GDBTK_IN_TCL_RESULT;
-      return TCL_ERROR;
+      return ret;
     }
 
   typestr = Tcl_GetStringFromObj (objv[2], NULL);
@@ -516,7 +517,7 @@ gdb_set_bp (ClientData clientData, Tcl_Interp *interp,
   else
     {
       gdbtk_set_result (interp, "type must be \"temp\" or \"normal\"");
-      return TCL_ERROR;
+      return ret;
     }
 
   if (objc == 4)
@@ -524,11 +525,11 @@ gdb_set_bp (ClientData clientData, Tcl_Interp *interp,
       if (Tcl_GetIntFromObj (interp, objv[3], &thread) == TCL_ERROR)
 	{
 	  result_ptr->flags = GDBTK_IN_TCL_RESULT;
-	  return TCL_ERROR;
+	  return ret;
 	}
     }
 
-  TRY_CATCH (e, RETURN_MASK_ALL)
+  TRY
     {
       create_breakpoint (get_current_arch (), address, condition, thread,
 			 NULL,
@@ -540,12 +541,14 @@ gdb_set_bp (ClientData clientData, Tcl_Interp *interp,
 			 &bkpt_breakpoint_ops,
 			 0	/* from_tty */,
 			 enabled, 0, 0);
+      ret = TCL_OK;
     }
+  CATCH (e, RETURN_MASK_ALL)
+    {
+    }
+  END_CATCH
 
-  if (e.reason < 0)
-    return TCL_ERROR;
-
-  return TCL_OK;
+  return ret;
 }
 
 /*

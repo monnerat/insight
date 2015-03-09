@@ -1,3 +1,8 @@
+2015-03-09  Patrick Monnerat <pm@datasphere.ch>
+
+	* gdbtk/generic/gdbtk-bp.c: TRY_CATCH --> TRY/CATCH/END_CATCH.
+	* gdbtk/generic/gdbtk-varobj.c: likewise.
+
 2015-03-06  Patrick Monnerat <pm@datasphere.ch>
 
 	* generic/gdbtk-hooks.c (gdbtk_warning()): avoid destroying parent

@@ -593,16 +593,21 @@ variable_value (Tcl_Interp *interp, int objc,
 	  struct gdb_exception e;
 
 	  s = Tcl_GetStringFromObj (objv[2], NULL);
-	  TRY_CATCH (e, RETURN_MASK_ERROR)
+	  TRY
 	    {
 	      ok = varobj_set_value (var, s);
 	    }
+	  CATCH (e, RETURN_MASK_ERROR)
+	    {
+	      ok = 0;
+	    }
+          END_CATCH
 
-	  if (e.reason < 0 || !ok)
-            {
+	  if (!ok)
+	    {
 	      gdbtk_set_result (interp, "Could not assign expression to variable object");
 	      return TCL_ERROR;
-            }
+	    }
 	}
 
       Tcl_ResetResult (interp);
@@ -632,6 +637,7 @@ variable_print (Tcl_Interp *interp, int objc,
 {
   struct ui_file *stream = NULL;
   int ret = TCL_ERROR;
+  char * r = NULL;
   volatile struct gdb_exception except;
 
   stream = mem_fileopen ();
@@ -641,25 +647,24 @@ variable_print (Tcl_Interp *interp, int objc,
       return TCL_ERROR;
     }
 
-  TRY_CATCH (except, RETURN_MASK_ERROR)
+  TRY
     {
       struct value_print_options opts;
 
       get_user_print_options (&opts);
       opts.deref_ref = 1;
       common_val_print (var->value, stream, 0, &opts, current_language);
-    }
-  if (except.reason < 0)
-    gdbtk_set_result (interp, "<error reading variable: %s>", except.message);
-  else
-    {
-      char * r = ui_file_xstrdup (stream, NULL);
-
+      r = ui_file_xstrdup (stream, NULL);
       Tcl_SetObjResult (interp, Tcl_NewStringObj (r, -1));
-      xfree (r);
       ret = TCL_OK;
     }
+  CATCH (except, RETURN_MASK_ERROR)
+    {
+      gdbtk_set_result (interp, "<error reading variable: %s>", except.message);
+    }
+  END_CATCH
 
+  xfree (r);
   ui_file_delete (stream);
   return ret;
 }
