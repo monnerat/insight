@@ -651,8 +651,9 @@ variable_print (Tcl_Interp *interp, int objc,
     {
       struct value_print_options opts;
 
-      get_user_print_options (&opts);
+      varobj_formatted_print_options (&opts, varobj_get_display_format (var));
       opts.deref_ref = 1;
+      opts.raw = 0;
       common_val_print (var->value, stream, 0, &opts, current_language);
       r = ui_file_xstrdup (stream, NULL);
       Tcl_SetObjResult (interp, Tcl_NewStringObj (r, -1));
