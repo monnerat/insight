@@ -15,7 +15,7 @@
 #ifndef _TKTABLE_H_
 #define _TKTABLE_H_
 
-#ifdef WIN32
+#ifdef TK_PLATFORM_WINDOWS
 #   define WIN32_LEAN_AND_MEAN
 #   include <windows.h>
 #   undef WIN32_LEAN_AND_MEAN
@@ -32,7 +32,7 @@
 #include <tk.h>
 
 #ifndef CONST86
-#      define CONST86 CONST84
+#      define CONST86
 #endif
 
 #ifdef MAC_TCL
@@ -63,15 +63,8 @@
 # define TCL_STORAGE_CLASS DLLIMPORT
 #endif
 
-#if defined(WIN32) || defined(MAC_TCL)
-/* XSync call defined in the internals for some reason */
-#   ifndef XSync
-#	define XSync(display, bool) {display->request++;}
-#   endif
-#endif /* defn of XSync */
-
 #ifndef NORMAL_BG
-#   ifdef WIN32
+#   ifdef TK_PLATFORM_WINDOWS
 #	define NORMAL_BG	"SystemButtonFace"
 #	define ACTIVE_BG	NORMAL_BG
 #	define SELECT_BG	"SystemHighlight"

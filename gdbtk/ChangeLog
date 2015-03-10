@@ -2,6 +2,9 @@
 
 	* generic/gdbtk-varobj.c (variable_print): reinstate custom format
 	  (base).
+	* generic/gdbtk.c: use Tk defined platform for conditionals instead of
+	  _WIN32.
+	* library/main.tcl: accept itck/itk minimum version 3.3.
 
 2015-03-09  Patrick Monnerat <pm@datasphere.ch>
 

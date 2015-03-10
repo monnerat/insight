@@ -56,7 +56,7 @@ if {[info exists auto_path]} {
 # Require the packages we need.  Most are loaded already, but this will catch 
 # any odd errors... :
 
-foreach p {{tcl 8.5} {tk 8.5} {itcl 3.4} {itk 3.4} {iwidgets 4.0} {gdbtk 1.0} {combobox 2.2} {debug 1.0}} {
+foreach p {{tcl 8.5} {tk 8.5} {itcl 3.3} {itk 3.3} {iwidgets 4.0} {gdbtk 1.0} {combobox 2.2} {debug 1.0}} {
   set failed [catch {package require [lindex $p 0]} msg]
   if {$failed} {
     set failed [catch {package require [string toupper [lindex $p 0] 0 0]} msg]

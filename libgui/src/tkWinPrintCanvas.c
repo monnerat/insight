@@ -1,5 +1,5 @@
 
-#ifdef _WIN32
+#ifdef TK_PLATFORM_WINDOWS
 
 #include <windows.h>
 
@@ -194,4 +194,4 @@ ide_create_printcanvas_command (Tcl_Interp *interp)
 	    return TCL_OK;
 }
 
-#endif /* _WIN32 */
+#endif /* TK_PLATFORM_WINDOWS */

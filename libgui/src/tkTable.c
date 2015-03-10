@@ -341,7 +341,7 @@ static const char *updateOpts[] = {
     "-xscrollcommand",	"-yscrollcommand", (char *) NULL
 };
 
-#ifdef WIN32
+#ifdef TK_PLATFORM_WINDOWS
 /*
  * Some code from TkWinInt.h that we use to correct and speed up
  * drawing of cells that need clipping in TableDisplay.
@@ -1609,7 +1609,7 @@ TableDisplay(ClientData clientdata)
     Drawable window;
 #ifdef NO_XSETCLIP
     Drawable clipWind;
-#elif !defined(WIN32)
+#elif !defined(TK_PLATFORM_WINDOWS)
     XRectangle clipRect;
 #endif
     int rowFrom, rowTo, colFrom, colTo,
@@ -2114,7 +2114,7 @@ TableDisplay(ClientData clientdata)
 		    XCopyArea(display, clipWind, window, tagGc,
 			    bd[0] + padx, bd[2] + pady,
 			    width, height, x + bd[0] + padx, y + bd[2] + pady);
-#elif defined(WIN32)
+#elif defined(TK_PLATFORM_WINDOWS)
 		    /*
 		     * This is evil, evil evil! but the XCopyArea
 		     * doesn't work in all cases - Michael Teske.
@@ -3594,7 +3594,11 @@ TableValidateChange(tablePtr, r, c, old, new, index)
 
     /* Magic code to make this bit of code UI synchronous in the face of
      * possible new key events */
+
+#ifdef TK_PLATFORM_UNIX
     XSync(tablePtr->display, False);
+#endif
+
     rstrct = Tk_RestrictEvents(TableRestrictProc, (ClientData)
 				 NextRequest(tablePtr->display), &cdata);
 
@@ -3848,7 +3852,7 @@ Tktable_SafeInit(interp)
 #pragma export reset
 #endif
 
-#ifdef WIN32
+#ifdef TK_PLATFORM_WINDOWS
 /*
  *----------------------------------------------------------------------
  *

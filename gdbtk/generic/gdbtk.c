@@ -530,7 +530,7 @@ gdbtk_init (void)
    * These are the commands to do some Windows Specific stuff...
    */
 
-#ifdef __WIN32__
+#ifdef TK_PLATFORM_WINDOWS
   if (ide_create_messagebox_command (gdbtk_interp) != TCL_OK)
     error ("messagebox command initialization failed");
   /* On Windows, create a sizebox widget command */

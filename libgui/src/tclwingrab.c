@@ -10,7 +10,7 @@
    They are not expected to be invoked directly, so they are not
    really documented.  */
 
-#ifdef _WIN32
+#ifdef TK_PLATFORM_WINDOWS
 
 #include <windows.h>
 
@@ -61,4 +61,4 @@ ide_create_win_grab_command (Tcl_Interp *interp)
   return TCL_OK;
 }
 
-#endif /* _WIN32 */
+#endif /* TK_PLATFORM_WINDOWS */

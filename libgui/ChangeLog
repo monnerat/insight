@@ -1,13 +1,30 @@
+2015-03-10 Patrick Monnerat <pm@datasphere.ch>
+
+	* acinclude.m4: search different path for tcl/tk private dirs.
+	  Also consider platform dependent path for inclusion. Define
+	  TCL_PLATFORM and TK_PLATFORM.
+	* configure.ac: define C macro TCL_PLATFORM_xxx/TK_PLATFORM_xxx.
+	* src/tclmsgbox.c: Use TK_PLATFORM_WINDOWS instead of _WIN32 for
+	  conditional compilation.
+	* src/tclwingrab.c: Likewise.
+	* src/tclwinprint.c: Likewise.
+	* src/tclwinprint.c: Likewise.
+	* src/tkTable.[ch]: Likewise.
+	* src/tkWinPrintCanvas.c: Likewise.
+	* src/tkWinPrintText.c: Likewise.
+	* src/tkTable.[ch]: Only use XSync() on unix compatible platforms.
+	* src/tkTable.h: Define CONST86 as empty by default.
+
 2015-01-23 Patrick Monnerat <pm@datasphere.ch>
 
-	* libgui/src/tkTable.c: Set NO_XSETCLIP universally as Tk 8.5/Xft
-	seems to ignore XSetClipRectangles. This may slow things down
-	a little, but draws correctly.
+	* src/tkTable.c: Set NO_XSETCLIP universally as Tk 8.5/Xft seems to
+	  ignore XSetClipRectangles. This may slow things down a little, but
+	  draws correctly.
 
 2014-08-27 Patrick Monnerat <pm@datasphere.ch>
 
 	* library/list.tcl: remove procedure lassign (now part of tcl).
-	* library/tclIndex: Likewise
+	* library/tclIndex: Likewise.
 
 2014-07-25 Patrick Monnerat <pm@datasphere.ch>
 
