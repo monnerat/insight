@@ -1,7 +1,16 @@
 diff -Naurp a/gdb/acinclude.m4 b/gdb/acinclude.m4
 --- a/gdb/acinclude.m4	2015-03-03 13:23:50.771005619 +0100
-+++ b/gdb/acinclude.m4	2015-03-11 14:44:51.925814199 +0100
-@@ -371,16 +371,28 @@ dnl Note: you must use first use SC_LOAD
++++ b/gdb/acinclude.m4	2015-03-13 16:10:43.167922450 +0100
+@@ -364,44 +364,76 @@ fi
+ ])
+ 
+ dnl Find the location of the private Tcl headers
+-dnl When Tcl is installed, this is TCL_INCLUDE_SPEC/tcl-private/generic
+-dnl When Tcl is in the build tree, this is not needed.
++dnl This is TCL_INCLUDE_SPEC/tcl-private/generic or TCL_SRC_DIR/generic.
++dnl As a side effect, determine the TCL platform.
+ dnl
+ dnl Note: you must use first use SC_LOAD_TCLCONFIG!
  AC_DEFUN([CY_AC_TCL_PRIVATE_HEADERS], [
    AC_MSG_CHECKING([for Tcl private headers])
    private_dir=""
@@ -24,17 +33,27 @@ diff -Naurp a/gdb/acinclude.m4 b/gdb/acinclude.m4
      AC_MSG_RESULT(${private_dir})
 +    TCL_PLATFORM=unknown
 +    dir="`dirname \"${private_dir}\"`"
-+    for platform in unix windows macosx; do
-+      if test -d "${dir}/${platform}"; then
-+        TCL_PLATFORM="${platform}"
-+        TCL_PRIVATE_INCLUDE="${TCL_PRIVATE_INCLUDE} -I${dir}/${platform}"
++    for platform in Unix Win MacOSX; do
++      # FIXME: actually, MacOSX is not detected. How to do it ?
++      pf="`echo \"${platform}\" | tr 'A-Z' 'a-z'`"
++      if test -f "${dir}/generic/tcl${platform}Port.h"; then
++        TCL_PLATFORM="${pf}"
++        break
++      elif test -f "${dir}/${pf}/tcl${platform}Port.h"; then
++        TCL_PLATFORM="${pf}"
++        TCL_PRIVATE_INCLUDE="${TCL_PRIVATE_INCLUDE} -I${dir}/${pf}"
 +        break
 +      fi
 +    done
    fi
  ])
  
-@@ -392,16 +404,28 @@ dnl Note: you must first use SC_LOAD_TKC
+ dnl Find the location of the private Tk headers
+-dnl When Tk is installed, this is TK_INCLUDE_SPEC/tk-private/generic
+-dnl When Tk is in the build tree, this not needed.
++dnl This is TK_INCLUDE_SPEC/tk-private/generic or TK_SRC_DIR/generic.
+ dnl
+ dnl Note: you must first use SC_LOAD_TKCONFIG
  AC_DEFUN([CY_AC_TK_PRIVATE_HEADERS], [
    AC_MSG_CHECKING([for Tk private headers])
    private_dir=""
@@ -57,10 +76,14 @@ diff -Naurp a/gdb/acinclude.m4 b/gdb/acinclude.m4
      AC_MSG_RESULT(${private_dir})
 +    TK_PLATFORM=unknown
 +    dir="`dirname \"${private_dir}\"`"
-+    for platform in unix windows macosx; do
-+      if test -d "${dir}/${platform}"; then
-+        TK_PLATFORM="${platform}"
-+        TK_PRIVATE_INCLUDE="${TK_PRIVATE_INCLUDE} -I${dir}/${platform}"
++    for platform in Unix Win MacOSX; do
++      pf="`echo \"${platform}\" | tr 'A-Z' 'a-z'`"
++      if test -f "${dir}/generic/tk${platform}Port.h"; then
++        TK_PLATFORM="${pf}"
++        break
++      elif test -f "${dir}/${pf}/tk${platform}Port.h"; then
++        TK_PLATFORM="${pf}"
++        TK_PRIVATE_INCLUDE="${TK_PRIVATE_INCLUDE} -I${dir}/${pf}"
 +        break
 +      fi
 +    done
@@ -69,7 +92,7 @@ diff -Naurp a/gdb/acinclude.m4 b/gdb/acinclude.m4
  
 diff -Naurp a/gdb/configure.ac b/gdb/configure.ac
 --- a/gdb/configure.ac	2015-03-09 14:32:57.356695263 +0100
-+++ b/gdb/configure.ac	2015-03-11 15:10:07.076237601 +0100
++++ b/gdb/configure.ac	2015-03-13 16:09:14.733115076 +0100
 @@ -2192,60 +2192,32 @@ if test "${enable_gdbtk}" = "yes"; then
      if test -z "${no_tcl}" -a -z "${no_tk}"; then
  	SC_LOAD_TCLCONFIG
@@ -149,7 +172,7 @@ diff -Naurp a/gdb/configure.ac b/gdb/configure.ac
  	TCL_LIBS='$(LIBGUI) $(TK) $(TCL) $(X11_LDFLAGS) $(X11_LIBS)'
 diff -Naurp a/gdb/Makefile.in b/gdb/Makefile.in
 --- a/gdb/Makefile.in	2015-03-09 14:32:57.315694895 +0100
-+++ b/gdb/Makefile.in	2015-03-11 15:06:26.697312259 +0100
++++ b/gdb/Makefile.in	2015-03-13 16:09:14.734115086 +0100
 @@ -507,7 +507,7 @@ SUBDIR_GDBTK_SRCS = \
  	gdbtk/generic/gdbtk-main.c
  SUBDIR_GDBTK_DEPS = $(LIBGUI) $(TCL_DEPS) $(TK_DEPS)

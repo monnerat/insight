@@ -5,7 +5,9 @@
    This file contains routines to support printing on Windows from
    Tcl.  */
 
-#ifdef TK_PLATFORM_WINDOWS
+#include "config.h"
+
+#ifdef TK_PLATFORM_WIN
 
 #include <windows.h>
 
@@ -926,4 +928,4 @@ ide_create_winprint_command (Tcl_Interp *interp)
 					      winprint_command_deleted);
 }
 
-#endif /* TK_PLATFORM_WINDOWS */
+#endif /* TK_PLATFORM_WIN */

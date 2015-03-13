@@ -1,3 +1,7 @@
+2015-03-13  Patrick Monnerat <pm@datasphere.ch>
+
+	* gdbtk.c: rename TK_PLATFORM_WINDOWS to TK_PLATFORM_WIN.
+
 2015-03-10  Patrick Monnerat <pm@datasphere.ch>
 
 	* generic/gdbtk-varobj.c (variable_print): reinstate custom format

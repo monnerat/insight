@@ -22,6 +22,7 @@
  * RCS: @(#) $Id: tkTable.c,v 1.15 2001/07/01 01:33:17 hobbs Exp $
  */
 
+#include "config.h"
 #include "tkTable.h"
 
 static char **	StringifyObjects _ANSI_ARGS_((int objc,
@@ -341,7 +342,7 @@ static const char *updateOpts[] = {
     "-xscrollcommand",	"-yscrollcommand", (char *) NULL
 };
 
-#ifdef TK_PLATFORM_WINDOWS
+#ifdef TK_PLATFORM_WIN
 /*
  * Some code from TkWinInt.h that we use to correct and speed up
  * drawing of cells that need clipping in TableDisplay.
@@ -1609,7 +1610,7 @@ TableDisplay(ClientData clientdata)
     Drawable window;
 #ifdef NO_XSETCLIP
     Drawable clipWind;
-#elif !defined(TK_PLATFORM_WINDOWS)
+#elif !defined(TK_PLATFORM_WIN)
     XRectangle clipRect;
 #endif
     int rowFrom, rowTo, colFrom, colTo,
@@ -2114,7 +2115,7 @@ TableDisplay(ClientData clientdata)
 		    XCopyArea(display, clipWind, window, tagGc,
 			    bd[0] + padx, bd[2] + pady,
 			    width, height, x + bd[0] + padx, y + bd[2] + pady);
-#elif defined(TK_PLATFORM_WINDOWS)
+#elif defined(TK_PLATFORM_WIN)
 		    /*
 		     * This is evil, evil evil! but the XCopyArea
 		     * doesn't work in all cases - Michael Teske.
@@ -3852,7 +3853,7 @@ Tktable_SafeInit(interp)
 #pragma export reset
 #endif
 
-#ifdef TK_PLATFORM_WINDOWS
+#ifdef TK_PLATFORM_WIN
 /*
  *----------------------------------------------------------------------
  *

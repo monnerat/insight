@@ -1,3 +1,18 @@
+2015-03-13 Patrick Monnerat <pm@datasphere.ch>
+
+	* acinclude.m4: refine tcl/tk platform detection.
+	Rename TCL_PLATFORM_WINDOWS to TCL_PLATFORM_WIN.
+	Rename TK_PLATFORM_WINDOWS to TK_PLATFORM_WIN.
+	* acconfig.h: undefine tcl/tk platform macros.
+	* config.h.in: rebuild.
+	* tclmsgbox.c: use config.h.
+	Rename TK_PLATFORM_WINDOWS to TK_PLATFORM_WIN.
+	* tclwingrab.c: Likewise.
+	* tclwinprint.c: Likewise.
+	* tkTable.[ch]: Likewise.
+	* tkWinPrintCanvas.c: Likewise.
+	* tkWinPrintText.c: Likewise.
+
 2015-03-10 Patrick Monnerat <pm@datasphere.ch>
 
 	* acinclude.m4: search different path for tcl/tk private dirs.

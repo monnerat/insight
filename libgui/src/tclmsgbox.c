@@ -2,7 +2,9 @@
    Copyright (C) 1998 Cygnus Solutions.
    Written by Ian Lance Taylor <ian@cygnus.com>.  */
 
-#ifdef TK_PLATFORM_WINDOWS
+#include "config.h"
+
+#ifdef TK_PLATFORM_WIN
 
 #include <windows.h>
 
@@ -459,4 +461,4 @@ ide_create_messagebox_command (Tcl_Interp *interp)
   return TCL_OK;
 }
 
-#endif  /* TK_PLATFORM_WINDOWS */
+#endif  /* TK_PLATFORM_WIN */

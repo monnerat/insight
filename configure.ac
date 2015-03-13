@@ -55,8 +55,15 @@ CONFARGS=`echo "x$CONFARGS" |
  sed -e 's/^x *//' -e 's,\\$,$$,g'`
 
 dnl Build the bundle directory. 
-test -d bundle && chmod -R u+w bundle
-cp -a -T binutils-gdb bundle
+if test -d bundle
+then	chmod -R u+w bundle
+else	mkdir bundle
+fi
+
+dnl Was "cp -a -T binutils-gdb bundle", but the following tar-based tree copy
+dnl is much faster on MinGW.
+(cd binutils-gdb; tar cf - *) | (cd bundle; tar xpf - --same-owner)
+
 cp -a gdbtk bundle/gdb/
 cp -a testsuite bundle/gdb/
 cp -a libgui bundle/
@@ -99,6 +106,13 @@ dnl Now regenerate the configure files
 	autoconf --force
 )
 (
+	cd bundle/gdb/gnulib
+	echo "Regenerate `pwd`"
+	aclocal -I . -I import/m4 -I ../../config
+	automake
+	autoconf --force
+)
+(
 	cd bundle/gdb/gdbtk/plugins
 	echo "Regenerate `pwd`"
 	aclocal -I . -I ../../../config
@@ -109,6 +123,7 @@ dnl Now regenerate the configure files
 	cd bundle/libgui
 	echo "Regenerate `pwd`"
 	aclocal -I . -I ../config
+	# autoheader
 	automake
 	autoconf --force
 )

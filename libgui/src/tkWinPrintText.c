@@ -1,5 +1,6 @@
+#include "config.h"
 
-#ifdef TK_PLATFORM_WINDOWS
+#ifdef TK_PLATFORM_WIN
 
 #include <windows.h>
 
@@ -549,4 +550,4 @@ DisplayDLineToDrawable(textPtr, dlPtr, prevPtr, drawable)
 
 }
 
-#endif /* TK_PLATFORM_WINDOWS */
+#endif /* TK_PLATFORM_WIN */

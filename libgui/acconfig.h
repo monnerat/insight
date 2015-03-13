@@ -12,3 +12,21 @@
 
 /* Define this if the IDE is enabled.  */
 #define IDE_ENABLED 0
+
+/* Define this if tcl implements the Linux platform API. */
+#undef TCL_PLATFORM_UNIX
+
+/* Define this if tcl implements the Windows platform API. */
+#undef TCL_PLATFORM_WIN
+
+/* Define this if tcl implements the MacOSX platform API. */
+#undef TCL_PLATFORM_MACOSX
+
+/* Define this if tk implements the Linux platform API. */
+#undef TK_PLATFORM_UNIX
+
+/* Define this if tk implements the Windows platform API. */
+#undef TK_PLATFORM_WIN
+
+/* Define this if tk implements the MacOSX platform API. */
+#undef TK_PLATFORM_MACOSX

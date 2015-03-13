@@ -15,7 +15,9 @@
 #ifndef _TKTABLE_H_
 #define _TKTABLE_H_
 
-#ifdef TK_PLATFORM_WINDOWS
+#include "config.h"
+
+#ifdef TK_PLATFORM_WIN
 #   define WIN32_LEAN_AND_MEAN
 #   include <windows.h>
 #   undef WIN32_LEAN_AND_MEAN
@@ -64,7 +66,7 @@
 #endif
 
 #ifndef NORMAL_BG
-#   ifdef TK_PLATFORM_WINDOWS
+#   ifdef TK_PLATFORM_WIN
 #	define NORMAL_BG	"SystemButtonFace"
 #	define ACTIVE_BG	NORMAL_BG
 #	define SELECT_BG	"SystemHighlight"
