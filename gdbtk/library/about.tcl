@@ -29,7 +29,7 @@ itcl::class About {
     pack  $itk_interior
     bind $f.image1 <1> [code $this unpost]
     bind $f.m <1> [code $this unpost]
-    window_name "About Red Hat Insight"
+    window_name "About Insight"
   }
 
   # Don't quit if this is the last window.  The only way that this can

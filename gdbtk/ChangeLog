@@ -1,6 +1,10 @@
+2015-03-17  Patrick Monnerat <pm@datasphere.ch>
+
+	* library/about.tcl: remove "Red Hat" from about window title.
+
 2015-03-13  Patrick Monnerat <pm@datasphere.ch>
 
-	* gdbtk.c: rename TK_PLATFORM_WINDOWS to TK_PLATFORM_WIN.
+	* generic/gdbtk.c: rename TK_PLATFORM_WINDOWS to TK_PLATFORM_WIN.
 
 2015-03-10  Patrick Monnerat <pm@datasphere.ch>
 
