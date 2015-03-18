@@ -2734,10 +2734,12 @@ gdb_loadfile (ClientData clientData, Tcl_Interp *interp, int objc,
   struct linetable_entry *le;
   long mtime = 0;
   struct stat st;
+  int llen;
+  char inputline[10000];
   char line[10000], line_num_buf[18];
+  int found_carriage_return = 1;
   const char *text_argv[9];
   Tcl_CmdInfo text_cmd;
-
  
   if (objc != 4)
     {
@@ -2836,89 +2838,68 @@ gdb_loadfile (ClientData clientData, Tcl_Interp *interp, int objc,
   ln = 1;
 
   line[0] = '\t'; 
+  line_num_buf[1] = linenumbers? '\t': ' ';
+  line_num_buf[2] = '\0';
   text_argv[0] = widget;
   text_argv[1] = "insert";
   text_argv[2] = "end";
+  text_argv[3] = line_num_buf;
   text_argv[5] = line;
   text_argv[6] = "source_tag";
-  text_argv[8] = NULL;
-  
-  if (linenumbers)
+  text_argv[7] = NULL;
+
+  while (fgets (inputline, sizeof (inputline), fp))
     {
-      int found_carriage_return = 1;
-      
-      line_num_buf[1] = '\t';
-       
-      text_argv[3] = line_num_buf;
-      
-      while (fgets (line + 1, 9980, fp))
-        {
-	  /* Look for DOS style \r\n endings, and if found,
-	   * strip off the \r.  We assume (for the sake of
-	   * speed) that ALL lines in the file have DOS endings,
-	   * or none do.
-	   */
-	  
-	  if (found_carriage_return)
+      llen = strlen(inputline);
+
+      /* Look for DOS style \r\n endings, and if found,
+       * strip off the \r.  We assume (for the sake of
+       * speed) that ALL lines in the file have DOS endings,
+       * or none do.
+       */
+
+      if (found_carriage_return)
+	{
+	  char *p = inputline + llen - 2;
+	  if (llen > 1 && *p == '\r')
 	    {
-	      char *p = strrchr(line, '\0') - 2;
-	      if (*p == '\r')
-		{
-		  *p = '\n';
-		  *(p + 1) = '\0';
-		} 
-	      else 
-		found_carriage_return = 0;
-	    }
-	  
-          sprintf (line_num_buf+2, "%d", ln);
-          if (ltable[ln >> 3] & (1 << (ln % 8)))
-            {
-	      line_num_buf[0] = '-';
-              text_argv[4] = "break_rgn_tag";
-            }
-          else
-            {
-	      line_num_buf[0] = ' ';
-              text_argv[4] = "";
-            }
-
-          text_cmd.proc(text_cmd.clientData, interp, 7, text_argv);
-          ln++;
-        }
-    }
-  else
-    {
-      int found_carriage_return = 1;
-            
-      while (fgets (line + 1, 9980, fp))
-        {
-	  if (found_carriage_return)
-	    {
-	      char *p = strrchr(line, '\0') - 2;
-	      if (*p == '\r')
-		{
-		  *p = '\n';
-		  *(p + 1) = '\0';
-		} 
-	      else
-		found_carriage_return = 0;
-	    }
-
-          if (ltable[ln >> 3] & (1 << (ln % 8)))
-            {
-              text_argv[3] = "- ";
-              text_argv[4] = "break_rgn_tag";
-            }
-          else
-            {
-              text_argv[3] = "  ";
-              text_argv[4] = "";
-            }
-
-          text_cmd.proc(text_cmd.clientData, interp, 7, text_argv);
-          ln++;
+	      *p = '\n';
+	       *(p + 1) = '\0';
+	       llen--;
+	    } 
+	  else 
+	    found_carriage_return = 0;
 	}
+
+      /* Convert from system encoding to utf-8. This has the side effect
+       * to map invalid characters in source encoding to a default value.
+       */
+      if (Tcl_ExternalToUtf (interp, NULL, inputline, llen, 0, NULL,
+			     line + 1, 9980, NULL, &llen, NULL) != TCL_OK)
+	{
+	  free (ltable);
+	  fclose (fp);
+	  gdbtk_set_result (interp, "Conversion error.");
+	  return TCL_ERROR;
+	}
+      line[llen + 1] = '\0';
+
+      if (linenumbers)
+        sprintf (line_num_buf+2, "%d", ln);
+
+      if (ltable[ln >> 3] & (1 << (ln % 8)))
+        {
+	  line_num_buf[0] = '-';
+          text_argv[4] = "break_rgn_tag";
+        }
+      else
+        {
+	  line_num_buf[0] = ' ';
+          text_argv[4] = "";
+        }
+
+      text_cmd.proc(text_cmd.clientData, interp, 7, text_argv);
+      ln++;
     }
 
   free (ltable);

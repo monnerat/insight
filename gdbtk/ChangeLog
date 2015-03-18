@@ -1,3 +1,8 @@
+2015-03-18  Patrick Monnerat <pm@datasphere.ch>
+
+	* generic/gdbtk-cmds.c (gdb_loadfile): transcode read line from
+	tcl system encoding to utf-8.
+
 2015-03-17  Patrick Monnerat <pm@datasphere.ch>
 
 	* library/about.tcl: remove "Red Hat" from about window title.
