@@ -3,7 +3,7 @@
 
 --- a/src-release.sh	2014-09-01 14:30:28.755141563 +0200
 +++ b/src-release.sh	2014-09-01 15:18:34.535809761 +0200
-@@ -294,6 +294,16 @@ gdb_release()
+@@ -296,6 +296,16 @@ gdb_release()
      gdb_tar_compress $package $tool "$GDB_SUPPORT_DIRS" "$compressors"
  }
  
@@ -18,9 +18,9 @@
 +}
 +
  # Corresponding to the CVS "sim" module.
- SIM_SUPPORT_DIRS="bfd opcodes libiberty include intl gdb/version.in makefile.vms"
+ SIM_SUPPORT_DIRS="bfd opcodes libiberty include intl gdb/version.in makefile.vms zlib"
  sim_release()
-@@ -325,6 +335,8 @@ build_release()
+@@ -327,6 +337,8 @@ build_release()
  	    gas_release "$compressors";;
  	gdb)
  	    gdb_release "$compressors";;
