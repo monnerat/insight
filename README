@@ -55,6 +55,7 @@ autoconf
 		--disable-gprof						\
 		--disable-ld						\
 		--disable-rpath						\
+		--disable-zlib						\
 		--enable-sim						\
 		--with-gdb-datadir=/usr/share/insight			\
 		--with-jit-reader-dir=/usr/lib64/insight		\
