@@ -163,7 +163,7 @@ diff -Naurp a/Makefile.def b/Makefile.def
  // Host modules specific to binutils.
  dependencies = { module=configure-bfd; on=configure-libiberty; hard=true; };
  dependencies = { module=configure-bfd; on=configure-intl; };
-@@ -464,35 +454,11 @@ dependencies = { module=all-opcodes; on=
+@@ -465,35 +455,11 @@ dependencies = { module=all-opcodes; on=
  dependencies = { module=all-opcodes; on=all-intl; };
  
  // Other host modules in the 'src' repository.
