@@ -67,7 +67,7 @@ diff -Naurp a/gdb/gnulib/import/m4/time_h.m4 b/gdb/gnulib/import/m4/time_h.m4
 diff -Naurp a/gdb/gnulib/import/Makefile.am b/gdb/gnulib/import/Makefile.am
 --- a/gdb/gnulib/import/Makefile.am	2015-03-09 15:22:51.000000000 +0100
 +++ b/gdb/gnulib/import/Makefile.am	2015-03-12 16:33:36.923323100 +0100
-@@ -1516,6 +1516,7 @@ time.h: time.in.h $(top_builddir)/config
+@@ -1525,6 +1525,7 @@ time.h: time.in.h $(top_builddir)/config
  	      -e 's|@''REPLACE_NANOSLEEP''@|$(REPLACE_NANOSLEEP)|g' \
  	      -e 's|@''REPLACE_TIMEGM''@|$(REPLACE_TIMEGM)|g' \
  	      -e 's|@''PTHREAD_H_DEFINES_STRUCT_TIMESPEC''@|$(PTHREAD_H_DEFINES_STRUCT_TIMESPEC)|g' \
