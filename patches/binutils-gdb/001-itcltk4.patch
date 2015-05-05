@@ -97,7 +97,7 @@ diff -Naurp a/configure.ac b/configure.ac
      ;;
    powerpc-*-beos*)
      noconfigdirs="$noconfigdirs gdb"
-@@ -2724,7 +2709,7 @@ if echo " ${target_configdirs} " | grep
+@@ -2733,7 +2718,7 @@ if echo " ${target_configdirs} " | grep
    bootstrap_target_libs=${bootstrap_target_libs}target-libmpx,
  fi
  
@@ -106,7 +106,7 @@ diff -Naurp a/configure.ac b/configure.ac
  # Use 'maybe' since enable_gdbtk might be true even if tk isn't available
  # and in that case we want gdb to be built without tk.  Ugh!
  # In fact I believe gdb is the *only* package directly dependent on tk,
-@@ -2732,7 +2717,7 @@ fi
+@@ -2741,7 +2726,7 @@ fi
  # leave out the maybe dependencies when enable_gdbtk is false.  I'm not
  # 100% sure that that's safe though.
  
@@ -142,7 +142,7 @@ diff -Naurp a/Makefile.def b/Makefile.def
  host_modules= { module= ld; bootstrap=true; };
  host_modules= { module= libbacktrace; bootstrap=true; };
  host_modules= { module= libcpp; bootstrap=true; };
-@@ -108,7 +105,6 @@ host_modules= { module= zlib; no_install
+@@ -110,7 +107,6 @@ host_modules= { module= zlib; no_install
  host_modules= { module= gdb; };
  host_modules= { module= expect; };
  host_modules= { module= guile; };
@@ -150,7 +150,7 @@ diff -Naurp a/Makefile.def b/Makefile.def
  host_modules= { module= libtermcap; no_check=true; 
                  missing=mostlyclean;
                  missing=clean;
-@@ -391,12 +387,6 @@ dependencies = { module=all-gdb; on=all-
+@@ -393,12 +389,6 @@ dependencies = { module=all-gdb; on=all-
  dependencies = { module=all-gdb; on=all-libdecnumber; };
  dependencies = { module=all-gdb; on=all-libtermcap; };
  
@@ -163,7 +163,7 @@ diff -Naurp a/Makefile.def b/Makefile.def
  // Host modules specific to binutils.
  dependencies = { module=configure-bfd; on=configure-libiberty; hard=true; };
  dependencies = { module=configure-bfd; on=configure-intl; };
-@@ -465,35 +455,11 @@ dependencies = { module=all-opcodes; on=
+@@ -467,35 +457,11 @@ dependencies = { module=all-opcodes; on=
  dependencies = { module=all-opcodes; on=all-intl; };
  
  // Other host modules in the 'src' repository.
