@@ -62,7 +62,7 @@ diff -Naurp a/configure.ac b/configure.ac
      ;;
    arc-*-*|arceb-*-*)
      noconfigdirs="$noconfigdirs target-libgloss"
-@@ -1138,15 +1123,15 @@ case "${target}" in
+@@ -1141,15 +1126,15 @@ case "${target}" in
      ;;
    ia64*-*-elf*)
      # No gdb support yet.
@@ -71,8 +71,8 @@ diff -Naurp a/configure.ac b/configure.ac
      ;;
    ia64*-**-hpux*)
      # No ld support yet.
--    noconfigdirs="$noconfigdirs libgui itcl ld"
-+    noconfigdirs="$noconfigdirs libgui ld"
+-    noconfigdirs="$noconfigdirs gdb libgui itcl ld"
++    noconfigdirs="$noconfigdirs gdb libgui ld"
      ;;
    ia64*-*-*vms*)
      # No ld support yet.
@@ -81,7 +81,7 @@ diff -Naurp a/configure.ac b/configure.ac
      ;;
    i[[3456789]]86-w64-mingw*)
      ;;
-@@ -1198,13 +1183,13 @@ case "${target}" in
+@@ -1201,13 +1186,13 @@ case "${target}" in
      ;;
    powerpc*-*-winnt* | powerpc*-*-pe*)
      target_configdirs="$target_configdirs target-winsup"
@@ -97,7 +97,7 @@ diff -Naurp a/configure.ac b/configure.ac
      ;;
    powerpc-*-beos*)
      noconfigdirs="$noconfigdirs gdb"
-@@ -2733,7 +2718,7 @@ if echo " ${target_configdirs} " | grep
+@@ -2736,7 +2721,7 @@ if echo " ${target_configdirs} " | grep
    bootstrap_target_libs=${bootstrap_target_libs}target-libmpx,
  fi
  
@@ -106,7 +106,7 @@ diff -Naurp a/configure.ac b/configure.ac
  # Use 'maybe' since enable_gdbtk might be true even if tk isn't available
  # and in that case we want gdb to be built without tk.  Ugh!
  # In fact I believe gdb is the *only* package directly dependent on tk,
-@@ -2741,7 +2726,7 @@ fi
+@@ -2744,7 +2729,7 @@ fi
  # leave out the maybe dependencies when enable_gdbtk is false.  I'm not
  # 100% sure that that's safe though.
  
