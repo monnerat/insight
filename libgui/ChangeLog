@@ -1,3 +1,7 @@
+2015-07-01  Patrick Monnerat <pm@datasphere.ch>
+
+	* !!! From now on, changelog is maintained in the git commit log !!!
+
 2015-03-13 Patrick Monnerat <pm@datasphere.ch>
 
 	* acinclude.m4: refine tcl/tk platform detection.

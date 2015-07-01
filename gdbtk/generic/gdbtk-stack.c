@@ -52,6 +52,9 @@ static int gdb_selected_block (ClientData clientData,
 static int gdb_selected_frame (ClientData clientData,
 			       Tcl_Interp * interp, int argc,
 			       Tcl_Obj * CONST objv[]);
+static int gdb_selected_frame_level (ClientData clientData,
+				     Tcl_Interp * interp, int argc,
+				     Tcl_Obj * CONST objv[]);
 static int gdb_stack (ClientData, Tcl_Interp *, int, Tcl_Obj * CONST[]);
 static void get_frame_name (Tcl_Interp *interp, Tcl_Obj *list,
 			    struct frame_info *fi);
@@ -71,6 +74,8 @@ Gdbtk_Stack_Init (Tcl_Interp *interp)
 			gdb_selected_block, NULL);
   Tcl_CreateObjCommand (interp, "gdb_selected_frame", gdbtk_call_wrapper,
 			gdb_selected_frame, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_selected_frame_level", gdbtk_call_wrapper,
+			gdb_selected_frame_level, NULL);
   Tcl_CreateObjCommand (interp, "gdb_stack", gdbtk_call_wrapper, gdb_stack, NULL);
 
   return TCL_OK;
@@ -408,8 +413,7 @@ gdb_selected_block (ClientData clientData, Tcl_Interp *interp,
 
 /* This implements the tcl command gdb_selected_frame
 
-* Returns the address of the selected frame
-* frame.
+* Returns the address of the selected frame.
 *
 * Arguments:
 *    None
@@ -433,6 +437,24 @@ gdb_selected_frame (ClientData clientData, Tcl_Interp *interp,
   Tcl_SetStringObj (result_ptr->obj_ptr, frame, -1);
 
   free(frame);
+  return TCL_OK;
+}
+
+/* This implements the tcl command gdb_selected_frame_level
+
+* Returns the level of the selected frame.
+*
+* Arguments:
+*    None
+* Tcl Result:
+*    The currently selected frame's level
+*/
+static int
+gdb_selected_frame_level (ClientData clientData, Tcl_Interp *interp,
+			  int objc, Tcl_Obj *CONST objv[])
+{
+  Tcl_SetIntObj (result_ptr->obj_ptr,
+		 frame_relative_level (get_selected_frame_if_set ()));
   return TCL_OK;
 }
 

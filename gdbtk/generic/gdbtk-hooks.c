@@ -93,7 +93,6 @@ static void gdbtk_post_add_symbol (void);
 static void gdbtk_register_changed (int regno);
 static void gdbtk_memory_changed (struct inferior *inferior, CORE_ADDR addr,
 				  ssize_t len, const bfd_byte *data);
-static void gdbtk_selected_frame_changed (int);
 static void gdbtk_context_change (int);
 static void gdbtk_error_begin (void);
 void report_error (void);
@@ -154,7 +153,6 @@ gdbtk_add_hooks (void)
   deprecated_detach_hook            = gdbtk_detach;
 
   deprecated_register_changed_hook = gdbtk_register_changed;
-  deprecated_selected_frame_level_changed_hook = gdbtk_selected_frame_changed;
   deprecated_context_hook = gdbtk_context_change;
 
   deprecated_error_begin_hook = gdbtk_error_begin;
@@ -736,20 +734,6 @@ gdbtk_trace_start_stop (int start, int from_tty)
   else
     Tcl_GlobalEval (gdbtk_interp, "gdbtk_tcl_tstop");
 
-}
-
-static void
-gdbtk_selected_frame_changed (int level)
-{
-#if TCL_MAJOR_VERSION == 8 && TCL_MINOR_VERSION < 1
-  char *a;
-  a = xstrprintf ("%d", level);
-  Tcl_SetVar (gdbtk_interp, "gdb_selected_frame_level", a, TCL_GLOBAL_ONLY);
-  xfree (a);
-#else
-  Tcl_SetVar2Ex (gdbtk_interp, "gdb_selected_frame_level", NULL,
-		 Tcl_NewIntObj (level), TCL_GLOBAL_ONLY);
-#endif
 }
 
 /* Called when the current thread changes. */

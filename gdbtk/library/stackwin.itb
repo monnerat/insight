@@ -57,8 +57,6 @@ itcl::body StackWin::build_win {} {
 #  METHOD:  update - update widget when PC changes
 # ------------------------------------------------------------------
 itcl::body StackWin::update {event} {
-  global gdb_selected_frame_level
-
   if {!$protect_me} {
     # The gdb_stack command might fail, for instance if you are browsing
     # a trace experiment, and the stack has not been collected.
@@ -83,9 +81,12 @@ itcl::body StackWin::update {event} {
     # this next section checks to see if the source
     # window is looking at some location other than the 
     # bottom of the stack.  If so, highlight the stack frame
-    set level [expr {$levels - $gdb_selected_frame_level - 1}]
-    $itk_component(slb) selection set $level
-    $itk_component(slb) see $level
+    set level [gdb_selected_frame_level]
+    if {$level >= 0} {
+      set level [expr {$levels - $level - 1}]
+      $itk_component(slb) selection set $level
+      $itk_component(slb) see $level
+    }
   }
 }
 
