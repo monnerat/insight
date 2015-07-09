@@ -90,7 +90,7 @@ static void gdbtk_readline_end (void);
 static void gdbtk_pre_add_symbol (const char *);
 static void gdbtk_print_frame_info (struct symtab *, int, int, int);
 static void gdbtk_post_add_symbol (void);
-static void gdbtk_register_changed (int regno);
+static void gdbtk_register_changed (struct frame_info *frame, int regno);
 static void gdbtk_memory_changed (struct inferior *inferior, CORE_ADDR addr,
 				  ssize_t len, const bfd_byte *data);
 static void gdbtk_context_change (int);
@@ -125,6 +125,7 @@ gdbtk_add_hooks (void)
   observer_attach_architecture_changed (gdbtk_architecture_changed);
   observer_attach_memory_changed (gdbtk_memory_changed);
   observer_attach_command_param_changed (gdbtk_param_changed);
+  observer_attach_register_changed (gdbtk_register_changed);
 
   /* Hooks */
   deprecated_call_command_hook = gdbtk_call_command;
@@ -152,7 +153,6 @@ gdbtk_add_hooks (void)
   deprecated_attach_hook            = gdbtk_attach;
   deprecated_detach_hook            = gdbtk_detach;
 
-  deprecated_register_changed_hook = gdbtk_register_changed;
   deprecated_context_hook = gdbtk_context_change;
 
   deprecated_error_begin_hook = gdbtk_error_begin;
@@ -428,7 +428,7 @@ gdbtk_ignorable_warning (const char *class, const char *warning)
 }
 
 static void
-gdbtk_register_changed (int regno)
+gdbtk_register_changed (struct frame_info *frame, int regno)
 {
   if (Tcl_Eval (gdbtk_interp, "gdbtk_register_changed") != TCL_OK)
     report_error ();
