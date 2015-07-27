@@ -1,7 +1,7 @@
 diff -Naurp a/gdb/acinclude.m4 b/gdb/acinclude.m4
 --- a/gdb/acinclude.m4	2015-03-03 13:23:50.771005619 +0100
 +++ b/gdb/acinclude.m4	2015-03-13 16:10:43.167922450 +0100
-@@ -364,44 +364,76 @@ fi
+@@ -367,44 +367,76 @@ fi
  ])
  
  dnl Find the location of the private Tcl headers
@@ -93,7 +93,7 @@ diff -Naurp a/gdb/acinclude.m4 b/gdb/acinclude.m4
 diff -Naurp a/gdb/configure.ac b/gdb/configure.ac
 --- a/gdb/configure.ac	2015-03-09 14:32:57.356695263 +0100
 +++ b/gdb/configure.ac	2015-03-13 16:09:14.733115076 +0100
-@@ -2207,60 +2207,32 @@ if test "${enable_gdbtk}" = "yes"; then
+@@ -2140,60 +2140,32 @@ if test "${enable_gdbtk}" = "yes"; then
      if test -z "${no_tcl}" -a -z "${no_tk}"; then
  	SC_LOAD_TCLCONFIG
  
