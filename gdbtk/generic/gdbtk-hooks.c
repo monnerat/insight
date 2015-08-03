@@ -685,6 +685,7 @@ static void
 gdbtk_print_frame_info (struct symtab *s, int line,
 			int stopline, int noerror)
 {
+  /* Do nothing: just here to disable frame info output to console from gdb. */
 }
 
 /*
