@@ -142,7 +142,7 @@ diff -Naurp a/Makefile.def b/Makefile.def
  host_modules= { module= ld; bootstrap=true; };
  host_modules= { module= libbacktrace; bootstrap=true; };
  host_modules= { module= libcpp; bootstrap=true; };
-@@ -110,7 +107,6 @@ host_modules= { module= zlib; no_install
+@@ -113,7 +110,6 @@ host_modules= { module= zlib; no_install
  host_modules= { module= gdb; };
  host_modules= { module= expect; };
  host_modules= { module= guile; };
@@ -150,7 +150,7 @@ diff -Naurp a/Makefile.def b/Makefile.def
  host_modules= { module= libtermcap; no_check=true; 
                  missing=mostlyclean;
                  missing=clean;
-@@ -393,12 +389,6 @@ dependencies = { module=all-gdb; on=all-
+@@ -402,12 +398,6 @@ dependencies = { module=all-gdb; on=all-
  dependencies = { module=all-gdb; on=all-libdecnumber; };
  dependencies = { module=all-gdb; on=all-libtermcap; };
  
@@ -163,7 +163,7 @@ diff -Naurp a/Makefile.def b/Makefile.def
  // Host modules specific to binutils.
  dependencies = { module=configure-bfd; on=configure-libiberty; hard=true; };
  dependencies = { module=configure-bfd; on=configure-intl; };
-@@ -467,35 +457,11 @@ dependencies = { module=all-opcodes; on=
+@@ -476,35 +466,11 @@ dependencies = { module=all-opcodes; on=
  dependencies = { module=all-opcodes; on=all-intl; };
  
  // Other host modules in the 'src' repository.
