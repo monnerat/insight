@@ -956,7 +956,7 @@ gdb_load_info (ClientData clientData, Tcl_Interp *interp,
 
   char *filename = Tcl_GetStringFromObj (objv[1], NULL);
 
-  loadfile_bfd = bfd_openr (filename, gnutarget);
+  loadfile_bfd = gdb_bfd_openr (filename, gnutarget);
   if (loadfile_bfd == NULL)
     {
       gdbtk_set_result (interp, "Open of %s failed", filename);
