@@ -1060,7 +1060,7 @@ itcl::body TargetSelection::toggle_more_options {} {
 itcl::body TargetSelection::set_run {check_which} {
   global PREFS_state
   set var [pref varname gdb/src/run_$check_which]
-  global $var
+  #global $var
   if {[set $var]} {
     set $var 0
   }
