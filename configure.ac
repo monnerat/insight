@@ -113,6 +113,13 @@ dnl Now regenerate the configure files
 	autoconf --force
 )
 (
+	cd bundle/gdb/gdbtk
+	echo "Regenerate `pwd`"
+	aclocal -I . -I ../../config
+	automake
+	autoconf --force
+)
+(
 	cd bundle/gdb/gdbtk/plugins
 	echo "Regenerate `pwd`"
 	aclocal -I . -I ../../../config
@@ -125,6 +132,12 @@ dnl Now regenerate the configure files
 	aclocal -I . -I ../config
 	# autoheader
 	automake
+	autoconf --force
+)
+(
+	cd bundle/gdb/testsuite/gdb.gdbtk
+	echo "Regenerate `pwd`"
+	aclocal -I . -I ../../../config
 	autoconf --force
 )
 
