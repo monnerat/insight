@@ -1,6 +1,5 @@
 /* Tcl/Tk interface routines header file.
-   Copyright (C) 1994, 1995, 1996, 1997, 1998, 2000, 2001, 2003, 2008
-   Free Software Foundation, Inc.
+   Copyright (C) 1994-2015 Free Software Foundation, Inc.
 
    Written by Stu Grossman <grossman@cygnus.com> of Cygnus Support.
 

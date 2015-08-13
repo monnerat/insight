@@ -1,7 +1,6 @@
 /* Startup code for Insight.
 
-   Copyright (C) 1994, 1995, 1996, 1997, 1998, 2000, 200, 2002, 2003, 2004,
-   2008, 2010, 2011, 2012, 2013, 2014 Free Software Foundation, Inc.
+   Copyright (C) 1994-2015 Free Software Foundation, Inc.
 
    Written by Stu Grossman <grossman@cygnus.com> of Cygnus Support.
 
