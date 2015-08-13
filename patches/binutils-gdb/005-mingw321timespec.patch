@@ -1,5 +1,7 @@
-MinGW defines struct timespec in unistd.h: detect it.
-Prefer it over the definition in pthread.h to avoid possible conflict.
+* Thu Mar 12 2015 Patrick Monnerat <pm@datasphere.ch>
+- MinGW defines struct timespec in unistd.h: detect it.
+- Prefer it over the definition in pthread.h to avoid possible conflict.
+
 diff -Naurp a/gdb/gnulib/import/m4/time_h.m4 b/gdb/gnulib/import/m4/time_h.m4
 --- a/gdb/gnulib/import/m4/time_h.m4	2015-03-09 15:22:52.000000000 +0100
 +++ b/gdb/gnulib/import/m4/time_h.m4	2015-03-12 16:31:50.246669200 +0100

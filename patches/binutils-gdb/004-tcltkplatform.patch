@@ -1,3 +1,6 @@
+* Fri Mar 13 2015 Patrick Monnerat <pm@datasphere.ch>
+- Determine installed tcl/tk platform.
+
 diff -Naurp a/gdb/acinclude.m4 b/gdb/acinclude.m4
 --- a/gdb/acinclude.m4	2015-03-03 13:23:50.771005619 +0100
 +++ b/gdb/acinclude.m4	2015-03-13 16:10:43.167922450 +0100
