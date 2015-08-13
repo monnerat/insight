@@ -25,6 +25,7 @@
 #include "linespec.h"
 #include "breakpoint.h"
 #include "tracepoint.h"
+#include "location.h"
 #include <string.h>
 #include <tcl.h>
 #include "gdbtk.h"
@@ -278,6 +279,7 @@ gdb_get_breakpoint_info (ClientData clientData, Tcl_Interp *interp, int objc,
   struct breakpoint *b;
   struct watchpoint *w;
   const char *funcname, *filename;
+  const char *addr_string;
   int isPending = 0;
 
   Tcl_Obj *new_obj;
@@ -310,10 +312,12 @@ gdb_get_breakpoint_info (ClientData clientData, Tcl_Interp *interp, int objc,
     "0" and "0" in the line number and address field.  */
   if (isPending)
     {
+      addr_string = event_location_to_string(b->location);
+
       Tcl_ListObjAppendElement (NULL, result_ptr->obj_ptr,
                                 Tcl_NewStringObj ("<PENDING>", -1));
       Tcl_ListObjAppendElement (NULL, result_ptr->obj_ptr,
-                                Tcl_NewStringObj (b->addr_string, -1));
+                                Tcl_NewStringObj (addr_string, -1));
       Tcl_ListObjAppendElement (NULL, result_ptr->obj_ptr,
                                 Tcl_NewIntObj (0));
       Tcl_ListObjAppendElement (NULL, result_ptr->obj_ptr,
@@ -358,9 +362,9 @@ gdb_get_breakpoint_info (ClientData clientData, Tcl_Interp *interp, int objc,
   Tcl_ListObjAppendElement (NULL, result_ptr->obj_ptr,
 			    Tcl_NewIntObj (b->hit_count));
 
+  addr_string = w ? w->exp_string : event_location_to_string(b->location);
   Tcl_ListObjAppendElement (NULL, result_ptr->obj_ptr,
-			    Tcl_NewStringObj (w ? w->exp_string
-					      : b->addr_string, -1));
+			    Tcl_NewStringObj (addr_string, -1));
 
   return TCL_OK;
 }
@@ -488,6 +492,8 @@ gdb_set_bp (ClientData clientData, Tcl_Interp *interp,
   int ret = TCL_ERROR;
   int temp, ignore_count, thread, pending, enabled;
   char *address, *typestr, *condition;
+  struct event_location *location;
+  struct cleanup *cleanup;
   struct gdb_exception e;
 
   /* Insight does not use all of these (yet?).  */
@@ -529,9 +535,12 @@ gdb_set_bp (ClientData clientData, Tcl_Interp *interp,
 	}
     }
 
+  location = string_to_event_location (&address, current_language);
+  cleanup = make_cleanup_delete_event_location (location);
+
   TRY
     {
-      create_breakpoint (get_current_arch (), address, condition, thread,
+      create_breakpoint (get_current_arch (), location, condition, thread,
 			 NULL,
 			 0	/* condition and thread are valid */,
 			 temp,
@@ -548,6 +557,7 @@ gdb_set_bp (ClientData clientData, Tcl_Interp *interp,
     }
   END_CATCH
 
+  do_cleanups (cleanup);
   return ret;
 }
 
@@ -812,10 +822,14 @@ tracepoint_exists (char *args)
   int ix;
   struct breakpoint *tp;
   struct symtabs_and_lines sals;
+  struct event_location *location;
+  struct cleanup *cleanup;
   char *file = NULL;
   int result = -1;
 
-  sals = decode_line_1 (&args, DECODE_LINE_FUNFIRSTLINE, NULL, 0);
+  location = string_to_event_location (&args, current_language);
+  cleanup = make_cleanup_delete_event_location (location);
+  sals = decode_line_1 (location, DECODE_LINE_FUNFIRSTLINE, NULL, 0);
   if (sals.nelts == 1)
     {
       resolve_sal_pc (&sals.sals[0]);
@@ -844,6 +858,7 @@ tracepoint_exists (char *args)
     }
   if (file != NULL)
     free (file);
+  do_cleanups (cleanup);
   return result;
 }
 

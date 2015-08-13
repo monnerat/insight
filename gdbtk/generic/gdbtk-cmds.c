@@ -30,6 +30,7 @@
 #include "gdbcore.h"
 #include "demangle.h"
 #include "linespec.h"
+#include "location.h"
 #include "top.h"
 #include "annotate.h"
 #include "block.h"
@@ -1011,6 +1012,8 @@ gdb_get_line_command (ClientData clientData, Tcl_Interp *interp,
 {
   struct symtabs_and_lines sals;
   char *args;
+  struct event_location *location;
+  struct cleanup *cleanup;
 
   if (objc != 2)
     {
@@ -1019,14 +1022,15 @@ gdb_get_line_command (ClientData clientData, Tcl_Interp *interp,
     }
 
   args = Tcl_GetStringFromObj (objv[1], NULL);
-  sals = decode_line_1 (&args, DECODE_LINE_FUNFIRSTLINE, NULL, 0);
+  location = string_to_event_location (&args, current_language);
+  cleanup = make_cleanup_delete_event_location (location);
+  sals = decode_line_1 (location, DECODE_LINE_FUNFIRSTLINE, NULL, 0);
   if (sals.nelts == 1)
-    {
-      Tcl_SetIntObj (result_ptr->obj_ptr, sals.sals[0].line);
-      return TCL_OK;
-    }
+    Tcl_SetIntObj (result_ptr->obj_ptr, sals.sals[0].line);
+  else
+    Tcl_SetStringObj (result_ptr->obj_ptr, "N/A", -1);
 
-  Tcl_SetStringObj (result_ptr->obj_ptr, "N/A", -1);
+  do_cleanups (cleanup);
   return TCL_OK;
 
 }
@@ -1047,6 +1051,8 @@ gdb_get_file_command (ClientData clientData, Tcl_Interp *interp,
 {
   struct symtabs_and_lines sals;
   char *args;
+  struct event_location *location;
+  struct cleanup *cleanup;
 
   if (objc != 2)
     {
@@ -1055,15 +1061,15 @@ gdb_get_file_command (ClientData clientData, Tcl_Interp *interp,
     }
 
   args = Tcl_GetStringFromObj (objv[1], NULL);
-  sals = decode_line_1 (&args, DECODE_LINE_FUNFIRSTLINE, NULL, 0);
+  location = string_to_event_location (&args, current_language);
+  cleanup = make_cleanup_delete_event_location (location);
+  sals = decode_line_1 (location, DECODE_LINE_FUNFIRSTLINE, NULL, 0);
   if (sals.nelts == 1)
-    {
-      Tcl_SetStringObj (result_ptr->obj_ptr,
-			sals.sals[0].symtab->filename, -1);
-      return TCL_OK;
-    }
+    Tcl_SetStringObj (result_ptr->obj_ptr, sals.sals[0].symtab->filename, -1);
+  else
+    Tcl_SetStringObj (result_ptr->obj_ptr, "N/A", -1);
 
-  Tcl_SetStringObj (result_ptr->obj_ptr, "N/A", -1);
+  do_cleanups (cleanup);
   return TCL_OK;
 }
 
@@ -1083,6 +1089,8 @@ gdb_get_function_command (ClientData clientData, Tcl_Interp *interp,
   const char *function;
   struct symtabs_and_lines sals;
   char *args;
+  struct event_location *location;
+  struct cleanup *cleanup;
 
   if (objc != 2)
     {
@@ -1091,16 +1099,19 @@ gdb_get_function_command (ClientData clientData, Tcl_Interp *interp,
     }
 
   args = Tcl_GetStringFromObj (objv[1], NULL);
-  sals = decode_line_1 (&args, DECODE_LINE_FUNFIRSTLINE, NULL, 0);
+  location = string_to_event_location (&args, current_language);
+  cleanup = make_cleanup_delete_event_location (location);
+  sals = decode_line_1 (location, DECODE_LINE_FUNFIRSTLINE, NULL, 0);
   if (sals.nelts == 1)
     {
       resolve_sal_pc (&sals.sals[0]);
       function = pc_function_name (sals.sals[0].pc);
       Tcl_SetStringObj (result_ptr->obj_ptr, function, -1);
-      return TCL_OK;
     }
+  else
+    Tcl_SetStringObj (result_ptr->obj_ptr, "N/A", -1);
 
-  Tcl_SetStringObj (result_ptr->obj_ptr, "N/A", -1);
+  do_cleanups (cleanup);
   return TCL_OK;
 }
 
