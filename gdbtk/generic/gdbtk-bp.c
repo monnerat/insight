@@ -681,8 +681,11 @@ gdb_actions_command (ClientData clientData, Tcl_Interp *interp,
   Tcl_ListObjGetElements (interp, objv[2], &gdbtk_obj_array_cnt,
 			  &gdbtk_obj_array);
   gdbtk_obj_array_ptr = 1;
-  commands = read_command_lines_1 (gdbtk_read_next_line, 1,
-				   check_tracepoint_command, tp);  
+  if (gdbtk_obj_array_cnt && gdbtk_obj_array)
+    commands = read_command_lines_1 (gdbtk_read_next_line, 1,
+				     check_tracepoint_command, tp);  
+  else
+    commands = read_command_lines ("", 0, 1, check_tracepoint_command, tp);
 
   breakpoint_set_commands ((struct breakpoint *) tp, commands);
   return TCL_OK;

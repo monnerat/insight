@@ -1,5 +1,5 @@
 # lframe.tcl - Labelled frame widget.
-# Copyright (C) 1997,2008 Red Hat, Inc.
+# Copyright (C) 1997-2015 Red Hat, Inc.
 # Written by Tom Tromey <tromey@cygnus.com>.
 
 itcl::class Labelledframe {
@@ -12,7 +12,8 @@ itcl::class Labelledframe {
     }
   }
 
-  constructor {} {
+  constructor {args} {
+    eval $this configure $args
     label [namespace tail $this].label -text $text -padx 2
     _add [namespace tail $this].label
   }
