@@ -72,7 +72,7 @@ extern void gdbtk_delete_breakpoint (struct breakpoint *);
 extern void gdbtk_modify_breakpoint (struct breakpoint *);
 
 static void gdbtk_architecture_changed (struct gdbarch *);
-static void gdbtk_trace_find (char *arg, int from_tty);
+static void gdbtk_trace_find (int tfnum, int tpnum);
 static void gdbtk_trace_start_stop (int, int);
 static void gdbtk_attach (void);
 static void gdbtk_detach (void);
@@ -125,6 +125,7 @@ gdbtk_add_hooks (void)
   observer_attach_memory_changed (gdbtk_memory_changed);
   observer_attach_command_param_changed (gdbtk_param_changed);
   observer_attach_register_changed (gdbtk_register_changed);
+  observer_attach_traceframe_changed (gdbtk_trace_find);
 
   /* Hooks */
   deprecated_call_command_hook = gdbtk_call_command;
@@ -146,7 +147,6 @@ gdbtk_add_hooks (void)
   deprecated_file_changed_hook = gdbtk_file_changed;
   specify_exec_file_hook (gdbtk_exec_file_display);
 
-  deprecated_trace_find_hook = gdbtk_trace_find;
   deprecated_trace_start_stop_hook = gdbtk_trace_start_stop;
 
   deprecated_attach_hook            = gdbtk_attach;
@@ -698,15 +698,15 @@ gdbtk_print_frame_info (struct symtab *s, int line,
  */
 
 static void
-gdbtk_trace_find (char *arg, int from_tty)
+gdbtk_trace_find (int tfnum, int tpnum)
 {
   Tcl_Obj *cmdObj;
 
   cmdObj = Tcl_NewListObj (0, NULL);
   Tcl_ListObjAppendElement (gdbtk_interp, cmdObj,
 			    Tcl_NewStringObj ("gdbtk_tcl_trace_find_hook", -1));
-  Tcl_ListObjAppendElement (gdbtk_interp, cmdObj, Tcl_NewStringObj (arg, -1));
-  Tcl_ListObjAppendElement (gdbtk_interp, cmdObj, Tcl_NewIntObj (from_tty));
+  Tcl_ListObjAppendElement (gdbtk_interp, cmdObj, Tcl_NewIntObj (tfnum));
+  Tcl_ListObjAppendElement (gdbtk_interp, cmdObj, Tcl_NewIntObj (tpnum));
 #if TCL_MAJOR_VERSION == 8 && (TCL_MINOR_VERSION < 1 || TCL_MINOR_VERSION > 2)
   if (Tcl_GlobalEvalObj (gdbtk_interp, cmdObj) != TCL_OK)
     report_error ();

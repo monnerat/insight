@@ -1,5 +1,5 @@
 # SrcBar
-# Copyright (C) 2001-2012 Red Hat, Inc.
+# Copyright (C) 2001-2015 Red Hat, Inc.
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License (GPL) as published by
@@ -819,9 +819,9 @@ itcl::class SrcBar {
   #  METHOD:  handle_trace_find_hook - response to the tfind command.
   #             If the command puts us in a new mode, then switch modes...
   # ------------------------------------------------------------------
-  method handle_trace_find_hook {mode from_tty} {
-    debug "mode: $mode, from_tty: $from_tty, Browsing: $Browsing"
-    if {[string compare $mode -1] == 0} {
+  method handle_trace_find_hook {tfnum tpnum} {
+    debug "tfnum: $tfnum, tfnum: $tfnum, Browsing: $Browsing"
+    if {$tfnum == -1} {
       if {$Browsing} {
 	set_control_mode 0
       }

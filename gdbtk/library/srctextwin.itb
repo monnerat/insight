@@ -90,8 +90,8 @@ itcl::body SrcTextWin::destructor {} {
 #  need to do here is to remove the trace tags, if we are exiting
 #  trace mode
 # ------------------------------------------------------------------
-itcl::body SrcTextWin::trace_find_hook {mode from_tty} {
-  if {[string compare $mode -1] == 0} {
+itcl::body SrcTextWin::trace_find_hook {tfnum tpnum} {
+  if {$tfnum == -1} {
     if {$Browsing} {
       $twin tag remove STACK_TAG 1.0 end
     }

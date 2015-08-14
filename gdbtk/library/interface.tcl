@@ -525,9 +525,9 @@ proc gdbtk_tcl_tracepoint {action tpnum} {
 # ------------------------------------------------------------------
 # PROC: gdbtk_tcl_trace_find_hook -
 # ------------------------------------------------------------------
-proc gdbtk_tcl_trace_find_hook {arg from_tty} {
-#  debug "$arg $from_tty"
-  run_hooks gdb_trace_find_hook $arg $from_tty
+proc gdbtk_tcl_trace_find_hook {tfnum tpnum} {
+#  debug "$tfnum $tpnum"
+  run_hooks gdb_trace_find_hook $tfnum $tpnum
 }
 
 ################################################################
