@@ -62,6 +62,7 @@ itcl::class TraceDlg {
     # !! Why can I not do this?
 
     # If we have multiple lines, we "add" if we have any new ones ONLY..
+    set multiline 1
     set nums      {}
     set lown     -1
     set highn    -1
@@ -156,7 +157,6 @@ itcl::class TraceDlg {
 	# range of numbers
 	set display_number "$lown-$highn"
 	set display_lines  "$lowl-$highl"
-	set multiline 1
       }
     } elseif {$Addresses != {}} {
       if {[llength $Addresses] == 1} {
@@ -168,7 +168,6 @@ itcl::class TraceDlg {
 	# range of numbers
 	set display_number "$lown-$highn"
 	set display_lines  "$lowl-$highl"
-	set multiline 1
       }
     } elseif {$Number != {}} {
       set New 0
@@ -224,9 +223,13 @@ itcl::class TraceDlg {
 	set thread    "N/A"
 
 	# !! Assumptions...
-	set stuff [gdb_get_tracepoint_info [lindex $Number 0]]
-	set _TPassCount [lindex $stuff 5]
-	set actions     [lindex $stuff 9]
+	set _TPassCount 0
+	set actions     {}
+	if {$Number != {}} {
+	  set stuff [gdb_get_tracepoint_info [lindex $Number 0]]
+	  set _TPassCount [lindex $stuff 5]
+	  set actions     [lindex $stuff 9]
+	}
       }
     }
 
