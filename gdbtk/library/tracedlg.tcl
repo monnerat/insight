@@ -27,7 +27,7 @@
 # the user bails out (cancel or destroy buttons).
 
 itcl::class TraceDlg {
-  inherit ManagedWin
+  inherit ManagedWin ModalDialog
 
   # ------------------------------------------------------------------
   # CONSTRUCTOR: create new trace dialog
