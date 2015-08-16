@@ -303,13 +303,13 @@ itcl::class SrcBar {
 
     if {[pref get gdb/control_target]} {
       $Menu add command Other "Breakpoints" \
-	{ManagedWin::open BpWin -tracepoints 0} \
+	{ManagedWin::open BpWin} \
 	-underline 0 -accelerator "Ctrl+B"
     }
 
     if {[pref get gdb/mode]} {
       $Menu add command Other "Tracepoints" \
-        {ManagedWin::open BpWin -tracepoints 1} \
+        {ManagedWin::open TpWin} \
 	-underline 0 -accelerator "Ctrl+T"
       $Menu add command Other "Tdump" {ManagedWin::open TdumpWin} \
 	-underline 2 -accelerator "Ctrl+U"
@@ -680,7 +680,7 @@ itcl::class SrcBar {
 
     if {[pref get gdb/mode]} {
       $Tool add button tp Other \
-        {ManagedWin::open BpWin -tracepoints 1} \
+        {ManagedWin::open TpWin} \
 	"Tracepoints (Ctrl+T)" -image tp_img
 
       $Tool add button tdump Trace {ManagedWin::open TdumpWin} \

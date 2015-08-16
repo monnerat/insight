@@ -221,7 +221,7 @@ itcl::body ManagedWin::_open { class args } {
   if {!$force} {
     # check all windows for one of this type
     foreach obj [itcl::find objects -isa ManagedWin] {
-      if {[$obj isa $class]} {
+      if {[namespace tail [$obj info class]] == $class} {
 	$obj reveal
 	return $obj
       }

@@ -2187,7 +2187,7 @@ itcl::body SrcTextWin::do_key {key} {
       down         { catch {gdb_cmd down} }
       quit         { gdbtk_quit }
       tdump        { ManagedWin::open TdumpWin }
-      tracepoints  { ManagedWin::open BpWin -tracepoints 1}
+      tracepoints  { ManagedWin::open TpWin }
       tfind_next   { catch {gdb_immediate tfind} }
       tfind_prev   { catch {gdb_immediate "tfind -"} }
       tfind_start  { catch {gdb_immediate "tfind start"} }
