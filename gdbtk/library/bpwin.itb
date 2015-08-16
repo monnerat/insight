@@ -1,5 +1,5 @@
 # Breakpoint window for Insight.
-# Copyright (C) 1997, 1998, 1999, 2001, 2002, 2003, 2008 Red Hat, Inc.
+# Copyright (C) 1997-2015 Red Hat, Inc.
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License (GPL) as published by
@@ -22,9 +22,9 @@ itcl::body BpWin::constructor {args} {
     set mbar 0
   }
   set show_threads [pref get gdb/bp/show_threads]
+  eval itk_initialize $args
   debug "Ready to build"
   build_win
-  eval itk_initialize $args 
 
   # The scrolledframe uses a canvas, which doesn't properly
   # calculate an initial size, so we must set a default
