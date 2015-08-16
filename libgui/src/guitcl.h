@@ -38,7 +38,7 @@ extern int
 ide_run_app_script (Tcl_Interp *);
 
 /* This adds the new graph command for manipulating graphs to the
-   interpreter IDE_INTERP.  
+   interpreter IDE_INTERP.
    Returns a standard Tcl result.  */
 extern int
 create_graph_command (Tcl_Interp *ide_interp);

@@ -225,7 +225,7 @@ proc gdbtk_test {name description script answer} {
     # Error
     gdbtk_print_verbose ERROR $name $description $script \
       $code $result
-  } elseif {[string compare $result $answer] == 0} { 
+  } elseif {[string compare $result $answer] == 0} {
     if {[string index $name 0] == "*"} {
       # XPASS
       set HOW XPASS
@@ -256,12 +256,12 @@ proc gdbtk_test {name description script answer} {
     if {$_test(verbose) != 1} {
       puts stdout "---- Result should have been:"
       puts stdout "$answer"
-      puts stdout "---- $name ${HOW}ED" 
+      puts stdout "---- $name ${HOW}ED"
     }
     if {$_test(logfile) != ""} {
       puts $_test(logfile) "---- Result should have been:"
       puts $_test(logfile) "$answer"
-      puts $_test(logfile) "---- $name ${HOW}ED" 
+      puts $_test(logfile) "---- $name ${HOW}ED"
     }
   }
 }

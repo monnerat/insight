@@ -1,27 +1,27 @@
 
 /* -----------------------------------------------------------------------------
-* NAME:	
+* NAME:
 *		WarpPointer
 *
 * SYNOPSIS:	int WarpPointer (clientData, interp, objc, objv)
 *		Implements tcl function:
 *		warp_pointer win x y
 *
-* DESC:	
+* DESC:
 *		Forces the pointer to a specific location.  There is probably
 *		no good reason to use this except in the testsuite!
 *
-* ARGS:	
+* ARGS:
 *		win (objv[1]) - tk window name that coordinates are relative to.
 *				Use "." for absolute coordinates
 *
 *		x (obvj[2])   - X coordinate
 *		y (objv[3])   - Y coordinate
-* RETURNS:	
-*	
+* RETURNS:
 *
-* NOTES:	
-*	
+*
+* NOTES:
+*
 *
 * ---------------------------------------------------------------------------*/
 #ifdef _WIN32
@@ -49,10 +49,10 @@ WarpPointer (clientData, interp, objc, objv)
     if ((Tcl_GetIntFromObj (interp, objv[2], &x) == TCL_ERROR) ||
 	(Tcl_GetIntFromObj (interp, objv[3], &y) == TCL_ERROR))
       return TCL_ERROR;
-    
+
     tkwin = Tk_NameToWindow(interp, Tcl_GetStringFromObj(objv[1], NULL), \
 			 Tk_MainWindow (interp));
-    if (tkwin == NULL) 
+    if (tkwin == NULL)
       return TCL_ERROR;
 
     {
@@ -62,7 +62,7 @@ WarpPointer (clientData, interp, objc, objv)
       SetCursorPos (wx + x, wy + y);
 #else
       Window win = Tk_WindowId(tkwin);
-      XWarpPointer(Tk_Display(tkwin), None, win, 0, 0, 0, 0, x, y); 
+      XWarpPointer(Tk_Display(tkwin), None, win, 0, 0, 0, 0, x, y);
 #endif
     }
 

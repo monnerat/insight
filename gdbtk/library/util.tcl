@@ -92,7 +92,7 @@ proc tfind_cmd {command} {
 #  PROC:  save_trace_command -- Saves the current trace settings to a file
 # ------------------------------------------------------------------
 proc save_trace_commands {} {
-  
+
   set out_file [tk_getSaveFile -title "Enter output file for trace commands"]
   debug "Got outfile: $out_file"
   if {$out_file != ""} {
@@ -190,7 +190,7 @@ proc bp_exists {linespec} {
 
 proc gridCGet {slave option} {
   set config_list [grid info $slave]
-  return [lindex $config_list [expr [lsearch $config_list $option] + 1]] 
+  return [lindex $config_list [expr [lsearch $config_list $option] + 1]]
 }
 
 # ------------------------------------------------------------------
@@ -206,7 +206,7 @@ proc get_disassembly_flavor {} {
     return $gdb_val
   }
 }
- 
+
 # ------------------------------------------------------------------
 #  PROC:  list_disassembly_flavors - Lists the current disassembly flavors.
 #         Returns an empty list if the set disassembly-flavor is not supported.
@@ -221,14 +221,14 @@ proc list_disassembly_flavors {} {
     return [lsort $vals]
   } else {
     return {}
-  }    
+  }
 }
 
 # ------------------------------------------------------------------
 #  PROC:  init_disassembly_flavor - Synchs up gdb's internal disassembly
 #         flavor with the value in the preferences file.
 # ------------------------------------------------------------------
-proc init_disassembly_flavor {} { 
+proc init_disassembly_flavor {} {
   set gdb_val [get_disassembly_flavor]
   if {$gdb_val != ""} {
     set def_val [pref get gdb/src/disassembly-flavor]
@@ -313,7 +313,7 @@ proc r_setcolors {w option color} {
     return
   }
   catch {$w config $option $color}
-  
+
   foreach child [winfo children $w] {
     r_setcolors $child $option $color
   }

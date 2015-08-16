@@ -20,20 +20,20 @@ Tue Dec 15 13:24:42 1998  Keith Seitz  <keiths@cygnus.com>
 	(pref_save): Use escape_value whenever prefs are saved..
 
 Tue Dec 15 11:07:01 1998  Keith Seitz  <keiths@cygnus.com>
- 
+
         * process.tcl (build_win): Do not export the listbox's selection
         as the X selection so that multiple listboxes can have selections
         highlighted at the same time.
- 
+
         * stack.tcl (build_win): Ditto.
- 
+
 Mon Dec 14 15:53:38 1998  Keith Seitz  <keiths@cygnus.com>
- 
+
         * watch.tcl (update): Catch errors to getLocals, which could error
         if no symbol table is loaded.
- 
+
         * locals.tcl (update): Ditto.
- 
+
 1998-11-17  Fernando Nasser  <fnasser@totem.to.cygnus.com>
 
 	* kod.tcl: fix <Double-1> command spec for listbox.
@@ -52,12 +52,12 @@ Mon Dec 14 15:53:38 1998  Keith Seitz  <keiths@cygnus.com>
 
 Thu Nov 12 15:20:15 1998  Jim Ingham   <jingham@cygnus.com>
 
-	* console.tcl (complete): I added the ability to pass from_tty 
+	* console.tcl (complete): I added the ability to pass from_tty
         from gdb_cmd to the underlying commands.  Pass 1 when the
 	command is invoked from the console.
 
 	* interface.tcl (gdbtk_tcl_tstart, gdbtk_tcl_tstop): Run the
-	src window's do_tstop method rather than manipulating the 
+	src window's do_tstop method rather than manipulating the
 	widgets by hand.
 
 	* src.tcl (build_win): Redo the packing so that the function
@@ -69,12 +69,12 @@ Thu Nov 12 15:20:15 1998  Jim Ingham   <jingham@cygnus.com>
 
 	* srctextwin.tcl: Fixed some bugs I introduced in setting
 	breakpoints in the assembly & mixed mode windows.  Dropped
-	the notion of joint breakpoint images for lines that have 
+	the notion of joint breakpoint images for lines that have
 	breakpoints of two separate types.  Too fragile.
         Also added the "dont_change_appearance" flag, used in the
 	continue_to_here method to tell the GUI not to reflect the
 	temporary disabling of all the breakpoints.
-	
+
 	* toolbar.tcl (insert_buttons): Added a little more error-checking.
 
 Wed Nov 11 08:40:04 1998  Fernando Nasser  <fnasser@cygnus.com>
@@ -107,7 +107,7 @@ Mon Nov  9 12:09:48 1998  Michael Snyder  <msnyder@cleaver.cygnus.com>
 
 Wed Nov  4 12:41:42 1998  Jim Ingham  <jingham@cygnus.com>
 
-	* actiondlg.tcl: Get the stack collect string from an instance 
+	* actiondlg.tcl: Get the stack collect string from an instance
 	variable.  Need to implement some way to get this from the
 	target settings...
 	* global_pref.tcl (toggle_tracing_mode): Add & remove hooks
@@ -119,7 +119,7 @@ Wed Nov  4 12:41:42 1998  Jim Ingham  <jingham@cygnus.com>
 	* srcbar.tcl (constructor, destructor trace_find_hook): Added
 	the trace_find_hook to the source toolbar, and added the
 	necessary hooks to handle it.
-	* srctextwin.tcl (trace_find_hook): Added a trace find hook to 
+	* srctextwin.tcl (trace_find_hook): Added a trace find hook to
 	the sourcebar as well.
 	* stack.tcl (update): protect against errors in gdb_stack.
 	Just return "NO STACK" if we couldn't get it.
@@ -140,7 +140,7 @@ Wed Nov  4 12:41:42 1998  Jim Ingham  <jingham@cygnus.com>
 	* main.tcl (set_target_name): Add ice target.
 	(set_target): If an "after_attaching" preference exists,
 	run it.
-	
+
 Mon Nov  2 13:24:10 1998  Jim Ingham  <jingham@cygnus.com>
 
 	* bp.tcl (update): The hook function was passing more
@@ -148,7 +148,7 @@ Mon Nov  2 13:24:10 1998  Jim Ingham  <jingham@cygnus.com>
 
 Mon Nov  2 11:16:10 1998  Jim Ingham  <jingham@cygnus.com>
 
-	* toolbar.tcl: Added Tdump image.	
+	* toolbar.tcl: Added Tdump image.
 
 Fri Oct 30 17:36:05 1998  Jim Ingham  <jingham@cygnus.com>
 
@@ -159,7 +159,7 @@ Fri Oct 30 17:06:31 1998  Jim Ingham  <jingham@cygnus.com>
 
 	* bp.tcl (bp_all): Only remove tracepoints in the tracepoint
 	window, and breakpoints in the breakpoint window.
-	
+
 Fri Oct 30 11:22:23 1998  Jim Ingham  <jingham@cygnus.com>
 
 	* actiondlg.tcl: Added special tag "Collect Stack".  This
@@ -169,27 +169,27 @@ Fri Oct 30 11:22:23 1998  Jim Ingham  <jingham@cygnus.com>
 	* main.tcl (source_file): Source in a file of gdb commands.
 	* srcbar.tcl (constructor): Added source file menu entry, and
 	made stack buttons belong to both the Trace & Control classes.
-	* srctextwin.tcl (constructor): One too many separators in the 
+	* srctextwin.tcl (constructor): One too many separators in the
 	trace trace popup menu.
 	* tclIndex: regenerated.
 	* tfind_args.tcl: Added "tfind frame"
 	* toolbar.tcl (create_button): Allow a button to belong to
 	more than one class.
-	* toolbar.tcl (enable_ui): Eliminate redundant code, and allow 
+	* toolbar.tcl (enable_ui): Eliminate redundant code, and allow
 	a button to belong to more than one class.
 	* toolbar.tcl (create_trace_menu): Added save tracepoints &
 	Tfind frame menu items.
 	* tracedlg.tcl: Added deletion of actions, and fixed a
 	the whiile-stepping combobox callback for the new combobox.
-	* util.tcl (save_trace_commands): new proc. 
-	 
+	* util.tcl (save_trace_commands): new proc.
+
 1998-10-29  Michael Snyder  <msnyder@demo-laptop2.cygnus.com>
 
 	* target.tcl: add /dev/cua0 for Linux.
 
 Tue Oct 27 13:46:03 1998  Jim Ingham  <jingham@cygnus.com>
 
-	* Many little bug fixes all over in order to get tracing to work 
+	* Many little bug fixes all over in order to get tracing to work
         along with normal program control.
 	* toolbar.tcl: Rewrote much of the code here to put commonly
 	used code into functions, and clean up adding menus and
@@ -216,7 +216,7 @@ Tue Oct 27 13:46:03 1998  Jim Ingham  <jingham@cygnus.com>
         * tdump.tcl: Fixed an incorrect (1 rather than 1.0) text
 	widget line specification.
 	* tfind_args.tcl (build_win): Bind return in the entry to the
-	OK button.  Clear the entry field if the Type has changed. 
+	OK button.  Clear the entry field if the Type has changed.
 	* utils.tcl: Added comments for the debug commands.
 	* watch.tcl (build_win): Flash the OK button before invoking it.
 
@@ -248,14 +248,14 @@ Wed Oct 14 14:29:17 1998  Martin M. Hunt  <hunt@cygnus.com>
 	targets to download.
 	(build_win): Add user-defined list of functions for
 	initial breakpoints.
-     
+
 	* main.tcl (run_executable): Set user-defined initial
 	breakpoints.
 
-	* prefs.tcl (pref_set_defaults): Define new prefs 
+	* prefs.tcl (pref_set_defaults): Define new prefs
 	gdb/load/bp_at_func and gdb/load/bp_func. These are
 	user-defined initial breakpoints.
-	
+
 Sat Oct 10 00:21:44 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 	* help/source.html: Add new images, add description of changes
@@ -264,7 +264,7 @@ Sat Oct 10 00:21:44 1998  Martin M. Hunt  <hunt@cygnus.com>
 	* help/memory.html: Cleanup and add new information.
 
 	* help/breakpoint.html: Reformat.
-	
+
 	* help/images: Add a bunch of new GIFs.
 
 1998-10-08  Keith Seitz  <keiths@cygnus.com>
@@ -314,7 +314,7 @@ Wed Oct  7 13:07:00 1998  Martin M. Hunt  <hunt@cygnus.com>
 	iconify all the support windows too.  When any source
 	window is deiconified, deiconify everything.
 
-	* src.tcl (destructor): Destroy SrcTextWin too. 
+	* src.tcl (destructor): Destroy SrcTextWin too.
 
 Tue Oct  6 23:00:08 1998  Martin M. Hunt  <hunt@cygnus.com>
 
@@ -328,7 +328,7 @@ Tue Oct  6 23:00:08 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 	* main.tcl (run_executable): If the run command fails
 	with a result of "No executable" then call _open_file.
-	(_open_file): New proc. Opens a file requester and 
+	(_open_file): New proc. Opens a file requester and
 	sets the executable name to the selected file.
 
 	* toolbar.tcl (create_menu_items): Add "..." to Source
@@ -336,10 +336,10 @@ Tue Oct  6 23:00:08 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 Mon Oct  5 21:10:30 1998 Jim Ingham    <jingham@cygnus.com>
 
-	* srctextwin.tcl (set_tracepoint):  The filename variable 
+	* srctextwin.tcl (set_tracepoint):  The filename variable
 	changed to current(filename) but this use was not updated.
 
-	* global_prefs: Added a global preference to turn on the 
+	* global_prefs: Added a global preference to turn on the
 	tracing.  It only sets the tracing preference, and does
 	not cause gdb to relayout the toolbar yet...
 
@@ -365,9 +365,9 @@ Mon Oct  5 00:43:11 1998  Martin M. Hunt  <hunt@cygnus.com>
 	(do_bp): When a BP is deleted, call gdb_find_bp_at_line()
 	to see if there are any more BPs at the same line number.
 	Add "thread" BP type.
-	(bp_line): Accept an optional list of thread numbers to 
+	(bp_line): Accept an optional list of thread numbers to
 	set BPs on. Loop through the list setting BPs on each thread.
-	(motion): Accept a window and type argument. Call 
+	(motion): Accept a window and type argument. Call
 	showBPBalloon in type is not "var".
 	(showBPBalloon): New method.Opens a balloon with breakpoint
 	info in it.
@@ -413,11 +413,11 @@ Fri Oct  2 14:02:25 1998   Jim Ingham   <jingham@cygnus.com>
 
 	* srctextwin.tcl (destructor): New. Remove all previously added
 	hooks.
-	
+
 	* src.tcl (point_to_main): New function. I got tired of typing
 	the same five lines over and over again.
 
-	* main.tcl (set_baud): Target baud preferences are stored as 
+	* main.tcl (set_baud): Target baud preferences are stored as
 	[target name]-baud, not [target name]/baud.
 	(run_executable): Call SrcWin::point_to_main.
 	(gdbtk_tcl_preloop): Call SrcWin::point_to_main.
@@ -449,7 +449,7 @@ Thu Oct  1 18:58:11 1998 Jim Ingham    <jingham@cygnus.com>
 	* main.tcl (gdbtk_tcl_preloop): We were using lindex on the
 	return value from info files, but if the directory had a space
 	in it, then the result was not a proper Tcl list, and so the
-	command would fail.  Use regexp instead...	
+	command would fail.  Use regexp instead...
 
 Thu Oct  1 17:21:26 1998 Jim Ingham    <jingham@cygnus.com>
 
@@ -465,17 +465,17 @@ Wed Sep 30 21:32:39 1998 Jim Ingham    <jingham@cygnus.com>
 	* srctextwin.tcl (insertBreakTag): There was a bug in the
         method of inserting break tags.  If a tag of the intended
         type did not already exist, insertBreakTag would not set it.
-	This method is a little less flexible, but actually works 
+	This method is a little less flexible, but actually works
 	for all our uses.
 
 Wed Sep 30 19:42:43 1998 Jim Ingham    <jingham@cygnus.com>
 
 	* src.tcl (set_execution_status): When the program has
-        terminated, most stubs detach.  Then we need to set 
+        terminated, most stubs detach.  Then we need to set
         gdb_target_changed here so gdb will know to reattack when
         you press the Run button.
 
-	* memory.tcl (update_address): We caught the gdb_eval when you 
+	* memory.tcl (update_address): We caught the gdb_eval when you
 	give an address expression, but then only trapped the case
 	where you gave an invalid address or non-existant symbol.
 	Trap all the other errors as well...
@@ -488,7 +488,7 @@ Wed Sep 30 16:55:53 1998  Martin M. Hunt  <hunt@cygnus.com>
 	* prefs.tcl (pref_set_defaults): Add gdb/bp/show_threads
 	preference used for toggling the display of the thread
 	column in the BP window.  Default is 0 (off).
-	
+
 1998-09-28  Keith Seitz  <keiths@cygnus.com>
 
 	* download.tcl (download_it): Don't download if there is no executable...
@@ -515,9 +515,9 @@ Fri Sep 25 19:01:32 1998   Jim Ingham    <jingham@cygnus.com>
 	Windows EnableWindow call without sending your app into the
 	background when the dialog is dismissed.
         * target.tcl (post): Added the same method to this class.
-	Really should subclass these.  Will do this when we rework the 
+	Really should subclass these.  Will do this when we rework the
 	class hierarchy for Itcl3.0.
-	* memory.tcl (create_prefs): Use the new post method. 
+	* memory.tcl (create_prefs): Use the new post method.
 	* main.tcl (set_target_name): Use the post method rather than
 	freeze.
 
@@ -545,34 +545,34 @@ Fri Sep 25 19:01:32 1998   Jim Ingham    <jingham@cygnus.com>
 
 Thu Sep  3 16:43:43 1998  Jim Ingham   <jingham@leda.cygnus.com>
 
-	* mem_prefs.tcl: Fixed the size & format radiogroups in 
+	* mem_prefs.tcl: Fixed the size & format radiogroups in
 	the memory preferences so that they match the format
-	options being sent to it by the memory window.  Also 
+	options being sent to it by the memory window.  Also
 	greyed out the format box when float or double is selected.
-	Also made sure we didn't re-enable any disabled widgets in 
+	Also made sure we didn't re-enable any disabled widgets in
 	the idle function.
 
 Sun Aug 30 00:40:28 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 	* process.tcl: New file.  Implement a process/thread selection
 	and display window.
-	
-	* srctextwin.tcl (do_key): Add entry for thread/process 
+
+	* srctextwin.tcl (do_key): Add entry for thread/process
 	window.
 	(config_win): Bind "Thread List" to Control-H.
 	(FillSource): Fix bug when source is not found.
-	
+
 	* toolbar.tcl (create_menu_items): Add Thread List to menu
-	
+
 	* manage.tcl (manage_init): Add process window to
 	managed array.
 
 	* prefs.tcl (pref_save): Add "process" to window types to save.
-	
+
 	* Makefile: Add process.tcl
 
 	* tclIndex: Rebuilt
-	
+
 1998-08-28  Keith Seitz  <keiths@cygnus.com>
 
 	* variables.tcl (edit): Format data so that C arrays are not
@@ -592,7 +592,7 @@ Wed Aug 26 00:06:11 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 	* srctextwin.tcl (FillMixed): Better error handling.
 	(LoadFIle): Stop harrassing users with worthless dialog boxes.
-	
+
 	* main.tcl (run_executable): Set args when arguments are
 	given in the target dialog.
 
@@ -602,7 +602,7 @@ Wed Aug 26 00:06:11 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 	* images/stack.gif: Use the image from images2 because
 	it looks better.
-	
+
 Tue Aug 25 16:09:02 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 	* src.tcl (build_win): Change fonts on comboboxes to src-font.
@@ -707,12 +707,12 @@ Mon Aug 17 14:27:54 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 Mon Jul 27 12:35:31 1998  Martin M. Hunt  <hunt@cygnus.com>
 
-	* interface.tcl (gdbtk_tcl_tracepoint): Make function match C 
+	* interface.tcl (gdbtk_tcl_tracepoint): Make function match C
 	implementation by adding pass_count.
 
 Sat Jul 25 22:40:49 1998  Martin M. Hunt  <hunt@cygnus.com>
 
-	* manage.tcl (manage_init): Change "loadpref" to "targetsel" 
+	* manage.tcl (manage_init): Change "loadpref" to "targetsel"
 	and change class name to TargetSelection. This avoids confusion
 	with the IDE GdbLoadPref class.
 	* target.tcl (TargetSelection): Change class name.
@@ -730,7 +730,7 @@ Fri Jul 24 14:37:49 1998  Keith Seitz  <keiths@cygnus.com>
 	* prefs.tcl (pref_set_defaults): Add new preferences for the func
 	browser.
 	* tclIndex: Regenerate.
-	
+
 Fri Jul 24 00:53:28 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 	* srctextwin.tcl (SrcTextWin): Initialize LineNums.
@@ -763,15 +763,15 @@ Fri Jul 17 00:03:43 1998  Martin M. Hunt  <hunt@cygnus.com>
 	(update_address_cb): New method. Handle address
 	controlbox callbacks. Set flag and call update_address.
 	(update_address): Call BadExpr on bad expressions.
-	 Use local variable "ae" to set public variable addr_exp. 
-	This fixes bug where widget forgets its address when 
+	 Use local variable "ae" to set public variable addr_exp.
+	This fixes bug where widget forgets its address when
 	reconfigured. Set table background white when expression
 	is OK.
 	(BadExpr): When a bad expression is entered, create a
 	messagebox and set the table bg to gray.
 
 	* mem_pref.tcl (apply): Remove mystery debug line.
-	
+
 Thu Jul 16 16:56:12 1998  Jim Ingham    <jingham@cygnus.com>
 
         * download.tcl, ide.tcl, interface.tcl, main.tcl, manage.tcl
@@ -801,7 +801,7 @@ Mon Jul  6 17:53:50 1998  Jim Ingham    <jingham@cygnus.com>
 	* download.tcl, helpViewer.tcl, html_library.tcl, memory.tcl,
         register.tcl, src.tcl, srctextwin.tcl, target.tcl,
 	tracedlg.tcl, util.tcl, variables.tcl, warning.tcl, watch.tcl:
-	With the Tcl 8.0 compiler, expr commands are more efficient if 
+	With the Tcl 8.0 compiler, expr commands are more efficient if
 	you use:
 	    expr {$foo + $bar}
         instead of:
@@ -813,7 +813,7 @@ Mon Jul  6 15:19:59 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 	* srctextwin.tcl (FillSource): Call Parent's mode method
 	to combobox will be updated.
-	* src.tcl (mode): Pass along second argument to mode_set.	
+	* src.tcl (mode): Pass along second argument to mode_set.
 
 Wed Jul  1 15:09:47 1998  Martin M. Hunt  <hunt@cygnus.com>
 
@@ -827,11 +827,11 @@ Wed Jul  1 11:07:21 1998  Jim Ingham   <jingham@cygnus.com>
 	then the pre_add_symbol hook would have called gdbtk_busy but
         the corresponding call to gdbtk_idle would not have occured.
 
-        Also changed some catch calls so they didn't use 
-        "catch {set foo [real_command]}" 
-	    but rather the more efficient: 
+        Also changed some catch calls so they didn't use
+        "catch {set foo [real_command]}"
+	    but rather the more efficient:
 	"catch {real_command} foo"
-        
+
 	* register.tcl: more catch cleanups
 	* src.tcl: more catch cleanups
 	* stack.tcl: more catch cleanups
@@ -839,7 +839,7 @@ Wed Jul  1 11:07:21 1998  Jim Ingham   <jingham@cygnus.com>
 	* tdump.tcl: more catch cleanups
 	* variables.tcl: more catch cleanups
 	* watch.tcl: more catch cleanups
-  
+
 Wed Jul  1 12:21:55 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 	* src.tcl (build_win): Remove incorrect runstop
@@ -874,13 +874,13 @@ Wed Jul  1 01:40:52 1998  Martin M. Hunt  <hunt@cygnus.com>
 	* src_pref.tcl (build_win): Add line number
 	checkbutton.  Layout needs changed.
 	* prefs.tcl (pref_set_defaults): Add linenum pref.
-	
+
 Thu Jun 25 17:31:30 1998  Keith Seitz  <keiths@cygnus.com>
 
 	* toolbar.tcl (create_menu_items): Add Function Browser menu item.
 
 	* tclIndex: Regenerate.
-	
+
 	* Makefile: Add browser.tcl.
 
 	* util.tcl (do_test): New procedure for invoking a test in the
@@ -893,7 +893,7 @@ Thu Jun 25 17:31:30 1998  Keith Seitz  <keiths@cygnus.com>
 	(download_progress): If starting a download, unmap the search widget
 	and map the download progress indicator in its place. When downloading
 	is done, do the opposite.
-	(config_win): Bind the down and up arrow keys to directly scroll the 
+	(config_win): Bind the down and up arrow keys to directly scroll the
 	window.
 	(search): New method which searches for strings in the source window
 	and jumps to a particular line.
@@ -925,7 +925,7 @@ Thu Jun 25 17:31:30 1998  Keith Seitz  <keiths@cygnus.com>
 	Override default binding for button-2 motion to allow easier pasting
 	into the window.
         Bind the paste event to the method paste.
- 
+
 Wed Jun 17 13:50:48 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 	* src.tcl (reconfig): Recognize tab size changes.
@@ -965,7 +965,7 @@ Tue Jun  9 13:57:24 1998  Keith Seitz  <keiths@cygnus.com>
 	* register.tcl (build_win): Do not allow editing in tracing
 	mode.
 	(reg_select): Do not allow editing in tracing mode.
-	
+
 	* memory.tcl (update_address): Check that gdb's handling of chars and
 	char*s doesn't abort the update.
 
@@ -982,7 +982,7 @@ Tue Jun  9 00:00:18 1998  Martin M. Hunt  <hunt@cygnus.com>
 	Just call "manage save".
 	* manage.tcl (manage): Remove manage quit.
 	(manage_quit): Deleted.
-	(manage_init): Remove quit_hook.	
+	(manage_init): Remove quit_hook.
 	(manage_save): Use "Pref setd" instead of "pref set".
 	* prefs.tcl (pref_set_defaults): Remove quit_hook.
 	(pref_quit): Deleted.
@@ -994,13 +994,13 @@ Mon Jun  8 16:15:33 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 Mon Jun  8 13:31:08 1998  Martin M. Hunt  <hunt@cygnus.com>
 
-	* memory.tcl (build_win): Always Bind configure event to 
+	* memory.tcl (build_win): Always Bind configure event to
 	newsize method.  Change table widget to use incr_addr for
 	both incr and decr. Enable autorepeat.
 	(create_prefs): Set rheight (row height).
 	(newsize): Set rheight if necessary. Return if numbytes
 	is not zero.
-	(update_address): Move gdbtk_idle and gdbtk_busy calls to 
+	(update_address): Move gdbtk_idle and gdbtk_busy calls to
 	update_addr.
 	(update_addr): Surround with gdbtk_idle and gdbtk_busy.
 	(incr_addr): Take an argument to indicate how much
@@ -1024,7 +1024,7 @@ Thu Jun  4 18:34:11 1998  Martin M. Hunt  <hunt@cygnus.com>
 Thu Jun  4 10:53:33 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 
 	* tclIndex: regenerated.
-	
+
 	Merged (most recent first):
 
         - Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
@@ -1048,7 +1048,7 @@ Thu Jun  4 10:53:33 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 
 	* interface.tcl (gdbtk_tcl_tstart): update menus entries only, do
  	not do actual command.
-	(gdbtk_tcl_tstopt): update menus entries only, do not do actual 
+	(gdbtk_tcl_tstopt): update menus entries only, do not do actual
 	command.
 	(gdbtk_tcl_warning): remove tdump warning message from list of not
 	displayed messages.
@@ -1060,7 +1060,7 @@ Thu Jun  4 10:53:33 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	* bp.tcl (bp_add): align properly the bpnum and passcount fields,
 	for the tracepoint window.
 
-	* main.tcl (set_exe): set file_done (new global state variable) 
+	* main.tcl (set_exe): set file_done (new global state variable)
 	depending whether new file was read in or not.
  	(set_target_name): return 0 if user chose cancel from target setting
 	window displayed by 'connect'.
@@ -1074,7 +1074,7 @@ Thu Jun  4 10:53:33 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	set_target_name.
 	Added public data 'exportcancel'.
 
-	* toolbar.tcl (do_async_connect): change menu items state only 
+	* toolbar.tcl (do_async_connect): change menu items state only
 	if connect was successful.
 
 	* src.tcl (bp): modify condition for SOURCE case to display tp dot
@@ -1093,10 +1093,10 @@ Thu Jun  4 10:53:33 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	* tracedlg.tcl (gdb_add_tracepoint): call to gdb_actions is now
 	catching the errors (in case of incorrect syntax) and displaying
 	them to the user.
- 	
+
 	* main.tcl (set_target): Changed text of error message to mention
  	the Target Settings dialog.
-	
+
 	* prefs.tcl: Set default preference for gdb/load/check to 0.
 
 	* target.tcl (build_win): disable comparison with executable for
@@ -1118,7 +1118,7 @@ Thu Jun  4 10:53:33 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	* warning.tcl (constructor): call destructor if dialog doesn't
  	need to be displayed.
 
-	* console.tcl (invoke): make function get input and return if in 
+	* console.tcl (invoke): make function get input and return if in
 	readline state,	independently from the value of Running.
 
 	* src.tcl (set_state): set state of pop up menus only for synch
@@ -1126,15 +1126,15 @@ Thu Jun  4 10:53:33 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 
 	* tdump.tcl (build_win): simplify the window, eliminating pane.
 	This fixes resize problems.
- 	(update): add call to see to display last thing outputted to the 
+ 	(update): add call to see to display last thing outputted to the
 	window.
 
-	* tfind_args.tcl (do_it): call the tfind_cmd procedure. 
+	* tfind_args.tcl (do_it): call the tfind_cmd procedure.
 
 	* toolbar.tcl (create_menu_items): changed calls to tstart and tstop
  	to use do_tstart and do_tstop.
 
-	* srcbar.tcl (runstop): do not call _set_trace in asynch case, 
+	* srcbar.tcl (runstop): do not call _set_trace in asynch case,
 	just use _set_runstop always.
 	(_set_runstop): added handling for asynch mode cases.
 	(_set_trace): removed.
@@ -1151,40 +1151,40 @@ Thu Jun  4 10:53:33 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	* interface.tcl: (gdbtk_tcl_warning) do not display warning
 	about no current trace frame upon opening of tdump window.
 
-	* main.tcl: (run_executable) in asynch mode just call tstart, 
+	* main.tcl: (run_executable) in asynch mode just call tstart,
 	connect is now done independently.
-	(async_connect) new procedure to connect and do comarison with 
+	(async_connect) new procedure to connect and do comarison with
 	remote executable, in asynch mode. Sets up gui state globals.
-	(async_disconnect) new procedure to disconnect from target in 
+	(async_disconnect) new procedure to disconnect from target in
 	asynch mode. Sets up gui state globals.
 
 	* prefs.tcl: added new preference gdb/load/check
 
-	* srcbar.tcl: (create_buttons) tfind commands now use tfind_cmd 
+	* srcbar.tcl: (create_buttons) tfind commands now use tfind_cmd
 	function
 
 	* target.tcl: added new preference gdb/load/check to execute an
-	automatic remote-compare command on connection to target in asynch 
+	automatic remote-compare command on connection to target in asynch
 	mode
 	(set_saved) set saved value for new preference
 	(write saved) write saved value for new preference
-	(build_win) set state of 'run to main', 'break at exit', 'display 
+	(build_win) set state of 'run to main', 'break at exit', 'display
 	dowload' to disabled for asynch mode target dialog.
 	Added new checkbutton for automatic comparison of remote exec.
 	Saved_check: new protected member
 
-	* tdump.tcl: (update) changed check for no frame, since 0 is legal 
+	* tdump.tcl: (update) changed check for no frame, since 0 is legal
 	trace frame number.
 
 	* toolbar.tcl: (create_menu_items): added menus items 'connect to
-	target' and 'disconnect', in async mode. Changed to call tfind_cmd 
+	target' and 'disconnect', in async mode. Changed to call tfind_cmd
 	to execute tfind commands
 	(do_async_connect): new method to connect to target in async mode.
-	(do_asynch_disconnect): new method to disconnect from target in 
+	(do_asynch_disconnect): new method to disconnect from target in
 	async mode.
 
-	* util.tcl: (tfind_cmd): new proc to execute a tfind command on 
-	the target	
+	* util.tcl: (tfind_cmd): new proc to execute a tfind command on
+	the target
 
 Thu May 28 12:49:29 1998  Keith Seitz  <keiths@cygnus.com>
 
@@ -1233,7 +1233,7 @@ Sun May 24 14:05:27 1998  Keith Seitz  <keiths@cygnus.com>
 	Tix labeled frame.
 	Remove the run button frame -- this has moved into the target selection dialog.
 	(set_run): Moved to targets.tcl.
-	
+
 	* prefs.tcl (pref_set_defaults): Change default preferences for the run
 	button to only do a run. Target selection will reset these as appropriate.
 
@@ -1243,15 +1243,15 @@ Sun May 24 14:05:27 1998  Keith Seitz  <keiths@cygnus.com>
 	(native_debugging,valid_target): Move to target.tcl.
 
 	* images/more.gif, images/less.gif: New images for drop frames.
-	
+
 	* tclIndex: Regenerate.
-	
+
 Wed May 20 13:43:00 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 	* toolbar.tcl (create_menu_items): Remove register prefs.
 
 	* images/stop.gif: Set transparent bit.
-	
+
 Tue May 19 12:34:11 1998  Keith Seitz  <keiths@cygnus.com>
 
 	* bp.tcl (bp_add): Use source window's colors. Use "file tail" not
@@ -1280,7 +1280,7 @@ Tue May 19 12:34:11 1998  Keith Seitz  <keiths@cygnus.com>
 	(do_key): Add open key.
 
 	* src_pref.tcl (SrcPref): Save all newly added  preferences.
-	(build_win): Add new preferences for mode, variable balloons, 
+	(build_win): Add new preferences for mode, variable balloons,
 	lots of color choices.
 	(cancel): Reset all new preferences.
 	(pick): Allow passing of button in to make things a little easier.
@@ -1317,7 +1317,7 @@ Tue May 12 11:47:11 PDT 1998  James Ingham  <jingham@leda.cygnus.com>
 	font preferences
 	*html_library.tcl: Use Tcl Font objects for the fonts rather than
 	building up X Font Specs.
-	
+
 
 Thu May  7 16:03:32 1998  Keith Seitz  <keiths@cygnus.com>
 
@@ -1362,7 +1362,7 @@ Fri May  1 11:50:40 1998  Jim Ingham  <jingham@leda.cygnus.com>
  	Fixed the zoom to top of page when rendering is complete nit.
 	Added a reconfig method to refresh the current page.
 	Compulsive reordering of methods.
-	
+
 Thu Apr 30 00:04:52 1998  Martin M. Hunt  <hunt@cygnus.com
 
 	* global_pref.tcl (change_icons): Remove debug line.
@@ -1373,15 +1373,15 @@ Thu Apr 30 00:04:52 1998  Martin M. Hunt  <hunt@cygnus.com
 
 Tue Apr 28 16:51:09 1998  Jim Ingham <jingham@leda.cygnus.com>
 
-	* html_library.tcl: The redefinition of tkFocusOK in this file 
+	* html_library.tcl: The redefinition of tkFocusOK in this file
 	can cause an infinite recursion loop in autoloading tkFocusOK.
 	Change proc -> ::proc to hide the definition from itcl_mkindex
-	* tclIndex: remade without the reference to tkFocusOK.  
+	* tclIndex: remade without the reference to tkFocusOK.
 
 Tue Apr 28 16:51:09 1998  Jim Ingham <jingham@leda.cygnus.com>
 
 	* helpViewer.tcl: The index page now shows up properly in the
-        history list.  Also added images for the fore, back and home 
+        history list.  Also added images for the fore, back and home
 	buttons, and removed the close button.
 
 	* manage.tcl: Moved the wm withdraw of a new toplevel before the
@@ -1389,7 +1389,7 @@ Tue Apr 28 16:51:09 1998  Jim Ingham <jingham@leda.cygnus.com>
 
 	* main.tcl: Changed the tk application name of gdbtk from tk
 	to gdbtk.
-	
+
 Mon Apr 27 14:18:01 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 
 	* helpViewer.tcl: (constructor) Change 'Foreward' to 'Forward' and
@@ -1413,7 +1413,7 @@ Thu Apr 23 13:31:07 1998  Jim Ingham  <jingham@leda.cygnus.com>
         * manage.tcl (manage): Added the help veiwer to the windows
 	list.  Aslo compulsively alphabetized the list...
 	* tclIndex Rebuilt for the new procs.
-  
+
 Mon Apr 20 11:14:17 1998  Keith Seitz  <keiths@onions.cygnus.com>
 
 	* global_pref.tcl (build_win): Add font selector for the status font.
@@ -1429,7 +1429,7 @@ Sat Apr 18 02:11:04 1998  Martin M. Hunt  <hunt@cygnus.com>
 	reporting and stack traces.
 
 Sat Apr 18 01:13:03 1998  Martin M. Hunt  <hunt@cygnus.com>
-	
+
 	* srcbar.tcl (_toggle_updates): Cleanup.
 
 	* src.tcl (do_popup): Fix problems with selections. While
@@ -1446,7 +1446,7 @@ Sat Apr 18 01:13:03 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 Fri Apr 17 10:34:23 1998  Martin M. Hunt  <hunt@cygnus.com>
 
-	* src.tcl (location): Don't look up the full pathname 
+	* src.tcl (location): Don't look up the full pathname
 	of each file added to the combobox.
 
 Fri Apr 17 09:58:59 1998  Keith Seitz  <keiths@onions.cygnus.com>
@@ -1464,7 +1464,7 @@ Fri Apr 17 09:58:59 1998  Keith Seitz  <keiths@onions.cygnus.com>
 	will allow run_executable to cancel a run if the user cancels target
 	selection.
 	(exportcancel): New public data.
-	
+
 	* main.tcl (set_target_name): Return status to caller so that the user
 	can cancel a run request when the target selection dialog is opened.
 	Do not modify gdb_exe_changed -- it has already been set proprely.
@@ -1486,7 +1486,7 @@ Fri Apr 17 09:58:59 1998  Keith Seitz  <keiths@onions.cygnus.com>
 	gdb.
 	(startup code): Do not call set_target_name here -- let run_executable
 	do it.
-	
+
 	* interface.tcl (gdbtk_tcl_query): Update the display when this dialog
 	is dismissed.
 	(gdbtk_tcl_warning): Always show warnings in the debug window.
@@ -1522,24 +1522,24 @@ Wed Apr 15 11:29:47 1998  Martin M. Hunt  <hunt@cygnus.com>
 	(update_file): Removed.
 	(change_icons): Callback for icon combobox.
 
-	* srcbar.tcl (_load_src_images): Remove old target and 
+	* srcbar.tcl (_load_src_images): Remove old target and
 	load images. Add reconfig parameter which reloads images.
 	Use global gdb_ImageDir.
 	(reconfig): New method.
 
 	* floatbar.tcl (create_buttons): Remove target image.
 	Use global gdb_ImageDir.
-	
+
 	* toolbar.tcl (_load_images): Use global gdb_ImageDir.
 	Add reconfig parameter which reloads images.
 	(reconfig): Don't rebuild everything, just reload images.
 	(create_menu_items): Change "Fonts" preferences menu
 	item to "Global".
-	
-	* prefs.tcl (pref_set_defaults): Save only basename in 
+
+	* prefs.tcl (pref_set_defaults): Save only basename in
 	gdb/ImageDir preference.  Initialize global gdb_ImageDir.
 	(pref_read): Set gdb_ImageDir.
-	
+
 	* memory.tcl (build_win):  Use global gdb_ImageDir.
 
 	* manage.tcl (make_icon_window): Use global gdb_ImageDir.
@@ -1552,11 +1552,11 @@ Wed Apr 15 11:29:47 1998  Martin M. Hunt  <hunt@cygnus.com>
 	* images/watch.gif: New file.
 	* images/bp.gif: New file.
 	* images/memory.gif: New file.
-	
+
 	* images2/icons.txt: New file; icon descriptions.
 
 	* toolbar_pref.tcl: Removed.
-	
+
 	* main.tcl (run_executable): If target is "exec" don't
 	show target dialog unless the run command fails.
 
@@ -1612,12 +1612,12 @@ Thu Apr  9 15:21:49 1998  Martin M. Hunt  <hunt@cygnus.com>
 	update the dialog.
 
 Thu Apr  9 04:03:27 1998  Martin M. Hunt  <hunt@cygnus.com>
-	
+
 	* target.tcl (build_win): Bind <Return> for cancel and help buttons.
 
 Wed Apr  8 10:57:14 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 
-	* tdump.tcl: (update): show stuff on window only if current 
+	* tdump.tcl: (update): show stuff on window only if current
 	trace frame is not null.
 
 	* variables.tcl: (build_win): get the current output-radix
@@ -1648,7 +1648,7 @@ Tue Apr  7 12:49:45 1998  Keith Seitz  <keiths@onions.cygnus.com>
 	(TdumpWin::constructor): We should deiconify after we withdraw...
 	Change idle callback to an update callback.
 	(TdumpWin::destructor): Change idle callback to update callback.
-	
+
 	* srcbar.tcl (_open_file): Make necessary gdb_cmd changes to support new
 	API.
 	(create_buttons): Change all tracing commands to use gdb_immediate.
@@ -1662,7 +1662,7 @@ Tue Apr  7 12:49:45 1998  Keith Seitz  <keiths@onions.cygnus.com>
 	Revert display_breaks change for SRC+ASM mode.
 	(bp): Make sure mapping of PC to src window line exists before
 	attempting to set breakpoints/tracepoints.
-	
+
 Fri Apr  3 13:57:42 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 
 	* src.tcl: (do_key): added actions for key bindings in trace mode.
@@ -1679,7 +1679,7 @@ Fri Apr  3 13:57:42 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	Commented out Preference menu item 'Download'.
 	(create_buttons): tdump button, inserted text 'Td' in place of missing
 	icon.
-	
+
 
 Tue Mar 31 17:20:59 1998  Ian Lance Taylor  <ian@cygnus.com>
 
@@ -1711,13 +1711,13 @@ Sun Mar 29 18:50:46 1998  Keith Seitz  <keiths@onions.cygnus.com>
 	specification.
 	(ActionDlg::Line): Default to empty list.
 	(ActionDlg::Address): Add new memeber to enable assembly operation.
-	
+
 Sun Mar 29 21:21:37 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 
 	* bp.tcl: add tracepoint number to tracepoint window.
 	(build_win)(bp_add)(bp_select)(bp_modify)(bp_delete)
 
-	* manage.tcl: (manage_init) do not open windows not related to 
+	* manage.tcl: (manage_init) do not open windows not related to
 	current mode
 
 	* tdump.tcl: (reconfig) remove it
@@ -1763,10 +1763,10 @@ Sat Mar 28 16:30:55 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	* tracedlg.tcl: (build_win) reinserted 'update idletasks' to
 	display Actions frame properly.
 
-	* actiondlg.tcl: (sort) moved "All Registers", "All Locals", 
+	* actiondlg.tcl: (sort) moved "All Registers", "All Locals",
 	"All Arguments" to beginning of list.
 
-	* src.tcl: (line_is_executable) new method. Used in 
+	* src.tcl: (line_is_executable) new method. Used in
 	tracepoint_range.
 
 Sat Mar 28 10:58:04 1998  Keith Seitz  <keiths@onions.cygnus.com>
@@ -1777,7 +1777,7 @@ Sat Mar 28 10:58:04 1998  Keith Seitz  <keiths@onions.cygnus.com>
 
 	* src.tcl (config_win): Change exit key binding from 'q' to 'x.'
 	(goto_func): That's "file tail", not "file split."
-	
+
 	* srcbar.tcl (_set_stepi): Don't do anything if we're debugging
 	asynchronously.
 
@@ -1787,7 +1787,7 @@ Sat Mar 28 10:09:21 1998  Martin M. Hunt  <hunt@cygnus.com>
 	menu item to "Exit".
 
 Sat Mar 28 02:38:51 1998  Martin M. Hunt  <hunt@cygnus.com>
-	
+
 	* src_pref.tcl (build_win): Fix Save and Apply buttons.
 	Change "Save" to "OK". Use standard_button_box.
 	(save): New method, save and exit.
@@ -1799,17 +1799,17 @@ Sat Mar 28 02:38:51 1998  Martin M. Hunt  <hunt@cygnus.com>
 	* global_pref.tcl (Globalpref): Fix deiconify call.
 	(build_win): Use standard_button_box. Set default to OK.
 	Remove unused stuff. Cleanup display.
-	
+
 	* Makefile: Removed toolbar_pref.tcl.
 
 	* tclIndex: Rebuilt.
-	
-	* srcbar.tcl (create_buttons): Make toolbar always attached 
+
+	* srcbar.tcl (create_buttons): Make toolbar always attached
 	to source window.
 
-	* toolbar.tcl (build_win): Always display toolbar and 
+	* toolbar.tcl (build_win): Always display toolbar and
 	menubar attached to source window.
-	
+
 	* prefs.tcl (pref_set_defaults): Removed toolbar prefs.
 
 	* manage.tcl (manage_init): Remove hack to change preferences
@@ -1901,7 +1901,7 @@ Fri Mar 27 10:52:30 1998  Martin M. Hunt  <hunt@cygnus.com>
 	* target.tcl: Fix entry for temotetcp.
 
 	* main.tcl (set_target_name): Build correct gdb_target_cmd.
-	
+
 Fri Mar 27 11:23:18 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 
 	* target.tcl: (build_win) added call to change_target to
@@ -1922,7 +1922,7 @@ Fri Mar 27 01:43:41 1998  Martin M. Hunt  <hunt@cygnus.com>
 	pack or forget the appropriate widgets.
 	(build_win): Create hostname and port number entry widgets.
 	(change_target): Update hostname and portnum widgets.
- 	
+
 	* prefs.tcl (pref_save): Add 'load' as a section to be saved.
 	Set gdb/load/target to 'exec'.
 
@@ -1963,35 +1963,35 @@ Thu Mar 26 23:49:26 1998  Martin M. Hunt  <hunt@cygnus.com>
 	* tdump.tcl, tfind_args.tcl: New files.
 
 Thu Mar 26 22:29:28 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
- 
+
         * tracedlg.tcl: (config) commented out grab. Made window non-modal.
         (destructor) do not release grab.
         (done) do not reinstall grab.
- 
+
         * toolbar.tcl: (create_buttons) changed buttons for the tracepoint
         case to open tdump window, and tracepoint window.
         (create_menu_items) change Run menu to do tstart, tstop for tracepoint
         case. Changed View menu to show tracepoint window for tracepoint case.
         Changed 'Control' menu to 'Trace' menu for tracepoint case, with
         tfind commands.
- 
+
         * srcbar.tcl: (create_buttons) changed the buttons for the
         tracepoint case to do tfind commands.
         (_set_trace) new method. Toggles tstart/tstop button.
- 
+
         * src.tcl: (config) decide defatul action for left click on
         source based on 'mode' preference.
         (bp_line) ditto.
         (config_win) modify pop upmenu on source window to display only
         'set tracepoint'.
- 
+
         * prefs.tcl: (pref_set_defaults) added preference gdb/mode for
         tracepoints or breakpoint display.
- 
+
         * manage.tcl: (manage_init) added tracepoint window, args windows
         for tfind, tdump window.
         (manage_open) use eval in call to manage_create.
- 
+
         * bp.tcl: (build_win) added PassCount to the display and modified
         the menus for the tracepoint case to display actions.
         (bp_add) display pass_count too in the tracepoint list.
@@ -2002,11 +2002,11 @@ Thu Mar 26 22:29:28 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
         (get_actions) new method
         Added new public member "tracepoints" to decide which kind of window
         needs to be displayed.
- 
+
         * Makefile: added new files tfind_args.tcl and tdump.tcl.
- 
+
         * tclIndex: regenerated
- 
+
 Thu Mar 26 14:23:00 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 	* main.tcl (set_target_name): Make target dialog always
@@ -2020,7 +2020,7 @@ Thu Mar 26 14:16:36 1998  Keith Seitz  <keiths@onions.cygnus.com>
 	* memory.tcl (update_address): Catch errors to update_addr so that
 	we do not error and leave the GUI busy.
 
-Thu Mar 26 13:51:58 1998  Martin M. Hunt  <hunt@cygnus.com>	
+Thu Mar 26 13:51:58 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 	* toolbar.tcl (create_menu_items): Remove "Cygnus
 	Foundry Tour" and "Submit a PR" from the menu.
@@ -2040,7 +2040,7 @@ Thu Mar 26 11:33:02 1998  Keith Seitz  <keiths@onions.cygnus.com>
 	* Makefile: Add target.tcl to list of sources.
 
 	* tclIndex: Rebuilt.
-	
+
 	* target.tcl (GdbLoadPref): Trace changes to gdb_loaded.
 	(target_trace): New procedure. This is invoked by a write trace
 	to gdb_loaded.
@@ -2052,12 +2052,12 @@ Thu Mar 26 11:33:02 1998  Keith Seitz  <keiths@onions.cygnus.com>
 	Rename old gdb_idle_hook to gdb_update_hook for clarity.
 	Change all references of run_hooks to use gdbtk_busy, gdbtk_idle, and
 	gdtk_update.
-	
+
 	* download.tcl: Make busy/update/idle hook changes.
 
 	* main.tcl: Make busy/update/idle hook changes.
 	(set_exe): Clear gdb_loaded whenever a new exec file is selected.
-	
+
 	* manage.tcl: Make busy/update/idle hook changes.
 
 	* mem_pref.tcl: Make busy/update/idle hook changes.
@@ -2135,7 +2135,7 @@ Thu Mar 26 11:33:02 1998  Keith Seitz  <keiths@onions.cygnus.com>
 	* main.tcl (run_executable): Change to assembly mode when we try to
  	load a blank file.  This usually means that source level debugging
  	was not enabled when this file was compiled.
-	
+
 	Reverse the parameters to src method::location() method invocation so
 	they are in the correct order
 
@@ -2153,7 +2153,7 @@ Thu Mar 26 11:33:02 1998  Keith Seitz  <keiths@onions.cygnus.com>
 
 	* src.tcl (no_inferior): Call set_execution_status.
 
-	* bp.tcl (bp_modify, bp_delete): Change to take an entry 
+	* bp.tcl (bp_modify, bp_delete): Change to take an entry
 	number.
 	(update): Sometimes "create" calls are for existing
 	breakpoints and should be "modified" calls. Detect this
@@ -2165,18 +2165,18 @@ Thu Mar 26 11:33:02 1998  Keith Seitz  <keiths@onions.cygnus.com>
 	inserted.
 
 	Fri Mar 20 01:55:14 1998  Keith Seitz  <keiths@cygnus.com>
- 
+
  	* watch.tcl (validateEntry): Fencepost for running.
- 
+
  	* variables.tcl (VariableWin): Use "add_hook_before".
  	(idle_done): New gdb_idle_done_hook for this object.
  	(update): Don't call enable_ui here.
  	(enable_ui): Change cursor for this object.
  	(disable_ui): Ditto.
  	(no_inferior): Ditto.
- 
+
  	* toolbar.tcl (GDBToolBar): Use "add_hook_before".
- 
+
  	* stack.tcl (StackWin): Use "add_hook_before".
  	(StackWin): Encapsulate creation of this object with
  	busy and idle hooks so that the user gets some feedback and to
@@ -2188,7 +2188,7 @@ Thu Mar 26 11:33:02 1998  Keith Seitz  <keiths@onions.cygnus.com>
  	(busy): New gdb_busy_hook for this object.
  	(no_inferior): New gdb_no_inferior_hook for this object.
  	(cursor): New helper method to set the cursor of all subwindows.
- 
+
  	* src.tcl (SrcWin): Use "add_hook_before".
  	(toggle_updates): Use "add_hook_before".
  	(stack): Encapsulate creation of the stack object with
@@ -2205,7 +2205,7 @@ Thu Mar 26 11:33:02 1998  Keith Seitz  <keiths@onions.cygnus.com>
  	(enable_ui): Ditto.
  	(no_inferior): Ditto.
  	(cursor): New helper method to set the cursor of all subwindows.
- 
+
  	* register.tcl (RegWin): Encapsulate creation of this object with
  	busy and idle hooks so that the user gets some feedback and to
  	prevent other widgets from attempting to update.
@@ -2218,7 +2218,7 @@ Thu Mar 26 11:33:02 1998  Keith Seitz  <keiths@onions.cygnus.com>
  	(edit): Fencepost for running.
  	(idle_done): New gdb_idle_done_hook for this object.
  	(busy): New gdb_busy_hook for this object.
- 
+
  	* memory.tcl (MemWin): Encapsulate creation of this object with
  	busy and idle hooks so that the user gets some feedback and to
  	prevent other widgets from attempting to update.
@@ -2231,13 +2231,13 @@ Thu Mar 26 11:33:02 1998  Keith Seitz  <keiths@onions.cygnus.com>
  	(do_popup): Fencepost for running.
  	(cursor): New method to change the cursor definition for this
  	object.
- 
+
  	* manage.tcl (manage_init): Use "add_hook_before".
- 
+
  	* main.tcl (run_executable): Use "run_idle_hooks".
- 
+
  	* ide.tcl (gdbtk_ide_init): Don't create the source window here.
- 
+
  	* interface.tcl: Define new hook "gdb_idle_done_hook" -- to be called
  	when the debugger does completely idle to allow input to objects
  	again.
@@ -2245,13 +2245,13 @@ Thu Mar 26 11:33:02 1998  Keith Seitz  <keiths@onions.cygnus.com>
  	(gdbtk_tcl_idle): Split the idle callbacks into two parts: one that
  	only updates widgets and one that tells widgets to accept input
  	again.
- 
+
  	* download.tcl (Download): Use add_hook_before instead of add_hook.
  	(download_it): Use run_idle_hooks instead running the idle hooks
  	directly.
- 
+
  	* bp.tcl (BpWin):  Use add_hook_before instead of add_hook.
- 
+
         Wed Mar 18 18:59:00 1998  Sean Mahan  <smahan@cygnus.com>
 
 	* download.tcl (download_hash): Added an 'update' so the
@@ -2301,7 +2301,7 @@ Thu Mar 26 11:33:02 1998  Keith Seitz  <keiths@onions.cygnus.com>
 
 	* main.tcl (run_executable): Don't force downloads for sim.
 
-	* download.tcl (download_it): Don't bother calling calling set_baud 
+	* download.tcl (download_it): Don't bother calling calling set_baud
 	for sim.
 
 	* manage.tcl (manage_delete): Deregister the window before deleting
@@ -2355,19 +2355,19 @@ Thu Mar 26 11:33:02 1998  Keith Seitz  <keiths@onions.cygnus.com>
 
 	* main.tcl (set_target): Check result of target command
 	to see if the user cancelled the command.
-	(run_executable): Use gdb_program_has_run instead of 
+	(run_executable): Use gdb_program_has_run instead of
 	gdb_app_running, which was removed everywhere. Force
 	download when gdb_program_has_run. If user cancels download
 	before the download starts, preserve previous state.
 
-	Mon Mar  9 15:06:21 1998  Martin M. Hunt  <hunt@cygnus.com>	
+	Mon Mar  9 15:06:21 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 	* console.tcl (invoke): After gdb_immediate() finishes
 	check to see if the window is still there.
 
 	* main.tcl: Initialize gdbtk_state(console).
 
-	* interface.tcl: Remove some unused globals. Replace gdb_console 
+	* interface.tcl: Remove some unused globals. Replace gdb_console
 	with gdbtk_state(console).
 	(gdbtk_tcl_readline_*): Don't set gdbtk_state(console) every
 	time.  Let manage.tcl do it.
@@ -2379,13 +2379,13 @@ Thu Mar 26 11:33:02 1998  Keith Seitz  <keiths@onions.cygnus.com>
 
 	Mon Mar  9 09:08:11 1998  Keith Seitz  <keiths@onions.cygnus.com>
 
-	* watch.tcl (build_win): Tweak layout of the entry and button, 
+	* watch.tcl (build_win): Tweak layout of the entry and button,
 	switching to grid geometry manager.
 
 Thu Mar 26 01:22:23 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 	* target.tcl: New file. Implements target dialog.
-	
+
 	* srcbar.tcl (_set_run): Remove because it was no longer used.
 
 	* util.tcl (freeze): Only call idewindow_freeze when
@@ -2404,7 +2404,7 @@ Thu Mar 26 01:22:23 1998  Martin M. Hunt  <hunt@cygnus.com>
 	display target requester.
 
 	* manage.tcl: Set loadpref to GdbLoadPref.
-	
+
 Wed Mar 25 14:13:52 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 
 	* manage.tcl (manage_init) added tracedlg and actiondlg windows.
@@ -2413,7 +2413,7 @@ Wed Mar 25 14:08:51 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 
         * interface.tcl (gdbtk_tcl_pre_add_symbol): New procedure.
         (gdbtk_tcl_post_add_symbol): New procedure.
- 
+
         * src.tcl (set_execution_status): Use "set_status" to write to the
         status bar, not "set Status".
 
@@ -2429,7 +2429,7 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
  	order)
 
         Sean Mahan  <smahan@cygnus.com>
-	* download_pref.tcl (help): Added method to display context 
+	* download_pref.tcl (help): Added method to display context
 	sensitive help.
 
         Keith Seitz  <keiths@onions.cygnus.com>
@@ -2482,7 +2482,7 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	executable is built when GDB is running.
 
         Martin M. Hunt  <hunt@cygnus.com>
-	* bp.tcl (bp_delete): If a selected breakpoint is deleted, 
+	* bp.tcl (bp_delete): If a selected breakpoint is deleted,
 	set "selected" to 0.
 
         Keith Seitz  <keiths@onions.cygnus.com>
@@ -2688,7 +2688,7 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	* interface.tcl (gdbtk_tcl_query): Only ask each question once.
 
         Martin M. Hunt  <hunt@cygnus.com>
-	* manage.tcl (manage_init): Initialize new global 
+	* manage.tcl (manage_init): Initialize new global
 	_manage_enabled_flag to 1.
 	(manage_disable_all): Only disable if
 	_manage_enabled_flag is 1.
@@ -2736,7 +2736,7 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	* src.tcl (SrcWin): Immediately set title name
 	to "Debugger".
 
-        Martin M. Hunt  <hunt@cygnus.com>	
+        Martin M. Hunt  <hunt@cygnus.com>
 	* download_pref.tcl (LoadPref): Make window transient.
 
         Martin M. Hunt  <hunt@cygnus.com>
@@ -2751,17 +2751,17 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	always on on Unix, at least.
 	* interface.tcl (gdbtk_pc_changed): Called from GDB when
  	the PC is changed with a "set $pc" command.
-	(gdb_show_command, gdb_args, gdb_stack_trace, 
-	gdb_docstring,gdb_stack_depth, gdb_stack_frame): Removed. 
+	(gdb_show_command, gdb_args, gdb_stack_trace,
+	gdb_docstring,gdb_stack_depth, gdb_stack_frame): Removed.
 
         Martin M. Hunt  <hunt@cygnus.com>
 	* memory.tcl (destructor): Destroy memory prefs window
  	if one exists.
 	(create_prefs): Make prefs window transient.
 	* util.tcl (freeze): Make keep_raised an option.
-	
+
         Martin M. Hunt  <hunt@cygnus.com>
-	* ide.tcl (receive_file_changed): Ignore object file 
+	* ide.tcl (receive_file_changed): Ignore object file
 	changes.  On source file changes, put up a messagebox
 	warning the user. Change both messageboxes to be system
 	modal, which seems to just mean they will be on top.
@@ -2789,7 +2789,7 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	location. Use tagtype so tag mode is preserved.
 	* bp.tcl (bp_type): Deselect line before changing its
         type.
-  
+
         Tom Tromey  <tromey@cygnus.com>
 	* bp.tcl (build_win): Use built-in sizebox of tixScrolledWindow.
 	* watch.tcl (console): Set Sizebox to 0.
@@ -2813,13 +2813,13 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	* srcbar.tcl: Change shortcuts to use () instead of <>.
 	* download.tcl (download_it): Set download_verbose
 	based on target name.
-	* src.tcl (build_win): Set height to 0 for name and 
+	* src.tcl (build_win): Set height to 0 for name and
 	function comboboxes.
-	(location): In IDE, use vmake/source-files property 
+	(location): In IDE, use vmake/source-files property
 	to fill name combobox.
 
         Keith Seitz  <keiths@onions.cygnus.com>
-	* variables.tcl (build_win): Set the variable window's 
+	* variables.tcl (build_win): Set the variable window's
 	default size to 40 chars.
 
         Martin M. Hunt  <hunt@cygnus.com>
@@ -2846,23 +2846,23 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	(SrcWin::file): Do not ask gdb where the file is -- someone else
 	already has. Set the file selector to the filename only once and
 	only if successful finding the file.
-	(SrcWin::location): Add flag idicating that a file load has failed. 
+	(SrcWin::location): Add flag idicating that a file load has failed.
 	Resolves recursive loop with SrcWin::mode and SrcWin::location.
 	Make sure the file and function selectors are filled only once.
-	(SrcWin::mode): Add error flag to indicate that a file load failed. 
+	(SrcWin::mode): Add error flag to indicate that a file load failed.
 	Resolves recursive loop with SrcWin::location.
 	Make sure we exit with the proper mode set on the source window.
 	(SrcWin::current_addr): Define a default value of 0x0.
-	* console.tcl (invoke): Use new gdb_immediate command instead of 
+	* console.tcl (invoke): Use new gdb_immediate command instead of
 	gdb_cmd.
 	(insert): Add all errors to the end of the text widget.
 	Send errors to end of text widget, not insertion pt.
 	(einsert): Send errors to end of text widget, not insertion pt.
 	* interface.tcl (gdbtk_tcl_readline_begin): Insert message into
-	command window so that the user sees messages like "Enter commands, 
+	command window so that the user sees messages like "Enter commands,
 	one per line. Enter 'end' when finished."
 	* main.tcl: Initialize gdbtk_state(readline).
-	
+
         Tom Tromey  <tromey@cygnus.com>
 	* manage.tcl (manage_open): Force focus onto toplevel.
 	* mem_pref.tcl (build_win): Don't put <Return> binding on
@@ -2897,7 +2897,7 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	* stack.tcl (build_win): ditto
 	* memory.tcl (build_win): ditto
 	* watch.tcl (build_win): ditto
-	* locals.tcl (build_win): ditto 
+	* locals.tcl (build_win): ditto
 
         Martin M. Hunt  <hunt@cygnus.com>
 	* manage.tcl (manage_iconify): Catch iconify command.
@@ -2915,9 +2915,9 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 
         Tomy Hudson <thudson@cygnus.com>
 	* console.tcl (build_win) Added frame and ide_sizebox to
-	bottom of window. 
+	bottom of window.
 	* stack.tcl (build_win) Added frame and ide_sizebox to
-	bottom of window. 
+	bottom of window.
 	* watch.tcl (build_win) Added frame and ide_sizebox to
 	bottom of window.
 	* locals.tcl (build_win) Added frame and ide_sizebox to
@@ -2947,10 +2947,10 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	(delete_from_display_list): Likewise.
 
         Martin M. Hunt  <hunt@cygnus.com>
-	* ide.tcl (ide_run_server, ide_do_run_server): Take 
-	an optional argument to indicate if program should be 
+	* ide.tcl (ide_run_server, ide_do_run_server): Take
+	an optional argument to indicate if program should be
 	run or simply downloaded.
-	* console.tcl (Console): Enable scrollbars in both 
+	* console.tcl (Console): Enable scrollbars in both
 	directions.
 	* main.tcl: Moved keep_raised, sleep, and toggle_debug_mode
 	to util.tcl.
@@ -2989,20 +2989,20 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
         Tomy Hudson <thudson@cygnus.com>
 	* register.tcl (reg_select_): Modified reg_select_* movement
 	methods to use the register display list instead of
-	a straight index.  
-	
+	a straight index.
+
         Tomy Hudson <thudson@cygnus.com>
 	* register.tcl (unedit): Changed input focus to $ScrolledWin.$Editing
 	in unedit. This allows arrow and tab key bindings to work
 	after an edit.
-	
+
         Tomy Hudson <thudson@cygnus.com>
 	* register.tcl (build_win): Added key bindings and support
 	for tab and arrow keys, including four new methods;
 	reg_select_up,reg_select_down, reg_select_left, reg_select_right
 	* register.tcl (build_win): Added spacing frame and ide_sizebox
 	to window. Changed geometry manager to grid.
-	
+
         Martin M. Hunt  <hunt@cygnus.com>
 	* stack.tcl (update): Only insert entries that have
 	length.  Break when matching entry in listbox is found.
@@ -3028,16 +3028,16 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
         Tomy Hudson <thudson@cygnus.com>
 	* memory.tcl (do_popup): Added method do_popup. Changed binding of
 	button-3 to invoke popup menu.
-	 
+
         Tomy Hudson <thudson@cygnus.com>
 	* src.tcl (do_popup): Removed check for space in variable name
 	that disabled popup menu items. Only check now is for "".
-	         
+
         Tomy Hudson <thudson@cygnus.com>
 	* src.tcl (do_popup): Removed variable name from
 	popup menu items. Added check for sane variable in selection
 	to disable menu items when appropriate.
-	
+
         Martin M. Hunt  <hunt@cygnus.com>
 	* bp.tcl (bp_delete): Destroy widgets in deleted
 	line.
@@ -3051,7 +3051,7 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	vmake-exelist.
 
         Martin M. Hunt  <hunt@cygnus.com>
-	* variables.tcl (build_menu_helper): Comment-out 
+	* variables.tcl (build_menu_helper): Comment-out
 	Update menu.
 	(getVariables): Change variable name so it doesn't
 	get confused with window variables.
@@ -3086,9 +3086,9 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	Leave this window non-modal.
 	* download.tcl: Fix references to source window.
 	(Download): Make window modal and always on top.
-	* memory.tcl (destructor):  Kill mem prefs window too.	
+	* memory.tcl (destructor):  Kill mem prefs window too.
 	* variables.tcl (changeValue): Clean up.
-	* register.tcl (acceptEdit): Change error messagebox.	
+	* register.tcl (acceptEdit): Change error messagebox.
 
         Martin M. Hunt  <hunt@cygnus.com>
 	* src.tcl (set_state): Disable items in breakpoint
@@ -3107,7 +3107,7 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	* srcbar.tcl (runstop): Renamed from "running"
 	(running): Public variable to control icons.
 	(_set_runstop): Change Running man to stop sign.
-	(_set_run): Enable/disable icons depending on debugger 
+	(_set_run): Enable/disable icons depending on debugger
 	state.
 	* manage.tcl (create_closed): Deleted function.
 	(manage_create): Remove visibility argumnet.
@@ -3190,7 +3190,7 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	running under IDE.
 
         Martin M. Hunt  <hunt@cygnus.com>
-	* main.tcl (set_target): Set the target again if the 
+	* main.tcl (set_target): Set the target again if the
 	executable has changed and executed a "file" command.
 	* memory.tcl (update_address): Accept numerical entries
 	and catch errors.
@@ -3215,11 +3215,11 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	* toolbar.tcl (create_menu_items): Change Console shortcut
  	to Ctrl+N.
 	* src.tcl (config_win): Change Console shortcut to Ctrl+N.
-	
-        Martin M. Hunt  <hunt@cygnus.com>	
+
+        Martin M. Hunt  <hunt@cygnus.com>
 	* src.tcl: (do_bp): Catch errors.
 	(validBPLine): Valid lines have a "-" or an image.
-	
+
         Martin M. Hunt  <hunt@cygnus.com>
 	* main.tcl (ide_run_server): Don't run executable if
 	download was cancelled.  Reset cancelled flag.
@@ -3245,7 +3245,7 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 	with each section listed seperately.
 	(download_hash): Use a hook.
 	(download_it): New function. Replaces old "download"
-	from main.tcl. Now deletes all breakpoints before 
+	from main.tcl. Now deletes all breakpoints before
 	downloading and handles cancels correctly.
 
         Martin M. Hunt  <hunt@cygnus.com>
@@ -3408,17 +3408,17 @@ Sun Jan 25 01:01:32 1998  Martin M. Hunt  <hunt@cygnus.com>
 	command sorts for us.
 
 	* variables.tcl (changeValue): If new value is null,
-        cancel edit. 
+        cancel edit.
 	(build_menu_helper): Comment-out Update menu.
         (getVariables): Change variable name so it doesn't
         get confused with window variables.
         (postMenu): Comment-out Update entries.
         (UnEdit): Unbind keys when unediting.
-	
+
 Thu Jan 22 10:38:19 1998  Keith Seitz  <keiths@cygnus.com>
 
 	* toolbar.tcl (create_menu_items): Disable preferences.
-	
+
 	* prefs.tcl (pref_set_defaults): Attach the toolbar to the source window
 	by deafult.
 	* src.tcl (SrcWin::build_win): Turn off history for the file selector.
@@ -3481,6 +3481,6 @@ Thu Jan 15 12:41:27 1998  Keith Seitz  <keiths@onions.cygnus.com>
 	* console.tcl (invoke): Use new gdb_immediate command instead of gdb_cmd.
 
 Wed Dec 31 16:50:26 1998  Keith Seitz  (keiths@onions.cygnus.com)
- 
+
         * actiondlg.tcl (change): handle '$' in register names.
 

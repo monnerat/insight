@@ -1,4 +1,4 @@
-/* 
+/*
  * tkTableCell.c --
  *
  *	This module implements cell sort functions for table
@@ -372,7 +372,7 @@ TableCellSortObj(Tcl_Interp *interp, Tcl_Obj *listObjPtr)
     int length, i;
     Tcl_Obj *sortedObjPtr, **listObjPtrs;
     SortElement *elementArray;
-    SortElement *elementPtr;        
+    SortElement *elementPtr;
 
     if (Tcl_ListObjGetElements(interp, listObjPtr,
 			       &length, &listObjPtrs) != TCL_OK) {

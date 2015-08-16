@@ -31,7 +31,7 @@ itcl::body AttachDlg::build_win {} {
       -visibleitems 30x15 -hscrollmode dynamic -vscrollmode dynamic\
       -exportselection 0 -selectioncommand [code $this select_pid] \
       -foreground $::Colors(textfg) -textbackground $::Colors(textbg) \
-      -dblclickcommand [code $this doit] 
+      -dblclickcommand [code $this doit]
   }
 
   # Filter entryfield
@@ -62,26 +62,26 @@ itcl::body AttachDlg::build_win {} {
   pack $itk_component(pid_filter) -fill x -side top -pady 4
   pack $itk_component(pid_sep) -fill x -side top -pady 8
   pack $itk_component(pid_entry) -fill x -side bottom -pady 4
-  
+
   itk_component add symbol_label {
     iwidgets::labeledframe $itk_interior.sym -labeltext "Choose Exec file" \
       -labelpos nw -relief groove -borderwidth 2 \
-      -ipadx 8 -ipady 6 
+      -ipadx 8 -ipady 6
   }
 
   itk_component add symbol_file {
     iwidgets::entryfield [$itk_interior.sym childsite].f -labeltext "File:" \
-      -foreground $::Colors(textfg) -textbackground $::Colors(textbg) 
+      -foreground $::Colors(textfg) -textbackground $::Colors(textbg)
   }
   pack $itk_component(symbol_file) -pady 4 -padx 4 -fill x
 
   # can't use the -state in the entryfield, 'cause that affects the
   # label as well...
-  #$itk_component(symbol_file) component entry configure -state disabled  
+  #$itk_component(symbol_file) component entry configure -state disabled
   $itk_component(symbol_file) configure -state normal
   $itk_component(symbol_file) insert 0 $::gdb_exe_name
   #$itk_component(symbol_file) configure -state disabled
-  
+
   itk_component add symbol_browse {
     button [$itk_component(symbol_file) childsite].br -text "Choose..." \
       -command [code $this choose_symbol_file]
@@ -91,7 +91,7 @@ itcl::body AttachDlg::build_win {} {
   itk_component add button_box {
     frame $itk_interior.b
   }
-  
+
   itk_component add cancel {
     button $itk_component(button_box).cancel -text "Cancel" \
       -command [code $this cancel]
@@ -100,10 +100,10 @@ itcl::body AttachDlg::build_win {} {
   itk_component add ok {
     button $itk_component(button_box).ok -text "OK" -command [code $this doit]
   }
-  
+
 #  if {$::gdb_exe_name == ""} {
 #    $itk_component(ok) configure -state disabled
-#  }  
+#  }
 
   ::standard_button_box $itk_component(button_box)
 

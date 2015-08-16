@@ -39,17 +39,17 @@ itcl::class MemPref {
     method pick {lab}
     method reconfig {}
   }
-  
+
   private {
     # The next seven variables are all used in the radio-buttons
     # and checkbuttons of the display.
-    variable gsize   
-    variable gformat 
-    variable gnumbytes 
-    variable gbpr 
+    variable gsize
+    variable gformat
+    variable gnumbytes
+    variable gbpr
     variable gbprlist
-    variable gascii  
-    variable gascii_char 
+    variable gascii
+    variable gascii_char
     variable gvar
 
     variable Widgets

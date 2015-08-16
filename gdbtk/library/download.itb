@@ -58,7 +58,7 @@ itcl::body Download::update_download { sec num tot } {
 
   # Loop through all the sections, marking each as either done or
   # updating its meter. This will mark all previous sections prior to
-  # SEC as complete. 
+  # SEC as complete.
   foreach s $section(names) {
     set i $section($s)
 
@@ -102,7 +102,7 @@ itcl::body Download::done { {msg ""} } {
     $itk_interior.cancel config -state disabled
     set bps [expr {8 * $total_bytes / $secs / 1000}]
     $itk_interior.stat config -text "$total_bytes bytes in $secs seconds ($bps kbps)"
-    
+
     # set all indicators to FULL
     foreach sec $section(names) {
       set i $section($sec)
@@ -118,7 +118,7 @@ itcl::body Download::done { {msg ""} } {
       $itk_interior.stat config -text $msg
     }
   }
-  
+
   # enable OK button
   $itk_interior.cancel config -state active -text OK -command "delete object $this"
   ::update
@@ -151,7 +151,7 @@ itcl::body Download::download_hash { section num } {
   if {[info exists download_timer(timer)]} {
     after cancel $download_timer(timer)
   }
-  
+
   set download_timer(timer) [after 100 Download::do_download_hooks]
   if {![info exists download_timer(ok)] || $download_timer(ok)} {
     run_hooks download_progress_hook $section $num $total_bytes
@@ -159,7 +159,7 @@ itcl::body Download::download_hash { section num } {
     unset download_timer(timer)
     set download_timer(ok) 0
   }
-  
+
   return $::download_cancel_ok
 }
 

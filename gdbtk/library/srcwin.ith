@@ -86,7 +86,7 @@ itcl::class SrcWin {
     variable need_files 0
     variable do_updates 1	;# if the window does updates
     variable _mangled_func
-    variable Tracing  
+    variable Tracing
     variable saved_msg ""	;# static
 
     # statics used for downloads
@@ -102,5 +102,5 @@ itcl::class SrcWin {
     # fenceposts
     variable Running 0
     variable NoRun 0
-  }  
+  }
 }

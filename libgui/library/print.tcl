@@ -69,7 +69,7 @@ proc send_printer { args } {
 	    }
 	    # tack on data or filename
 	    lappend cmd [lindex $args 0]
-	    
+
 	    # attempt to run the command, and exit if successful
 	    if ![catch {eval $cmd} ret] {
 		return
@@ -126,7 +126,7 @@ proc send_printer_ascii { args } {
 	# make sure that we end with a newline
 	set args [lindex $args 0]
 	append args "\n"
-	
+
 	set strlen [string first "\n" $args]
 	if {$strlen != -1} {
 	    set str [string range $args 0 [expr $strlen-1]]
@@ -160,7 +160,7 @@ proc send_printer_ascii { args } {
     if {$file == 1} {
 	close $G
     }
-    
+
     send_printer -printer $printer -outfile $outfile $output
 }
 

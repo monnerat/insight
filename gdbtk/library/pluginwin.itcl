@@ -77,7 +77,7 @@ itcl::class PluginWindow {
   ####################################################################
   #
   # State control methods used by both the menu and the toolbar
-  # 
+  #
   ####################################################################
 
   # ------------------------------------------------------------------
@@ -99,10 +99,10 @@ itcl::class PluginWindow {
 
   # ------------------------------------------------------------------
   #  METHOD:  no_inferior
-  #             Invoked when gdb detects the inferior is gone 
+  #             Invoked when gdb detects the inferior is gone
   # ------------------------------------------------------------------
   protected method no_inferior {} {
-    debug 
+    debug
     enable_ui 2
   }
 

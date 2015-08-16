@@ -244,7 +244,7 @@
 	These changes allow Insight to handle the case where there are
 	symbols for the source files, but the source files are not in the
 	location pointed to by the symbol.
-	
+
 	* srctextwin.itb (SrcTextWin::setTabs): Make the "asm" type for
 	the source display "S" not "", which is not very clear.
         (SrcTextWin::configWin): ditto.
@@ -257,7 +257,7 @@
 	Also change "asm" type for source from "" to "S".
 	* srctextwin.ith: Change the defaults for the "asm" type from ""
 	to "S" for Source display.  This is just cosmetic, but clearer.
-	
+
 2000-04-13  Tom Tromey  <tromey@cygnus.com>
 
 	* console.itb (Console::_complete): Dequoted first argument to
@@ -276,16 +276,16 @@
 2000-04-05  James Ingham  <jingham@leda.cygnus.com>
 
 	* regwin.itb (RegWin::build_win): Enable the "Display all
-	registers" menu at startup if any registers have been removed. 
+	registers" menu at startup if any registers have been removed.
 	(RegWin::save_reg_display_vars): Handle cases where the register
 	set is not contiguous.
 	(RegWin::destructor): Actually save away the removed registers.
 	The latter two are Steve Johnson's change.
 
 	* regwin.ith (RegWin): Added "all_regs_shown" and
-	"disp_all_menu_item" to handle tracking whether any registers have 
+	"disp_all_menu_item" to handle tracking whether any registers have
 	been removed from the display.
-	
+
 
 2000-04-03  Steve Johnson  <sbjohnson@ozemail.com.au>
 
@@ -312,7 +312,7 @@
 
 2000-03-28  James Ingham  <jingham@leda.cygnus.com>
 
-	* managedwin.itb (ManagedWin::startup): Open the SrcWin, this does 
+	* managedwin.itb (ManagedWin::startup): Open the SrcWin, this does
 	two things, 1) Makes sure that there IS a SrcWin, and 2) brings
 	the first such window to the foreground...
 
@@ -345,7 +345,7 @@
 	it does nothing instance-specific.
 
 	* util.tcl (keep_raised): For some reason raising a window, then
-	deiconifying it is MUCH faster on "e" & WindowMaker under XFree.  
+	deiconifying it is MUCH faster on "e" & WindowMaker under XFree.
 	Go figure.  Other WM's don't seem to care, so do it this way...
 	* managedwin.itb (ManagedWin::reveal): Ditto...
 
@@ -357,7 +357,7 @@
 
 	* interface.tcl (gdbtk_attach_native): Renamed from do_attach method
         and moved from srcbar.tcl.
-        (gdbtk_attach_remote): New proc. Renamed from gdb_attach_target, 
+        (gdbtk_attach_remote): New proc. Renamed from gdb_attach_target,
 	to better distinguish from the native version.
         (run_executable): Change gdbtk_attach_target call into
         gdbtk_attach_remote.
@@ -368,7 +368,7 @@
 
 2000-03-09  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 
-	From: James Ingham <jingham@leda.cygnus.com>: 
+	From: James Ingham <jingham@leda.cygnus.com>:
 	* attachdlg.itb (build_win): Pack the dialog better, so that when
  	window is resized components are not hidden.
 
@@ -378,7 +378,7 @@
 
 2000-03-01  James Ingham  <jingham@leda.cygnus.com>
 
-	* interface.tcl (_open_file): The window which had the focus could 
+	* interface.tcl (_open_file): The window which had the focus could
 	get deleted by the vwait implicit in the tk_getOpenFile call.  So
 	check and make sure it is still around before raising it...
 
@@ -387,12 +387,12 @@
         * srctextwin.ith (_highlightAsmLine): Define new method.
         * srctextwin.itb (_highlightAsmLine): New method.
         (FillAssembly, FillMixed): Use _highlightAsmLine to highlight
-        the current assembly line.	
+        the current assembly line.
 
 Fri Feb  4 23:19:03 2000  Andrew Cagney  <cagney@b1.cygnus.com>
 
 	* gdb/gdbtcl2: Directory renamed to gdb/gdbtk/library.
-	
+
 2000-01-12  Fernando Nasser  <fnasser@totem.to.cygnus.com>
 
 	* targetselection.itb (init_target_db): Add the word "serial" to

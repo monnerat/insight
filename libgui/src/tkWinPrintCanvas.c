@@ -14,15 +14,15 @@
 
 /*
  *--------------------------------------------------------------
- * 
- * PrintCanvasCmd -- 
+ *
+ * PrintCanvasCmd --
  *      When invoked with the correct args this will bring up a
  *      standard Windows print dialog box and then print the
  *	contence of the canvas.
  *
  * Results:
  *      Standard Tcl result.
- * 
+ *
  *--------------------------------------------------------------
  */
 
@@ -68,7 +68,7 @@ PrintCanvasCmd(clientData, interp, argc, argv)
 			 argv[1], "\"", (char *) NULL);
 	goto error;
     }
-    
+
     memset(&dm,0,sizeof(DEVMODE));
     dm.dmSize = sizeof(DEVMODE);
     dm.dmScale = 500;
@@ -102,7 +102,7 @@ PrintCanvasCmd(clientData, interp, argc, argv)
     Ptr_pixY=(float)GetDeviceCaps(PrinterDrawable->winDC.hdc,VERTRES);
     Ptr_mmX=(float)GetDeviceCaps(PrinterDrawable->winDC.hdc,HORZSIZE);
     Ptr_mmY=(float)GetDeviceCaps(PrinterDrawable->winDC.hdc,VERTSIZE);
-  
+
         screenX1=0; screenY1=0;
     screenX2=canvasPtr->width; screenY2=canvasPtr->height;
 	canvasPtr->drawableXOrigin = screenX1 - 30;
@@ -120,7 +120,7 @@ PrintCanvasCmd(clientData, interp, argc, argv)
     canv_mmX=(float)GetDeviceCaps(hDCpixmap,HORZSIZE);
     canv_mmY=(float)GetDeviceCaps(hDCpixmap,VERTSIZE);
 
-    
+
     SetMapMode(PrinterDrawable->winDC.hdc,MM_ISOTROPIC);
     SetWindowExtEx(PrinterDrawable->winDC.hdc,(int)((float)canv_pixX),(int)((float)canv_pixY),NULL);
     SetViewportExtEx(PrinterDrawable->winDC.hdc,(int)((float)Ptr_pixX),
@@ -158,7 +158,7 @@ PrintCanvasCmd(clientData, interp, argc, argv)
 		    canvasPtr->display, (Drawable) PrinterDrawable/*pixmap*/, screenX1, screenY1, width,
 		    height);
 	}
-    
+
     EndPage(pd.hDC);
     }
     }
@@ -176,7 +176,7 @@ error:
 
 
 
-static void 
+static void
 ide_delete_print_canvas_command(ClientData clientData)
 {
   /* destructor code here.*/
@@ -187,8 +187,8 @@ ide_create_printcanvas_command (Tcl_Interp *interp)
 {
 
   /* initialization code here */
-  
-        if (Tcl_CreateCommand(interp, "ide_print_canvas", PrintCanvasCmd, 
+
+        if (Tcl_CreateCommand(interp, "ide_print_canvas", PrintCanvasCmd,
 			  NULL, ide_delete_print_canvas_command) == NULL)
 	return TCL_ERROR;
 

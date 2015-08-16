@@ -114,7 +114,7 @@ itcl::body MemWin::build_win {} {
     keep -highlightcolor
     keep -highlightbackground
   }
-  
+
   if {$numbytes} {
     $itk_component(table) configure -yscrollcommand "$itk_interior.sy set"
     scrollbar $itk_interior.sy -command [list $itk_component(table) yview]
@@ -157,7 +157,7 @@ itcl::body MemWin::build_win {} {
     -command "after idle $this update_address_cb" \
     -increment "after idle $this incr_addr -1" \
     -decrement "after idle $this incr_addr 1" -foreground  $::Colors(textfg) \
-    -validate {}  -textbackground $::Colors(textbg) 
+    -validate {}  -textbackground $::Colors(textbg)
   $itk_interior.f.cntl delete 0 end
   $itk_interior.f.cntl insert end $addr_exp
 
@@ -271,7 +271,7 @@ itcl::body MemWin::edit { cell } {
   set col [lindex $rc 1]
   set val [$itk_component(table) get $cell]
 
-  if {$col == $Numcols} { 
+  if {$col == $Numcols} {
     # editing the ASCII field
     set addr [gdb_incr_addr $current_addr [expr {$bytes_per_row * $row}]]
     set start_addr $addr
@@ -279,7 +279,7 @@ itcl::body MemWin::edit { cell } {
     # calculate number of rows to modify
     set len [string length $val]
     set rows 0
-    while {$len > 0} { 
+    while {$len > 0} {
       incr rows
       set len [expr {$len - $bytes_per_row}]
     }
@@ -325,7 +325,7 @@ itcl::body MemWin::edit { cell } {
   }
 
   # read it back
-  # FIXME - HACK ALERT - This call causes trouble with remotes on Windows. 
+  # FIXME - HACK ALERT - This call causes trouble with remotes on Windows.
   # This routine is in fact called from within an idle handler triggered by
   # memMoveCell.  Something evil happens in that handler that causes gdb to
   # start writing this changed value into all the visible cells...
@@ -388,7 +388,7 @@ itcl::body MemWin::idle {event} {
 	}
     }
     }
-    
+
     # Enable control
     $itk_interior.f.cntl configure -state normal
   }
@@ -408,7 +408,7 @@ itcl::body MemWin::busy {event} {
 
   # go away if window is not finished drawing
   if {![winfo exists $itk_interior.f.cntl]} { return }
-  
+
   # Disable menus
   if {$mbar} {
     for {set i 0} {$i <= [$itk_interior.m.addr index last]} {incr i} {
@@ -429,9 +429,9 @@ itcl::body MemWin::busy {event} {
 itcl::body MemWin::newsize {height} {
 
   if {$dont_size || $Running} {
-    return 
+    return
   }
-  
+
   # only add rows if numbytes is zero
   if {$numbytes == 0} {
     ::update idletasks
@@ -512,14 +512,14 @@ itcl::body MemWin::update_address {addr} {
 
   # Check for spaces - this can happen with gdb_eval and $pc, for example.
   set current_addr [regsub {^(?:.* )?(.*)$} $current_addr {\1}]
- 
+
   # Check if it can be interpreted as an address.
   set retVal [catch {gdb_incr_addr $current_addr 0} x]
   if {$retVal} {
     BadExpr "\"$addr\" is not an address"
     return
   }
-  
+
   set addr_exp $addr
 
   # set table background
@@ -571,7 +571,7 @@ itcl::body MemWin::incr_addr {num} {
 
 # ------------------------------------------------------------------
 #  METHOD:  update_addr - read in data starting at $current_addr
-#  This is just a helper function for update_address. 
+#  This is just a helper function for update_address.
 # ------------------------------------------------------------------
 itcl::body MemWin::update_addr {} {
   global _mem ${this}_memval
@@ -594,7 +594,7 @@ itcl::body MemWin::update_addr {} {
   if {$retVal || [llength $vals] != 3}  {
     BadExpr "Couldn't get memory at address: \"$addr\""
       debug "gdb_update_mem returned return code: $retVal and value: \"$vals\""
-    return    
+    return
   }
   # set default column width to the max in the data columns
   $itk_component(table) configure -colwidth [lindex $vals 1]
@@ -627,13 +627,13 @@ itcl::body MemWin::reconfig {} {
   if [winfo exists $itk_interior.m] { destroy $itk_interior.m }
   if [winfo exists $itk_interior.cb] { destroy $itk_interior.cb }
   if [winfo exists $itk_interior.f.upd] { destroy $itk_interior.f.upd }
-  if [winfo exists $itk_interior.sy] { destroy $itk_interior.sy }  
+  if [winfo exists $itk_interior.sy] { destroy $itk_interior.sy }
   destroy $itk_interior.f.cntl $itk_interior.f $itk_component(table) \
-    $itk_interior.sx 
+    $itk_interior.sx
 
   set dont_size 1
 
-  # If the fonts change, then you will need to recompute the 
+  # If the fonts change, then you will need to recompute the
   # row height.  Ditto for switch from fixed number of rows to
   # depends on size.
 
@@ -651,7 +651,7 @@ itcl::body MemWin::reconfig {} {
   build_win
   set dont_size 0
   ::update
-  
+
   if {$numbytes == 0} {
     newsize $wh
   }
@@ -674,7 +674,7 @@ itcl::body MemWin::do_popup {X Y} {
   $itk_component(table).menu add separator
   $itk_component(table).menu add command -label "Preferences..." -underline 0 \
     -command "$this create_prefs"
-  tk_popup $itk_component(table).menu $X $Y 
+  tk_popup $itk_component(table).menu $X $Y
 }
 
 # ------------------------------------------------------------------
@@ -696,7 +696,7 @@ itcl::body MemWin::init_addr_exp {} {
   if {$addr_exp == ""} {
     set err [catch {gdb_cmd "info file"} result]
     if {!$err} {
-      foreach line [split [string trim $result] \n] { 
+      foreach line [split [string trim $result] \n] {
 	if {[scan $line {%x - %x is %s} start stop section] == 3} {
 	  if {$section == ".data"} {
 	    set addr_exp [format "%#08x" $start]

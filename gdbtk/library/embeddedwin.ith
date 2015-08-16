@@ -18,7 +18,7 @@ itcl::class EmbeddedWin {
   constructor {args} {
     debug "$args"
   }
-  
+
   destructor {
     debug
   }

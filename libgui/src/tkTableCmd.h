@@ -1,4 +1,4 @@
-/* 
+/*
  * tkTableCmd.h --
  *
  *	This is the header file for the module that implements

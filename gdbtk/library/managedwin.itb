@@ -25,7 +25,7 @@ itcl::body ManagedWin::constructor {args} {
 # ------------------------------------------------------------
 itcl::body ManagedWin::destructor {} {
   # If no toplevels remain, quit.  However, check the quit_if_last
-  # flag since we might be doing something like displaying a 
+  # flag since we might be doing something like displaying a
   # splash screen at startup...
 
   if {!$numTopWins && [quit_if_last]} {
@@ -84,7 +84,7 @@ itcl::body ManagedWin::window_instance {ins} {
 # ------------------------------------------------------------
 #  PUBLIC METHOD: pickle - This is the base class pickle
 #   method.  It returns a command that can be used to recreate
-#   this particular window.  
+#   this particular window.
 # ------------------------------------------------------------
 itcl::body ManagedWin::pickle {} {
   return [list ManagedWin::open [namespace tail [info class]]]
@@ -96,7 +96,7 @@ itcl::body ManagedWin::pickle {} {
 itcl::body ManagedWin::reveal {} {
   # Do this update to flush all changes before deiconifying the window.
   update idletasks
-  
+
   raise $_top
   wm deiconify $_top
 
@@ -109,7 +109,7 @@ itcl::body ManagedWin::reveal {} {
     }
     unset ::$_top._init_geometry
   }
-  
+
   # There used to be a `focus -force' here, but using -force is
   # unfriendly, so it was removed.  It was then replaced with a simple
   # `focus $top'.  However, this has no useful effect -- it just
@@ -131,12 +131,12 @@ itcl::body ManagedWin::restart {} {
   # This is needed in case we've called "gdbtk_busy" before the restart.
   # This will configure the stop/run button as necessary
   after idle gdbtk_idle
-  
+
   # call the reconfig method for each object
   foreach obj [itcl::find objects -isa ManagedWin] {
     if {[catch {$obj reconfig} msg]} {
       dbug W "reconfig failed for $obj - $msg"
-    } 
+    }
   }
 }
 
@@ -184,7 +184,7 @@ itcl::body ManagedWin::startup {} {
 #  PUBLIC PROC:  open_dlg
 # ------------------------------------------------------------
 itcl::body ManagedWin::open_dlg {class args} {
-  
+
   set newwin [eval _open $class $args]
   if {$newwin != ""} {
     $newwin reveal
@@ -196,7 +196,7 @@ itcl::body ManagedWin::open_dlg {class args} {
 #  PUBLIC PROC:  open
 # ------------------------------------------------------------
 itcl::body ManagedWin::open {class args} {
-  
+
   set newwin [eval _open $class $args]
   if {$newwin != ""} {
     if {[$newwin isa ModalDialog]} {
@@ -206,7 +206,7 @@ itcl::body ManagedWin::open {class args} {
       after idle "$newwin reveal"
     }
   }
-  
+
   return $newwin
 }
 
@@ -215,7 +215,7 @@ itcl::body ManagedWin::open {class args} {
 # ------------------------------------------------------------
 itcl::body ManagedWin::_open { class args } {
   debug "$class $args"
-  
+
   parse_args force
 
   if {!$force} {
@@ -226,7 +226,7 @@ itcl::body ManagedWin::_open { class args } {
 	return $obj
       }
     }
-    
+
   }
   # need to create a new window
   return [eval _create $class $args]
@@ -237,16 +237,16 @@ itcl::body ManagedWin::_open { class args } {
 # ------------------------------------------------------------
 itcl::body ManagedWin::_create { class args } {
   global gdb_ImageDir
-  
+
   set win [string tolower $class]
   debug "win=$win args=$args"
-  
-  parse_args {center transient {over ""}} 
-  
+
+  parse_args {center transient {over ""}}
+
   # increment window numbers until we get an unused one
   set i 0
   while {[winfo exists .$win$i]} { incr i }
-  
+
   while { 1 } {
     set top [toplevel .$win$i]
     wm withdraw $top
@@ -269,12 +269,12 @@ itcl::body ManagedWin::_create { class args } {
       break
     }
   }
-  
+
   if {[catch {pack $newwin -expand yes -fill both}]} {
     dbug W "packing of $newwin failed: $::errorInfo"
     return ""
   }
-  
+
   wm maxsize $top $_screenwidth $_screenheight
   wm minsize $top 20 20
   update idletasks
@@ -313,14 +313,14 @@ itcl::body ManagedWin::_create { class args } {
       }
     }
   }
-  
+
   if {[info exists ::env(GDBTK_TEST_RUNNING)] && $::env(GDBTK_TEST_RUNNING)} {
     set g "+100+100"
     wm geometry $top $g
     wm positionfrom $top user
   } else {
     set g [pref getd gdb/geometry/$newwin]
-    if {$g == "1x1+0+0"} { 
+    if {$g == "1x1+0+0"} {
       dbug E "bad geometry"
       set g ""
     }
@@ -336,15 +336,15 @@ itcl::body ManagedWin::_create { class args } {
 	if {$y < 0} {
 	  set y [expr $_screenheight + $y]
 	}
-	
+
 	# If the window is transient, then don't reset its size, since
 	# the user didn't set this anyway, and in some cases where the
 	# size can change dynamically, like the Global Preferences
 	# dialog, this can hide parts of the dialog with no recourse...
-	
+
 	# if dont_remember_size is true, don't set size, just like
 	# transients
-	
+
 	if {$transient || [dont_remember_size]} {
 	  set g "+${x}+${y}"
 	} else {

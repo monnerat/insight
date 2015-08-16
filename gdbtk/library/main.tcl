@@ -22,12 +22,12 @@
 
 ################### Initialization code #########################
 
-# If GDBtk fails to start at all, you might want to uncomment one or 
+# If GDBtk fails to start at all, you might want to uncomment one or
 # both of these.
 #set tcl_traceExec 2
 #set tcl_traceCompile 1
 
-# Add gdb's Tcl library directory to the end of the auto-load search path, if 
+# Add gdb's Tcl library directory to the end of the auto-load search path, if
 # it isn't already on the path.
 # Also, add the plugins directory if it exists.
 # Note: GDBTK_LIBRARY will be set in tcl_findLibrary before main.tcl is called.
@@ -53,7 +53,7 @@ if {[info exists auto_path]} {
   }
 }
 
-# Require the packages we need.  Most are loaded already, but this will catch 
+# Require the packages we need.  Most are loaded already, but this will catch
 # any odd errors... :
 
 foreach p {{tcl 8.5} {tk 8.5} {itcl 3.3} {itk 3.3} {iwidgets 4.0} {gdbtk 1.0} {combobox 2.2} {debug 1.0}} {
@@ -168,8 +168,8 @@ ManagedWin::init
 
 # This stuff will help us play nice with WindowMaker's AppIcons.
 # Can't do the first bit yet, since we don't get this from gdb...
-# wm command . [concat $argv0 $argv] 
-wm group . . 
+# wm command . [concat $argv0 $argv]
+wm group . .
 
 # some initial commands to get gdb in the right mode
 gdb_cmd {set height 0}

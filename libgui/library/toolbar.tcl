@@ -13,19 +13,19 @@ defarray TOOLBAR_state {
 
 proc TOOLBAR_button_enter {w} {
   global TOOLBAR_state
-  
+
   #save older relief (it covers buttons that
   #interacte like checkbuttons)
   set TOOLBAR_state(relief) [$w cget -relief]
-    
+
   if {[$w cget -state] != "disabled"} then {
-  
+
     if {$TOOLBAR_state(button) == $w} then {
       set relief sunken
     } else {
       set relief raised
     }
-    
+
     $w configure \
 	-state active \
 	-relief $relief
@@ -69,10 +69,10 @@ proc TOOLBAR_button_up {w} {
   global TOOLBAR_state
   if {$w == $TOOLBAR_state(button)} then {
     set TOOLBAR_state(button) ""
-    
+
     #restore original relief
-      $w configure -relief $TOOLBAR_state(relief)      
-    
+      $w configure -relief $TOOLBAR_state(relief)
+
     if {$TOOLBAR_state(window) == $w
 	&& [$w cget -state] != "disabled"} then {
 
@@ -95,9 +95,9 @@ proc TOOLBAR_button_up {w} {
 
       if {[string compare [winfo containing \
 			     [winfo pointerx $w] \
-			     [winfo pointery $w]] $w] == 0} { 
+			     [winfo pointery $w]] $w] == 0} {
 	$w configure -relief raised
-      }	
+      }
     }
   }
 }
@@ -122,7 +122,7 @@ proc TOOLBAR_maybe_init {} {
 #especially the relief value
 proc TOOLBAR_command {w args} {
     global TOOLBAR_state
-    
+
     set len [llength $args]
     for {set i 0} {$i < $len} {incr i} {
 	set cmd [lindex $args $i]
@@ -170,7 +170,7 @@ proc standard_toolbar {frame args} {
 
   # For now, there are two different layouts, depending on which kind
   # of icons we're using.  This is just a test feature and will be
-  # eliminated once we decide on an icon style.  
+  # eliminated once we decide on an icon style.
 
   TOOLBAR_maybe_init
 

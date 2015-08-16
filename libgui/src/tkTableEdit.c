@@ -1,4 +1,4 @@
-/* 
+/*
  * tkTableEdit.c --
  *
  *	This module implements editing functions of a table widget.

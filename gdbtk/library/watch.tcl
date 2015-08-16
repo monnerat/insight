@@ -27,12 +27,12 @@ itcl::class WatchWin {
     gdbtk_busy
     build_win $itk_interior
     gdbtk_idle
-    
+
     add_hook gdb_no_inferior_hook "$this no_inferior"
     add_hook gdb_clear_file_hook [code $this clear_file]
     add_hook file_changed_hook [code $this clear_file]
   }
-  
+
 
   # ------------------------------------------------------------------
   #   PUBLIC METHOD:  busy - BusyEvent handler
@@ -64,7 +64,7 @@ itcl::class WatchWin {
     }
     $tree remove all
   }
-  
+
   # ------------------------------------------------------------------
   #  METHOD:  cursor - change the toplevel's cursor
   # ------------------------------------------------------------------
@@ -72,14 +72,14 @@ itcl::class WatchWin {
     [winfo toplevel [namespace tail $this]] configure -cursor $what
     ::update idletasks
   }
-  
-  
+
+
   # ------------------------------------------------------------------
-  # METHOD: build_win - build window for watch. 
+  # METHOD: build_win - build window for watch.
   # ------------------------------------------------------------------
   method build_win {f} {
     #debug "$f"
-    
+
     set f [::frame $f.f]
     set treeFrame  [frame $f.top]
     set entryFrame [frame $f.expr]
@@ -111,7 +111,7 @@ itcl::class WatchWin {
       set variable [$Entry get]
       debug "Got $variable, going to add"
       set ok [add $variable]
-      debug "Added... with ok: $ok"      
+      debug "Added... with ok: $ok"
       $Entry delete 0 end
     }
   }
@@ -164,7 +164,7 @@ itcl::class WatchWin {
   # ------------------------------------------------------------------
   method add {name} {
     debug "Trying to add \"$name\" to watch"
- 
+
     # Strip all the junk after the first \n
     set var [split $name \n]
     set var [lindex $var 0]
@@ -207,7 +207,7 @@ itcl::class WatchWin {
 	lappend Watched $var
 	return 1
       }
-    }    
+    }
     return 0
   }
 

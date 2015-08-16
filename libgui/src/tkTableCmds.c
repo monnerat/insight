@@ -1,4 +1,4 @@
-/* 
+/*
  * tkTableCmds.c --
  *
  *	This module implements general commands of a table widget,
@@ -163,7 +163,7 @@ Table_AdjustCmd(ClientData clientData, register Tcl_Interp *interp,
     if (widthType) {
 	hashTablePtr = tablePtr->colWidths;
 	offset = tablePtr->colOffset;
-    } else { 
+    } else {
 	hashTablePtr = tablePtr->rowHeights;
 	offset = tablePtr->rowOffset;
     }
@@ -1257,7 +1257,7 @@ Table_ViewCmd(ClientData clientData, register Tcl_Interp *interp,
 	/* maintain appropriate real index */
 	CONSTRAIN(tablePtr->topRow, tablePtr->titleRows, tablePtr->rows-1);
 	CONSTRAIN(tablePtr->leftCol, tablePtr->titleCols, tablePtr->cols-1);
-	/* Do the table adjustment if topRow || leftCol changed */	
+	/* Do the table adjustment if topRow || leftCol changed */
 	if (oldTop != tablePtr->topRow || oldLeft != tablePtr->leftCol) {
 	    TableAdjustParams(tablePtr);
 	}

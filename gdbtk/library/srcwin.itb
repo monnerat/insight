@@ -86,7 +86,7 @@ itcl::body SrcWin::_build_win {} {
     label $_status -relief sunken -bd 3 -font global/status -height 1
     pack $_status -expand 1 -fill both
   }
-  
+
   # add a status bar container
   set _statbar [conAdd stat -resizable 0]
   frame $_statbar
@@ -94,14 +94,14 @@ itcl::body SrcWin::_build_win {} {
 
   combobox::combobox $_statbar.name -maxheight 15 -font global/fixed\
     -command [code $this _name] -bg $::Colors(textbg)
-  
+
   set need_files 1
-  
+
   combobox::combobox $_statbar.func -maxheight 15 -font global/fixed\
     -command [code $this goto_func] -bg $::Colors(textbg)
   combobox::combobox $_statbar.mode -width 9 -editable false \
     -font global/fixed -command [code $this mode] -bg $::Colors(textbg)
-  
+
   $_statbar.mode list insert end SOURCE
   $_statbar.mode list insert end ASSEMBLY
   $_statbar.mode list insert end MIXED
@@ -118,7 +118,7 @@ itcl::body SrcWin::_build_win {} {
 
   # if user likes control on top...
   if {[pref get gdb/src/top_control]} {
-  
+
     # add a SrcTextWin container
     set srcwin [conAdd src]
     set twin [SrcTextWin $srcwin -Tracing $Tracing -parent $this]
@@ -286,7 +286,7 @@ itcl::body SrcWin::reconfig {} {
 #  PRIVATE METHOD:  _name - filename combobox callback
 #  This is only called when the user edits the name combobox.
 #  It is the only way that files can be inserted into the file list
-#  once the debugger is started. 
+#  once the debugger is started.
 # ------------------------------------------------------------------
 itcl::body SrcWin::_name {w {val ""}} {
   global _files
@@ -426,7 +426,7 @@ itcl::body SrcWin::location {tag linespec} {
   # and address so we can keep the widgets up-to-date.  Otherwise we
   # basically pass things through to the SrcTextWin location public method.
 
-  debug "running=$gdb_running tag=$tag linespec=$linespec"    
+  debug "running=$gdb_running tag=$tag linespec=$linespec"
   lassign $linespec foo funcname name line addr pc_addr lib
 
   # need to call this to update running state
@@ -440,7 +440,7 @@ itcl::body SrcWin::location {tag linespec} {
       set tag STACK_TAG
     }
   }
-  
+
   if {!$gdb_running} {
     # When we are not yet debugging, we need to force something
     # to be displayed, so we choose to find function "main" and
@@ -450,10 +450,10 @@ itcl::body SrcWin::location {tag linespec} {
     if {$name == ""} {
       if {[set linespec [gdbtk_locate_main]] == ""} {
 	# no "main" function found
-	return 
+	return
       }
       lassign $linespec foo funcname name line addr pc_addr lib
-      debug "new linespec=$linespec"    
+      debug "new linespec=$linespec"
     }
   }
 
@@ -560,7 +560,7 @@ itcl::body SrcWin::busy {event} {
       if {$gdb_loaded || \
 	    ([TargetSelection::native_debugging] && $gdb_target_name != "remote")} {
 	set_status "Program is running."
-      } 
+      }
     } else {
       $_toolbar configure -runstop busy
     }
@@ -623,7 +623,7 @@ itcl::body SrcWin::set_status { {msg ""} {tmp 0} } {
 }
 
 # ------------------------------------------------------------------
-#  PUBLIC METHOD:  set_execution_status - write the current execution state 
+#  PUBLIC METHOD:  set_execution_status - write the current execution state
 #  to the status line
 # ------------------------------------------------------------------
 itcl::body SrcWin::set_execution_status { {line ""} {pc ""}} {
@@ -641,7 +641,7 @@ itcl::body SrcWin::set_execution_status { {line ""} {pc ""}} {
       if {$gdb_program_has_run} {
 	set message "Program terminated. 'Run' will restart."
 	# Need to set gdb_target_changed because most
-	# remote targets detach when they are finished, 
+	# remote targets detach when they are finished,
 	# and this will force it to reattach.
 	set gdb_target_changed 1
 	set gdb_running 0
@@ -665,7 +665,7 @@ itcl::body SrcWin::set_execution_status { {line ""} {pc ""}} {
     # only do a gdb_loc if we have to
     if {$line == "" && $pc == ""} {
       if {[catch {gdb_loc} loc] == 0} {
-	set line [lindex $loc 3] 
+	set line [lindex $loc 3]
 	set pc [lindex $loc 4]
       }
     }
@@ -764,7 +764,7 @@ itcl::body SrcWin::enable_ui { on } {
 # - file/func/mode selectors
 # - right-click popups, since gdb DOES allow looking at exe fil
 # - selections
-# 
+#
 # Change mouse pointer to normal
 # ------------------------------------------------------------------
 itcl::body SrcWin::no_inferior {} {
@@ -775,7 +775,7 @@ itcl::body SrcWin::no_inferior {} {
 
 # ------------------------------------------------------------------
 #   PUBLIC METHOD: reset - reset the source window
-# ------------------------------------------------------------------  
+# ------------------------------------------------------------------
 itcl::body SrcWin::reset {} {
   set current(filename) ""
   set need_files 1
@@ -890,7 +890,7 @@ itcl::body SrcWin::inferior {action} {
 	  $::insight_ipc send $action
 	}
       }
-      run { 
+      run {
 	if {[pref get gdb/ipc/run_button]} {
 	  $::insight_ipc send $action
 	}

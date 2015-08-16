@@ -14,7 +14,7 @@
 
 itcl::class ProcessWin {
   inherit EmbeddedWin GDBWin
-  
+
   private {
     variable id
     variable Running 0
@@ -28,13 +28,13 @@ itcl::class ProcessWin {
 
   public {
     method reconfig {}
-    method constructor {args} 
+    method constructor {args}
     method destructor {}
 
     #
     # GDB Events
     #
-    method busy {event}    
+    method busy {event}
     method idle {event}
     method update {event}
   }

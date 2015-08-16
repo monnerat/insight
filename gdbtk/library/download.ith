@@ -14,7 +14,7 @@
 
 itcl::class Download {
   inherit ManagedWin
-  
+
   protected {
     common total_bytes
     common section
@@ -31,7 +31,7 @@ itcl::class Download {
   public {
     variable filename
 
-    method constructor {args} 
+    method constructor {args}
     method destructor {}
     method update_download { sec num tot }
     method done { {msg ""} }
@@ -40,6 +40,6 @@ itcl::class Download {
     proc download_it { }
     proc do_download_hooks {}
     proc download_hash { section num }
-    
+
   }
 }

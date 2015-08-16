@@ -69,7 +69,7 @@ itcl::body ProcessWin::update {event} {
       # no processes/threads listed.
       return
     }
-    
+
     # insert each line one at a time
     set active -1
     set num_threads 0
@@ -86,7 +86,7 @@ itcl::body ProcessWin::update {event} {
 	incr num_threads
       }
     }
-    
+
     # highlight the active thread
     if {$active >= 0} {
       set active_thread $id($active)

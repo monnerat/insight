@@ -20,7 +20,7 @@ itcl::body Console::constructor {args} {
   _build_win
   eval itk_initialize $args
   add_hook gdb_no_inferior_hook [list $this idle dummy]
-  
+
   # There are a bunch of console prefs that have no UI
   # for the user to modify them.  In the event that the user
   # really wants to change them, they will have to be modified
@@ -56,7 +56,7 @@ itcl::body Console::_build_win {} {
   $_twin tag configure target_tag -foreground [pref get gdb/console/target_fg]
   $_twin configure -font [pref get gdb/console/font] \
     -bg $::Colors(textbg) -fg $::Colors(textfg)
-  
+
   #
   # bind editing keys for console window
   #
@@ -77,7 +77,7 @@ itcl::body Console::_build_win {} {
 
   # Tab completion
   bind_plain_key $_twin KeyPress-Tab "[code $this _complete]; break"
-  
+
   # Don't let left arrow or ^B go over the prompt
   bind_plain_key $_twin Control-b {
     if {[%W compare insert <= {cmdmark + 1 char}]} {
@@ -90,7 +90,7 @@ itcl::body Console::_build_win {} {
   bind_plain_key $_twin Control-h "[code $this _delete]; break"
 
   bind $_twin <BackSpace> "[code $this _delete]; break"
-  
+
   bind $_twin <Delete> "[code $this _delete 1]; break"
 
   # Control-a moves to start of line.
@@ -197,7 +197,7 @@ itcl::body Console::_build_win {} {
 
   _setprompt
   pack $itk_interior.stext -expand yes -fill both
-    
+
   focus $_twin
 
 }
@@ -375,7 +375,7 @@ itcl::body Console::_setprompt {{prompt {}}} {
   } elseif {$prompt == "none"} {
     set prompt ""
   }
-  
+
   $_twin delete {insert linestart} {insert lineend}
   $_twin insert {insert linestart} $prompt prompt_tag
   $_twin mark set cmdmark "insert -1 char"
@@ -476,21 +476,21 @@ itcl::body Console::invoke {{controld 0}} {
     set _needNL 1
     return
   }
-  
+
   # Only push new nonempty history items.
   if {$text != "" && [lindex $_history 0] != $text} {
     lvarpush _history $text
   }
-  
+
   set index [$_twin index insert]
-  
+
   # Clear current history element, and current partial element.
   set _histElement -1
   set _partialCommand ""
-  
+
   # Need a newline before next insert.
   set _needNL 1
-  
+
   # run command
   if {$gdbtk_state(readline)} {
     set gdbtk_state(readline_response) $text
@@ -515,10 +515,10 @@ itcl::body Console::invoke {{controld 0}} {
   } elseif {$message != ""} {
     $_twin insert $index "$message\n"
   }
-  
+
   # Make the prompt visible again.
   activate
-  
+
   # Make sure the insertion point is visible.
   $_twin see insert
 }
@@ -530,11 +530,11 @@ itcl::body Console::_delete {{right 0}} {
 
   # If we are deleting to the right, and we have this turned off,
   # delete to the right.
-  
+
   if {$right && ![pref get gdb/console/deleteLeft]} {
     set right 0
   }
-  
+
   if {!$right} {
     set insert_valid [$_twin compare insert > {cmdmark + 1 char}]
     set delete_loc "insert-1c"
@@ -542,12 +542,12 @@ itcl::body Console::_delete {{right 0}} {
     set insert_valid [$_twin compare insert > cmdmark]
     set delete_loc "insert"
   }
-  
+
   # If there is a selection on the command line, delete it,
   # If there is a selection above the command line, do a
   # regular delete, but don't delete the prompt.
   # If there is no selection, do the delete.
-  
+
   if {![catch {$_twin index sel.first}]} {
     if {[$_twin compare sel.first <= cmdmark]} {
       if {$insert_valid} {
@@ -585,7 +585,7 @@ itcl::body Console::_paste {{check_primary 1}} {
   }
 
   #if there is a selection, insert over it:
-  if {![catch {$_twin index sel.first}] 
+  if {![catch {$_twin index sel.first}]
       && [$_twin compare sel.first > {cmdmark + 1 char}]} {
     set point [$_twin index sel.first]
     $_twin delete sel.first sel.last

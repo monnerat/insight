@@ -84,7 +84,7 @@ typedef struct PixmapMaster {
     int size[2];		/* width and height */
     int ncolors;		/* number of colors */
     int cpp;			/* characters per pixel */
-    char ** data;		/* The data that defines this pixmap 
+    char ** data;		/* The data that defines this pixmap
 				 * image (array of strings). It is
 				 * converted into an X Pixmap when this
 				 * image is instanciated
@@ -145,7 +145,7 @@ static int		ImgXpmCreate _ANSI_ARGS_((Tcl_Interp *interp,
 static ClientData	ImgXpmGet _ANSI_ARGS_((Tk_Window tkwin,
 			    ClientData clientData));
 static void		ImgXpmDisplay _ANSI_ARGS_((ClientData clientData,
-			    Display *display, Drawable drawable, 
+			    Display *display, Drawable drawable,
 			    int imageX, int imageY, int width, int height,
 			    int drawableX, int drawableY));
 static void		ImgXpmFree _ANSI_ARGS_((ClientData clientData,
@@ -450,7 +450,7 @@ ImgXpmGetData(interp, masterPtr)
     masterPtr->size[1] = size[1];
     masterPtr->cpp = cpp;
     masterPtr->ncolors = ncolors;
-    
+
 #if 1 /* Zsolt Koppany 17-sep-96 */
     if (listArgv) {
 	ckfree((char*)listArgv);
@@ -468,7 +468,7 @@ ImgXpmGetData(interp, masterPtr)
     if (listArgv) {
 	ckfree((char*)listArgv);
     }
-		   
+
     return TCL_ERROR;
 }
 
@@ -781,7 +781,7 @@ static char * GetColor(colorDefn, colorName, type_ret)
 	if (GetType(colorDefn, &dummy) == NULL) {
 	    /* the next string should also be considered as a part of a color
 	     * name */
-	    
+
 	    while (*colorDefn && isspace(*colorDefn)) {
 		*p++ = *colorDefn++;
 	    }
@@ -971,7 +971,7 @@ static void ImgXpmGetPixmapFromData(interp, masterPtr, instancePtr)
 	} else {
 	    strncpy(colors[i].cstring, masterPtr->data[i+lOffset],
 		(size_t)masterPtr->cpp);
-	} 
+	}
 
 	if (found) {
 	    if (strncasecmp(useName, "none",4) != 0) {
@@ -1018,7 +1018,7 @@ static void ImgXpmGetPixmapFromData(interp, masterPtr, instancePtr)
 		}
 	    } else {
 		for (k=0; k<masterPtr->ncolors; k++) {
-		    if (strncmp(p, colors[k].cstring, 
+		    if (strncmp(p, colors[k].cstring,
 			    (size_t)masterPtr->cpp) == 0) {
 			if (colors[k].colorPtr != NULL) {
 			    XPutPixel(image, j, i, colors[k].colorPtr->pixel);
@@ -1170,7 +1170,7 @@ ImgXpmConfigureInstance(instancePtr)
 
     gcValues.graphics_exposures = False;
     gcValues.clip_mask = instancePtr->mask;
-    
+
     gc = Tk_GetGC(instancePtr->tkwin, gcMask, &gcValues);
 
     if (instancePtr->gc != None) {

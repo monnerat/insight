@@ -24,7 +24,7 @@ option add *BrowserWin.textBackground  $::Colors(textbg)
 # ------------------------------------------------------------------
 itcl::body BrowserWin::constructor {args} {
   debug
-  #eval itk_initialize $args 
+  #eval itk_initialize $args
   window_name "Function Browser"
 
   set _layout [pref get gdb/browser/layout]
@@ -75,7 +75,7 @@ itcl::body BrowserWin::_build_win {} {
 	     -width 5i]
     $p add left
     set p2 [cyg::panedwindow [$p childsite left].p]
-   
+
     $p2 add file
     _build_file_frame [$p2 childsite file]
 
@@ -107,7 +107,7 @@ itcl::body BrowserWin::_build_win {} {
     $p add view
     _build_view_frame [$p childsite view]
   }
-  
+
   # Fill file box
   _fill_file_box
 
@@ -279,7 +279,7 @@ itcl::body BrowserWin::_toggle_bp {y} {
       return
     }
     set bpnum [bp_exists $linespec]
-    if {$bpnum == -1} {	
+    if {$bpnum == -1} {
       # FIXME: gdb_set_bp is the preferred method, but it requires
       # a file and line number. This doesn't work very well for
       # templates...
@@ -290,10 +290,10 @@ itcl::body BrowserWin::_toggle_bp {y} {
   }
 }
 
-# ------------------------------------------------------------------  
+# ------------------------------------------------------------------
 #  METHOD:  _select
 #           Un/Highlight all files in the files list
-# ------------------------------------------------------------------  
+# ------------------------------------------------------------------
 itcl::body BrowserWin::_select {highlight} {
   if {$highlight} {
     $itk_component(file_box) selection set 0 end
@@ -303,10 +303,10 @@ itcl::body BrowserWin::_select {highlight} {
   search
 }
 
-# ------------------------------------------------------------------  
+# ------------------------------------------------------------------
 #  METHOD:  _set_filter_mode
 #           React to changes in the filter mode
-# ------------------------------------------------------------------  
+# ------------------------------------------------------------------
 itcl::body BrowserWin::_set_filter_mode {w mode} {
   if {[string compare $mode $cur_filter_mode] != 0} {
     set cur_filter_mode $mode
@@ -432,7 +432,7 @@ itcl::body BrowserWin::_fill_file_box {} {
   } else {
     foreach file $allFiles {
       $itk_component(file_box) insert end $file
-    } 
+    }
   }
   search
 }
@@ -475,7 +475,7 @@ itcl::body BrowserWin::_fill_funcs_combo {name} {
 #	This private method builds the filter frame
 # ------------------------------------------------------------------
 itcl::body BrowserWin::_build_filter_frame {parent} {
-  
+
   itk_component add filter {
     iwidgets::labeledframe $parent.filter -labeltext "Function Filter" \
       -relief groove -borderwidth 2 -ipadx 6 -ipady 4
@@ -494,7 +494,7 @@ itcl::body BrowserWin::_build_filter_frame {parent} {
       -width 15 -editable 0 \
       -command [code $this _set_filter_mode] \
       -font global/fixed
-  } { 
+  } {
     rename -background -textbackground textBackground Background
   }
 
@@ -511,7 +511,7 @@ itcl::body BrowserWin::_build_filter_frame {parent} {
 
   itk_component add filt_entry {
     entry [$itk_component(filter) childsite].ent -font global/fixed \
-      -textvariable [pref varname gdb/search/last_symbol] 
+      -textvariable [pref varname gdb/search/last_symbol]
   } {}
   bind_plain_key $itk_component(filt_entry) Return [list $this search]
 
@@ -520,7 +520,7 @@ itcl::body BrowserWin::_build_filter_frame {parent} {
     [code $this _filter_trace_proc]
 
   if {$_layout == 2} {
-    pack $itk_component(filt_label) -side left 
+    pack $itk_component(filt_label) -side left
   }
   pack $itk_component(filt_type) -side left -padx 4 -fill y -pady 5
   pack $itk_component(filt_entry) -side right -fill both -expand 1 \
@@ -604,7 +604,7 @@ itcl::body BrowserWin::_build_function_frame {parent} {
       -exportselection false -foreground $::Colors(textfg) \
       -textbackground $::Colors(textbg)
   } {}
-	    
+
   bind [$itk_component(func_box) component listbox] <ButtonRelease-1> \
     [code $this _process_func_selection %y]
   bind $itk_component(func_box) <3> [code $this _toggle_bp %y]
@@ -613,8 +613,8 @@ itcl::body BrowserWin::_build_function_frame {parent} {
     frame [$itk_component(func_frame) childsite].sep -relief raised \
       -height 2 -borderwidth 1
   }
-	
-  itk_component add func_add_bp {   
+
+  itk_component add func_add_bp {
     button [$itk_component(func_frame) childsite].abp -text "Set BP" \
       -command [code $this do_all_bp 1]
   }
@@ -668,7 +668,7 @@ itcl::body BrowserWin::_build_view_frame {parent} {
   } {
     rename -background -textbackground textBackground Background
   }
-  
+
   itk_component add view_mode {
     combobox::combobox $itk_component(view_bottom).mode -width 9 \
       -font global/fixed -command [code $this mode]
@@ -688,7 +688,7 @@ itcl::body BrowserWin::_build_view_frame {parent} {
   pack $itk_component(view_name) -side top -fill x -padx 5 -pady 3
   pack $itk_component(view_bottom) -side bottom -fill x -pady 3 -padx 5
   pack $itk_component(view_src) -fill both -expand 1 -padx 5 -pady 3
-  
+
   # Fill combo boxes
   $itk_component(view_mode) list insert end SOURCE
   $itk_component(view_mode) list insert end ASSEMBLY

@@ -108,7 +108,7 @@ Thu Jun  8 17:59:01 2000  Andrew Cagney  <cagney@b1.cygnus.com>
 2000-06-06  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 
 	* gdbtk.c: Remove CYGWIN32 conditional around timer machinery.
-  	Cygwin can handle timers fine now.	
+  	Cygwin can handle timers fine now.
 
 2000-04-17  Jonathan Larmour  <jlarmour@redhat.co.uk>
 
@@ -146,8 +146,8 @@ Thu Jun  8 17:59:01 2000  Andrew Cagney  <cagney@b1.cygnus.com>
 2000-02-29  James Ingham  <jingham@leda.cygnus.com>
 
 	* gdbtk-cmds.c (gdb_disassemble_driver): The to_shortname for
-	Linux is "linuxthreads", not "linux-threads", so we have to change 
-	the heuristic to account for this.  This fixes a crash when trying 
+	Linux is "linuxthreads", not "linux-threads", so we have to change
+	the heuristic to account for this.  This fixes a crash when trying
 	to disassemble from shared libraries.
 
 2000-02-23  Keith R Seitz  <kseitz@nwlink.com>
@@ -181,7 +181,7 @@ Fri Feb  4 23:19:03 2000  Andrew Cagney  <cagney@b1.cygnus.com>
 	* ChangeLog-gdbtk, gdbtk-cmds.c, gdbtk-hooks.c, gdbtk-variable.c,
  	gdbtk-varobj.c, gdbtk-wrapper.c, gdbtk-wrapper.h, gdbtk.c,
  	gdbtk.h: Moved here from the top level GDB directory.
-	
+
 Tue Feb  1 00:17:12 2000  Andrew Cagney  <cagney@b1.cygnus.com>
 
 	* gdbtk-hooks.c, gdbtk-variable.c, gdbtk-wrapper.c,

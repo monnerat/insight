@@ -1,15 +1,15 @@
 # -----------------------------------------------------------------------------
-# NAME:	
+# NAME:
 #		::debug
 #
-# DESC:	
+# DESC:
 #		This namespace implements general-purpose debugging functions
-#		to display information as a program runs.  In addition, it 
-#		includes profiling (derived from Sage 1.1) and tracing.  For 
-#		output it can write to files, stdout, or use a debug output 
+#		to display information as a program runs.  In addition, it
+#		includes profiling (derived from Sage 1.1) and tracing.  For
+#		output it can write to files, stdout, or use a debug output
 #		window.
 #
-# NOTES:	
+# NOTES:
 #		Output of profiler is compatible with sageview.
 #
 # -----------------------------------------------------------------------------
@@ -43,7 +43,7 @@ namespace eval ::debug {
     if {$logfile != "" && $logfile != "stdout" && $logfile != "stderr"} {
       catch {close $logfile}
     }
-    
+
     if {$file == ""} {
       set logfile ""
     } elseif {$file == "stdout" || $file == "stderr"} {
@@ -57,7 +57,7 @@ namespace eval ::debug {
 # ----------------------------------------------------------------------------
 # NAME:		debug::trace_var
 # SYNOPSIS:	debug::trace_var {varName mode}
-# DESC:		Sets up variable trace.  When the trace is activated, 
+# DESC:		Sets up variable trace.  When the trace is activated,
 #		debugging messages will be displayed.
 # ARGS:		varName - the variable name
 #		mode - one of more of the following letters
@@ -67,7 +67,7 @@ namespace eval ::debug {
 # -----------------------------------------------------------------------------
   proc trace_var {varName mode} {
     variable tracedVars
-    lappend tracedVars [list $varName $mode] 
+    lappend tracedVars [list $varName $mode]
     uplevel \#0 trace variable $varName $mode ::debug::touched_by
   }
 
@@ -115,11 +115,11 @@ namespace eval ::debug {
     dbug  W "New value: $foo"
     show_call_stack 2
   }
-  
+
 # ----------------------------------------------------------------------------
 # NAME:		debug::show_call_stack
 # SYNOPSIS:	debug::show_call_stack {{start_decr 0}}
-# DESC:		Function used by trace_var to print stack trace. Currently 
+# DESC:		Function used by trace_var to print stack trace. Currently
 #		writes standard debugging messages or priority "W".
 # ARGS:		start_decr - how many levels to go up to start trace
 # ----------------------------------------------------------------------------
@@ -134,17 +134,17 @@ namespace eval ::debug {
       }
     }
   }
-  
+
 # ----------------------------------------------------------------------------
 # NAME:		debug::createData
 # SYNOPSIS:	createData { name }
-# DESC:		Basically creates a data structure for storing profiling 
+# DESC:		Basically creates a data structure for storing profiling
 #		information about a function.
 # ARGS:		name - unique (full) function name
 # -----------------------------------------------------------------------------
   proc createData {name} {
     lappend data::entries $name
-    
+
     namespace eval data::$name {
       variable totaltimes 0
       variable activetime 0
@@ -154,7 +154,7 @@ namespace eval ::debug {
       variable nest 0
     }
   }
-  
+
   proc debugwin {obj} {
     variable debugwin
     set debugwin $obj
@@ -165,12 +165,12 @@ namespace eval ::debug {
 #
 # SYNOPSIS:	debug { {msg ""} }
 #
-# DESC:		Writes a message to the proper output. The priority of the 
+# DESC:		Writes a message to the proper output. The priority of the
 #		message is assumed to be "I" (informational). This function
 #		is provided for compatibility with the previous debug function.
 #		For higher priority messages, use dbug.
 #
-# ARGS:		msg - Message to be displayed. 
+# ARGS:		msg - Message to be displayed.
 # -----------------------------------------------------------------------------
 
   proc debug {{msg ""}} {
@@ -178,7 +178,7 @@ namespace eval ::debug {
     if {$cls == ""} {
       set cls "global"
     }
-    
+
     set i [expr {[info level] - 1}]
     if {$i > 0} {
       set func [lindex [info level $i] 0]
@@ -205,7 +205,7 @@ namespace eval ::debug {
 #
 # ARGS:		msg   - Message to be displayed.
 #		level - One of the following:
-#				"I" - Informational only 
+#				"I" - Informational only
 #				"W" - Warning
 #				"E" - Error
 #				"X" - Fatal Error
@@ -215,14 +215,14 @@ namespace eval ::debug {
     if {$cls == ""} {
       set cls "global"
     }
-    
+
     set i [expr {[info level] - 1}]
     if {$i > 0} {
       set func [lindex [info level $i] 0]
     } else {
       set func ""
     }
-    
+
     ::debug::_putdebug $level $cls $func $msg
   }
 
@@ -238,7 +238,7 @@ namespace eval ::debug {
 #		cls   - name of calling itcl class or "global"
 #		func  - name of calling function
 #		level - One of the following:
-#			"I" - Informational only 
+#			"I" - Informational only
 #			"W" - Warning
 #			"E" - Error
 #			"X" - Fatal Error
@@ -273,7 +273,7 @@ namespace eval ::debug {
 	incr stoptrace -1
       }
     }
-    
+
     if {$stoptrace == 0} {
       incr stoptrace
       # strip off leading function name
@@ -281,7 +281,7 @@ namespace eval ::debug {
       if {$debugwin != ""} {
 	$debugwin put_trace $enter $lev $func $ar
       }
-      
+
       if {$logfile != ""} {
 	puts $logfile [concat {T} [list $enter] [list $lev] [list $func] \
 			 [list $ar]]
@@ -297,7 +297,7 @@ namespace eval ::debug {
 #		and tracing.
 # NOTES:	Installing these hooks slows loading of the program. Running
 #		with the hooks installed will cause significant slowdown of
-#		program execution. 
+#		program execution.
 # -----------------------------------------------------------------------------
   proc init {} {
     variable VERSION
@@ -306,7 +306,7 @@ namespace eval ::debug {
 
     # create the arrays for the .global. level
     createData .global.
-    
+
     # start the absolute timer
     set absolute [clock clicks]
 
@@ -317,7 +317,7 @@ namespace eval ::debug {
 
     rename ::tkwait ::original_tkwait
     interp alias {} ::tkwait {} [namespace current]::sagetkwait
-    
+
     rename ::exit ::original_exit
     interp alias {} ::exit {} [namespace current]::sageexit
 
@@ -347,7 +347,7 @@ namespace eval ::debug {
     #      }
     #      uplevel \#0 proc [list $p] [list $args] [list [info body $p]]
     #}
-  
+
     set initialized 1
     resetWatch 0
     procEntry .global.
@@ -363,7 +363,7 @@ namespace eval ::debug {
     variable tracing
     set tracing 1
   }
-  
+
 # -----------------------------------------------------------------------------
 # NAME:		::debug::trace_stop
 # SYNOPSIS:	::debug::trace_stop
@@ -392,7 +392,7 @@ namespace eval ::debug {
     procExit .wait.
     startWatch
   }
-  
+
 # ----------------------------------------------------------------------------
 # NAME:		debug::sagevwait
 # SYNOPSIS:	sagevwait {args}
@@ -405,13 +405,13 @@ namespace eval ::debug {
     stopWatch
     procEntry .wait.
     startWatch
-    uplevel ::original_vwait $args    
+    uplevel ::original_vwait $args
     # simulate the exiting of this proc
     stopWatch
     procExit .wait.
     startWatch
   }
-  
+
 # -----------------------------------------------------------------------------
 # NAME:		debug::sageexit
 # SYNOPSIS:	sageexit {{value 0}}
@@ -423,7 +423,7 @@ namespace eval ::debug {
     variable program_name GDBtk
     variable program_args ""
     variable absolute
-    
+
     # stop the stopwatch
     stopWatch
 
@@ -431,21 +431,21 @@ namespace eval ::debug {
 
     # stop the absolute timer
     set stop [clock clicks]
-    
+
     # unwind the stack and turn off everyone's timers
     stackUnwind
-        
+
     # disengage the proc callbacks
     ::original_proc procEntry {name} {}
     ::original_proc procExit {name args} {}
     ::original_proc methodEntry {name} {}
     ::original_proc methodExit {name args} {}
-    
+
     set absolute [expr {$stop - $absolute}]
 
     # get the sage overhead time
     set sagetime [expr {$absolute - $totaltime}]
-    
+
     # save the data
     variable outfile
     variable VERSION
@@ -456,7 +456,7 @@ namespace eval ::debug {
     puts $f "set absolute $absolute"
     puts $f "set sagetime $sagetime"
     puts $f "set totaltime $totaltime"
-    
+
     foreach procname $data::entries {
       set totaltimes($procname) [set data::${procname}::totaltimes]
       set proccounts($procname) [set data::${procname}::proccounts]
@@ -469,8 +469,8 @@ namespace eval ::debug {
     close $f
     original_exit $value
   }
-  
-  
+
+
   proc sageproc {name args body} {
     # stop the watch
     stopWatch
@@ -485,7 +485,7 @@ namespace eval ::debug {
       set name ${ns}::$name
     }
 
-    createData $name          
+    createData $name
     # create the callbacks for proc entry and exit
     set ns [namespace current]
     set extra "${ns}::stopWatch;"
@@ -495,7 +495,7 @@ namespace eval ::debug {
 
     set args [list $args]
     set body [list [concat $extra $body]]
-    
+
     startWatch
 
     # define the proc with our extra stuff snuck in
@@ -523,8 +523,8 @@ namespace eval ::debug {
       }
       set fullname ${ns}::$name
     }
-    
-    createData $fullname          
+
+    createData $fullname
     # create the callbacks for proc entry and exit
     set ns [namespace current]
     set extra "${ns}::stopWatch;"
@@ -534,7 +534,7 @@ namespace eval ::debug {
 
     set args [list $args]
     set body [list [concat $extra $body]]
-    
+
     startWatch
 
     # define the proc with our extra stuff snuck in
@@ -590,14 +590,14 @@ namespace eval ::debug {
     startWatch
     uplevel ::original_method $name $args
   }
-  
+
   proc push {v} {
-    variable stack 
+    variable stack
     variable level
     lappend stack $v
     incr level
   }
-  
+
   proc pop {} {
     variable stack
     variable level
@@ -606,12 +606,12 @@ namespace eval ::debug {
     incr level -1
     return $v
   }
-  
+
   proc look {} {
     variable stack
-    return [lindex $stack end]   
+    return [lindex $stack end]
   }
-  
+
   proc stackUnwind {} {
     # Now unwind all the stacked procs by calling procExit on each.
     # It is OK to use procExit on methods because the full name
@@ -620,22 +620,22 @@ namespace eval ::debug {
       procExit $procname
     }
   }
-  
+
   # we need args because this is part of a trace callback
   proc startWatch {args} {
     variable watchstart
     set watchstart [clock clicks]
   }
-  
+
   proc resetWatch {value} {
     variable watch
     set watch $value
   }
-  
+
   proc stopWatch {} {
     variable watch
     variable watchstart
-    set watch [expr {$watch + ([clock clicks] - $watchstart)}]    
+    set watch [expr {$watch + ([clock clicks] - $watchstart)}]
     return $watch
   }
 
@@ -643,31 +643,31 @@ namespace eval ::debug {
     variable watch
     return $watch
   }
-  
+
   proc startTimer {v} {
     if { $v != "" } {
       set data::${v}::timerstart [getWatch]
     }
   }
-  
+
   proc stopTimer {v} {
     if { $v == "" } return
     set stop [getWatch]
     set data::${v}::timers [expr {[set data::${v}::timers] + ($stop - [set data::${v}::timerstart])}]
   }
-  
+
   proc procEntry {procname} {
     variable level
     _puttrace 1 $level $procname [uplevel info level [uplevel info level]]
 
     set time [getWatch]
-    
+
     # stop the timer of the caller
     set caller [look]
-    stopTimer $caller 
-    
+    stopTimer $caller
+
     incr data::${procname}::proccounts
-    
+
     if { [set data::${procname}::nest] == 0 } {
       set data::${procname}::activetime $time
     }
@@ -675,7 +675,7 @@ namespace eval ::debug {
 
     # push this proc on the stack
     push $procname
-    
+
     # start the timer for this
     startTimer $procname
   }
@@ -684,11 +684,11 @@ namespace eval ::debug {
     variable level
 
     set time [getWatch]
-    
+
     # stop the timer of the caller
     set caller [look]
-    stopTimer $caller 
-    
+    stopTimer $caller
+
     # get the namespace this method is in
     set ns [uplevel namespace current]
     if { $ns == "::" } {
@@ -702,7 +702,7 @@ namespace eval ::debug {
     }
 
     incr data::${name}::proccounts
-    
+
     if { [set data::${name}::nest] == 0 } {
       set data::${name}::activetime $time
     }
@@ -710,7 +710,7 @@ namespace eval ::debug {
 
     # push this proc on the stack
     push $name
-    
+
     # start the timer for this
     startTimer $name
   }
@@ -724,14 +724,14 @@ namespace eval ::debug {
     stopTimer [pop]
 
     _puttrace 0 $level $procname
-    
+
     set r [incr data::${procname}::nest -1]
     if { $r == 0 } {
       set data::${procname}::totaltimes \
 	[expr {[set data::${procname}::totaltimes] \
 		 + ($time - [set data::${procname}::activetime])}]
     }
-    
+
     # now restart the timer of the caller
     startTimer [look]
   }
@@ -742,7 +742,7 @@ namespace eval ::debug {
     set time [getWatch]
     # stop the timer of the proc
     stopTimer [pop]
-    
+
     # get the namespace this method is in
     set ns [uplevel namespace current]
     if { $ns == "::" } {
@@ -758,7 +758,7 @@ namespace eval ::debug {
 	[expr {[set data::${procname}::totaltimes] \
 		 + ($time - [set data::${procname}::activetime])}]
     }
-    
+
     # now restart the timer of the caller
     startTimer [look]
   }

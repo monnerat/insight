@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 1993 by Sven Delmas
  * All rights reserved.
  * See the file COPYRIGHT for the copyright notes.
@@ -490,7 +490,7 @@ LayoutDebugging(
 	    TREE_TMP_Y_POS(currentNode));
     break;
   default:
-    break; 
+    break;
   }
 }
 #endif
@@ -560,7 +560,7 @@ LayoutISISetX AC2(Layout_Graph*,This, Node*,currentNode) /* This is the current 
     }
     else
     {
-    
+
       /* Khamis 8:30 23 Oct 1996 */
     	int i, pingo = 0;
 	double x1 = 0.0, x2 = 0.0;
@@ -622,7 +622,7 @@ LayoutISISetX AC2(Layout_Graph*,This, Node*,currentNode) /* This is the current 
  *
  * LayoutISISetY --
  *
- *	This procedure is invoked to calculate the y ISI position. 
+ *	This procedure is invoked to calculate the y ISI position.
  *
  * Results:
  *	None
@@ -650,7 +650,7 @@ LayoutISISetY AC2(Layout_Graph*,This, Node*,currentNode) /* This is the current 
   }
 
   SET_VISITED_NODE(currentNode, 1);
-  
+
   if(PARENT_NUM(currentNode) != 0) {
     FOR_ALL_PARENTS(currentNode, counter) {
       /* Are there un layouted parents ? */
@@ -701,7 +701,7 @@ LayoutISISetY AC2(Layout_Graph*,This, Node*,currentNode) /* This is the current 
       SET_NODE_Y_POS(currentNode, 0);
     }
   }
-  
+
   /*SET_VISITED_NODE(currentNode, 1);*/
 }
 
@@ -722,9 +722,9 @@ MY_LayoutISISetY AC3(Layout_Graph*,This, Node*,currentNode, double, y)
   }
 
   SET_VISITED_NODE(currentNode, 1);
-  
+
   SET_NODE_Y_POS(currentNode, y);
-  
+
   FOR_ALL_SUCCS (currentNode, counter) {
       /* Are there un layouted parents ? */
       if(IGNORE_EDGE(PARENT_EDGE(currentNode, counter))) {
@@ -739,7 +739,7 @@ MY_LayoutISISetY AC3(Layout_Graph*,This, Node*,currentNode, double, y)
       if (PARENT_NODE(SUCC_NODE(currentNode, counter), 0) !=
           currentNode)
 	continue;
-	
+
       if(THIS(graphOrder)) {
         tmpMaxY = NODE_Y_POS  (currentNode) + NODE_HEIGHT (currentNode);
 		/*+ THIS(edgeHeight) + THIS(iconSpaceV); */
@@ -764,7 +764,7 @@ MY_LayoutISISetY AC3(Layout_Graph*,This, Node*,currentNode, double, y)
  *
  *	This procedure is invoked to calculate the x tree position.
  *      The procedure is called for all icons in the topological
- *      order. 
+ *      order.
  *
  * Results:
  *	None
@@ -841,7 +841,7 @@ LayoutTreeSetX AC2(Layout_Graph*,This, Node*,currentNode) /* This is the current
  *
  * LayoutTreeSetY --
  *
- *	This procedure is invoked to calculate the y tree position. 
+ *	This procedure is invoked to calculate the y tree position.
  *
  * Results:
  *	None
@@ -868,7 +868,7 @@ LayoutTreeSetY AC2(Layout_Graph*,This, Node*,currentNode) /* This is the current
   if(VISITED_NODE(currentNode)) {
     return;
   }
-  
+
   SET_VISITED_NODE(currentNode, 1);
   tmpMaxY = 0;
   /* Walk through all parents. */
@@ -898,7 +898,7 @@ LayoutTreeSetY AC2(Layout_Graph*,This, Node*,currentNode) /* This is the current
       }
     }
   }
-  
+
   /* Set the y position of the current node. */
   if(THIS(graphOrder)) {
     /* Place nodes top down. */
@@ -945,7 +945,7 @@ LayoutCreateNode AC4(Layout_Graph*,This,pItem,itemPtr, pItem,fromNode, pItem, to
   FOR_ALL_NODES(counter1) {
 	if(NODE_ITEM(THIS(nodes)[counter1]) == itemPtr) {
 	    THIS(errmsg) = "attempt to insert duplicate graph node";
-	    return LAYOUT_ERROR; 
+	    return LAYOUT_ERROR;
 	}
   }
   THIS(nodeNum)++;
@@ -970,7 +970,7 @@ LayoutCreateNode AC4(Layout_Graph*,This,pItem,itemPtr, pItem,fromNode, pItem, to
   SET_SUCC_NUM(tmpNode, 0);
   tmpNode->succ = (Edge**) NULL;
   THIS(nodes)[THIS(nodeNum)-1] = tmpNode;
-  
+
 #if 0
   /* create the specific data slot. */
   if(createdatanode != NULL) {
@@ -1009,7 +1009,7 @@ LayoutCreateNode AC4(Layout_Graph*,This,pItem,itemPtr, pItem,fromNode, pItem, to
       SET_SUCC_NUM(tmpNode, 1);
       SET_NODE_X_POS(tmpNode, 10);
       SET_NODE_Y_POS(tmpNode, 10);
-      THIS(nodes)[THIS(nodeNum)-1]->parent = (Edge**) 
+      THIS(nodes)[THIS(nodeNum)-1]->parent = (Edge**)
 	ckalloc(THIS(nodes)[THIS(nodeNum)-1]->parentNum * sizeof(Edge*));
       tmpEdge = (Edge* ) ckalloc(sizeof(Edge));
       SET_IGNORE_EDGE(tmpEdge, 0);
@@ -1017,7 +1017,7 @@ LayoutCreateNode AC4(Layout_Graph*,This,pItem,itemPtr, pItem,fromNode, pItem, to
       tmpEdge->fromNode = THIS(nodes)[counter1];
       tmpEdge->toNode = THIS(nodes)[counter3];
       THIS(nodes)[THIS(nodeNum)-1]->parent[0] = tmpEdge;
-      THIS(nodes)[THIS(nodeNum)-1]->succ = (Edge**) 
+      THIS(nodes)[THIS(nodeNum)-1]->succ = (Edge**)
 	ckalloc(THIS(nodes)[THIS(nodeNum)-1]->succNum * sizeof(Edge* ));
       THIS(nodes)[THIS(nodeNum)-1]->succ[0] = tmpEdge;
       THIS(nodes)[counter3]->parent[counter4]->toNode = tmpNode;
@@ -1083,7 +1083,7 @@ LayoutCreateEdge AC4(Layout_Graph*,This, pItem,edgeid, pItem,fromid, pItem,toid)
     FOR_ALL_EDGES(i) {
 	if(EDGE_ITEM(THIS(edges)[i]) == edgeid) {
 	    THIS(errmsg) = "attempt to insert duplicate graph edge";
-	    return LAYOUT_ERROR; 
+	    return LAYOUT_ERROR;
 	}
     }
     /* locate the actual from and to nodes */
@@ -1124,10 +1124,10 @@ LayoutCreateEdge AC4(Layout_Graph*,This, pItem,edgeid, pItem,fromid, pItem,toid)
     /* insert the succ and parent edge structs */
     tonode->parentNum++;
     if(tonode->parent == NULL) {
-	tonode->parent = (Edge**) 
+	tonode->parent = (Edge**)
 		ckalloc(tonode->parentNum * sizeof(Edge*));
     } else {
-	tonode->parent = (Edge**) 
+	tonode->parent = (Edge**)
 		ckrealloc((char *) tonode->parent,
 			tonode->parentNum * sizeof(Edge*));
     }
@@ -1135,10 +1135,10 @@ LayoutCreateEdge AC4(Layout_Graph*,This, pItem,edgeid, pItem,fromid, pItem,toid)
 
     fromnode->succNum++;
     if(fromnode->succ == NULL) {
-	fromnode->succ = (Edge**) 
+	fromnode->succ = (Edge**)
 		ckalloc(fromnode->succNum * sizeof(Edge*));
     } else {
-	fromnode->succ = (Edge**) 
+	fromnode->succ = (Edge**)
 		ckrealloc((char *) fromnode->succ,
 			fromnode->succNum * sizeof(Edge*));
     }
@@ -1209,7 +1209,7 @@ deleteedge AC3(Layout_Graph*,This, Edge*,e, int,index)
 		found = 1;
 	    }
 	}
-	if(found) {compress_parent(This,n);}	
+	if(found) {compress_parent(This,n);}
     }
     /* free and clear Edge*/
     THIS(edgeNum)--;
@@ -1360,7 +1360,7 @@ LayoutFreeGraph AC1(Layout_Graph*,This)
 	ckfree((char *) THIS(topList));
 	THIS(topList) = NULL;
   }
-  
+
   /* free graph layout structure */
   ckfree ((char *) This);
 }
@@ -1398,13 +1398,13 @@ LayoutGraphRoot AC1(Layout_Graph*,This)
   {
     if (counter == 0 || IGNORE_NODE(THIS(nodes)[counter]))
       continue;
-      
+
     if (SUCC_NUM(THIS(nodes)[counter]) > SUCC_NUM(THIS(nodes)[lidx]))
     {
       node = THIS(nodes)[counter];
       THIS(nodes)[counter] = THIS(nodes)[lidx];
       THIS(nodes)[lidx] = node;
-      
+
       /* search for next node with no subtree */
       while (SUCC_NUM(THIS(nodes)[lidx]) > 0 && lidx < counter)
       {
@@ -1414,7 +1414,7 @@ LayoutGraphRoot AC1(Layout_Graph*,This)
   }
 
   tmprootNode = THIS(rootNode);
-  
+
   /* Find a root node. This node has no parents. In case we do not */
   /* have such a node... find the node with the smallest number of */
   /* parents. */
@@ -1437,7 +1437,7 @@ LayoutGraphRoot AC1(Layout_Graph*,This)
 	    (minParentNum == PARENT_NUM(THIS(nodes)[counter]) &&
 	    maxSuccNum < SUCC_NUM(THIS(nodes)[counter])))) ||
 	  optimalRootNum == -10000 ||
-	    
+
 	  /* khamis: 17-mars-97, root with no parents have more priority */
 	  PARENT_NUM(THIS(nodes)[counter]) < PARENT_NUM(tmprootNode)) {
 	tmprootNode = THIS(nodes)[counter];
@@ -1451,7 +1451,7 @@ LayoutGraphRoot AC1(Layout_Graph*,This)
       }
     }
   }
-  
+
   /* No nodes... so abort the search. */
   if(tmprootNode == NULL) {
     return NULL;
@@ -1488,7 +1488,7 @@ LayoutGraphRoot AC1(Layout_Graph*,This)
  *
  * LayoutGraphSortTopological --
  *
- *	This procedure is invoked to sort a graph topological. 
+ *	This procedure is invoked to sort a graph topological.
  *
  * Results:
  *	None
@@ -1505,7 +1505,7 @@ LayoutGraphSortTopological AC2(Layout_Graph*,This, Node*,currentNode) /* This is
 {
   int counter;
   Topology *tmpTopology;
-    
+
   if(VISITED_NODE(currentNode) || IGNORE_NODE(currentNode)) {
     return;
   }
@@ -1522,7 +1522,7 @@ LayoutGraphSortTopological AC2(Layout_Graph*,This, Node*,currentNode) /* This is
   tmpTopology = (Topology *) ckalloc(sizeof(Topology));
   tmpTopology->nodePtr = currentNode;
   THIS(topList)[THIS(topListNum)-1] = tmpTopology;
-  
+
   SET_VISITED_NODE(currentNode, 1);
   /* Walk through all successors. */
   FOR_ALL_SUCCS(currentNode, counter) {
@@ -1718,7 +1718,7 @@ LayoutEdge AC4(Layout_Graph*,This,
   if(fromNode == (Node*) NULL && toNode == (Node*) NULL)
   {
     fromNode = e->fromNode;
-    toNode = e->toNode;    
+    toNode = e->toNode;
   }
 #if 0
   else
@@ -1747,7 +1747,7 @@ LayoutEdge AC4(Layout_Graph*,This,
 	  }
 	  fromId = atol(argv2[4]);
 	  ckfree((char *) argv2);
-	  
+
 	  /* Get "to" id */
 	  Tk_ConfigureInfo(canvasPtr->interp, canvasPtr->tkwin,
 			   itemPtr->typePtr->configSpecs,
@@ -1759,7 +1759,7 @@ LayoutEdge AC4(Layout_Graph*,This,
 	  }
 	  toId = atol(argv2[4]);
 	  ckfree((char *) argv2);
-	
+
 	  if(fromId == CANVAS_ITEM_ID(fromPtr) &&
 	      toId == CANVAS_ITEM_ID(toPtr)) {
 	    curPtr = itemPtr;
@@ -1785,7 +1785,7 @@ LayoutEdge AC4(Layout_Graph*,This,
 	      } else {
 		THIS(posY2) = toPtr->y2 + ((toPtr->y1 - toPtr->y2) / 2);
 	      }
-	      
+
 	      if(fromPtr->y2 <= toPtr->y1) {
 		sprintf(convertBuffer, "%d %d ", THIS(posX1), fromPtr->y2);
 	      } else {
@@ -1799,7 +1799,7 @@ LayoutEdge AC4(Layout_Graph*,This,
 		  }
 		}
 	      }
-	      
+
 	      Tcl_DStringAppend(&positionString, convertBuffer, -1);
 	      currentNode = SUCC_NODE(fromNode, counter1);
 	      while (DUMMY_NODE(currentNode) && SUCC_NUM(currentNode) > 0) {
@@ -2017,9 +2017,9 @@ LayoutEdge AC4(Layout_Graph*,This,
 	}
       }
     }
-  }    
+  }
 
-  /* Set new coordinates on Edge*/ 
+  /* Set new coordinates on Edge*/
   SET_EDGE_GEOM(e,geom);
 
   return result;
@@ -2117,13 +2117,13 @@ LayoutISI AC1(Layout_Graph*,This)
 	   NODE_WIDTH (PARENT_NODE(THIS(nodes)[counter], 0)) +
         	    THIS(edgeWidth) + THIS(iconSpaceH)) {
 	   SET_NODE_Y_POS(THIS(nodes)[counter],
-      
+
 		     NODE_Y_POS (PARENT_NODE(THIS(nodes)[counter], 0)) +
 	             NODE_WIDTH (PARENT_NODE(THIS(nodes)[counter], 0)) +
                      THIS(edgeWidth) + THIS(iconSpaceH));
 	   found = 1;
           }
-     
+
           if (SUCC_NUM (THIS(nodes)[counter]) == 1 &&
              PARENT_NODE (SUCC_NODE (THIS(nodes)[counter], 0), 0) == THIS(nodes)[counter]) {
      	     SET_NODE_X_POS(SUCC_NODE (THIS(nodes)[counter], 0),
@@ -2350,7 +2350,7 @@ LayoutTree AC1(Layout_Graph*,This)
     THIS(errmsg) = "no root node";
     return LAYOUT_ERROR;
   }
-  
+
   /* sort the graph topological. */
   LayoutGraphSortTopological(This,THIS(rootNode));
   FOR_ALL_NODES(counter) {

@@ -23,7 +23,7 @@ itcl::body Block::constructor {start end args} {
   eval configure $args
 }
 
-# Destroy ourself. 
+# Destroy ourself.
 itcl::body Block::destructor {} {
 
   # Each block is responsible for destroying its
@@ -182,7 +182,7 @@ itcl::body Frame::_oldBlocks {} {
 
   return $oldObjs
 }
-  
+
 itcl::body Frame::old {} {
 
   # All the variables in the blocks in old are now gone...

@@ -56,7 +56,7 @@ all the windows belonging to a particular Insight instance use the same backgrou
 \n\nClick on a color below to edit it. This is a text background color.  Other colors are\
 computed based on it."
   pack $d.txt -side top
-  pack $f.desc -expand yes -fill both 
+  pack $f.desc -expand yes -fill both
 
   set w [labelframe $f.colors -text "Text Backgrounds"]
   for {set i 0} {$i < 16} {incr i} {
@@ -99,7 +99,7 @@ itcl::body CSPref::_cancel {} {
   if {[string compare [pref get gdb/bg/$::gdb_bg_num] $_saved(gdb/bg/$::gdb_bg_num)] != 0} {
     set bg_changed 1
   }
-  
+
   foreach elem [array names _saved] {
     set cur_val [pref get $elem]
     if {[string compare $cur_val $_saved($elem)] != 0} {
@@ -128,7 +128,7 @@ itcl::body CSPref::_save {} {
 # ------------------------------------------------------------------
 
 itcl::body CSPref::reconfig {} {
-  # Unfortunately, r_setcolors recolors buttons if we do an Apply, 
+  # Unfortunately, r_setcolors recolors buttons if we do an Apply,
   # so fix them up here.
 
   for {set i 0} {$i < 10} {incr i} {

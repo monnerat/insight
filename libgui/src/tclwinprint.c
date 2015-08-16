@@ -286,7 +286,7 @@ winprint_print_text_options (struct winprint_data *wd, Tcl_Interp *interp,
   pto->pageproc = NULL;
   pto->postscript = 0;
   pto->initproc = NULL;
-  
+
   for (i = 4; i < argc; i += 2)
     {
       if (i + 1 >= argc)
@@ -553,7 +553,7 @@ winprint_print_text_invoke (Tcl_Interp *interp, const char *proc, const char *na
       return TCL_ERROR;
     }
 
-  return TCL_OK;  
+  return TCL_OK;
 }
 
 /* Implement ide_winprint print_text.  */
@@ -580,7 +580,7 @@ winprint_print_command (ClientData cd, Tcl_Interp *interp, int argc,
 
   queryproc = argv[2];
   textproc = argv[3];
- 
+
   if (winprint_print_text_options (wd, interp, argc, argv, &pto) != TCL_OK)
     return TCL_ERROR;
 
@@ -598,7 +598,7 @@ winprint_print_command (ClientData cd, Tcl_Interp *interp, int argc,
 	if ( result < 0 )
 	{
 		/* The EPSPRINTING escape failed! */
-		Tcl_AppendElement(interp, 
+		Tcl_AppendElement(interp,
                    "ide_winprint: EPSPRINTING escape implemented but failed");
 		DeleteDC (pd.hDC);
 		return TCL_ERROR;
@@ -627,7 +627,7 @@ winprint_print_command (ClientData cd, Tcl_Interp *interp, int argc,
 	char buf[64];
 	Tcl_DStringInit (&initStr);
 	Tcl_DStringAppend (&initStr, pto.initproc, -1);
-	
+
 	/* Here we must pass the customer selection from the PrintDialog
 	 * as parameters for the init command, */
 	/* From page */
@@ -645,7 +645,7 @@ winprint_print_command (ClientData cd, Tcl_Interp *interp, int argc,
 	/* Print Selection? */
 	Tcl_DStringAppendElement (&initStr, "-selection");
 	Tcl_DStringAppendElement (&initStr, (pd.Flags&PD_SELECTION) ? "1" : "0");
-	
+
 	/* Execute tcl/command */
 	if (Tcl_Eval (interp, Tcl_DStringValue(&initStr)) != TCL_OK)
 	{
@@ -654,19 +654,19 @@ winprint_print_command (ClientData cd, Tcl_Interp *interp, int argc,
 	}
 	Tcl_DStringFree (&initStr);
   }
-    
+
   if (pto.postscript)
   {
     Tcl_DString pageStr;
     int status, retval, len, i;
     char *l, msgbuf[128];
     enum winprint_query q = 0;
-    
+
     /* Note: NT 4.0 seems to leave the default CTM quite tiny! */
     strcpy (indata.buffer, "\r\nsave\r\ninitmatrix\r\n");
     indata.len = strlen(indata.buffer);
     Escape(pd.hDC, PASSTHROUGH, 0, (LPCSTR)&indata, NULL);
-    
+
     /* Init command for page-procedure */
     if (pto.pageproc != NULL)
       {
@@ -674,7 +674,7 @@ winprint_print_command (ClientData cd, Tcl_Interp *interp, int argc,
 	Tcl_DStringAppend (&pageStr, pto.pageproc, -1);
 	Tcl_DStringAppendElement (&pageStr, "-1");
       }
-    
+
     /* Start printing */
     while (1)
       {
@@ -685,7 +685,7 @@ winprint_print_command (ClientData cd, Tcl_Interp *interp, int argc,
 	    error = 1;
 	    break;
 	  }
-	
+
 	/* query next characters to send to printer */
 	if (winprint_print_text_invoke (interp, queryproc, "query", &q) != TCL_OK)
 	  {
@@ -709,7 +709,7 @@ winprint_print_command (ClientData cd, Tcl_Interp *interp, int argc,
 	    strncpy (indata.buffer, l+i, lpos);
 	    indata.buffer[lpos] = 0;
 	    indata.len = lpos;
-	    
+
 	    retval = Escape (pd.hDC, PASSTHROUGH, 0, (LPCSTR)&indata, NULL);
 	    if (retval < 0)
 	      {
@@ -726,7 +726,7 @@ winprint_print_command (ClientData cd, Tcl_Interp *interp, int argc,
 	      }
 	  }
       }
-    
+
     strcpy (indata.buffer, "\r\nrestore\r\n");
     indata.len = strlen(indata.buffer);
     Escape(pd.hDC, PASSTHROUGH, 0, (LPCSTR)&indata, NULL);
@@ -738,9 +738,9 @@ winprint_print_command (ClientData cd, Tcl_Interp *interp, int argc,
       pt.y = tm.tmHeight + tm.tmExternalLeading;
       LPtoDP (pd.hDC, &pt, 1);
       lineheight = pt.y;
-      
+
       pageno = 1;
-      
+
       /* The main print loop.  */
       done = 0;
       error = 0;
@@ -748,10 +748,10 @@ winprint_print_command (ClientData cd, Tcl_Interp *interp, int argc,
       while (1)
 	{
 	  int y;
-	  
+
 	  if (wd->aborted)
 	    break;
-	  
+
 	  /* Start a new page.  */
 	  if (pto.pageproc != NULL)
 	    {
@@ -759,94 +759,94 @@ winprint_print_command (ClientData cd, Tcl_Interp *interp, int argc,
 	      char buf[20];
 	      enum winprint_query q;
 	      int status;
-	      
+
 	      Tcl_DStringInit (&ds);
 	      Tcl_DStringAppend (&ds, pto.pageproc, -1);
 	      sprintf (buf, "%d", pageno);
 	      Tcl_DStringAppendElement (&ds, buf);
-	      
+
 	      status = winprint_print_text_invoke (interp, Tcl_DStringValue (&ds),
 						   "page", &q);
-	      
+
 	      Tcl_DStringFree (&ds);
-	      
+
 	      if (status != TCL_OK)
 		{
 		  error = 1;
 		  break;
 		}
-	      
+
 	      if (q == Q_DONE)
 		{
 		  done = 1;
 		  break;
 		}
 	    }
-	  
+
 	  if (needquery)
 	    {
 	      enum winprint_query q;
-	      
+
 	      if (winprint_print_text_invoke (interp, queryproc, "query", &q)
 		  != TCL_OK)
 		{
 		  error = 1;
 		  break;
 		}
-	      
+
 	      if (q == Q_DONE)
 		{
 		  done = 1;
 		  break;
 		}
-	      
+
 	      /* Ignore Q_NEWPAGE, since we're about to start a new page
 		 anyhow.  */
-	      
+
 	      needquery = 0;
 	    }
-	  
+
 	  if (StartPage (pd.hDC) <= 0)
 	    {
 	      windows_error (interp, "StartPage");
 	      error = 1;
 	      break;
 	    }
-	  
+
 	  y = top;
-	  
+
 	  /* Print a page.  */
-	  
+
 	  while (1)
 	    {
 	      char *l;
 	      int len;
 	      enum winprint_query q;
-	      
+
 	      if (Tcl_Eval (interp, textproc) == TCL_ERROR)
 		{
 		  error = 1;
 		  break;
 		}
-	      
+
 	      l = Tcl_GetStringFromObj (Tcl_GetObjResult (interp), &len);
-	      
+
 	      TextOutA (pd.hDC, left, y, l, len);
 	      y += lineheight;
-	      
+
 	      if (y >= bottom)
 		{
 		  needquery = 1;
 		  break;
 		}
-	      
+
 	      if (winprint_print_text_invoke (interp, queryproc, "query", &q)
 		  != TCL_OK)
 		{
 		  error = 1;
 		  break;
 		}
-	      
+
 	      if (q == Q_DONE)
 		{
 		  done = 1;
@@ -855,10 +855,10 @@ winprint_print_command (ClientData cd, Tcl_Interp *interp, int argc,
 	      else if (q == Q_NEWPAGE)
 		break;
 	    }
-	  
+
 	  if (error)
 	    break;
-	  
+
 	  if (EndPage (pd.hDC) <= 0)
 	    {
 	      /* It's OK for EndPage to return an error if the print job
@@ -870,20 +870,20 @@ winprint_print_command (ClientData cd, Tcl_Interp *interp, int argc,
 		}
 	      break;
 	    }
-	  
+
 	  if (done)
 	    break;
-	  
+
 	  ++pageno;
 	}
     }
-  
+
   if (winprint_finish (wd, interp, &pd, error) != TCL_OK)
     error = 1;
-  
+
   if (error)
     return TCL_ERROR;
-  
+
   Tcl_ResetResult (interp);
   return TCL_OK;
 }
@@ -917,11 +917,11 @@ int
 ide_create_winprint_command (Tcl_Interp *interp)
 {
   struct winprint_data *wd;
-  
+
   wd = (struct winprint_data *) ckalloc (sizeof *wd);
   wd->page_setup = NULL;
   wd->aborted = 0;
-  
+
   return ide_create_command_with_subcommands (interp, "ide_winprint",
 					      winprint_commands,
 					      (ClientData) wd,

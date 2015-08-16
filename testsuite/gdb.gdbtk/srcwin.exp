@@ -20,7 +20,7 @@ if {[gdbtk_initialize_display]} {
   #
   # test source window
   #
-  
+
   set testfile "list"
   set s1 "$srcdir/$subdir/list0.c"
   set sources "$s1 $srcdir/$subdir/list1.c"

@@ -36,7 +36,7 @@ set text [$console test set _twin]
 # console_command --
 #      Invoke STRING as a command in the console window and
 #      return the result
-proc console_command {string} { 
+proc console_command {string} {
   global console text
 
   # Save current position
@@ -52,7 +52,7 @@ proc console_command {string} {
   set end [lindex [split [$text index cmdmark] .] 0]
   incr end -1
   return [$text get $line.0 [list $end.0 lineend]]
-} 
+}
 
 # get_cmd_line --
 #     Return the command line

@@ -64,13 +64,13 @@
 
 2003-07-29  Martin Hunt  <hunt@redhat.com>
 
-	* library/prefs.tcl (pref_set_option_db): On Windows, fix 
+	* library/prefs.tcl (pref_set_option_db): On Windows, fix
 	highlighting of buttons.  On Unix, fix highlighting of
 	menus.
 
 2003-07-10  Martin Hunt  <hunt@redhat.com>
 
-	* library/prefs.tcl (pref_set_option_db): Only set 
+	* library/prefs.tcl (pref_set_option_db): Only set
 	activeBackground for Unix.
 
 2003-07-02  Martin Hunt  <hunt@redhat.com>
@@ -89,7 +89,7 @@
 2003-06-13  Martin Hunt  <hunt@redhat.com>
 
 	* library/prefs.tcl (load_gnome_file): Fix parsing
-	of gtk theme files so Red Hat 9 (and others) GNOME colors 
+	of gtk theme files so Red Hat 9 (and others) GNOME colors
 	are correct.
 
 2003-06-11  David Carlton  <carlton@bactrian.org>
@@ -144,7 +144,7 @@
 
 2003-03-24  Martin M. Hunt  <hunt@redhat.com>
 
-	* generic/gdbtk-register.c (get_register_types): Use 
+	* generic/gdbtk-register.c (get_register_types): Use
 	register_type instead of REGISTER_VIRTUAL_TYPE.
 	(get_register): Ditto.
 
@@ -163,25 +163,25 @@
 	(gdbtk_print_asm): Deleted.
 
 2003-03-06  Martin M. Hunt  <hunt@redhat.com>
-	
+
 	* generic/gdbtk-bp.c (gdb_get_tracepoint_info): Return CORE_ADDR.
 
 2003-03-06  Martin M. Hunt  <hunt@redhat.com>
-	
+
 	* generic/gdbtk-cmds.c (gdb_disassemble): Deleted.
 	(sprintf_append_element_to_obj): Deleted.
 
 	* generic/gdbtk-bp.c (get_breakpoint_commands): Use
-	Tcl_ListObjAppendElement() instead of 
+	Tcl_ListObjAppendElement() instead of
 	sprintf_append_element_to_obj().
-	
+
 2003-03-05  Martin M. Hunt  <hunt@redhat.com>
 
-	* library/srctextwin.itb (SrcTextWin::FillAssembly): 
+	* library/srctextwin.itb (SrcTextWin::FillAssembly):
 	Remove unused variables asm_lo_addr and asm_hi_addr.
 	(FillMixed): Ditto.
 
-2003-03-05  Martin M. Hunt  <hunt@redhat.com>	
+2003-03-05  Martin M. Hunt  <hunt@redhat.com>
 
 	* generic/gdbtk-cmds.c (Gdbtk_Init): Create gdb_CA_to_TAS.
 	(gdb_load_disassembly): Now takes CORE_ADDRs. Returns CORE_ADDRs
@@ -190,21 +190,21 @@
 	(gdb_loc): Return CORE_ADDRs.
 	(gdb_entry_point): Return CORE_ADDR.
 	(gdb_incr_addr): Update description.
-	(gdb_CA_to_TAS): New function. Takes a CORE_ADDR and returns 
+	(gdb_CA_to_TAS): New function. Takes a CORE_ADDR and returns
 	a target sddress string.
 
 	* generic/gdbtk-bp.c (gdb_find_bp_at_addr): Change to
 	take a CORE_ADDR.
 	(gdb_get_breakpoint_info): Returns a CORE_ADDR.
 	(gdb_set_bp_addr): Takes a CORE_ADDR.
-	
-	* library/bpwin.itb (bp_add): Call gdb_CA_to_TAS before 
+
+	* library/bpwin.itb (bp_add): Call gdb_CA_to_TAS before
 	displaying address.
 	(bp_modify): Ditto.
 
-	* library/srcwin.itb (location): Call gdb_CA_to_TAS before 
+	* library/srcwin.itb (location): Call gdb_CA_to_TAS before
 	displaying address. Don't add "0x" in front of address.
-	(set_execution_status): Call gdb_CA_to_TAS before 
+	(set_execution_status): Call gdb_CA_to_TAS before
 	displaying address. Don't call [gdb_cmd printf] to format
 	output. Weird.
 
@@ -295,11 +295,11 @@
 
 	* generic/gdbtk-hooks.c (gdbtk_add_hooks): Don't set
 	command_loop_hook.  Update copyright.
-	
+
 2003-02-11  Martin M. Hunt  <hunt@redhat.com>
 
 	* library/help/images/browser1.png: New file.
-	* library/help/images/browser2.png: New file.	
+	* library/help/images/browser2.png: New file.
 
 2003-02-11  Keith R Seitz  <keiths@redhat.com>
 
@@ -335,7 +335,7 @@
 	* library/browserwin.itb: Set textbackground option to
 	$::Colors(textbg) instead of "white".
 
-2003-02-10  Martin M. Hunt  <hunt@redhat.com>	
+2003-02-10  Martin M. Hunt  <hunt@redhat.com>
 
 	* library/interface.tcl (gdbtk_attach_native): Don't force the user
 	to choose an exec file when attaching.
@@ -343,19 +343,19 @@
 	* library/attachdlg.itb: Some fixes to work with latest iwidgets.
 
 2003-02-10  Martin M. Hunt  <hunt@redhat.com>
-	
+
 	* library/prefs.tcl (pref_set_defaults): Remove prefs
 	gdb/browser/width, gdb/browser/top_height, gdb/browser/view_height,
 	gdb/browser/view_is_open. Add gdb/browser/layout.
 
-	* library/browserwin.ith: Update declarations to match 
+	* library/browserwin.ith: Update declarations to match
 	changes in browserwin.itb.
 
 	* library/browserwin.itb (constructor): Don't set toplevel
 	bindings. Set _layout from prefs.
 	(destructor): Don't check $resize_after. Don't save view_is_open.
 	(_build_win): Create a popup menu and bind to button 3.
-	Split the rest into 4 functions; _build_file_frame, 
+	Split the rest into 4 functions; _build_file_frame,
 	_build_filter_frame, _build_function_frame, and _build_view_frame.
 	Pack these 4 frames according to $_layout.
 	(_toggle_more): Deleted.
@@ -371,15 +371,15 @@
 	(_switch_layout): New function. Toggle between layouts.
 
 	* library/tclIndex: Rebuilt.
-	
+
 	* library/help/browser.html: Rewrite.
 
 2003-02-03  Martin M. Hunt  <hunt@redhat.com>
 
-	* library/targetselection.itb (TargetSelection::build_win): Remove 
+	* library/targetselection.itb (TargetSelection::build_win): Remove
 	duplicate label.
 
-2003-02-03  Martin M. Hunt  <hunt@redhat.com>	
+2003-02-03  Martin M. Hunt  <hunt@redhat.com>
 
 	* library/globalpref.itb, library/mempref.itb, library/srcpref.itb,
 	library/srcwin.itb, library/targetselection.itb, library/tracedlg.tcl:
@@ -389,21 +389,21 @@
 
 	* library/prefs.tcl: Minor optimization. Change order of main_names
 	to have the most common, "main", first.
-	
+
 2003-02-03  Martin M. Hunt  <hunt@redhat.com>
-	
+
 	* library/targetselection.itb (TargetSelection::port_list): Keep
 	checking ports on Windows until we can open no more. Replaces
 	fixed limit of 9.
 
 2003-02-03  Martin M. Hunt  <hunt@redhat.com>
-	
+
 	* library/session.tcl (_recreate_bps): Catch errors.
 
 2003-02-03  Martin M. Hunt  <hunt@redhat.com>
-	
+
 	* library/interface.tcl (gdbtk_locate_main): Rewrite for efficiency.
-	No longer uses gdb_search.  Caches result. 
+	No longer uses gdb_search.  Caches result.
 	(initialize_gdbtk): Initialize gdb_locate_main cache.
 	* library/main.tcl: Call initialize_gdbtk after loading prefs.
 
@@ -421,11 +421,11 @@
 	* library/srcwin.itb (SrcWin::constructor): Ditto.
 	* library/stackwin.itb (StackWin::build_win): Ditto.
 	* library/watch.tcl (build_win): Ditto.
-	
+
 	* generic/gdbtk.c (gdbtk_init): Look for iwidgets in
 	"iwidgets" instead of "iwidgets3.0.0".
 	Don't call ide_create_sizebox_command.
 
 	* ChangeLog: New log for 2003.
-	* ChangeLog-2002: Renamed from ChangeLog. 
+	* ChangeLog-2002: Renamed from ChangeLog.
 

@@ -54,31 +54,31 @@ char* layableitems[] = {
 
 /* Define a config set for graph command */
 static Tk_ConfigSpec graphspecs[] = {
-  {TK_CONFIG_BOOLEAN, "-computenodesize", (char*)NULL, (char*)NULL, 
+  {TK_CONFIG_BOOLEAN, "-computenodesize", (char*)NULL, (char*)NULL,
      "0", Tk_Offset(LayoutConfig,computenodesize), 0, (Tk_CustomOption*)NULL},
-  {TK_CONFIG_INT, "-gridlock", (char*)NULL, (char*)NULL, 
+  {TK_CONFIG_INT, "-gridlock", (char*)NULL, (char*)NULL,
      "0", Tk_Offset(LayoutConfig,gridlock), 0, (Tk_CustomOption*)NULL},
-  {TK_CONFIG_INT, "-elementsperline", (char*)NULL, (char*)NULL, 
+  {TK_CONFIG_INT, "-elementsperline", (char*)NULL, (char*)NULL,
      "0", Tk_Offset(LayoutConfig,elementsperline), 0, (Tk_CustomOption*)NULL},
-  {TK_CONFIG_BOOLEAN, "-hideedges", (char*)NULL, (char*)NULL, 
+  {TK_CONFIG_BOOLEAN, "-hideedges", (char*)NULL, (char*)NULL,
      "0", Tk_Offset(LayoutConfig,hideedges), 0, (Tk_CustomOption*)NULL},
-  {TK_CONFIG_BOOLEAN, "-keeprandompositions", (char*)NULL, (char*)NULL, 
+  {TK_CONFIG_BOOLEAN, "-keeprandompositions", (char*)NULL, (char*)NULL,
      "0", Tk_Offset(LayoutConfig,keeprandompositions), 0, (Tk_CustomOption*)NULL},
-  {TK_CONFIG_PIXELS, "-nodespaceh", (char*)NULL, (char*)NULL, 
+  {TK_CONFIG_PIXELS, "-nodespaceh", (char*)NULL, (char*)NULL,
      "5", Tk_Offset(LayoutConfig,nodespaceH), 0, (Tk_CustomOption*)NULL},
-  {TK_CONFIG_PIXELS, "-nodespacev", (char*)NULL, (char*)NULL, 
+  {TK_CONFIG_PIXELS, "-nodespacev", (char*)NULL, (char*)NULL,
      "5", Tk_Offset(LayoutConfig,nodespaceV), 0, (Tk_CustomOption*)NULL},
-  {TK_CONFIG_PIXELS, "-maxx", (char*)NULL, (char*)NULL, 
+  {TK_CONFIG_PIXELS, "-maxx", (char*)NULL, (char*)NULL,
      (char*)NULL, Tk_Offset(LayoutConfig,maxx),
      TK_CONFIG_DONT_SET_DEFAULT, (Tk_CustomOption*)NULL},
-  {TK_CONFIG_PIXELS, "-maxy", (char*)NULL, (char*)NULL, 
+  {TK_CONFIG_PIXELS, "-maxy", (char*)NULL, (char*)NULL,
      (char*)NULL, Tk_Offset(LayoutConfig,maxy),
      TK_CONFIG_DONT_SET_DEFAULT, (Tk_CustomOption*)NULL},
-  {TK_CONFIG_INT, "-order", (char*)NULL, (char*)NULL, 
+  {TK_CONFIG_INT, "-order", (char*)NULL, (char*)NULL,
      "0", Tk_Offset(LayoutConfig,graphorder), 0, (Tk_CustomOption*)NULL},
-  {TK_CONFIG_PIXELS, "-xoffset", (char*)NULL, (char*)NULL, 
+  {TK_CONFIG_PIXELS, "-xoffset", (char*)NULL, (char*)NULL,
      "4", Tk_Offset(LayoutConfig,xoffset), 0, (Tk_CustomOption*)NULL},
-  {TK_CONFIG_PIXELS, "-yoffset", (char*)NULL, (char*)NULL, 
+  {TK_CONFIG_PIXELS, "-yoffset", (char*)NULL, (char*)NULL,
      "4", Tk_Offset(LayoutConfig,yoffset), 0, (Tk_CustomOption*)NULL},
   {TK_CONFIG_END, (char *) NULL, (char *) NULL, (char *) NULL,
      (char *) NULL, 0, 0}
@@ -113,7 +113,7 @@ typedef struct TagSearch {
  * The structure defined below is used to keep track of a tag search
  * in progress.  No field should be accessed by anyone other than
  * TagSearchScan, TagSearchFirst, TagSearchNext,
- * TagSearchScanExpr, TagSearchEvalExpr, 
+ * TagSearchScanExpr, TagSearchEvalExpr,
  * TagSearchExprInit, TagSearchExprDestroy,
  * TagSearchDestroy.
  * (
@@ -200,7 +200,7 @@ getedgedim(canvasPtr, e, dim)
     Tk_Item* e;
     ItemGeom* dim;
 {
-    int argc2; 
+    int argc2;
     char **argv2;
 
     /* Read the text height of this edge. */
@@ -248,7 +248,7 @@ setnodegeom(interp,canvasPtr,iPtr,geom)
 
     Tk_CanvasEventuallyRedraw((Tk_Canvas) canvasPtr, iPtr->x1, iPtr->y1, iPtr->x2, iPtr->y2);
     (void)(*iPtr->typePtr->translateProc)((Tk_Canvas) canvasPtr, iPtr, deltax, deltay);
-    Tk_CanvasEventuallyRedraw((Tk_Canvas) canvasPtr, iPtr->x1, iPtr->y1, iPtr->x2, iPtr->y2);   
+    Tk_CanvasEventuallyRedraw((Tk_Canvas) canvasPtr, iPtr->x1, iPtr->y1, iPtr->x2, iPtr->y2);
     return TCL_OK;
 }
 
@@ -280,12 +280,12 @@ setedgegeom(interp,canvasPtr,iPtr,geom,i)
 
     LayoutConfig cnf = GetLayoutConfig (/*canvasPtr->*/graph);
     double xd = geom.x1 - geom.x2 /*- 10.0*/ , xdiff;
-    
+
     if (xd < 0.0) xd = geom.x2 - geom.x1 /*- 10.0*/;
 
     if(iPtr->typePtr->coordProc == NULL) {
 	Tcl_AppendResult(interp,"could not set edge item coordinates",(char*)0);
-	return TCL_ERROR; 
+	return TCL_ERROR;
     }
     argv[0] = x1;
     argv[1] = y1;
@@ -332,10 +332,10 @@ setedgegeom(interp,canvasPtr,iPtr,geom,i)
     (void)(*iPtr->typePtr->coordProc)(interp, (Tk_Canvas) canvasPtr, iPtr,
 				      /* argc-3, argv+3); 08nov95 wmt */
 				      argc, argvObj);
-    Tk_CanvasEventuallyRedraw((Tk_Canvas) canvasPtr, iPtr->x1, iPtr->y1, iPtr->x2, iPtr->y2);   
+    Tk_CanvasEventuallyRedraw((Tk_Canvas) canvasPtr, iPtr->x1, iPtr->y1, iPtr->x2, iPtr->y2);
     return TCL_OK;
 }
- 
+
 static
 int
 GetEdgeNodes(interp,canvasPtr,i,fp,tp)
@@ -400,14 +400,14 @@ createcanvasgraph(interp,canvCmd,graph)
     argv1[1] = "cget";
     argv1[2] = "-width";
     argc1 = 3;
-    if ((canvCmd->proc)(canvCmd->clientData, interp, argc1, argv1) 
+    if ((canvCmd->proc)(canvCmd->clientData, interp, argc1, argv1)
 	!= TCL_OK) {
 	return TCL_ERROR;
     }
     cfg.maxx = atol(Tcl_GetStringResult(interp));
 
     argv1[2] = "-height";
-    if ((canvCmd->proc) (canvCmd->clientData, interp, argc1, argv1) 
+    if ((canvCmd->proc) (canvCmd->clientData, interp, argc1, argv1)
 	!= TCL_OK) {
 	return TCL_ERROR;
     }
@@ -423,12 +423,12 @@ graph_table (Tcl_Interp *interp)
     return (Tcl_HashTable *) Tcl_GetAssocData (interp, "canvasgraph", NULL);
 }
 
-/* 
+/*
  *-------------------------------------------------------------
  *
  * GetGraphLayout --
  *      Gets graph info for canvas.  Adds a new entry if needed.
- * 
+ *
  * Results:
  *      Standard Tcl Error
  *-------------------------------------------------------------
@@ -440,11 +440,11 @@ GetGraphLayout(canvCmd, interp)
      Tcl_Interp *interp;
 {
     Tcl_HashEntry *entry;
-    
+
     entry = Tcl_FindHashEntry(graph_table(interp), (char *)canvCmd->objClientData);
     if (entry)
 	return (Layout_Graph *)Tcl_GetHashValue(entry);
-    
+
     return NULL;
 }
 
@@ -457,13 +457,13 @@ GetGraphLayoutII(canvasPtr, interp)
     entry = Tcl_FindHashEntry(graph_table(interp), (char *)canvasPtr);
     if (entry)
 	return (Layout_Graph *)Tcl_GetHashValue(entry);
-    
+
     return NULL;
 }
 
 static int
 GetCreatedGraphLayout(interp, canvCmd, graph)
-     Tcl_Interp *interp; 
+     Tcl_Interp *interp;
      Tcl_CmdInfo *canvCmd;
      Layout_Graph **graph;
 {
@@ -475,9 +475,9 @@ GetCreatedGraphLayout(interp, canvCmd, graph)
 	/* No item, let's make one and add it to the table. */
 	if (createcanvasgraph(interp, canvCmd, graph) != TCL_OK)
 	    return TCL_ERROR;
-	/*	newitem = Tcl_CreateHashEntry(graph_table(interp), 
+	/*	newitem = Tcl_CreateHashEntry(graph_table(interp),
 		(char *)(canvCmd->objClientData), &new);*/
-	newitem = Tcl_CreateHashEntry(graph_table(interp), 
+	newitem = Tcl_CreateHashEntry(graph_table(interp),
 				      (char *)(canvCmd->objClientData), &new);
 	Tcl_SetHashValue(newitem, (ClientData) *graph);
     }
@@ -486,15 +486,15 @@ GetCreatedGraphLayout(interp, canvCmd, graph)
 
 /*
  *--------------------------------------------------------------
- * 
- * GraphCanvasCmd -- 
+ *
+ * GraphCanvasCmd --
  *      This procedure is invoked to process the new "graph"
  *      command.  This command takes a canvas and uses it to layout
  *      the canvas items with a pretty graph structure.
  *
  * Results:
  *      Standard Tcl result.
- * 
+ *
  *--------------------------------------------------------------
  */
 
@@ -510,7 +510,7 @@ GraphCanvasCmd(clientData, interp, argc, argv)
     int c, i, result;
     Layout_Graph *graph;
     TkCanvas *canvasPtr;
-    
+
     if (argc < 3) {
 	Tcl_AppendResult(interp, "wrong # args: should be \"",
 			 argv[0], " canvas option ?arg arg ...?\"",
@@ -531,7 +531,7 @@ GraphCanvasCmd(clientData, interp, argc, argv)
     if ((c == 'a') && (strncmp(argv[2], "add", length) == 0)) {
 	char* newargv[4];
 	if (argc < 4) {
-	    Tcl_AppendResult(interp, "wrong # args: should be \"", argv[0], 
+	    Tcl_AppendResult(interp, "wrong # args: should be \"", argv[0],
 			     " ", argv[1], " add tagOrId ?tagOrId ...?\"",
 			     (char *) NULL);
 	    goto error;
@@ -547,7 +547,7 @@ GraphCanvasCmd(clientData, interp, argc, argv)
 #else /* USE_OLD_TAG_SEARCH */
             TagSearch *searchPtr = NULL;
             Tcl_Obj *tagObj = NULL;
-            TagSearch *searchPtrTmp = NULL; 
+            TagSearch *searchPtrTmp = NULL;
             /* Allocated by first TagSearchScan
 	     * Freed by TagSearchDestroy */
 #endif /* USE_OLD_TAG_SEARCH */
@@ -634,18 +634,18 @@ GraphCanvasCmd(clientData, interp, argc, argv)
 
 	    if(argc == 3) {
 		/* get all options */
-		ok = Tk_ConfigureInfo(interp, 
-				      Tk_CanvasTkwin(*(Tk_Canvas *)canvasPtr), 
+		ok = Tk_ConfigureInfo(interp,
+				      Tk_CanvasTkwin(*(Tk_Canvas *)canvasPtr),
 				      graphspecs,(char*)&cfg, (char*)NULL, 0);
 	    } else if(argc == 4) {
 		/* get one option */
-		ok = Tk_ConfigureInfo(interp, 
-				      Tk_CanvasTkwin(*(Tk_Canvas *)canvasPtr), 
+		ok = Tk_ConfigureInfo(interp,
+				      Tk_CanvasTkwin(*(Tk_Canvas *)canvasPtr),
 				      graphspecs,(char*)&cfg, argv[3], 0);
 	    } else { /* setting one or more options */
-		ok = Tk_ConfigureWidget(interp, 
+		ok = Tk_ConfigureWidget(interp,
 					Tk_CanvasTkwin(*(Tk_Canvas *)canvasPtr),
-					graphspecs, argc-3, argv+3, 
+					graphspecs, argc-3, argv+3,
 					(char*)&cfg, TK_CONFIG_ARGV_ONLY);
 		if(ok == TCL_OK) {
 		    SetLayoutConfig(graph,cfg);
@@ -666,7 +666,7 @@ GraphCanvasCmd(clientData, interp, argc, argv)
 		Tcl_HashEntry *entry;
 		entry = Tcl_FindHashEntry(graph_table(interp),
 					  (char *)(canvCmd.objClientData));
-		
+
 		LayoutFreeGraph(graph);
 		/* Remove hash table entry */
 		Tcl_DeleteHashEntry(entry);
@@ -780,7 +780,7 @@ GraphCanvasCmd(clientData, interp, argc, argv)
 		TagSearchScan(canvasPtr, tagObj, &searchPtr);
 		for (itemPtr = TagSearchFirst(searchPtr); itemPtr != NULL;
                      itemPtr = TagSearchNext(searchPtr)) {
-#endif /* USE_OLD_TAG_SEARCH */ 
+#endif /* USE_OLD_TAG_SEARCH */
 		    nm = itemPtr->typePtr->name;
 		    /* delete a new edge or node */
 		    if(strcmp(nm,"edge") == 0) {
@@ -794,7 +794,7 @@ GraphCanvasCmd(clientData, interp, argc, argv)
 	    Tcl_AppendResult(interp, "bad option \"", argv[2],
 		"\":  must be add, configure, clear, ",
 		"destroy, edges, layout, nodes, remove",
-		(char *) NULL);  
+		(char *) NULL);
 	    goto error;
 	}
  done:
@@ -804,18 +804,18 @@ GraphCanvasCmd(clientData, interp, argc, argv)
 }
 
 /* If graph is deleted, make it go away */
-static void 
+static void
 delete_graph_command(ClientData clientData, Tcl_Interp *interp)
 {
     Tcl_DeleteHashTable((Tcl_HashTable *) clientData);
-    
+
     ckfree ((char*) clientData);
 }
 
 /*
  *-------------------------------------------------------------
  * GraphLayoutInit()
- *      Adds appropriate commands to Tcl interpreter, and 
+ *      Adds appropriate commands to Tcl interpreter, and
  *      inits necessary tables.
  *-------------------------------------------------------------
  */
@@ -825,7 +825,7 @@ create_graph_command(Tcl_Interp *interp)
     Tcl_HashTable *graphTable= (Tcl_HashTable*)ckalloc (sizeof (Tcl_HashTable));
 
     Tcl_InitHashTable(graphTable, TCL_ONE_WORD_KEYS);
-    
+
     /*
      * Create an associated data that stores the
      * hash table
@@ -833,15 +833,15 @@ create_graph_command(Tcl_Interp *interp)
     Tcl_SetAssocData (interp, "canvasgraph",
                       delete_graph_command,
 		      (void*) graphTable);
-    
+
     allUid = Tk_GetUid("all");
 
-    if (Tcl_CreateCommand(interp, "graph", GraphCanvasCmd, 
+    if (Tcl_CreateCommand(interp, "graph", GraphCanvasCmd,
 			  NULL, NULL /*delete_graph_command*/ ) == NULL)
 	return TCL_ERROR;
 
     Tk_CreateItemType(&tkEdgeType);
-   
+
     return TCL_OK;
 }
 
@@ -886,11 +886,11 @@ StartTagSearch(canvasPtr, tag, searchPtr)
     Tk_Uid *tagPtr;
     Tk_Uid uid;
     int count;
-    
+
     /*
      * Initialize the search.
      */
-    
+
     searchPtr->canvasPtr = canvasPtr;
     searchPtr->searchOver = 0;
 
@@ -900,10 +900,10 @@ StartTagSearch(canvasPtr, tag, searchPtr)
      * identifier.  In this case see if the item being requested is the
      * hot item, in which case the search can be skipped.
      */
-    
+
     if (isdigit(UCHAR(*tag))) {
 	char *end;
-	
+
 	id = strtoul(tag, &end, 0);
 	if (*end == 0) {
 	    itemPtr = canvasPtr->hotPtr;
@@ -925,24 +925,24 @@ StartTagSearch(canvasPtr, tag, searchPtr)
 	    return itemPtr;
 	}
     }
-    
+
     searchPtr->tag = uid = Tk_GetUid(tag);
     if (uid == allUid) {
-	
+
 	/*
 	 * All items match.
 	 */
-	
+
 	searchPtr->tag = NULL;
 	searchPtr->prevPtr = NULL;
 	searchPtr->currentPtr = canvasPtr->firstItemPtr;
 	return canvasPtr->firstItemPtr;
     }
-    
+
     /*
      * None of the above.  Search for an item with a matching tag.
      */
-    
+
     for (prevPtr = NULL, itemPtr = canvasPtr->firstItemPtr; itemPtr != NULL;
 	 prevPtr = itemPtr, itemPtr = itemPtr->nextPtr) {
 	for (tagPtr = itemPtr->tagPtr, count = itemPtr->numTags;
@@ -989,12 +989,12 @@ NextItem(searchPtr)
     int count;
     Tk_Uid uid;
     Tk_Uid *tagPtr;
-    
+
     /*
      * Find next item in list (this may not actually be a suitable
      * one to return), and return if there are no items left.
      */
-    
+
     prevPtr = searchPtr->prevPtr;
     if (prevPtr == NULL) {
 	itemPtr = searchPtr->canvasPtr->firstItemPtr;
@@ -1016,22 +1016,22 @@ NextItem(searchPtr)
 	prevPtr = itemPtr;
 	itemPtr = prevPtr->nextPtr;
     }
-    
+
     /*
      * Handle special case of "all" search by returning next item.
      */
-    
+
     uid = searchPtr->tag;
     if (uid == NULL) {
 	searchPtr->prevPtr = prevPtr;
 	searchPtr->currentPtr = itemPtr;
 	return itemPtr;
     }
-    
+
     /*
      * Look for an item with a particular tag.
      */
-    
+
     for ( ; itemPtr != NULL; prevPtr = itemPtr, itemPtr = itemPtr->nextPtr) {
 	for (tagPtr = itemPtr->tagPtr, count = itemPtr->numTags;
 	     count > 0; tagPtr++, count--) {
@@ -1079,7 +1079,7 @@ TagSearchExpr **exprPtrPtr;
     expr->length = 0;
     *exprPtrPtr = expr;
 }
- 
+
 /*
  *--------------------------------------------------------------
  *
@@ -1637,7 +1637,7 @@ TagSearchEvalExpr(expr, itemPtr)
                         if (uid == parenUid || uid == negparenUid) {
                             parendepth++;
 			continue;
-		    } 
+		    }
 		    if (uid == endparenUid) {
                             parendepth--;
                             if (parendepth < 0) {
@@ -1723,7 +1723,7 @@ TagSearchFirst(searchPtr)
 	       entryPtr = NULL;
 	      entryPtr = Tcl_FindHashEntry(&searchPtr->canvasPtr->idTable,
                   (char *) searchPtr->id);
-            
+
             if (entryPtr != NULL) {
                 itemPtr = (Tk_Item *)Tcl_GetHashValue(entryPtr);
                 lastPtr = itemPtr->prevPtr;

@@ -1,4 +1,4 @@
-/* 
+/*
  * tkTableCmd.c --
  *
  *	This module implements command structure lookups.

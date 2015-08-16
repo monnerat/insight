@@ -169,7 +169,7 @@ proc to_tcl_path {unix_path {arg {}}} {
 
   return $unix_path
 }
-  
+
 # Set information about the target into the environment
 # variable TARGET_INFO. This array will contain a list
 # of commands that are necessary to run a target.

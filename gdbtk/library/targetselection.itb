@@ -39,8 +39,8 @@ itcl::body TargetSelection::getname {target name} {
 
 itcl::body TargetSelection::init_target_db {} {
   # check to see if we already initialized this database
-  if {$db_inited} { 
-    return 
+  if {$db_inited} {
+    return
   }
   set db_inited 1
 
@@ -296,7 +296,7 @@ itcl::body TargetSelection::default_port {} {
     IRIX    { set port /dev/foo1 }
     OSF1    { set port /dev/foo1 }
     NetBSD  { set port /dev/foo1 }
-    HP-UX   { 
+    HP-UX   {
       # Special case...
       switch -regexp $gdbtk_platform(osVersion) {
 	A.09 { set port /dev/tty00 }
@@ -306,7 +306,7 @@ itcl::body TargetSelection::default_port {} {
     }
     default { set port /dev/ttya }
   }
-  
+
   return $port
 }
 
@@ -345,14 +345,14 @@ itcl::body TargetSelection::_init_target {} {
   if {$target == "" || [string compare $target CANCEL] == 0} {
     set target default
   }
-    
+
   set defbaud $gdb_target($target,defbaud)
   pref define gdb/load/$target-baud $defbaud
   pref define gdb/load/$target-port [pref get gdb/load/default-port]
   pref define gdb/load/$target-verbose [pref get gdb/load/default-verbose]
   pref define gdb/load/$target-portname 1000
   pref define gdb/load/$target-hostname [pref get gdb/load/default-hostname]
-  
+
   set err [catch {pref get gdb/load/$target-runlist} run_list]
   if {$err} {
     set run_list $gdb_target($target,runlist)
@@ -362,7 +362,7 @@ itcl::body TargetSelection::_init_target {} {
   pref set gdb/src/run_load   [lindex $run_list 1]
   pref set gdb/src/run_run    [lindex $run_list 2]
   pref set gdb/src/run_cont   [lindex $run_list 3]
-  
+
   set err [catch {pref get gdb/load/$target-after_attaching} aa]
   if {$err} {
     set aa $gdb_target($target,after_attaching)
@@ -463,7 +463,7 @@ itcl::body TargetSelection::build_win {} {
       IRIX   { set ports [list /dev/foo1 /dev/foo2] }
       OSF1   { set ports [list /dev/foo1 /dev/foo2] }
       NetBSD { set ports [list /dev/foo1 /dev/foo2] }
-      HP-UX  { 
+      HP-UX  {
 	# Special case...
 	switch -regexp $gdbtk_platform(osVersion) {
 	  A.09 { set ports [list /dev/tty00 /dev/tty01] }
@@ -562,7 +562,7 @@ itcl::body TargetSelection::build_win {} {
   set var [pref varname gdb/src/run_cont]
   radiobutton $RunMethod.cont -text {Continue from Last Stop} -value 1 -variable $var \
     -command [code $this set_run run]
-  
+
   set var [pref varname gdb/src/run_run]
   radiobutton $RunMethod.run -text {Run Program} -value 1 -variable $var \
     -command [code $this set_run cont]
@@ -576,7 +576,7 @@ itcl::body TargetSelection::build_win {} {
 
   grid $RunMethod.run -column 0 -row 1 -sticky w -ipady 2
   grid $RunMethod.cont -column 0 -row 2 -sticky w -ipady 2
-  
+
   grid $rm_frame -column 1 -row 1 -rowspan 2 -sticky nsew -ipady 2
 
   grid $frame.afterl -row 4 -sticky we -columnspan 2 -ipady 2
@@ -612,7 +612,7 @@ itcl::body TargetSelection::build_win {} {
 
   pack $btns -side bottom -anchor e
   focus $btns.ok
-  
+
   # set up balloon help
   balloon register $f.fr.bp.at_func "Set User-Speficied Breakpoints at Run Time"
   balloon register $f.fr.bp.func "Enter a List of Functions for Breakpoints"
@@ -765,7 +765,7 @@ itcl::body TargetSelection::config_dialog {t} {
     }
     $fr.cbl configure -text "Baud Rate:"
     $fr.cb configure -textvariable [pref varname gdb/load/$t-baud]
-    
+
     if {$mapped2 != "$fr.port"} {
       grid forget $mapped2
       set mapped2 $fr.port
@@ -912,7 +912,7 @@ itcl::body TargetSelection::port_list {} {
 	# Port is there, but busy right now. That's OK.
 	lappend plist $device$i
       } elseif {$i > 4} {
-	# if we've scanned the first 4 ports, then quit when we find no more 
+	# if we've scanned the first 4 ports, then quit when we find no more
 	set quit 1
       }
     } else {
@@ -967,7 +967,7 @@ itcl::body TargetSelection::save {} {
   } else {
     tk_messageBox -message "The current target is not valid."
   }
-  
+
 }
 
 
@@ -989,7 +989,7 @@ itcl::body TargetSelection::cancel {} {
 }
 
 # ------------------------------------------------------------------
-#  METHOD: set_check_button - enable/disable compare-section command 
+#  METHOD: set_check_button - enable/disable compare-section command
 # ------------------------------------------------------------------
 itcl::body TargetSelection::set_check_button {name} {
   if {[winfo exists  $itk_interior.f.fr.check]} {

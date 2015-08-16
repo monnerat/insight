@@ -49,7 +49,7 @@
 #define GDBTK_VERSION       "1.0"
 
 /*
- * These are variables that are needed in gdbtk commands. 
+ * These are variables that are needed in gdbtk commands.
  */
 
 /* This variable determines where memory used for disassembly is read from.
@@ -93,7 +93,7 @@ extern Tcl_Interp *gdbtk_interp;
 
 typedef struct gdbtk_result
   {
-    Tcl_Obj *obj_ptr;		/* This will eventually be copied over to the 
+    Tcl_Obj *obj_ptr;		/* This will eventually be copied over to the
 				   Tcl result */
     int flags;			/* Flag vector to control how the result is
 				   used. */
@@ -106,22 +106,22 @@ struct ptid_t;
 /* These defines give the allowed values for the gdbtk_result.flags field. */
 
 #define GDBTK_TO_RESULT     1	/* This controls whether output from
-				   gdbtk_fputs goes to the command result, or 
+				   gdbtk_fputs goes to the command result, or
 				   to gdbtk_tcl_fputs. */
-#define GDBTK_MAKES_LIST    2	/* whether gdbtk_fputs adds the 
+#define GDBTK_MAKES_LIST    2	/* whether gdbtk_fputs adds the
 				   element it is outputting as a string, or
 				   as a separate list element. */
 #define GDBTK_IN_TCL_RESULT 4	/* Indicates that the result is already in the
 				   Tcl result.  You can use this to preserve
 				   error messages from functions like
 				   Tcl_GetIntFromObj.  You can also store the
-				   output of a call wrapped command directly in 
+				   output of a call wrapped command directly in
 				   the Tcl result if you want, but beware, it will
 				   not then be preserved across recursive
 				   gdbtk_call_wrapper invocations. */
-#define GDBTK_ERROR_STARTED 8	/* This one is just used in gdbtk_fputs.  If we 
+#define GDBTK_ERROR_STARTED 8	/* This one is just used in gdbtk_fputs.  If we
 				   see some output on stderr, we need to clear
-				   the result we have been accumulating, or the 
+				   the result we have been accumulating, or the
 				   error and the previous successful output
 				   will get mixed, which would be confusing. */
 #define GDBTK_ERROR_ONLY    16	/* Indicates that all incoming I/O is
@@ -150,7 +150,7 @@ extern int gdbtk_force_detach;
 
 /*
  * These functions are used in all the modules of Gdbtk.
- * 
+ *
  */
 
 extern int Gdbtk_Init (Tcl_Interp * interp);

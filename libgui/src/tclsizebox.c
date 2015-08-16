@@ -34,7 +34,7 @@
    options.  This should be attached to the lower right corner of a
    window in order to work as expected.  */
 
-/* We use 
+/* We use
 
 /* We use an instance of the structure as the Windows user data for
    the window.  */

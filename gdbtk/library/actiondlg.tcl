@@ -35,13 +35,13 @@ itcl::class ActionDlg {
     foreach a $Registers {
       lappend Variables "\$$a"
     }
-    
+
     if {[llength $Args] > 0} {
       lappend Variables "All Arguments"
     }
     if {[llength $Locals] > 0} {
-      lappend Variables  "All Locals" 
-    } 
+      lappend Variables  "All Locals"
+    }
     lappend Variables "All Registers"
     lappend Variables "Collect Stack"
 
@@ -104,7 +104,7 @@ itcl::class ActionDlg {
       set WhileSteppingEntry [entry $step_frame.steps          \
 				-textvariable _TStepCount      \
 				-width 5]
-      pack $step_frame.whilelbl $WhileSteppingEntry -side left  
+      pack $step_frame.whilelbl $WhileSteppingEntry -side left
     }
 
     # The Collect listbox
@@ -157,7 +157,7 @@ itcl::class ActionDlg {
     # after idle
     pack $f.data $bbox -side top -padx 4 -pady 2 \
       -expand yes -fill x
-    
+
     # !!???
     if {$WhileStepping} {
       $WhileSteppingEntry delete 0 end
@@ -196,7 +196,7 @@ itcl::class ActionDlg {
     }
 
     fill_variables $last
-  }      
+  }
 
   # ------------------------------------------------------------------
   # METHOD: change - change a selected variable
@@ -216,7 +216,7 @@ itcl::class ActionDlg {
       set noname 0
       set selection $select
     }
-    
+
     $RemoveButton configure -state disabled
     $AddButton configure -state disabled
 
@@ -312,7 +312,7 @@ itcl::class ActionDlg {
   #                special identifiers (like "All Locals") at end
   # ------------------------------------------------------------------
   method sort {list} {
-    
+
     set special_names {
       "All Arguments" args \
 	"All Locals" locs \
@@ -331,7 +331,7 @@ itcl::class ActionDlg {
     }
 
     # Extract all the locals, regs, args, globals
-    set types_list {Args Locals Registers } 
+    set types_list {Args Locals Registers }
     foreach type $types_list {
       set used_$type {}
 
@@ -361,7 +361,7 @@ itcl::class ActionDlg {
     set list [concat $list2 $list]
     return $list
   }
-  
+
   # ------------------------------------------------------------------
   # METHOD: all_args - add/remove all args
   # ------------------------------------------------------------------
@@ -457,7 +457,7 @@ itcl::class ActionDlg {
   # ------------------------------------------------------------------
   method change_other {} {
     set other [$OtherEntry get]
-    
+
     if {"$other" != ""} {
       set added 0
 
@@ -521,7 +521,7 @@ itcl::class ActionDlg {
 	  set list2 [concat $Collect "$other"]
 	}
       }
-      
+
       # Check for special tags
       if {!$added} {
 	if {"[string tolower $other]" == "all locals"} {
@@ -604,7 +604,7 @@ itcl::class ActionDlg {
                   -message "Expression syntax not supported"
               set ok 0
 	    }
-	      
+
             # do all syntax checking later
 	     if {$ok} {
 	      #debug "Keeping \"$other\""
@@ -645,7 +645,7 @@ itcl::class ActionDlg {
   #         selected elements
   # ------------------------------------------------------------------
   method get_selections {vars} {
-    
+
     if {$vars} {
       set widget $VariablesLB
     } else {
@@ -670,7 +670,7 @@ itcl::class ActionDlg {
   }
 
   method remove_special {list items} {
-    
+
     foreach item $items {
       set i [lsearch $list $item]
       if {$i != -1} {
@@ -778,7 +778,7 @@ itcl::class ActionDlg {
   method collect_stack {} {
     return $StackCollect
   }
-	  
+
   method cmd {line} {
     $line
   }

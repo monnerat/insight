@@ -14,7 +14,7 @@
 
 itcl::class ManagedWin {
   inherit itk::Widget
-  
+
   public {
     method constructor {args}
     method destructor {}

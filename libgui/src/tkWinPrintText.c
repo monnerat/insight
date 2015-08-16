@@ -218,15 +218,15 @@ DisplayDLineToDrawable(TkText *textPtr, DLine *dlPtr, DLine *prevPtr, TkWinDrawa
 
 /*
  *--------------------------------------------------------------
- * 
- * PrintTextCmd -- 
+ *
+ * PrintTextCmd --
  *      When invoked with the correct args this will bring up a
  *      standard Windows print dialog box and then print the
  *	contence of the text wiget.
  *
  * Results:
  *      Standard Tcl result.
- * 
+ *
  *--------------------------------------------------------------
  */
 
@@ -237,7 +237,7 @@ PrintTextCmd(clientData, interp, argc, argv)
      int argc;
      char **argv;
 {
-    PRINTDLG pd; 
+    PRINTDLG pd;
     Tcl_CmdInfo textCmd;
     TkText *textPtr;
     TextDInfo *dInfoPtr;
@@ -283,7 +283,7 @@ PrintTextCmd(clientData, interp, argc, argv)
 			 argv[1], "\"", (char *) NULL);
 	goto error;
     }
-    
+
     memset(&dm,0,sizeof(DEVMODE));
     dm.dmSize = sizeof(DEVMODE);
     dm.dmScale = 500;
@@ -295,7 +295,7 @@ PrintTextCmd(clientData, interp, argc, argv)
     lpdi->lpszOutput=NULL;
 
     textPtr = (TkText *)(textCmd.clientData);
- 
+
     tkwin = textPtr->tkwin;
     dInfoPtr = textPtr->dInfoPtr;
     dlPtr=dInfoPtr->dLinePtr;
@@ -321,7 +321,7 @@ PrintTextCmd(clientData, interp, argc, argv)
     Ptr_pixY=(float)GetDeviceCaps(PrinterDrawable->winDC.hdc,VERTRES);
     Ptr_mmX=(float)GetDeviceCaps(PrinterDrawable->winDC.hdc,HORZSIZE);
     Ptr_mmY=(float)GetDeviceCaps(PrinterDrawable->winDC.hdc,VERTSIZE);
- 
+
     screenX1=0; screenY1=0;
     screenX2=dInfoPtr->maxX; screenY2=dInfoPtr->maxY;
     pixmap = Tk_GetPixmap(Tk_Display(tkwin), Tk_WindowId(tkwin),
@@ -350,7 +350,7 @@ PrintTextCmd(clientData, interp, argc, argv)
     saved_eof = dInfoPtr->topOfEof;
     dInfoPtr->maxX = MAXINT;
     Tk_Width(textPtr->tkwin) = MAXINT;
- 
+
     dInfoPtr->maxY  = MAXINT;
     Tk_Height(textPtr->tkwin) = MAXINT;
 
@@ -360,7 +360,7 @@ PrintTextCmd(clientData, interp, argc, argv)
 #if (TCL_MAJOR_VERSION >= 8) && (TCL_MINOR_VERSION >= 5)
     numLines = TkBTreeNumLines(textPtr->sharedTextPtr->tree,textPtr);
     TkTextMakeByteIndex(textPtr->sharedTextPtr->tree, textPtr, 0, 0, &first);
-    TkTextMakeByteIndex(textPtr->sharedTextPtr->tree, textPtr, numLines, 100, &last);	 
+    TkTextMakeByteIndex(textPtr->sharedTextPtr->tree, textPtr, numLines, 100, &last);
     TkTextChanged(textPtr->sharedTextPtr, textPtr, &first, &last);
 #elif (TCL_MAJOR_VERSION >= 8) && (TCL_MINOR_VERSION >= 1)
     numLines = TkBTreeNumLines(textPtr->tree);
@@ -419,11 +419,11 @@ PrintTextCmd(clientData, interp, argc, argv)
 			(dlPtr != NULL) && (dlPtr->y < dInfoPtr->maxY);
 			prevPtr = dlPtr, dlPtr = dlPtr->nextPtr) {
 	        DisplayDLineToDrawable(textPtr, dlPtr, prevPtr, PrinterDrawable);
-	    
+
 	    }
 	}
 
-    
+
 	EndPage(pd.hDC);
     }
     EndDoc(pd.hDC);
@@ -467,8 +467,8 @@ int
 ide_create_print_text_command (Tcl_Interp *interp)
 {
 
-    if (Tcl_CreateCommand(interp, "ide_print_text", 
-	PrintTextCmd, 
+    if (Tcl_CreateCommand(interp, "ide_print_text",
+	PrintTextCmd,
 			  NULL, NULL) == NULL)
 	return TCL_ERROR;
 

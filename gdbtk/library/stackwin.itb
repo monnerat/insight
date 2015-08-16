@@ -15,11 +15,11 @@
 # ------------------------------------------------------------------
 #  CONSTRUCTOR - create new stack window
 # ------------------------------------------------------------------
-itcl::body StackWin::constructor {args} {    
+itcl::body StackWin::constructor {args} {
   gdbtk_busy
   build_win
   gdbtk_idle
-  
+
   add_hook gdb_no_inferior_hook [code $this no_inferior]
 }
 
@@ -71,7 +71,7 @@ itcl::body StackWin::update {event} {
       $itk_component(slb) insert end {NO STACK}
       return
     }
-    
+
     set levels 0
     foreach frame $frames {
       $itk_component(slb) insert end $frame
@@ -79,7 +79,7 @@ itcl::body StackWin::update {event} {
     }
 
     # this next section checks to see if the source
-    # window is looking at some location other than the 
+    # window is looking at some location other than the
     # bottom of the stack.  If so, highlight the stack frame
     set level [gdb_selected_frame_level]
     if {$level >= 0} {
@@ -107,7 +107,7 @@ itcl::body StackWin::change_frame {} {
     set size [$itk_component(slb) size]
     set frame_num [expr {$size - $sel - 1}]
     catch {gdb_cmd "frame $frame_num"}
-    
+
     # Run idle hooks and cause all widgets to update
     set protect_me 1
     gdbtk_update

@@ -68,7 +68,7 @@ case "${host}" in
 *-*-cygwin*)
 	LIBGUI_CFLAGS="-DWIN32 $LIBGUI_CFLAGS" ;;
 esac
-AC_SUBST(LIBGUI_CFLAGS) 
+AC_SUBST(LIBGUI_CFLAGS)
 
 tmp="`cd $srcdir/library; pwd`"
 if test x"$ac_cv_prog_CC" = xcl ; then

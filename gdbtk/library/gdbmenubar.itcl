@@ -83,7 +83,7 @@ itcl::class GDBMenuBar {
   # The next set of methods control the menubar associated with the
   # toolbar.  Currently, only sequential addition of submenu's and menu
   # entries is allowed.  Here's what you do.  First, create a submenu
-  # with the "new_menu" command.  This submenu is the targeted menu. 
+  # with the "new_menu" command.  This submenu is the targeted menu.
   # Subsequent calls to add_menu_separator, and add_menu_command add
   # separators and commands to the end of this submenu.
   # If you need to edit a submenu, call clear_menu and then add all the
@@ -185,13 +185,13 @@ itcl::class GDBMenuBar {
   #  class - The class of the command, used for disabling entries.
   #  label - The text for the command.
   #  command - The command for the menu entry
-  #  args  - Passed to the menu entry creation command (eval'ed) 
+  #  args  - Passed to the menu entry creation command (eval'ed)
   # ------------------------------------------------------------------
   private method menubar_add_menu_command {class label command args} {
 
     eval $current_menu add command -label \$label -command \$command \
 	  $args
-      
+
     incr item_number
 
     switch $class {
@@ -207,7 +207,7 @@ itcl::class GDBMenuBar {
   # ------------------------------------------------------------------
   #  PRIVATE METHOD:  menubar_add_menu_separator - Adds a menu separator
   #                   to the currently targeted submenu of the main menu.
-  # 
+  #
   # ------------------------------------------------------------------
   private method menubar_add_menu_separator {} {
     incr item_number
@@ -216,7 +216,7 @@ itcl::class GDBMenuBar {
 
   # ------------------------------------------------------------------
   #  METHOD:  exists - Report whether a menu keyed by NAME exists.
-  # 
+  #
   #  name - the token for the menu sought
   #
   #  RETURNS: 1 if the menu exists, 0 otherwise.
@@ -230,7 +230,7 @@ itcl::class GDBMenuBar {
   #  METHOD:  clear - Deletes the items from one of the
   #                   main menu cascade menus. Also makes this menu
   #                   the target menu.
-  # 
+  #
   #  name - the token for the new menu
   #
   #  RETURNS: then item number of the menu, or "" if the menu is not found.
@@ -252,7 +252,7 @@ itcl::class GDBMenuBar {
   #  METHOD:  delete - Deletes one of the main menu
   #                    cascade menus. Also makes the previous menu the
   #                    target menu.
-  # 
+  #
   #  name - the token for the new menu
   #
   #  RETURNS: then item number of the menu, or "" if the menu is not found.

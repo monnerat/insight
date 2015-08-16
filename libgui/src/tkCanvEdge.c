@@ -1,4 +1,4 @@
-/* 
+/*
  * tkCanvEdge.c --
  *
  *	This file implements edge items for canvas widgets.
@@ -20,7 +20,7 @@
  * software and its documentation for any purpose, provided that the
  * above copyright notice and the following two paragraphs appear in
  * all copies of this software.
- * 
+ *
  * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
  * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
@@ -71,7 +71,7 @@ typedef struct EdgeItem  {
 				 * their tips.  The actual endpoints are
 				 * stored in the *firstArrowPtr and
 				 * *lastArrowPtr, if they exist. */
-  
+
   char *label;                  /* Label to display. */
   char *menu1;	                /* Standard menu for item, usually
                                  * activated with button-3. */
@@ -143,7 +143,7 @@ static int		ConfigureEdge _ANSI_ARGS_((Tcl_Interp *interp,
 static int		ConfigureArrows _ANSI_ARGS_((Tk_Canvas canvas,
 			    EdgeItem *edgePtr));
 static int		CreateEdge _ANSI_ARGS_((Tcl_Interp *interp,
-                            Tk_Canvas canvas, struct Tk_Item *itemPtr, 
+                            Tk_Canvas canvas, struct Tk_Item *itemPtr,
 			    int argc, Tcl_Obj **ObjArgv));
 static void		DeleteEdge _ANSI_ARGS_((Tk_Canvas canvas,
 			    Tk_Item *itemPtr, Display *display));
@@ -317,7 +317,7 @@ CreateEdge(interp, canvas, itemPtr, argc, ObjArgv)
   char **argv;
   EdgeItem *edgePtr = (EdgeItem *) itemPtr;
   int i;
-  
+
   if (argc < 4) {
     Tcl_AppendResult(interp, "wrong # args:  should be \"",
 		     Tk_PathName(Tk_CanvasTkwin(canvas)), "\" create ",
@@ -326,7 +326,7 @@ CreateEdge(interp, canvas, itemPtr, argc, ObjArgv)
 		     (char *) NULL);
     return TCL_ERROR;
   }
-  
+
   /*
    * Carry out initialization that is needed to set defaults and to
    * allow proper cleanup after errors during the the remainder of
@@ -383,8 +383,8 @@ CreateEdge(interp, canvas, itemPtr, argc, ObjArgv)
    */
 
   /*
-   * FIXME: memory leak here. 
-   */  
+   * FIXME: memory leak here.
+   */
   argv = (char**) ckalloc(argc * sizeof(char**));
   for (i = 4; i < (argc-1); i+=2) {
     argv[i]=Tcl_GetString(ObjArgv[i]);
@@ -399,8 +399,8 @@ CreateEdge(interp, canvas, itemPtr, argc, ObjArgv)
   }
   if (ConfigureEdge(interp, canvas, itemPtr, argc-i, ObjArgv+i, 0) == TCL_OK) {
     return TCL_OK;
-  } 
-  
+  }
+
  error:
   DeleteEdge(canvas, itemPtr, Tk_Display(Tk_CanvasTkwin(canvas)));
   return TCL_ERROR;
@@ -438,11 +438,11 @@ EdgeCoords(interp, canvas, itemPtr, argc, ObjArgv)
   EdgeItem *edgePtr = (EdgeItem *) itemPtr;
   char buffer[TCL_DOUBLE_SPACE];
   int i, numPoints;
-  
+
   if (argc == 0) {
     double *coordPtr;
     int numCoords;
-    
+
     numCoords = 2*edgePtr->numPoints;
     if (edgePtr->firstArrowPtr != NULL) {
       coordPtr = edgePtr->firstArrowPtr;
@@ -485,12 +485,12 @@ EdgeCoords(interp, canvas, itemPtr, argc, ObjArgv)
 	return TCL_ERROR;
       }
     }
-    
+
     /*
      * Update arrowheads by throwing away any existing arrow-head
      * information and calling ConfigureArrows to recompute it.
      */
-    
+
     if (edgePtr->firstArrowPtr != NULL) {
       ckfree((char *) edgePtr->firstArrowPtr);
       edgePtr->firstArrowPtr = NULL;
@@ -611,7 +611,7 @@ ConfigureEdge(interp, canvas, itemPtr, argc, ObjArgv, flags)
     Tk_FreeGC(((TkCanvas *) canvas)->display, edgePtr->gc);
   }
   edgePtr->gc = newGC;
-  
+
   /* the inverted gc */
   if (edgePtr->fgColor == NULL) {
     newGC = None;
@@ -633,7 +633,7 @@ ConfigureEdge(interp, canvas, itemPtr, argc, ObjArgv, flags)
     Tk_FreeGC(((TkCanvas *) canvas)->display, edgePtr->invertedGc);
   }
   edgePtr->invertedGc = newGC;
-  
+
   /*
    * Keep spline parameters within reasonable limits.
    */
@@ -642,7 +642,7 @@ ConfigureEdge(interp, canvas, itemPtr, argc, ObjArgv, flags)
   } else if (edgePtr->splineSteps > 100) {
     edgePtr->splineSteps = 100;
   }
-  
+
   /*
    * Setup arrowheads, if needed.  If arrowheads are turned off,
    * restore the edge's endpoints (they were shortened when the
@@ -658,7 +658,7 @@ ConfigureEdge(interp, canvas, itemPtr, argc, ObjArgv, flags)
   if ((edgePtr->lastArrowPtr != NULL) && (edgePtr->arrow != lastUid)
       && (edgePtr->arrow != bothUid)) {
     int index;
-    
+
     index = 2*(edgePtr->numPoints-1);
     edgePtr->coordPtr[index] = edgePtr->lastArrowPtr[0];
     edgePtr->coordPtr[index+1] = edgePtr->lastArrowPtr[1];
@@ -686,7 +686,7 @@ ConfigureEdge(interp, canvas, itemPtr, argc, ObjArgv, flags)
 	    edgePtr->width,
 	    edgePtr->justify,
 	    0, &edgePtr->textWidth, &edgePtr->textHeight);
-  
+
   /* do we have a menu ? */
   if (edgePtr->menu1 != NULL && strlen(edgePtr->menu1) > (size_t) 0 &&
       edgePtr->menu1[0] != '.') {
@@ -730,7 +730,7 @@ ConfigureEdge(interp, canvas, itemPtr, argc, ObjArgv, flags)
       Tcl_DStringFree(&varName);
     }
   }
-    
+
   /* do we have a menu ? */
   if (edgePtr->menu2 != NULL && strlen(edgePtr->menu2) > (size_t) 0 &&
       edgePtr->menu2[0] != '.') {
@@ -774,7 +774,7 @@ ConfigureEdge(interp, canvas, itemPtr, argc, ObjArgv, flags)
       Tcl_DStringFree(&varName);
     }
   }
-  
+
   /* do we have a menu ? */
   if (edgePtr->menu3 != NULL && strlen(edgePtr->menu3) > (size_t) 0 &&
       edgePtr->menu3[0] != '.') {
@@ -818,13 +818,13 @@ ConfigureEdge(interp, canvas, itemPtr, argc, ObjArgv, flags)
       Tcl_DStringFree(&varName);
     }
   }
-  
+
   /*
    * Recompute bounding box for edge.
    */
-  
+
   ComputeEdgeBbox(canvas, edgePtr);
-  
+
   return TCL_OK;
 }
 
@@ -853,7 +853,7 @@ DeleteEdge(canvas, itemPtr, display)
 					 * canvas. */
 {
   EdgeItem *edgePtr = (EdgeItem *) itemPtr;
-  
+
   if (edgePtr->bgColor != NULL) {
     Tk_FreeColor(edgePtr->bgColor);
   }
@@ -896,7 +896,7 @@ DeleteEdge(canvas, itemPtr, display)
   if (edgePtr->to != NULL) {
     ckfree(edgePtr->to);
   }
-  
+
   if (edgePtr->invertedGc != None) {
     Tk_FreeGC(display, edgePtr->invertedGc);
   }
@@ -940,11 +940,11 @@ ComputeEdgeBbox(canvas, edgePtr)
 {
   double *coordPtr;
   int i, lineWidth, lineHeight;
-  
+
   coordPtr = edgePtr->coordPtr;
   edgePtr->header.x1 = edgePtr->header.x2 = *coordPtr;
   edgePtr->header.y1 = edgePtr->header.y2 = coordPtr[1];
-  
+
   /*
    * Compute the bounding box of all the points in the edge,
    * then expand in all directions by the edge's width to take
@@ -954,7 +954,7 @@ ComputeEdgeBbox(canvas, edgePtr)
    * anything special for curves.  This causes an additional
    * overestimate in the bounding box, but is faster.
    */
-  
+
   for (i = 1, coordPtr = edgePtr->coordPtr+2; i < edgePtr->numPoints;
        i++, coordPtr += 2) {
     TkIncludePoint((Tk_Item *) edgePtr, coordPtr);
@@ -963,19 +963,19 @@ ComputeEdgeBbox(canvas, edgePtr)
   edgePtr->header.x2 += edgePtr->width;
   edgePtr->header.y1 -= edgePtr->width;
   edgePtr->header.y2 += edgePtr->width;
-  
+
   /*
    * For mitered edges, make a second pass through all the points.
    * Compute the locations of the two miter vertex points and add
    * those into the bounding box.
    */
-  
+
   if (edgePtr->joinStyle == JoinMiter) {
     for (i = edgePtr->numPoints, coordPtr = edgePtr->coordPtr; i >= 3;
 	 i--, coordPtr += 2) {
       double miter[4];
       int j;
-      
+
       if (TkGetMiterPoints(coordPtr, coordPtr+2, coordPtr+4,
 			   (double) edgePtr->width, miter, miter+2)) {
 	for (j = 0; j < 4; j += 2) {
@@ -984,11 +984,11 @@ ComputeEdgeBbox(canvas, edgePtr)
       }
     }
   }
-  
+
   /*
    * Add in the sizes of arrowheads, if any.
    */
-  
+
   if (edgePtr->arrow != noneUid) {
     if (edgePtr->arrow != lastUid) {
       for (i = 0, coordPtr = edgePtr->firstArrowPtr; i < PTS_IN_ARROW;
@@ -1003,12 +1003,12 @@ ComputeEdgeBbox(canvas, edgePtr)
       }
     }
   }
-  
+
   /*
    * Add one more pixel of fudge factor just to be safe (e.g.
    * X may round differently than we do).
    */
-  
+
   edgePtr->header.x1 -= 1;
   edgePtr->header.x2 += 1;
   edgePtr->header.y1 -= 1;
@@ -1077,30 +1077,30 @@ DisplayEdge(canvas, itemPtr, display, drawable, x, y, width, height)
   int i, numPoints, lineHeight;
   int centerX, centerY, lineWidth;
   short drawableX, drawableY;
-  
+
   if (edgePtr->gc == None) {
     return;
   }
-  
+
   /*
    * Build up an array of points in screen coordinates.  Use a
    * static array unless the edge has an enormous number of points;
    * in this case, dynamically allocate an array.  For smoothed edges,
    * generate the curve points on each redisplay.
    */
-  
+
   if ((edgePtr->smooth) && (edgePtr->numPoints > 2)) {
     numPoints = 1 + edgePtr->numPoints*edgePtr->splineSteps;
   } else {
     numPoints = edgePtr->numPoints;
   }
-  
+
   if (numPoints <= MAX_STATIC_POINTS) {
     pointPtr = staticPoints;
   } else {
     pointPtr = (XPoint *) ckalloc((unsigned) (numPoints * sizeof(XPoint)));
   }
-  
+
   if (edgePtr->smooth) {
     numPoints = TkMakeBezierCurve(canvas, edgePtr->coordPtr,
 				  edgePtr->numPoints,
@@ -1113,14 +1113,14 @@ DisplayEdge(canvas, itemPtr, display, drawable, x, y, width, height)
                               &pPtr->x, &pPtr->y);
     }
   }
-  
+
   /*
    * Display edge, the free up edge storage if it was dynamically
    * allocated.  If we're stippling, then modify the stipple offset
    * in the GC.  Be sure to reset the offset when done, since the
    * GC is supposed to be read-only.
    */
-  
+
   if (edgePtr->fillStipple != None) {
     XSetTSOrigin(display, edgePtr->gc,
 		 -((TkCanvas *) canvas)->drawableXOrigin,
@@ -1145,11 +1145,11 @@ DisplayEdge(canvas, itemPtr, display, drawable, x, y, width, height)
   if (pointPtr != staticPoints) {
     ckfree((char *) pointPtr);
   }
-  
+
   /*
    * Display arrowheads, if they are wanted.
    */
-  
+
   if (edgePtr->arrow != noneUid) {
     if (edgePtr->arrow != lastUid) {
       TkFillPolygon(canvas, edgePtr->firstArrowPtr, PTS_IN_ARROW,
@@ -1244,12 +1244,12 @@ EdgeToPoint(canvas, itemPtr, pointPtr)
 				 * because the angle was < 11 degrees. */
 
   bestDist = 1.0e40;
-  
+
   /*
    * Handle smoothed edges by generating an expanded set of points
    * against which to do the check.
    */
-  
+
   if ((edgePtr->smooth) && (edgePtr->numPoints > 2)) {
     numPoints = 1 + edgePtr->numPoints*edgePtr->splineSteps;
     if (numPoints <= MAX_STATIC_POINTS) {
@@ -1266,23 +1266,23 @@ EdgeToPoint(canvas, itemPtr, pointPtr)
     numPoints = edgePtr->numPoints;
     edgePoints = edgePtr->coordPtr;
   }
-  
+
   /*
    * The overall idea is to iterate through all of the edges of
    * the edge, computing a polygon for each edge and testing the
    * point against that polygon.  In addition, there are additional
    * tests to deal with rounded joints and caps.
    */
-  
+
   changedMiterToBevel = 0;
   for (count = numPoints, coordPtr = edgePoints; count >= 2;
        count--, coordPtr += 2) {
-    
+
     /*
      * If rounding is done around the first point then compute
      * the distance between the point and the point.
      */
-    
+
     if (((edgePtr->capStyle == CapRound) && (count == numPoints))
 	|| ((edgePtr->joinStyle == JoinRound)
 	    && (count != numPoints))) {
@@ -1295,13 +1295,13 @@ EdgeToPoint(canvas, itemPtr, pointPtr)
 	bestDist = dist;
       }
     }
-    
+
     /*
      * Compute the polygonal shape corresponding to this edge,
      * consisting of two points for the first point of the edge
      * and two points for the last point of the edge.
      */
-    
+
     if (count == numPoints) {
       TkGetButtPoints(coordPtr+2, coordPtr, (double) edgePtr->width,
 		      edgePtr->capStyle == CapProjecting, poly, poly+2);
@@ -1313,14 +1313,14 @@ EdgeToPoint(canvas, itemPtr, pointPtr)
     } else {
       TkGetButtPoints(coordPtr+2, coordPtr, (double) edgePtr->width, 0,
 		      poly, poly+2);
-      
+
       /*
        * If this edge uses beveled joints, then check the distance
        * to a polygon comprising the last two points of the previous
        * polygon and the first two from this polygon;  this checks
        * the wedges that fill the mitered joint.
        */
-      
+
       if ((edgePtr->joinStyle == JoinBevel) || changedMiterToBevel) {
 	poly[8] = poly[0];
 	poly[9] = poly[1];
@@ -1358,12 +1358,12 @@ EdgeToPoint(canvas, itemPtr, pointPtr)
       bestDist = dist;
     }
   }
-  
+
   /*
    * If caps are rounded, check the distance to the cap around the
    * final end point of the edge.
    */
-  
+
   if (edgePtr->capStyle == CapRound) {
     dist = hypot(coordPtr[0] - pointPtr[0], coordPtr[1] - pointPtr[1])
       - edgePtr->width/2.0;
@@ -1401,7 +1401,7 @@ EdgeToPoint(canvas, itemPtr, pointPtr)
       }
     }
   }
-  
+
  done:
   if ((edgePoints != staticSpace) && (edgePoints != edgePtr->coordPtr)) {
     ckfree((char *) edgePoints);
@@ -1450,16 +1450,16 @@ EdgeToArea(canvas, itemPtr, rectPtr)
 				 * means everything seen so far was
 				 * inside the area;  -1 means everything
 				 * was outside the area.  0 means overlap
-				 * has been found. */ 
+				 * has been found. */
 
   radius = edgePtr->width/2.0;
   inside = -1;
-  
+
   /*
    * Handle smoothed edges by generating an expanded set of points
    * against which to do the check.
    */
-  
+
   if ((edgePtr->smooth) && (edgePtr->numPoints > 2)) {
     numPoints = 1 + edgePtr->numPoints*edgePtr->splineSteps;
     if (numPoints <= MAX_STATIC_POINTS) {
@@ -1476,29 +1476,29 @@ EdgeToArea(canvas, itemPtr, rectPtr)
     numPoints = edgePtr->numPoints;
     edgePoints = edgePtr->coordPtr;
   }
-  
+
   coordPtr = edgePoints;
   if ((coordPtr[0] >= rectPtr[0]) && (coordPtr[0] <= rectPtr[2])
       && (coordPtr[1] >= rectPtr[1]) && (coordPtr[1] <= rectPtr[3])) {
     inside = 1;
   }
-  
+
   /*
    * Iterate through all of the edges of the edge, computing a polygon
    * for each edge and testing the area against that polygon.  In
    * addition, there are additional tests to deal with rounded joints
    * and caps.
    */
-  
+
   changedMiterToBevel = 0;
   for (count = numPoints; count >= 2; count--, coordPtr += 2) {
-    
+
     /*
      * If rounding is done around the first point of the edge
      * then test a circular region around the point with the
      * area.
      */
-    
+
     if (((edgePtr->capStyle == CapRound) && (count == numPoints))
 	|| ((edgePtr->joinStyle == JoinRound)
 	    && (count != numPoints))) {
@@ -1511,13 +1511,13 @@ EdgeToArea(canvas, itemPtr, rectPtr)
 	goto done;
       }
     }
-    
+
     /*
      * Compute the polygonal shape corresponding to this edge,
      * consisting of two points for the first point of the edge
      * and two points for the last point of the edge.
      */
-    
+
     if (count == numPoints) {
       TkGetButtPoints(coordPtr+2, coordPtr, (double) edgePtr->width,
 		      edgePtr->capStyle == CapProjecting, poly, poly+2);
@@ -1529,14 +1529,14 @@ EdgeToArea(canvas, itemPtr, rectPtr)
     } else {
       TkGetButtPoints(coordPtr+2, coordPtr, (double) edgePtr->width, 0,
 		      poly, poly+2);
-      
+
       /*
        * If the last joint was beveled, then also check a
        * polygon comprising the last two points of the previous
        * polygon and the first two from this polygon;  this checks
        * the wedges that fill the beveled joint.
        */
-      
+
       if ((edgePtr->joinStyle == JoinBevel) || changedMiterToBevel) {
 	poly[8] = poly[0];
 	poly[9] = poly[1];
@@ -1568,7 +1568,7 @@ EdgeToArea(canvas, itemPtr, rectPtr)
       goto done;
     }
   }
-  
+
   /*
    * If caps are rounded, check the cap around the final point
    * of the edge.
@@ -1584,11 +1584,11 @@ EdgeToArea(canvas, itemPtr, rectPtr)
       goto done;
     }
   }
-  
+
   /*
    * Check arrowheads, if any.
    */
-  
+
   if (edgePtr->arrow != noneUid) {
     if (edgePtr->arrow != lastUid) {
       if (TkPolygonToArea(edgePtr->firstArrowPtr, PTS_IN_ARROW,
@@ -1605,7 +1605,7 @@ EdgeToArea(canvas, itemPtr, rectPtr)
       }
     }
   }
-  
+
  done:
   if ((edgePoints != staticSpace) && (edgePoints != edgePtr->coordPtr)) {
     ckfree((char *) edgePoints);
@@ -1644,7 +1644,7 @@ ScaleEdge(canvas, itemPtr, originX, originY, scaleX, scaleY)
   EdgeItem *edgePtr = (EdgeItem *) itemPtr;
   double *coordPtr;
   int i;
-  
+
   for (i = 0, coordPtr = edgePtr->coordPtr; i < edgePtr->numPoints;
        i++, coordPtr += 2) {
     coordPtr[0] = originX + scaleX*(*coordPtr - originX);
@@ -1695,7 +1695,7 @@ TranslateEdge(canvas, itemPtr, deltaX, deltaY)
   EdgeItem *edgePtr = (EdgeItem *) itemPtr;
   double *coordPtr;
   int i;
-  
+
   for (i = 0, coordPtr = edgePtr->coordPtr; i < edgePtr->numPoints;
        i++, coordPtr += 2) {
     coordPtr[0] += deltaX;
@@ -1753,11 +1753,11 @@ ParseArrowShape(clientData, interp, tkwin, value, recordPtr, offset)
   double a, b, c;
   int argc;
   char **argv = NULL;
-  
+
   if (offset != Tk_Offset(EdgeItem, arrowShapeA)) {
     panic("ParseArrowShape received bogus offset");
   }
-  
+
   if (Tcl_SplitList(interp, value, &argc, &argv) != TCL_OK) {
   syntaxError:
     Tcl_ResetResult(interp);
@@ -1813,7 +1813,7 @@ PrintArrowShape(clientData, tkwin, recordPtr, offset, freeProcPtr)
 {
   EdgeItem *edgePtr = (EdgeItem *) recordPtr;
   char *buffer;
-  
+
   buffer = ckalloc(120);
   sprintf(buffer, "%.5g %.5g %.5g", edgePtr->arrowShapeA,
 	  edgePtr->arrowShapeB, edgePtr->arrowShapeC);
@@ -1859,13 +1859,13 @@ ConfigureArrows(canvas, edgePtr)
 					 * so the edge ends in the middle
 					 * of the arrowhead. */
   double vertX, vertY;		/* Position of arrowhead vertex. */
-  
+
   /*
    * If there's an arrowhead on the first point of the edge, compute
    * its polygon and adjust the first point of the edge so that the
    * edge doesn't stick out past the leading edge of the arrowhead.
    */
-  
+
   shapeC = edgePtr->arrowShapeC + edgePtr->width/2.0;
   fracHeight = (edgePtr->width/2.0)/shapeC;
   backup = fracHeight*edgePtr->arrowShapeB
@@ -1900,21 +1900,21 @@ ConfigureArrows(canvas, edgePtr)
     poly[5] = poly[3]*fracHeight + vertY*(1.0-fracHeight);
     poly[6] = poly[8]*fracHeight + vertX*(1.0-fracHeight);
     poly[7] = poly[9]*fracHeight + vertY*(1.0-fracHeight);
-    
+
     /*
      * Polygon done.  Now move the first point towards the second so
      * that the corners at the end of the edge are inside the
      * arrowhead.
      */
-    
+
     edgePtr->coordPtr[0] = poly[0] - backup*cosTheta;
     edgePtr->coordPtr[1] = poly[1] - backup*sinTheta;
   }
-  
+
   /*
    * Similar arrowhead calculation for the last point of the edge.
    */
-  
+
   if (edgePtr->arrow != firstUid) {
     coordPtr = edgePtr->coordPtr + 2*(edgePtr->numPoints-2);
     poly = edgePtr->lastArrowPtr;
@@ -1949,7 +1949,7 @@ ConfigureArrows(canvas, edgePtr)
     coordPtr[2] = poly[0] - backup*cosTheta;
     coordPtr[3] = poly[1] - backup*sinTheta;
   }
-  
+
   return TCL_OK;
 }
 
@@ -1988,16 +1988,16 @@ EdgeToPostscript(interp, canvas, itemPtr, prepass)
   register EdgeItem *edgePtr = (EdgeItem *) itemPtr;
   char buffer[200];
   char *style;
-  
+
   if (edgePtr->fgColor == NULL) {
     return TCL_OK;
   }
-  
+
   /*
    * Generate a path for the edge's center-edge (do this differently
    * for straight edges and smoothed edges).
    */
-  
+
   if (!edgePtr->smooth) {
     Tk_CanvasPsPath(interp, canvas, edgePtr->coordPtr, edgePtr->numPoints);
   } else {
@@ -2012,11 +2012,11 @@ EdgeToPostscript(interp, canvas, itemPtr, prepass)
        * the intermediate points here and output them into the
        * Postscript file with "edgeto"s instead.
        */
-      
+
       double staticPoints[2*MAX_STATIC_POINTS];
       double *pointPtr;
       int numPoints;
-      
+
       numPoints = 1 + edgePtr->numPoints*edgePtr->splineSteps;
       pointPtr = staticPoints;
       if (numPoints > MAX_STATIC_POINTS) {
@@ -2037,7 +2037,7 @@ EdgeToPostscript(interp, canvas, itemPtr, prepass)
   /*
    * Set other edge-drawing parameters and stroke out the edge.
    */
-  
+
   sprintf(buffer, "%d setlinewidth\n", edgePtr->width);
   Tcl_AppendResult(interp, buffer, (char *) NULL);
   style = "0 setlinecap\n";
@@ -2065,11 +2065,11 @@ EdgeToPostscript(interp, canvas, itemPtr, prepass)
   } else {
     Tcl_AppendResult(interp, "stroke\n", (char *) NULL);
   }
-  
+
   /*
    * Output polygons for the arrowheads, if there are any.
    */
-  
+
   if (edgePtr->firstArrowPtr != NULL) {
     if (ArrowheadPostscript(interp, canvas, edgePtr, edgePtr->firstArrowPtr) !=
         TCL_OK) {

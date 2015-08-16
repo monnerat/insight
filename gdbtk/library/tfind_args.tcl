@@ -16,7 +16,7 @@
 # Implements tfind arguments dialogs
 #
 #   PUBLIC ATTRIBUTES:
-#     
+#
 #     Type .........Type of dialog (tfind pc, tfind line, tfind tracepoint)
 #
 #     config ....... used to change public attributes
@@ -27,7 +27,7 @@
 #
 #
 # ----------------------------------------------------------------------
- 
+
 itcl_class TfindArgs {
   # ------------------------------------------------------------------
   #  CONSTRUCTOR - create new tfind arguments dialog
@@ -45,7 +45,7 @@ itcl_class TfindArgs {
     ::rename $this $old_name
     build_win
   }
- 
+
   # ------------------------------------------------------------------
   #  METHOD:  build_win - build the dialog
   # ------------------------------------------------------------------
@@ -57,19 +57,19 @@ itcl_class TfindArgs {
     set f $hull.f.a
 
     switch $Type {
-      LN   { 
-	set text "Enter argument: " 
+      LN   {
+	set text "Enter argument: "
       }
-      PC   { 
-	set text "Enter PC value: " 
+      PC   {
+	set text "Enter PC value: "
       }
-      TP   { 
-	set text "Enter Tracepoint No.: " 
+      TP   {
+	set text "Enter Tracepoint No.: "
       }
       FR  {
 	set text "Enter Frame No.:"
     }
-    
+
     if {[string compare $Type $last_type]} != 0} {
       global argument
       set argument ""
@@ -81,12 +81,12 @@ itcl_class TfindArgs {
     entry $f.2 -textvariable argument -width 10
     $f.2 selection range 0 end
     grid $f.1 $f.2 -padx 4 -pady 4 -sticky nwe
-    
+
     button $hull.f.b.ok -text OK -command "$this ok" -width 7 -default active
     button $hull.f.b.quit -text Cancel -command "delete object $this" -width 7
     grid $hull.f.b.ok $hull.f.b.quit  -padx 4 -pady 4  -sticky ews
 
-    pack $hull.f.a $hull.f.b  
+    pack $hull.f.a $hull.f.b
     grid $hull.f
 
     focus $f.2
@@ -103,14 +103,14 @@ itcl_class TfindArgs {
     destroy $this
       destroy $top
   }
- 
+
 
 
   # ------------------------------------------------------------------
   #  METHOD:  ok - do it and quit
   # ------------------------------------------------------------------
   method ok {} {
-    do_it 
+    do_it
     delete
   }
 
@@ -120,12 +120,12 @@ itcl_class TfindArgs {
   # ------------------------------------------------------------------
   method do_it {} {
     global argument
-    
-    
+
+
     switch $Type {
-      LN  { tfind_cmd "tfind line $argument"} 
+      LN  { tfind_cmd "tfind line $argument"}
       PC  { tfind_cmd "tfind pc $argument"}
-      TP  { tfind_cmd "tfind tracepoint $argument"} 
+      TP  { tfind_cmd "tfind tracepoint $argument"}
       FR  { tfind_cmd "tfind $argument"}
     }
   }

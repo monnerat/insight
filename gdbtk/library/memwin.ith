@@ -67,7 +67,7 @@ itcl::class MemWin {
     method update_address {addr_exp}
     method BadExpr {errTxt}
     method incr_addr {num}
-    method update_addr 
+    method update_addr
     method hidemb {}
     method reconfig {}
     method do_popup {x y}

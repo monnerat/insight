@@ -1,4 +1,4 @@
-/* 
+/*
  * tkTableUtil.c --
  *
  *	This module contains utility functions for table widgets.

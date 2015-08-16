@@ -15,7 +15,7 @@
 
 2010-06-18  Pierre Muller  <muller@ics.u-strasbg.fr>
 
-	* generic/gdbtk-cmds.c: Add cygwin macros to allow compilation 
+	* generic/gdbtk-cmds.c: Add cygwin macros to allow compilation
 	with old or recent cygwin version.
 	(gdb_path_conv): Use cygwin_conv_path function.
 	(gdb_eval): Adapt to new field in val_print.
@@ -71,7 +71,7 @@
 2010-03-12  Pierre Muller  <muller@ics.u-strasbg.fr>
 
 	* generic/gdbtk-cmds.c: Include psympriv.h.
-	
+
 2010-01-25  Keith Seitz  <keiths@redhat.com>
 
 	* generic/gdbtk-cmds.c (gdb_set_inferior_args): set_inferior_args

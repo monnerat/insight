@@ -39,7 +39,7 @@ proc standard_look_and_feel {} {
     define_font global/menu -family {MS Sans Serif} -size 8
   } else {
     set size 12
-    define_font global/default -family courier -size $size 
+    define_font global/default -family courier -size $size
     define_font global/bold -family courier -size $size -weight bold
     define_font global/fixed -family courier -size $size
     define_font global/status -family helvetica -size [expr $size - 1]

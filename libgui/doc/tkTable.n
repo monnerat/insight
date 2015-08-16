@@ -306,7 +306,7 @@ window space allocated to the table.  This mode can interfere with
 interactive border resizing which tries to force column width.
 .TP
 \fBlast\fR
-The last column will be stretched 
+The last column will be stretched
 to fill the window space allocated to the table.
 .TP
 \fBfill\fR (only valid for \fB\-rowstretch\fR currently)

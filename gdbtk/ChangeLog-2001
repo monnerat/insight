@@ -81,11 +81,11 @@
 	gdb_incr_addr.
 	(MemWin::goto): Call update_address.
 	* library/memwin.itb: Declare private variable bad_expr.
-	
+
 	* library/util.tcl (gdbtk_endian): New procedure. Returns
 	BIG or LITTLE to indicate target endianess.
 
-2001-11-08  Martin M. Hunt  <hunt@redhat.com>	
+2001-11-08  Martin M. Hunt  <hunt@redhat.com>
 	* library/managedwin.itb (ManagedWin::shutdown): Fix
 	typo in class name DebugWinDOpts.
 
@@ -116,33 +116,33 @@
 
 2001-11-05  Martin M. Hunt  <hunt@redhat.com>
 
-	* library/stackwin.itb (StcakWin::reconfig): Destroy sbox 
+	* library/stackwin.itb (StcakWin::reconfig): Destroy sbox
 	if it exists.
 
-	* library/process.itb (ProcessWin::reconfig): Destroy sbox 
-	if it exists. This fixes reconfig failures on Windows. Also 
+	* library/process.itb (ProcessWin::reconfig): Destroy sbox
+	if it exists. This fixes reconfig failures on Windows. Also
 	destroy slbox.
 
-	* library/bpwin.itb (BpWin::reconfig): Destroy sbox if 
-	it exists.This fixes reconfig failures on Windows. Also 
+	* library/bpwin.itb (BpWin::reconfig): Destroy sbox if
+	it exists.This fixes reconfig failures on Windows. Also
 	destroy sf
-	
+
 	* library/tdump.tcl (TdumpWin::reconfig): Delete sbox
 	and stext then rebuild window.
 
-2001-11-05  Martin M. Hunt  <hunt@redhat.com>	
+2001-11-05  Martin M. Hunt  <hunt@redhat.com>
 
-	* library/debugwin.itb (DebugWin::build_win): 
+	* library/debugwin.itb (DebugWin::build_win):
 	Initialize gdbtk_de(ERRORS_ONLY) and gdbtk_de(filter_var)
 	(DebugWin::puts): Rewrite filter to handle new options.
-	(DebugWinDOpts::build_win): Update list of classes. Change 
+	(DebugWinDOpts::build_win): Update list of classes. Change
 	filter dialog so we can not display only errors and warnings
 	or choose between displaying ALL classes except those selected
 	or only selected classes. Fix "OK" button to apply
 	changes before closing dialog.
 	DebugWinOpts::_apply): Now takes an agrument that
 	indicates if dialog should exit after applying filter.
-	
+
 	* library/debugwin.ith (_apply): Now takes an arg.
 
 	* library/main.tcl: If GDBTK_DEBUGFILE is not set,
@@ -151,9 +151,9 @@
 	GDBTK_DEBUGFILE immediately. Never open the debug window
 	automatically.
 
-	* library/managedwin.itb (ManagedWin::shutdown): Don't 
+	* library/managedwin.itb (ManagedWin::shutdown): Don't
 	save debug window options dialog on active list
-	
+
 	* library/srcwin.itb: Remove troublesome debug line.
 
 2001-11-05  Martin M. Hunt  <hunt@redhat.com>
@@ -179,15 +179,15 @@
 	to be sent to gdb_get_mem to prevent passing error strings
 	to string_to_coreaddr in gdb_get_mem.
 
-2001-10-29  Martin M. Hunt  <hunt@redhat.com>	
+2001-10-29  Martin M. Hunt  <hunt@redhat.com>
 
 	* library/debugwin.itb: Don't increment number of
-	TopLevelWins. 
+	TopLevelWins.
 
 	* library/managedwin.itb: Don't save DebugWins to
 	active list.
 
-2001-10-29  Martin M. Hunt  <hunt@redhat.com>		
+2001-10-29  Martin M. Hunt  <hunt@redhat.com>
 
 	* generic/gdbtk-bp.c (gdb_set_bp_addr): When setting
 	the bp addr_string, use the string the function was called
@@ -199,8 +199,8 @@
 	(SrcBar::address) When the address changes, recompute
 	width of address label.  If it is more than 10, force it
 	to 18, otherwise use 10.
-	
-2001-10-29  Martin M. Hunt  <hunt@redhat.com>	
+
+2001-10-29  Martin M. Hunt  <hunt@redhat.com>
 
 	* generic/gdbtk-bp.c (gdb_find_bp_at_addr): Use
 	string_to_core_addr to read address so 64 bits will work.
@@ -209,10 +209,10 @@
 	(gdb_set_bp_addr):Use string_to_core_addr to read address.
 	Set error message with Tcl_SetObjResult().
 
-	* generic/gdbtk-cmds.c (gdb_get_mem): :Use string_to_core_addr 
+	* generic/gdbtk-cmds.c (gdb_get_mem): :Use string_to_core_addr
 	to read address. Set error message with Tcl_SetObjResult() or
 	Tcl_WrongNumArgs.
-	
+
 2001-10-27  Tom Tromey  <tromey@redhat.com>
 
 	* tclIndex: Updated.
@@ -227,22 +227,22 @@
 	session_save.
 	(gdbtk_tcl_preloop): Don't set executable name or try to find
 	main.  Notice a new session if required.
-	
+
 2001-10-18  Martin M. Hunt  <hunt@redhat.com>
-	
+
 	* library/srcpref.itb (SrcPref::contructor): Move array
 	initialization to _init_var.
-	(SrcPref::_init_var): New method to initialize _saved and 
+	(SrcPref::_init_var): New method to initialize _saved and
 	_new arrays.
-	(SrcPref::buildwin): Rename to _buildwin. Have widgets use 
+	(SrcPref::buildwin): Rename to _buildwin. Have widgets use
 	_new instead of [pref varname ...].  Set initial value of
 	tab size spinint.
 	(SrcPref::_apply): Set prefs with values from the _new array.
-	(SrcPref::_cancel): Reset disassembly flavor and don't call 
+	(SrcPref::_cancel): Reset disassembly flavor and don't call
 	_save because nothing is saved unless OK is selected.
 	(SrcPref::set_flavor): Rename to _set_flavor.
 	(SrcPref::_pick): Just set _new, not prefs.
-	
+
 	* library/srcpref.ith: Add private variable _new and
 	private method cancel. Rename others with leading underscore.
 
@@ -276,7 +276,7 @@
 2001-10-10  Ian Roxborough  <irox@redhat.com>
 
 	* library/gdbtoolbar.itcl (GDBToolBar::add): Add option
-	for "custom" type. 
+	for "custom" type.
 	(GDBToolBar::toolbar_add_custom): new method.
 
 2001-10-06  Tom Tromey  <tromey@redhat.com>
@@ -344,7 +344,7 @@
 	* generic/gdbtk.c (gdbtk_init): Set IWIDGETS_LIBRARY if
 	Insight is launched from within the build directory.
 	* library/util.tcl (find_iwidgets_library): Removed.
-	* library/main.tcl: Don't call find_iwidgets_library, do a 
+	* library/main.tcl: Don't call find_iwidgets_library, do a
 	package require instead.
 
 2001-08-28  Keith Seitz  <keiths@redhat.com>
@@ -591,7 +591,7 @@
 
 	* generic/gdbtk-cmds.c: Don't include regcache.h.
 	* generic/gdbtk-register.c: Include regcache.h.
-	
+
 2001-07-26  Jonathan Larmour  <jlarmour@redhat.com>
 
 	* library/prefs.tcl (pref_set_defaults): Add additional entry
@@ -599,7 +599,7 @@
 
 2001-07-21  Martin M. Hunt  <hunt@redhat.com>
 
-	* library/interface.tcl (gdbtk_locate_main): Fix function 
+	* library/interface.tcl (gdbtk_locate_main): Fix function
 	so that it returns either a null string or a valid location,
 	as documented.
 
@@ -721,12 +721,12 @@
 	* generic/gdbtk.c (gdbtk_init): Remove unused variables
 	"auto_path_name", "auto_path_elem", and "found_main".
 
-2001-06-05  Martin Hunt  <hunt@redhat.com>                                    
+2001-06-05  Martin Hunt  <hunt@redhat.com>
 
 	* generic/gdbtk.c (_initialize_gdbtk): Don't close console yet.
 	(gdbtk_init): Wait until after tcl/tk stuff is all initialized
 	to close console (on Windows) and redirect ouput.
-	
+
 2001-06-05  Martin Hunt  <hunt@redhat.com>
 
 	* library/globalpref.itb(build_win): Don't change directory
@@ -981,7 +981,7 @@
 2001-05-11  Kevin Buettner  <kevinb@redhat.com>
 
 	* generic/gdbtk-bp.c (set_raw_breakpoint): Revise declaration
-	to match the recently changed declaration in breakpoint.c. 
+	to match the recently changed declaration in breakpoint.c.
 	Update all callers.
 
 2001-05-11  Keith Seitz  <keiths@cygnus.com>
@@ -1064,7 +1064,7 @@
 2001-05-06  Kevin Buettner  <kevinb@redhat.com>
 
 	* generic/gdbtk-cmds.c (gdb_target_has_execution_command)
-	(get_clear_file): Use ptid_equal() for comparing ptid values. 
+	(get_clear_file): Use ptid_equal() for comparing ptid values.
 	Use ``null_ptid'' instead of 0 in comparisons against
 	``inferior_ptid''.
 
@@ -1198,7 +1198,7 @@
 	an about-to-be-deleted breakpoint).
 
 2001-04-18  Martin M. Hunt  <hunt@redhat.com>
-	
+
 	* generic/gdbtk.c (gdbtk_init): Initialize uiout.
 
 2001-04-18  Tom Tromey  <tromey@redhat.com>
@@ -1255,12 +1255,12 @@
 	(gdbtk_fputs): Don't print if gdbtk_disable_fputs. Send
 	stdlog and stdtarg to their handler functions.
 
-	* generic/gdbtk.c (Gdbtk_Init): Don't set gdb_stdlog 
-	and gdb_stdtarg to gdb_stdout, 
+	* generic/gdbtk.c (Gdbtk_Init): Don't set gdb_stdlog
+	and gdb_stdtarg to gdb_stdout,
 	(gdbtk_init): Unset gdbtk_disable_fputs
 	when ready to accept output from gdb. Remove references to
 	fputs_unfiltered_hook.
-	
+
 	* generic/gdbtk.h: Declare new flag gdbtk_disable_fputs.
 
 	* generic/gdbtk-cmds.c (gdb_restore_fputs): Instead of setting
@@ -1277,8 +1277,8 @@
 	IO to console.
 
 	* library/console.ith (einsert): Add tag parameter.
-	
-	* library/console.itb (_build_win): Add new tags for log 
+
+	* library/console.itb (_build_win): Add new tags for log
 	and target IO.
 	(einsert): Add tag parameter.
 
@@ -1309,10 +1309,10 @@
 
 2001-03-15  Martin Hunt  <hunt@redhat.com>
 	* library/browserwin.itb: Change all references to freeze_me,
-	thaw_me and Top to _freeze_me, _thaw_me, and _top to match 
+	thaw_me and Top to _freeze_me, _thaw_me, and _top to match
 	changes to managedwin.
-	
-	* library/kod.itb: Ditto.  
+
+	* library/kod.itb: Ditto.
 
 2001-03-15  Tom Tromey  <tromey@redhat.com>
 
@@ -1492,7 +1492,7 @@ Tue Feb 27 23:56:23 2001  Andrew Cagney  <ac131313@redhat.com>
 
 2001-01-31  Fernando Nasser  <fnasser@redhat.com>
 
-	* library/plugins/rhabout.tcl: Add load for optional sample C command 
+	* library/plugins/rhabout.tcl: Add load for optional sample C command
 	procedure.
 	* library/plugins/rhabout/rhabout.itcl (constructor): Try calling
 	optional sample C command procedure rhabout_extra_text.
@@ -1599,7 +1599,7 @@ Tue Feb 27 23:56:23 2001  Andrew Cagney  <ac131313@redhat.com>
 
 2001-01-15  Fernando Nasser  <fnasser@redhat.com>
 
-	* srcwin.itb (clear_file): Pass the appropriate value to the GO 
+	* srcwin.itb (clear_file): Pass the appropriate value to the GO
 	argument of mode() so it does not try to read a source file when
 	no executable is loaded.
 
@@ -1686,7 +1686,7 @@ Tue Feb 27 23:56:23 2001  Andrew Cagney  <ac131313@redhat.com>
 
 	* library/ChangeLog-2000: New file. Entries dated 2000 moved here
         from library/ChangeLog.
-        * library/ChangeLog: Removed. 
+        * library/ChangeLog: Removed.
         * generic/ChangeLog-2000: New file. Entries dated 2000 moved here
         from library/ChangeLog.
         * generic/ChangeLog: Removed.
@@ -1716,4 +1716,4 @@ Sat Feb  5 00:14:30 2000  Andrew Cagney  <cagney@b1.cygnus.com>
  	directory.
 	* gdb/gdbtcl2: Directory moved to gdbtk/library.
 	* gdb/gdbtk/generic: New directory.
-	
+

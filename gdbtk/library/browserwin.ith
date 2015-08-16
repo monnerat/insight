@@ -60,7 +60,7 @@ itcl::class BrowserWin {
       view        2
       view_hidden 3
     }
-    
+
     common filter_modes [list "starts with" \
 			   "contains" \
 			   "ends with" \

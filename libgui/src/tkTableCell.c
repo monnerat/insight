@@ -1,4 +1,4 @@
-/* 
+/*
  * tkTableCell.c --
  *
  *	This module implements cell oriented functions for table
@@ -534,7 +534,7 @@ VALUE:
 		result = Tcl_GetStringResult(interp);
 	    }
 	    Tcl_FreeResult(interp);
-	    Tcl_DStringFree(&script);      
+	    Tcl_DStringFree(&script);
 	    Tcl_DeleteHashEntry(entryPtr);
 	}
     }
@@ -705,8 +705,8 @@ TableMoveCellValue(Table *tablePtr, int fromr, int fromc, char *frombuf,
 			TCL_GLOBAL_ONLY|TCL_LEAVE_ERR_MSG) == NULL) {
 		    return TCL_ERROR;
 		}
-	    }     
-      
+	    }
+
 
 	    return TCL_OK;
 	}
@@ -798,7 +798,7 @@ TableGetIndex(tablePtr, str, row_p, col_p)
     /*
      * Note that all of these values will be adjusted by row/ColOffset
      */
-    if (str[0] == '@') {	/* @x,y coordinate */ 
+    if (str[0] == '@') {	/* @x,y coordinate */
 	int x, y;
 
 	if (sscanf(str+1, "%d,%d%c", &x, &y, &dummy) != 2) {
@@ -863,7 +863,7 @@ TableGetIndex(tablePtr, str, row_p, col_p)
 	return TCL_ERROR;
     }
 
-    /* Note: values are expected to be properly constrained 
+    /* Note: values are expected to be properly constrained
      * as a user index by this point */
     if (row_p) *row_p = r;
     if (col_p) *col_p = c;

@@ -20,7 +20,7 @@
 	(In instance data): Made menu data arrays rather than dynamically
 	constructed variables.
 
-	* srcwin.itb (SrcWin::set_execution_status): Let gdb print the PC, 
+	* srcwin.itb (SrcWin::set_execution_status): Let gdb print the PC,
 	since Tcl's conversion may not be wide enough.
 
 	* srctextwin.ith: initialize the Cname variable.
@@ -40,7 +40,7 @@
 	(do_kill): Kill a native target.
 
 	* memwin.itb (MemWin::toggle_enabled): Toggle the state of the
-	widget, as well as the color, so people can't edit when the window 
+	widget, as well as the color, so people can't edit when the window
 	doesn't contain valid memory.
 	(MemWin::update_address): Set the state to normal if we have
 	loaded valid memory.
@@ -55,7 +55,7 @@
 	(ManagedWin::_create): Don't use Icon windows with modal dialogs.
 
 	* interface.tcl (gdbtk_cleanup): Set a shutting_down flag.
-	(gdbtk_tcl_fputs): Restore the fputs hook.  This is trivial to do, 
+	(gdbtk_tcl_fputs): Restore the fputs hook.  This is trivial to do,
 	and ensures that no one will delete the hook behind our backs.
 	(gdbtk_tcl_fputs_error): ditto.
 	(_open_file): Make file parameter optional, and don't query if it
@@ -109,7 +109,7 @@
 1999-08-27  James Ingham  <jingham@leda.cygnus.com>
 
 	* srctextwin.itb (SrcTextWin::FillAssembly): Use the new
-	gdb_load_disassembly.  
+	gdb_load_disassembly.
 	(SrcTextWin::FillMixed): Use the new gdb_load_disassembly.
 
 	* interface.tcl (gdbtk_idle): Call gdbtk_restore_fputs at idle
@@ -169,19 +169,19 @@
 	to 1 regardless of the result of the mtime check...  Doh!
 	(SrcTextWin::reconfig): The setTabs call was assuming ALL windows
 	were source windows.
-	(SrcTextWin::do_tag_popup): Remove the balloon when the breakpoint 
+	(SrcTextWin::do_tag_popup): Remove the balloon when the breakpoint
 	popups are posted as well.
-	(SrcTextWin::do_source_popup): Also handle the case where there is 
+	(SrcTextWin::do_source_popup): Also handle the case where there is
 	a selection, but the point is not over it.
 
 	* srctextwin.itb (SrcTextWin::destructor): Remove it when the
-	object goes away. 
+	object goes away.
 
 	* regwin.itb (RegWin::constructor): Add the disassembly_flavor_hook.
 	(RegWin::destructor): Remove it when the widget is destroyed.
 	(RegWin::disassembly_changed): New method, tell the widget it
 	needs to redisplay itself with the new register names.
-	(RegWin::reconfig): Actually do the reconstruction if the register 
+	(RegWin::reconfig): Actually do the reconstruction if the register
 	set names have changed.
 	* regwin.ith: Add declarations for the new methods.
 
@@ -190,7 +190,7 @@
 
 	* srctextwin.itb (SrcTextWin::getVariable): Use a selection in
 	preference to the word around the hit point, if there is one.
-	(SrcTextWin::do_source_popup): Really dismiss the balloon when you 
+	(SrcTextWin::do_source_popup): Really dismiss the balloon when you
 	popup a menu...
 
 1999-08-05  James Ingham  <jingham@leda.cygnus.com>
@@ -198,7 +198,7 @@
 	* srctextwin.itb (SrcTextWin::showBalloon): Fix ShowBalloon.  We
 	can't use "info line" to tell us whether we should post a balloon
 	over the current line, since gdb only considers the first line of
-	a statement executible, not the continuation lines.  Instead, show 
+	a statement executible, not the continuation lines.  Instead, show
 	any line in the currently selected function.  Sigh...
 
 1999-08-06  Tom Tromey  <tromey@cygnus.com>
@@ -244,10 +244,10 @@
 1999-06-23  James Ingham  <jingham@leda.cygnus.com>
 
 	* srctextwin.itb (SrcTextWin::_mtime_changed): Catch the call to
-	mtime.  This will fail when you are in assembly mode, and the file 
+	mtime.  This will fail when you are in assembly mode, and the file
 	is actually a function address.
 	(SrcTextWin::motion): Catch the call to showBalloon.  There are
-	various things that can go wrong here, and we certainly don't want 
+	various things that can go wrong here, and we certainly don't want
 	the user to hear about them.
 
 1999-06-15  Keith Seitz  <keiths@cygnus.com>
@@ -271,7 +271,7 @@
 	before mapping a popup onto the screen.
 	(showBalloon): The "-pc" option was removed from gdb_variable.
 	Provide equivalent functionality, and display popups again.
-	
+
 	* interface.tcl (set_target): Don't call the target dialog
 	if there gdb_target_cmd is empty and we are a native debugger.
 	Don't set a default target -- force the gui to ask the first
@@ -285,10 +285,10 @@
 1999-06-10  James Ingham  <jingham@leda.cygnus.com>
 
 	* srctextwin.itb (SrcTextWin::clear_file): Don't try to set the
-	text view back to the gdbtk_scratch_widget, this is very fragile. 
+	text view back to the gdbtk_scratch_widget, this is very fragile.
 	(SrcTextWin::LoadFromCache): initialize the mtime correctly when
 	you add a window to the cache.
-	(SrcTextWin::LoadFromCache): don't add the ,asm,lib to the scratch 
+	(SrcTextWin::LoadFromCache): don't add the ,asm,lib to the scratch
 	widget pane name.
 
 	* interface.tcl (gdbtk_tcl_exec_file_display): Only run
@@ -297,7 +297,7 @@
 
 	* srctextwin.itb (SrcTextWin::_mtime_changed): Set a dirty flag
 	when the mtime has changed so that you can know to reload the
-	source. 
+	source.
 	(SrcTextWin::LoadFromCache): Look at the dirty flag, and reload
 	from disk if it is set.
 
@@ -398,7 +398,7 @@
 
 1999-05-25  Keith Seitz  <keiths@cygnus.com>
 
-	* variables.tcl (getLocals): Don't pass any args to 
+	* variables.tcl (getLocals): Don't pass any args to
 	gdb_get_{locals, args} so that the currently selected frame is used.
 	(context_switch): New method.
 	* locals.tcl (getVariablesBlankPath): Don't catch call to getLocals.
@@ -429,7 +429,7 @@
 
 	* srcpref.itb (save): Call apply and then close rather than
 	duplicating the apply code.
-	
+
 1999-04-26  James Ingham  <jingham@cygnus.com>
 
 	* modal.tcl (ModalDialog): Add the "expire" variable, and cancel
@@ -440,7 +440,7 @@
 	create a splash screen and not quit the app when you take it down.
 	(quit_if_last): Add default implementation - returns 1.
 
-	* about.tcl (quit_if_last): Add the quit_if_last to the About box, 
+	* about.tcl (quit_if_last): Add the quit_if_last to the About box,
 	returning 0.
 
 	* main.tcl: Added a line to open a splash screen, but commented it
@@ -472,7 +472,7 @@
 
 	* bpwin.itb (BpWin::constructor): Set icon name to "BPs".
 	* regwin.itb (BpWin::build_win): Set icon name to "Regs".
-	* srcwin.itb (SrcWin::_update_title): Set icon name to basename 
+	* srcwin.itb (SrcWin::_update_title): Set icon name to basename
 	of filename.
 	* variables.tcl (VariableWin::build_win): Set icon name to "Locals".
 
@@ -487,7 +487,7 @@
 	* memwin.itb (MemWin::incr_addr): Fix the increment-decrement
 	control.  It would allow you to scroll into negative addresses,
 	which causes some simulators to crash.  It would also increment
-	improperly in cases where the address value in hex corresponded to 
+	improperly in cases where the address value in hex corresponded to
 	a negative signed int.
 
 1999-04-07  Martin Hunt  <hunt@cygnus.com>
@@ -505,7 +505,7 @@
 	in exec mode.
 
 	* targetselection.ith: Add public proc init_target_db.
-	
+
 	* srcwin.itb (SrcWin::set_execution_status): Don't print anything
 	if gdb_running is 0.
 
@@ -523,7 +523,7 @@
 
 	* main.tcl: Set initial target name to "". Set gdb_target_changed
 	so a dialog will always be forced the first time.
-	
+
 	* download.itb (Download::download_it): Set gdb_loaded before
 	notifying src windows the download is done. Catch the notifications
 	in case the dialog has been closed.
@@ -533,7 +533,7 @@
 
 1999-04-02  James Ingham  <jingham@cygnus.com>
 
-	* memwin.itb (MemWin::build_win): Remove the -validate option from 
+	* memwin.itb (MemWin::build_win): Remove the -validate option from
 	the memory spinner.  It was not appropriate, since you can type
 	expressions into the window.
 
@@ -597,10 +597,10 @@
 
 	* prefs.tcl (pref_set_defaults): Don't set target default
 	to "exec".  Leave the default unset.
-	
+
 	* srcbar.tcl (create_menu_items): Update args to
 	set_target_name.
-	
+
 1999-03-18  Keith Seitz  <keiths@cygnus.com>
 
 	* prefs.tcl (pref_read): Change unix preference filename
@@ -627,7 +627,7 @@
 
 1999-03-12  James Ingham  <jingham@cygnus.com>
 
-	* memwin.ith (MemWin): Add saved_addr to the class.  This is where 
+	* memwin.ith (MemWin): Add saved_addr to the class.  This is where
 	we store the old address before we change addresses, so that we
 	can get back to a good state in case of errors.
 
@@ -636,7 +636,7 @@
 	(MemWin::update_address): Store away the old address, so we can
 	restore it if there is an error.
 	(MemWin::BadExpr): Restore the saved address in case of errors.
-	
+
 
 1999-03-09  James Ingham  <jingham@cygnus.com>
 
@@ -656,7 +656,7 @@
 	* debugwin.itb (DebugWinDOpts::build_win): Replace $this delete
 	with delete object $this.
 	* tfind_args.tcl (build_win): Ditto...
-	* helpviewer.itb (HtmlViewer::_buildwin): Ditto...	
+	* helpviewer.itb (HtmlViewer::_buildwin): Ditto...
 
 	* srcbar.tcl (GDBSrcBar): Reorder the Source & the page setup &
 	print menus...
@@ -666,15 +666,15 @@
 	* download.ith: New file.
 	* download.itb: New file.  Implements itcl3 class and replaces
 	download.tcl.
-	
+
 	* srcbar.tcl (create_menu_items): Call create_run_menu
 	without arguments.
 	(create_run_menu): Add Disconnect and Connect to Run menu
 	instead of file menu. Change download_it to Download::download_it.
 
-	* srctextwin.itb (do_key): Change binding to call 
+	* srctextwin.itb (do_key): Change binding to call
 	Download::download_it.
-	
+
 	* debugwin.itb (DebugWinDOpts::build_win): Add ProcessWIn to list
 	of classes for filter.
 
@@ -685,7 +685,7 @@
 
 	* modal.tcl (ModalDialog): Handle WM_DELETE_WINDOW by calling the
 	cancel method.  Also set unpost_notification to different values
-	in unpost & the destructor, so if the object dies irregularly, you 
+	in unpost & the destructor, so if the object dies irregularly, you
 	know not to try to double destruct it.
 
 1999-03-03  James Ingham  <jingham@cygnus.com>
@@ -697,7 +697,7 @@
  	disassembly flavors.
 	(list_element_strcmp): New function for lsort -command on lists.
 
-	* tracedlg.tcl (TraceDlg): Change combobox callback to reflect new 
+	* tracedlg.tcl (TraceDlg): Change combobox callback to reflect new
 	after behavior.
 
 	* targetselction.itb (TargetSelection::save): If the target
@@ -721,7 +721,7 @@
 	can adjust the height of the text display.
 
 	* srctextwin.itb (SrcTextWin::build_win): Don't hardcode the size
-	of the text window, set it with the textheight option instead.  
+	of the text window, set it with the textheight option instead.
 	Also replace childsite with "component text" wherever required.
 
 	* srcpref.itb (SrcPref::build_win, set_flavor): Added the Intel
@@ -752,7 +752,7 @@
 	delete command...  Also, don't use this as the way to destroy
 	ManagedWins, rather destroy the object and let the object take
 	care of removing its toplevel.
-	(ManagedWin::_create): Group all the windows with 
+	(ManagedWin::_create): Group all the windows with
 	. for WindowManagers that properly handle this.
 	(ManagedWin::_create): Use dont_remember_size
 	rather than the instance variable.  Also, windows which don't
@@ -760,7 +760,7 @@
 	(ManagedWin::_create): Only call post if the
 	ManagedWin also isa ModalDialog.  It is clearer what is going on.
 	* managedwin.ith: Carry through the name changes.
-	
+
 	* main.tcl: call init_disassembly_flavor for Intel assembly
 	flavors.
 
@@ -800,7 +800,7 @@
 
 1999-02-24  James Ingham  <jingham@cygnus.com>
 
-	* toolbar.tcl (remove_button): Specify the row in the toolbar from 
+	* toolbar.tcl (remove_button): Specify the row in the toolbar from
 	which you are removing the item.  On Windows, there are two rows
 	in the standard toolbar...
 
@@ -817,28 +817,28 @@
 
 1999-02-18  Martin Hunt  <hunt@cygnus.com>
 
-	* srctextwin.itb (SrcTextWin::FillAssembly): As a last resort, 
+	* srctextwin.itb (SrcTextWin::FillAssembly): As a last resort,
 	if the disassembly fails for some reason, switch to the scratch
 	pane and write in a message about not being able to disassemble.
 
 1999-02-18  Martin Hunt  <hunt@cygnus.com>
-	
+
 	* helpviewer.ith (HtmlViewer): Add thread and function
 	browser windows to help index.
 
 	* help/index.toc: Removed.
 
 1999-02-18  Martin Hunt  <hunt@cygnus.com>
-	
+
 	* help/thread.html: New file.  Thread window online help.
-	* help/index.html: Add thread.html, and alphabetize list.	
+	* help/index.html: Add thread.html, and alphabetize list.
 	* help/source.html: Add index for thread_bp.
-	
+
 1999-02-17  Martin Hunt  <hunt@cygnus.com>
 
-	* globalpref.itb (GlobalPref::build_win): Add a checkbutton to 
+	* globalpref.itb (GlobalPref::build_win): Add a checkbutton to
 	allow use of an internet browser to read help files.
-	
+
 	* prefs.tcl (pref_set_defaults): Add preference gdb/help/browser.
 	Default is to use builtin html help.
 
@@ -849,7 +849,7 @@
 	* toolbar.tcl (create_help_menu): Use HtmlViewer::open_help.
 
 1999-02-17  Martin Hunt  <hunt@cygnus.com>
-	
+
 	* managedwin.itb (ManagedWin::_create): Restore some lines that
 	were accidently checked in commented out.
 
@@ -862,18 +862,18 @@
 
 	* managedwin.itb (ManagedWin::_create): If a window class defines a
 	public variable "nosize" the size will not be set, only the position.
-	* browserwin.ith (toggle_all_bp): Add public variable "nosize".	
+	* browserwin.ith (toggle_all_bp): Add public variable "nosize".
 
 1999-02-12  Martin Hunt  <hunt@cygnus.com>
-	
+
 	* process.ith: New file.
 	* process.itb: New file. Converted process.tcl to new itcl class.
 	* process.tcl: Deleted.
-	
+
 	* warning.tcl (WarningDlg::constructor): Set the window name.
 
 1999-02-11  Martin Hunt  <hunt@cygnus.com>
-	
+
 	* variables.tcl (editEntry): Check that $variable is not empty.
 
 	* warning.tcl (WarningDlg::constructor): Put focus on the
@@ -887,12 +887,12 @@
 	(set_target_name): Ditto.
 	* srcbar.tcl (create_menu_items): Ditto.
 	* memwin.itb (MemWin::create_prefs): Ditto.
-	* managedwin.itb (ManagedWin::_create): Ditto.	
+	* managedwin.itb (ManagedWin::_create): Ditto.
 
 1999-02-11  James Ingham  <jingham@cygnus.com>
 
 	Move the Intel disassembly mode changes into devo.
-	
+
 	* main.tcl: Init the disassembly flavor bits.
  	* prefs.tcl: Define disassembly-flavor
 	* srcpref.ith: Add current_disassembly_flavor instance variable
@@ -905,23 +905,23 @@
 
 1999-02-10  Martin Hunt  <hunt@cygnus.com>
 
-	* srcwin.itb, download.tcl, main.tcl, srcbar.tcl: Removed old 
+	* srcwin.itb, download.tcl, main.tcl, srcbar.tcl: Removed old
 	IDE stuff.
 
 	* toolbar.tcl (create_help_menu): Updated Cygnus URL and
 	removed old IDE stuff.
-	(create_ide_buttons): Removed. 
+	(create_ide_buttons): Removed.
 
 1999-02-10  Martin Hunt  <hunt@cygnus.com>
-	
+
 	* managedwin.itb (ManagedWin::_create): Bind Alt-F4 to
 	always close the window.
 
 1999-02-10  Martin Hunt  <hunt@cygnus.com>
-	
+
 	* main.tcl: Removed old debugging preferences.
 	* prefs.tcl (pref_set_defaults): Ditto.
-	
+
 1999-02-09  Martin Hunt  <hunt@cygnus.com>
 
 	* managedwin.itb (ManagedWin::_create): Simplify raise
@@ -935,7 +935,7 @@
 	* interface.tcl: Removed IDE stuff.
 	(gdbtk_tcl_ignorable_warning): Accept "class" argument and
 	use it when creating a WarningDlg.  Use new ManagedWin::open.
-	
+
 	* srctextwin.itb (SrcTextWin::set_tp_at_line): Fix TraceDlg
 	open command to use ManagedWin::open.
 
@@ -950,7 +950,7 @@
 
 	* mempref.itb (build_win): Use the libgui combobox for the bytes per
 	line field.
-	
+
 	* mempref.itb: remove some global declarations that I missed when
 	I converted all the variables to instance data.
 
@@ -978,7 +978,7 @@ Thu Feb  4 07:56:12 1999  Keith Seitz  <keiths@cygnus.com>
 
 1999-02-03  Martin Hunt  <hunt@cygnus.com>
 
-	* help/console.html: Cleaned up and added history and editing 
+	* help/console.html: Cleaned up and added history and editing
 	commands.
 
 	* stackwin.itb (StackWin::build_win): Remove balloon help.
@@ -996,7 +996,7 @@ Thu Feb  4 07:56:12 1999  Keith Seitz  <keiths@cygnus.com>
 	* help/source.html: Add a bunch of missing quotation marks.
 
 1999-02-03  Martin Hunt  <hunt@cygnus.com>
-	
+
 	* memwin.itb: Change from tixControl widget to iwidgets::spinint.
 	Fix problems with error dialogs.
 
@@ -1013,9 +1013,9 @@ Thu Feb  4 07:56:12 1999  Keith Seitz  <keiths@cygnus.com>
 
 	* toolbar.tcl (create_view_menu): Only add "Debug WIndow" menu
 	item if GDBTK_DEBUG is set.
-	
+
 1999-02-02  Martin Hunt  <hunt@cygnus.com>
-	
+
 	* browserwin.itb (BrowserWin::_fill_source): Add lib argument
 	from gdb_loc to the call to $Source location.
 	(BrowserWin::_goto_func): Ditto.
@@ -1030,7 +1030,7 @@ Thu Feb  4 07:56:12 1999  Keith Seitz  <keiths@cygnus.com>
 	* prefs.tcl (pref_save): Change the list of sections back into
 	a list.
 
-1999-02-01  Martin Hunt  <hunt@cygnus.com>	
+1999-02-01  Martin Hunt  <hunt@cygnus.com>
 
 	* srctextwin.itb (SrcTextWin::FillMixed): Simplify line formatting.
 	(SrcTextWin::continue_to_here): Call gdb_set_bp with new type arg.
@@ -1038,7 +1038,7 @@ Thu Feb  4 07:56:12 1999  Keith Seitz  <keiths@cygnus.com>
 	Use "catch" command and display error if there is one.
 
 1999-02-01  Martin Hunt  <hunt@cygnus.com>
-	
+
 	* srcwin.itb (SrcWin::goto_func): Dont attach filename if
         there isn't a valid one.
 
@@ -1049,7 +1049,7 @@ Fri Jan 29 20:01:30 1999  Fernando Nasser  <fnasser@rtl.cygnus.com>
 	* srctextwin.tcl: Ditto.
 	* toolbar.tcl: Ditto
 	* kod.tcl: Adapted to the new branch.
-	
+
 1999-01-28  Martin Hunt  <hunt@cygnus.com>
 
         * srcwin.itb (SrcWin::_build_win): Only call gdb_loc once.
@@ -1059,20 +1059,20 @@ Fri Jan 29 20:01:30 1999  Fernando Nasser  <fnasser@rtl.cygnus.com>
         * srctextwin.itb (SrcTextWin::LoadFromCache): Add "lib"
         argument. This is used to create a unique cache key so
         we don't confuse the disassembly of a function in a shared
-        lib with the disassembly of its trampoline. Also updated 
+        lib with the disassembly of its trampoline. Also updated
         UnLoadFromCache, LoadFIle, FillSource, FillMixed, and FillAssembly
         to pass this argument around.
 
-        * helpviewer.ith (HtmlViewer::constructor): Declare we have a 
+        * helpviewer.ith (HtmlViewer::constructor): Declare we have a
         constructor.
         (PageStack::constructor): Delete this declaration.
-        
-        * helpviewer.itb (HtmlViewer::constructor): initialize args before 
+
+        * helpviewer.itb (HtmlViewer::constructor): initialize args before
         calling _buildwin
-        
+
         * main.tcl: Only open initial debug window if GDBTK_DEBUG
         is set.
-        
+
         * help/debug.html: Add help for GDBTK_DEBUG
 
 Wed Jan 27 07:18:05 1999  Keith Seitz  <keiths@cygnus.com>

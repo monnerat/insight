@@ -130,7 +130,7 @@ gdbtk_interpreter_exec (void *data, const char *command_str)
 }
 
 /* This function is called instead of gdb's internal command loop.  This is the
-   last chance to do anything before entering the main Tk event loop. 
+   last chance to do anything before entering the main Tk event loop.
    At the end of the command, we enter the main loop.
    DATA is the interpreter cookie, currently unused.  */
 

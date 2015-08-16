@@ -36,7 +36,7 @@ proc parse_args { argset } {
 	    error "Badly formatted argument \"$argument\" in argument set"
 	}
     }
-    
+
     # The remaining args should be checked to see that they match the
     # number of items expected to be passed into the procedure...
 }

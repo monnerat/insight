@@ -17,7 +17,7 @@ itcl::body  VarTree::constructor {args} {
     _init_data
   }
   eval itk_initialize $args
-  
+
   itk_component add canvas {
     iwidgets::scrolledcanvas $itk_interior.c -autoresize 1 -hscrollmode dynamic -vscrollmode dynamic \
       -background $::Colors(textbg) -highlightthickness 0
@@ -63,7 +63,7 @@ itcl::body  VarTree::buildlayer {tlist in} {
     incr _y 17
 
     if {$in > 10} {
-      $c create line $in $y [expr $in+10] $y -fill $colors(line) 
+      $c create line $in $y [expr $in+10] $y -fill $colors(line)
     }
     set x [expr $in + 12]
 
@@ -73,7 +73,7 @@ itcl::body  VarTree::buildlayer {tlist in} {
     set x [expr [lindex [$c bbox $j2] 2] + 5]
     if {[catch {$var print} val]} {
       # error accessing memory, etc.
-      set j3 [$c create text $x $y -text $val -fill $colors(error) -anchor w -font global/fixed]      
+      set j3 [$c create text $x $y -text $val -fill $colors(error) -anchor w -font global/fixed]
     } else {
       set j3 [$c create text $x $y -text $val -fill $colors(value) -anchor w -font global/fixed]
     }
@@ -133,7 +133,7 @@ itcl::body  VarTree::update_var {var enabled check} {
     $c itemconfigure $typ -fill $colors(type)
 
     if {[catch {$var print} value]} {
-      set color $colors(error)      
+      set color $colors(error)
     } elseif {[$c itemcget $val -text] != $value} {
       set color $::Colors(change)
     } else {
@@ -145,7 +145,7 @@ itcl::body  VarTree::update_var {var enabled check} {
     $c itemconfigure $typ -fill $colors(disabled)
     $c itemconfigure $val -fill $colors(disabled)
   }
-  
+
   if {![closed $var] && [$var numChildren]} {
     foreach child [$var children] {
       update_var $child $enabled $check
@@ -252,7 +252,7 @@ itcl::body  VarTree::close {name} {
   after idle [code $this build]
 }
 
-# edit a varobj.  
+# edit a varobj.
 # creates an entry widget in place of the current value
 itcl::body  VarTree::edit {j} {
   #debug "$j"
@@ -304,8 +304,8 @@ itcl::body  VarTree::changeValue {j} {
     $entry selection to end
   } else {
     unedit $j
-    
-    # We may have changed a register or something else that is 
+
+    # We may have changed a register or something else that is
     # being displayed in another window
     gdbtk_update
   }
@@ -351,7 +351,7 @@ itcl::body  VarTree::_but3 {x y X Y} {
   $pop add command -label "Edit" -command [code $this edit $j3]
   $pop add command -label "Delete" -command [code $this remove $var]
   if {![catch {$var value} value]} {
-    $pop add separator   
+    $pop add separator
     $pop add command -label "Dump Memory at [$var name]" -command [list ManagedWin::open MemWin -force -addr_exp [$var name]]
   }
   $pop add separator

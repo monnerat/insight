@@ -20,12 +20,12 @@ itcl::body MemPref::constructor {args} {
   window_name "Memory Preferences"
 
   eval itk_initialize $args
-  
+
   if {$float_size == ""} {
     set float_size [gdb_eval sizeof(float)]
     set double_size [gdb_eval sizeof(double)]
   }
-  
+
   if {[string compare $format f] == 0} {
     set gformat x
     set format_disabled 1
@@ -38,20 +38,20 @@ itcl::body MemPref::constructor {args} {
     set gsize $size
     set gformat $format
   }
-  
+
   set gnumbytes $numbytes
   set gbpr $bpr
   set gbprlist [list 4 8 16 32 64 128]
   set gascii $ascii
   set gascii_char $ascii_char
-  
+
   build_win
-  
+
   if {$format_disabled} {
     set format_disabled 0
     disable_format
   }
-  
+
   wm resizable [winfo toplevel $itk_interior] 0 0
 }
 
@@ -148,7 +148,7 @@ itcl::body MemPref::build_win {} {
       -labeltext [gettext "Miscellaneous"]
   set fr [$f.1 childsite]
   frame $fr.1
-  label $fr.1.plabel -height 1 -width 1 -bg $color -relief raised  
+  label $fr.1.plabel -height 1 -width 1 -bg $color -relief raised
   set Widgets(b-color) [button $fr.1.pc -text "Change color..."  \
 			  -command [code $this pick $fr.1.plabel]]
   grid $fr.1.plabel $fr.1.pc
@@ -183,19 +183,19 @@ itcl::body MemPref::build_win {} {
 
   set Widgets(b-ok) [button $itk_interior.f.b.ok -text OK -command [code $this ok] -width 7 -default active]
   focus $Widgets(b-ok)
-  
+
   # If there is an OK button, set Return in the entry field to invoke it...
-  
+
   bind $Widgets(e-numbytes) <KeyPress-Return> "$Widgets(b-ok) flash ; $Widgets(b-ok) invoke"
-  
+
   set Widgets(b-cancel) [button $itk_interior.f.b.quit -text Cancel -command [code $this cancel] -width 7]
   set Widgets(b-apply) [button $itk_interior.f.b.apply -text Apply -command [code $this apply] -width 7]
   standard_button_box $itk_interior.f.b
-  
-  grid $itk_interior.f.a 
+
+  grid $itk_interior.f.a
   grid $itk_interior.f.b -sticky news
   grid $itk_interior.f
-  
+
   #
   # Set the state of the window size entry here...
   #
@@ -209,7 +209,7 @@ itcl::body MemPref::build_win {} {
 itcl::body MemPref::busy {} {
   set top [winfo toplevel $itk_interior]
   $top configure -cursor watch
-  
+
   # Disable all the radiobuttons and what not
   foreach w [array names Widgets] {
     set WidgetState($w) [$Widgets($w) cget -state]
@@ -251,7 +251,7 @@ itcl::body MemPref::cancel {} {
 # ------------------------------------------------------------------
 itcl::body MemPref::check_numbytes {var index mode} {
   upvar \#0 $var true
-  if {($true != "") && ([catch {expr {(int($true) != double($true)) || $true <= 0}} val] 
+  if {($true != "") && ([catch {expr {(int($true) != double($true)) || $true <= 0}} val]
 			|| $val)} {
     bell
     set true $old_numbytes
@@ -359,7 +359,7 @@ itcl::body MemPref::apply {} {
     -format $format -ascii $gascii \
     -ascii_char $gascii_char -bytes_per_row $gbpr \
     -color $color
-  
+
   $win reconfig
 
   gdbtk_idle
@@ -367,7 +367,7 @@ itcl::body MemPref::apply {} {
 }
 
 # ------------------------------------------------------------------
-#  METHOD:  enable_format - turn on the format radio buttons 
+#  METHOD:  enable_format - turn on the format radio buttons
 # ------------------------------------------------------------------
 itcl::body MemPref::enable_format {} {
   # First ensure bytes per row is a multiple of the size.
@@ -386,7 +386,7 @@ itcl::body MemPref::enable_format {} {
 
 
 # ------------------------------------------------------------------
-#  METHOD:  disable_format - turn off the format radio buttons 
+#  METHOD:  disable_format - turn off the format radio buttons
 # ------------------------------------------------------------------
 itcl::body MemPref::disable_format {} {
   # First ensure bytes per row is a multiple of the size.
@@ -420,7 +420,7 @@ itcl::body MemPref::pick {lab} {
 # ------------------------------------------------------------------
 itcl::body MemPref::reconfig {} {
   # for now, just delete and recreate
-  destroy $itk_interior.f 
+  destroy $itk_interior.f
   build_win
 }
 

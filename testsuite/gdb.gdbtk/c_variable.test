@@ -333,7 +333,7 @@ gdbtk_test c_variable-2.9 {stop in subroutine1} {
 # Desc: create variable for locals i,l in subroutine1
 gdbtk_test c_variable-2.10 {create variable for locals i,l in subroutine1} {
   set r [create_variable i]
-  lappend r [create_variable l]  
+  lappend r [create_variable l]
 } {0 0}
 
 # Test: c_variable-2.11
@@ -448,7 +448,7 @@ gdbtk_test c_variable-3.5 {create inner block foo} {
   if {!$err} {
     set var(inner_foo) $v
   }
-  
+
   set err
 } {0}
 
@@ -457,7 +457,7 @@ gdb_cmd "step"
 
 # Test: c_variable-3.6
 # Desc: create foo2
-gdbtk_test c_variable-3.6 {create foo2} { 
+gdbtk_test c_variable-3.6 {create foo2} {
   create_variable foo2
 } {0}
 
@@ -465,7 +465,7 @@ gdbtk_test c_variable-3.6 {create foo2} {
 # Desc: check that outer foo in scope and inner foo out of scope
 
 # Disabled for now because varobjs don't work this way.  If you create a varobj named "foo"
-# it will display the correct value for any variable named "foo" in scope. So inner_foo 
+# it will display the correct value for any variable named "foo" in scope. So inner_foo
 # is not out of scope because there is another variable named "foo" in scope. It is
 # instead marked as changed.
 
@@ -704,7 +704,7 @@ gdbtk_test c_variable-4.32 {number of children of struct_declarations.long_array
   $var(struct_declarations.long_array.3) numChildren
 } {0}
 
-# Test: c_variable-4.33 
+# Test: c_variable-4.33
 # Desc: children of struct_declarations.long_array.4
 gdbtk_test c_variable-4.33 {children of struct_declarations.long_array.4} {
   get_children struct_declarations.long_array.4

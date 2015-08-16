@@ -14,10 +14,10 @@
 
 # -----------------------------------------------------------------------------
 # NAME:		DebugWin::constructor
-#	
+#
 # SYNOPSIS:	constructor::args
 #
-# DESC:		Creates the debug window  
+# DESC:		Creates the debug window
 #
 # ARGS:		None are used yet.
 # -----------------------------------------------------------------------------
@@ -30,7 +30,7 @@ itcl::body DebugWin::constructor {args} {
 
 # -----------------------------------------------------------------------------
 # NAME:		DebugWin::destructor
-#	
+#
 # SYNOPSIS:	Not called by hand
 #
 # DESC:		Destroys the debug window
@@ -44,7 +44,7 @@ itcl::body DebugWin::destructor {} {
 
 # -----------------------------------------------------------------------------
 # NAME:		DebugWin::reconfig
-#	
+#
 # SYNOPSIS:	Reconfigure callback
 #
 # DESC:		Fixes up window colors
@@ -61,7 +61,7 @@ itcl::body DebugWin::reconfig {} {
 # NAME:		DebugWin::build_win
 #
 # SYNOPSIS:	build_win
-#	
+#
 # DESC:		Creates the Debug Window. Reads the contents of the debug log
 #		file, if it exists. Notifies the debug functions in ::debug
 #		to send output here.
@@ -70,7 +70,7 @@ itcl::body DebugWin::build_win {} {
   global gdb_ImageDir GDBTK_LIBRARY
 
   set top [winfo toplevel $itk_interior]
-  
+
   # initialize the gdbtk_de array
   if {![info exists ::gdbtk_de]} {
     set ::gdbtk_de(ALL) 1
@@ -82,7 +82,7 @@ itcl::body DebugWin::build_win {} {
   # create menubar
   set menu [menu $itk_interior.m  -tearoff 0]
   $menu add cascade -menu $menu.file -label "File" -underline 0
-  set m [menu $menu.file] 
+  set m [menu $menu.file]
   $m add command -label "Clear" -underline 1 \
     -command [code $this _clear]
   $m add command -label "Mark Old" -underline 1 \
@@ -121,7 +121,7 @@ itcl::body DebugWin::build_win {} {
     -command {open_help debug.html}
 
   $top configure -menu $menu
-  
+
   iwidgets::scrolledtext $itk_interior.s -hscrollmode static \
     -vscrollmode static -wrap none -textbackground black -foreground white
   set _t [$itk_interior.s component text]
@@ -147,12 +147,12 @@ itcl::body DebugWin::build_win {} {
 
 # -----------------------------------------------------------------------------
 # NAME:		DebugWin::puts
-#	
+#
 # SYNOPSIS:	puts {level cls func msg}
 #
 # DESC:		Writes debugging information into the DebugWin. A filter
 #		will be applied to determine if the message should be
-#		displayed or not.  
+#		displayed or not.
 #
 # ARGS:		level - priority level. See debug::dbug for details.
 #		cls   - class name of caller, for example "SrcWin"
@@ -199,9 +199,9 @@ itcl::body DebugWin::puts {level cls func msg} {
 
 # -----------------------------------------------------------------------------
 # NAME:		DebugWin::put_trace
-#	
+#
 # SYNOPSIS:	put_trace {enter level func ar}
-#	
+#
 # DESC:		Writes trace information into the DebugWin. A filter
 #		will be applied to determine if the message should be
 #		displayed or not.
@@ -225,9 +225,9 @@ itcl::body DebugWin::put_trace {enter level func ar} {
 # NAME:		DebugWin::loadlog
 #
 # SYNOPSIS:	loadlog
-#	
-# DESC:		Reads the contents of the debug log file, if it exists, into 
-#		the DebugWin. 
+#
+# DESC:		Reads the contents of the debug log file, if it exists, into
+#		the DebugWin.
 # -----------------------------------------------------------------------------
 itcl::body DebugWin::loadlog {} {
   $_t delete 0.0 end
@@ -259,7 +259,7 @@ itcl::body DebugWin::loadlog {} {
 # NAME:		DebugWin::_source_all
 #
 # SYNOPSIS:	_source_all
-#	
+#
 # DESC:		Re-sources all the .itb files.
 # -----------------------------------------------------------------------------
 itcl::body DebugWin::_source_all {} {
@@ -272,7 +272,7 @@ itcl::body DebugWin::_source_all {} {
 # NAME:		DebugWin::_clear
 #
 # SYNOPSIS:	_clear
-#	
+#
 # DESC:		Clears out the content of the debug window.
 # -----------------------------------------------------------------------------
 itcl::body DebugWin::_clear {} {
@@ -283,7 +283,7 @@ itcl::body DebugWin::_clear {} {
 # NAME:		DebugWin::_mark_old
 #
 # SYNOPSIS:	_mark_old
-#	
+#
 # DESC:		Changes the background of the current contents of the window.
 # -----------------------------------------------------------------------------
 itcl::body DebugWin::_mark_old {} {
@@ -294,7 +294,7 @@ itcl::body DebugWin::_mark_old {} {
 # NAME:		DebugWin::_save_contents
 #
 # SYNOPSIS:	_save_contents
-#	
+#
 # DESC:		Changes the background of the current contents of the window.
 # -----------------------------------------------------------------------------
 itcl::body DebugWin::_save_contents {} {
@@ -318,13 +318,13 @@ itcl::body DebugWin::_save_contents {} {
 # NAME:		DebugWinDOpts::constructor
 #
 # SYNOPSIS:	constructor
-#	
+#
 # DESC:		Creates the Debug Window Options Dialog.
 # -----------------------------------------------------------------------------
 itcl::body DebugWinDOpts::constructor {args} {
     window_name "Debug Window Options"
     build_win
-    eval itk_initialize $args 
+    eval itk_initialize $args
 }
 
 ###############################################################################
@@ -332,7 +332,7 @@ itcl::body DebugWinDOpts::constructor {args} {
 # NAME:		DebugWinDOpts::destructor
 #
 # SYNOPSIS:	Not called by hand
-#	
+#
 # DESC:		Destroys the Debug Window Options Dialog.
 # -----------------------------------------------------------------------------
 itcl::body DebugWinDOpts::destructor {} {
@@ -343,9 +343,9 @@ itcl::body DebugWinDOpts::destructor {} {
 # NAME:		DebugWinDOpts::build_win
 #
 # SYNOPSIS:	build_win
-#	
+#
 # DESC:		Creates the Debug Window Options Dialog. This dialog allows the
-#		user to select which information is displayed in the debug 
+#		user to select which information is displayed in the debug
 #		window and (eventually) how it looks.
 # -----------------------------------------------------------------------------
 itcl::body DebugWinDOpts::build_win {} {
@@ -373,7 +373,7 @@ itcl::body DebugWinDOpts::build_win {} {
   grid $fr.1 -sticky w -padx 5 -pady 5
   grid $fr.2 -sticky w -padx 5 -pady 5
 
-  iwidgets::Labeledframe $f.classes 
+  iwidgets::Labeledframe $f.classes
   set fr [$f.classes childsite]
 
   set i 0
@@ -413,7 +413,7 @@ itcl::body DebugWinDOpts::build_win {} {
   bind $btns.ok <Return> "$btns.ok flash; $btns.ok invoke"
   bind $btns.apply <Return> "$btns.apply flash; $btns.apply invoke"
   bind $btns.help <Return> "$btns.help flash; $btns.help invoke"
-  
+
   pack $btns $f -side bottom -expand 1 -fill both -anchor e
   focus $btns.ok
 }
@@ -422,7 +422,7 @@ itcl::body DebugWinDOpts::build_win {} {
 # NAME:		DebugWinDOpts::_all
 #
 # SYNOPSIS:	_all
-#	
+#
 # DESC:		Callback for selecting ALL classes. If the user selects ALL,
 #		deselect all the individual class checkbuttons.
 # -----------------------------------------------------------------------------
@@ -466,7 +466,7 @@ itcl::body DebugWinDOpts::_all {} {
 # NAME:		DebugWinDOpts::_apply
 #
 # SYNOPSIS:	_apply
-#	
+#
 # DESC:		Callback for the "Apply" button. Loads the contents of the
 #		log file through the new filter into the debug window. The
 #		button is disabled if there is no log file.

@@ -8,7 +8,7 @@ Tue Dec 16 21:16:42 1997  Ian Lance Taylor  <ian@cygnus.com>
 
 Wed Dec  10 13:16:45 1997  Keith Seitz  <keiths@onions.cygnus.com>
 
-	* gdbtk.c (gdb_get_tracepoint_info): Use info in struct 
+	* gdbtk.c (gdb_get_tracepoint_info): Use info in struct
 	symtab_and_line (not struct tracepoint) so that we get the
 	real line info for an address. Arrange data more like
 	gdb_get_breakpoint_info.
@@ -17,7 +17,7 @@ Wed Dec  10 13:16:45 1997  Keith Seitz  <keiths@onions.cygnus.com>
 	interpreter.
 	(gdb_get_tracepoint_list): New function that aids the source
 	window in displaying tracepoints when the file changes.
-	
+
 Fri Dec  5 10:31:23 1997  Keith Seitz  <keiths@pizza.cygnus.com>
 
 	* gdbtk.c (gdbtk_init): Add gdb_find_file into interpreter.
@@ -37,7 +37,7 @@ Mon Dec  1 10:19:44 1997  Keith Seitz  <keiths@onions.cygnus.com>
 
 	* Makefile.in (install-only): ALWAYS install the new gdbtk
 	(REMOTE_OBS): add tracepoint.o
-	
+
 Thu Nov 27 09:07:18 1997  Michael Meissner  <meissner@cygnus.com>
 
 	* configure.in ({TCL_LIBS,CONFIG_DEPS}): Don't add IDE libraries
@@ -62,7 +62,7 @@ Wed Nov 26 15:02:43 1997  Keith Seitz  <keiths@onions.cygnus.com>
 Wed Nov 26 11:33:09 1997  Keith Seitz  <keiths@onions.cygnus.com>
 
 	Merge in code from Foundry branch:
-	
+
 	* Makefile.in (install-only): install the new gdbtk, not the old
 
 	* gdbtk.c (gdbtk_call_command): also run idle hooks for class_trace
@@ -145,7 +145,7 @@ Thu Sep 25 03:05:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 	(gdbtk_load_hash): Stub function to call tcl function
 	download_hash.
 
-Tue Sep 23 01:29:00 1997  Martin M. Hunt  <hunt@cygnus.com>	
+Tue Sep 23 01:29:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* gdbtk.c (gdb_get_mem): Fix compiler warning.
 
@@ -153,7 +153,7 @@ Sun Sep 21 00:15:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* gdbtk.c (gdb_get_mem): Fix problem with ASCII dump.
 
-Tue Sep 16 18:07:17 1997  Martin M. Hunt  <hunt@cygnus.com>	
+Tue Sep 16 18:07:17 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* gdbtk.c (gdb_get_mem): New function.  Returns
 	a formatted memory dump with optional ASCII dump.
@@ -250,7 +250,7 @@ Thu Aug 21 00:48:00 1997  Martin M. Hunt  <hunt@pern.cygnus.com>
 Wed Aug 20 11:41:22 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* gdbtk.c (gdbtk_query): Chaneg free() call to Tcl_Free().
- 	
+
 Tue Aug 19 17:09:19 1997  Ian Lance Taylor  <ian@cygnus.com>
 
 	* Makefile.in (TCL_DEPS, TK_DEPS): New variables.
@@ -324,19 +324,19 @@ Tue Jul 22 19:45:37 1997  Martin M. Hunt  <hunt@cygnus.com>
 	correct Tix library name.
 
 	* configure: Rebuilt.
-	
+
 Mon Jul 21 22:24:07 1997  Martin M. Hunt  <hunt@cygnus.com>
 
-	* aclocal.m4: Search for the correct tix library. 
+	* aclocal.m4: Search for the correct tix library.
 
 Thu Jul 10 00:02:41 1997  Martin M. Hunt  <hunt@cygnus.com>
 
-	* Makefile.in, configure.in, aclocal.m4: Add Itcl, Tix, and 
+	* Makefile.in, configure.in, aclocal.m4: Add Itcl, Tix, and
 	IDE configuration information.
 
-	* gdbtk.c (breakpoint_notify): Send address, linenumber and 
+	* gdbtk.c (breakpoint_notify): Send address, linenumber and
 	filename when a breakpoint is set.  Avoids call to bp_info.
- 	(gdbtk_init): Call Tcl_FindExecutable(). Add code to handle 
+ 	(gdbtk_init): Call Tcl_FindExecutable(). Add code to handle
 	Itcl, Tix and IDE initialization.
 
 	* configure: Regenerated.
@@ -387,7 +387,7 @@ Fri Mar 28 17:04:02 1997  Jason Molenda  (crash@godzilla.cygnus.co.jp)
 Wed Mar 19 15:16:17 1997  Martin M. Hunt  <hunt@onions.cygnus.com>
 
 	* Makefile.in:  Install gdbtcl dir instead of gdbtk.tcl.
-	
+
 	* gdbtk.c: Added some ifdefs for Windows.  Changed GDBTK_FILENAME
 	to GDBTK_LIBRARY, which is now a path to search.
 	(gdb_path_conv): New function.  Convert Cygwin32 pathname to
@@ -770,7 +770,7 @@ Mon Oct 16 11:27:06 1995  Stu Grossman  (grossman@cygnus.com)
 Tue Oct 10 15:26:39 1995  Fred Fish  <fnf@cygnus.com>
 
 	* README.GDBTK: Updated for version 4.15.
-	
+
 Sat Aug 19 17:20:22 1995  Michael Tiemann  <tiemann@axon.cygnus.com>
 
 	* gdbtk.tcl: ENABLE comes back as "1" or "0", not "enable" or
@@ -885,7 +885,7 @@ Tue Feb 14 17:16:41 1995  Stu Grossman  (grossman@cygnus.com)
 	* (create_file_win):  Fix margin binding to allow breakpoints to
 	work again.
 	* (create_asm_win):  Use return value of gdb_disassemble instead
-	of implicit I/O to the command window.	
+	of implicit I/O to the command window.
 	* (create_command_window):  Use new result protocol to get output
 	from commands.
 
@@ -1134,7 +1134,7 @@ Sat Sep 17 17:05:14 1994  Stu Grossman  (grossman@cygnus.com)
 
 Fri Sep 16 15:40:34 1994  Stu Grossman  (grossman@cygnus.com)
 
-	* gdbtk.c:  Replace calls to full_filename with symtab_to_filename.  
+	* gdbtk.c:  Replace calls to full_filename with symtab_to_filename.
 	* gdbtk.tcl:  New routine pc_to_line replaces in line code.  New
 	routine decr replaces in line code.
 	* (create_file_win):  Use catch to handle open failures more

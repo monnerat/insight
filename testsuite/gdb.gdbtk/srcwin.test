@@ -317,7 +317,7 @@ gdbtk_test srcwin-2.6 "goto function bar" {
 # Desc: goto function "oof". This tests that the correct line is highlighted
 # with BROWSE_TAG and no other lines are highlighted. It also checks that
 # the combobox has the correct function name in it.  Finally, list1.c
-# has an extremely long line, line 32, that breaks some functions.  We verify 
+# has an extremely long line, line 32, that breaks some functions.  We verify
 # that the GDBtk has the correct line number.
 
 gdbtk_test srcwin-2.7 "goto function oof" {
@@ -502,11 +502,11 @@ gdbtk_test srcwin-2.11 "set BP and continue" {
   # check that the correct file is displayed
   # we must clear the breakpoint first so it doesn't mess up the
   # comparison...
-  gdb_immediate "clear oof" 1  
+  gdb_immediate "clear oof" 1
   set twin [$stw test_get twin]
   set a [$twin get 1.0 end]
   if {[string compare $file2(source) $a]} {set r -3}
-  
+
   # check for PC_TAG on correct line
   if {$r == 0} {
     if {![catch {set z [$twin dump -tag 1.0 end]}]} {
@@ -537,7 +537,7 @@ gdbtk_test srcwin-2.11 "set BP and continue" {
 #####                       #####
 
 # Test: srcwin-3.1
-# Desc: This tests "stack up" 
+# Desc: This tests "stack up"
 gdbtk_test srcwin-3.1 "stack up (1)" {
   $srcwin stack up
   set r 0
@@ -552,7 +552,7 @@ gdbtk_test srcwin-3.1 "stack up (1)" {
   set twin [$stw test_get twin]
   set a [$twin get 1.0 end]
   if {[string compare $file2(source) $a]} {set r -3}
-  
+
   # check for PC_TAG and STACK_TAG on correct lines
   if {$r == 0} {
     if {![catch {set z [$twin dump -tag 1.0 end]}]} {
@@ -600,7 +600,7 @@ gdbtk_test srcwin-3.2 "stack up (2)" {
   set twin [$stw test_get twin]
   set a [$twin get 1.0 end]
   if {[string compare $file2(source) $a]} {set r -3}
-  
+
   # check for PC_TAG and STACK_TAG on correct lines
   if {$r == 0} {
     if {![catch {set z [$twin dump -tag 1.0 end]}]} {
@@ -648,7 +648,7 @@ gdbtk_test srcwin-3.3 "stack up (3)" {
   set twin [$stw test_get twin]
   set a [$twin get 1.0 end]
   if {![string compare $file2(source) $a]} {set r -3}
-  
+
   # check for PC_TAG and STACK_TAG on correct lines
   if {$r == 0} {
     if {![catch {set z [$twin dump -tag 1.0 end]}]} {
@@ -688,7 +688,7 @@ gdbtk_test srcwin-3.4 "stack up (4)" {
   set twin [$stw test_get twin]
   set a [$twin get 1.0 end]
   if {[string compare $file1(source) $a]} {set r -3}
-  
+
   # check for PC_TAG and STACK_TAG on correct lines
   if {$r == 0} {
     if {![catch {set z [$twin dump -tag 1.0 end]}]} {
@@ -730,7 +730,7 @@ gdbtk_test srcwin-3.4 "stack up (4)" {
 #  set twin [$stw test_get twin]
 #  set a [$twin get 1.0 end]
 #  if {[string compare $file1(source) $a]} {set r -3}
-  
+
   # check for PC_TAG and STACK_TAG on correct lines
 #  if {$r == 0} {
 #    if {![catch {set z [$twin dump -tag 1.0 end]}]} {
@@ -770,7 +770,7 @@ gdbtk_test srcwin-3.6 "stack down" {
   set twin [$stw test_get twin]
   set a [$twin get 1.0 end]
   if {![string compare $file2(source) $a]} {set r -3}
-  
+
   # check for PC_TAG and STACK_TAG on correct lines
   if {$r == 0} {
     if {![catch {set z [$twin dump -tag 1.0 end]}]} {
@@ -810,7 +810,7 @@ gdbtk_test srcwin-3.7 "stack bottom" {
   set twin [$stw test_get twin]
   set a [$twin get 1.0 end]
   if {[string compare $file2(source) $a]} {set r -3}
-  
+
   # check for PC_TAG on correct line
   if {$r == 0} {
     if {![catch {set z [$twin dump -tag 1.0 end]}]} {
@@ -850,7 +850,7 @@ gdbtk_test srcwin-3.8 "stack down when at bottom" {
   set twin [$stw test_get twin]
   set a [$twin get 1.0 end]
   if {[string compare $file2(source) $a]} {set r -3}
-  
+
   # check for PC_TAG on correct line
   if {$r == 0} {
     if {![catch {set z [$twin dump -tag 1.0 end]}]} {
@@ -890,7 +890,7 @@ gdbtk_test srcwin-4.1 "set BP in another file" {
   if {$func != "foo"} {set r -2}
 
   set twin [$stw test_get twin]
-  
+
   # check for BROWSE_TAG and BP image on correct line
   if {$r == 0} {
     if {![catch {set z [$twin dump 1.0 end]}]} {
@@ -917,14 +917,14 @@ gdbtk_test srcwin-4.1 "set BP in another file" {
       set r -4
     }
   }
-  
+
   if {$r == 2} {
     # clear BP and compare with previous contents. This should succeed,
     gdb_immediate "clear foo" 1
     set a [$twin get 1.0 end]
     if {[string compare $file3(source) $a]} {set r -3}
   }
-  
+
   set r
 } {2}
 
@@ -937,13 +937,13 @@ gdbtk_test srcwin-4.2 "temporary BP" {
   }
   set name [$statbar.name get]
   set func [$statbar.func get]
-  
+
   # check contents of name and function comboboxes
   if {$name != "list0.h"} {set r -1}
   if {$func != "foo"} {set r -2}
 
   set twin [$stw test_get twin]
-  
+
   # check for BROWSE_TAG and BP image on correct line
   if {$r == 0} {
     if {![catch {set z [$twin dump 1.0 end]}]} {
@@ -970,9 +970,9 @@ gdbtk_test srcwin-4.2 "temporary BP" {
       set r -4
     }
   }
-  
+
   gdb_immediate "continue" 1
-  
+
   # now check for PC_TAG and no image
   if {$r == 2} {
     if {![catch {set z [$twin dump 1.0 end]}]} {
@@ -995,7 +995,7 @@ gdbtk_test srcwin-4.2 "temporary BP" {
       set r -4
     }
   }
-  
+
   set r
 } {3}
 
@@ -1003,13 +1003,13 @@ gdbtk_test srcwin-4.2 "temporary BP" {
 # Desc: Test BP balloons
 gdbtk_test srcwin-4.3 "BP Balloons" {
   # move pointer out of the way
-  warp_pointer . 0 0 
+  warp_pointer . 0 0
   set r 0
   gdb_immediate "break 10" 1
   gdb_immediate "tbreak 10" 1
 
   set twin [$stw test_get twin]
-  
+
   # check for BROWSE_TAG and BP image on correct line
   if {$r == 0} {
     if {![catch {set z [$twin dump 1.0 end]}]} {
@@ -1138,7 +1138,7 @@ gdbtk_test srcwin-4.5 "Continue till here popup" {
 # continues to BP at line 20 and checks to see that value was updated
 gdbtk_test srcwin-5.1 "variable balloon test" {
   # move pointer out of the way
-  warp_pointer . 0 0 
+  warp_pointer . 0 0
   set r 0
   set twin [$stw test_get twin]
 
@@ -1172,7 +1172,7 @@ gdbtk_test srcwin-6.1 "mixed mode disassembly of include file (mi/1101)" {
   set func [$statbar.func get]
   if {$name != "list0.h"} {set r -1}
   if {$func != "foo"} {set r -2}
-  
+
   # check contents of source window
   set twin [$stw test_get twin]
   set text [$twin get 1.0 end]
@@ -1182,7 +1182,7 @@ gdbtk_test srcwin-6.1 "mixed mode disassembly of include file (mi/1101)" {
       [string first "bar (x++);" $text] != -1} {
     set r 1
   }
-  
+
   set r
 } {1}
 

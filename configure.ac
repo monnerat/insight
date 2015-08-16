@@ -54,7 +54,7 @@ dnl expanded by make, quote '$'.
 CONFARGS=`echo "x$CONFARGS" |
  sed -e 's/^x *//' -e 's,\\$,$$,g'`
 
-dnl Build the bundle directory. 
+dnl Build the bundle directory.
 if test -d bundle
 then	chmod -R u+w bundle
 else	mkdir bundle

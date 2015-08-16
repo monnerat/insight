@@ -228,7 +228,7 @@ typedef struct MsgTypeInfo {
 
 #define NUM_TYPES 6
 
-static MsgTypeInfo 
+static MsgTypeInfo
 msgTypeInfo[NUM_TYPES] = {
     {"abortretryignore", MB_ABORTRETRYIGNORE, 3, {"abort", "retry", "ignore"}},
     {"ok", 		 MB_OK, 	      1, {"ok"                      }},
@@ -318,7 +318,7 @@ msgbox_internal (ClientData clientData, Tcl_Interp *interp, int argc,
 		}
 	    }
 	    if (!found) {
-		Tcl_AppendResult(interp, "invalid message box type \"", 
+		Tcl_AppendResult(interp, "invalid message box type \"",
 		    argv[v], "\", must be abortretryignore, ok, ",
 		    "okcancel, retrycancel, yesno or yesnocancel", NULL);
 		return TCL_ERROR;
@@ -343,7 +343,7 @@ msgbox_internal (ClientData clientData, Tcl_Interp *interp, int argc,
 	    }
 	}
 	else {
-    	    Tcl_AppendResult(interp, "unknown option \"", 
+    	    Tcl_AppendResult(interp, "unknown option \"",
 		argv[i], "\", must be -default, -icon, ",
 		"-message, -parent, -title or -type", NULL);
 		return TCL_ERROR;
@@ -392,7 +392,7 @@ msgbox_internal (ClientData clientData, Tcl_Interp *interp, int argc,
     } else {
 	flags = 0;
     }
-    
+
     flags |= icon | type;
 
     /* At this point we diverge from Tk_MessageBoxCmd.  */

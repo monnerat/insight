@@ -17,7 +17,7 @@
 
 itcl::class RegWin {
   inherit EmbeddedWin GDBWin
-  
+
   private {
     variable _change_list {}
     variable _menuitems
@@ -71,8 +71,8 @@ itcl::class RegWin {
     method _accept_edit {}
     method _add_to_watch {rn}
     method _but3 {x y X Y}
-    method _delete_from_display {rn} 
-    method _display_all {} 
+    method _delete_from_display {rn}
+    method _display_all {}
     method _edit {x y}
     method _move {direction}
     method _open_memory {rn}

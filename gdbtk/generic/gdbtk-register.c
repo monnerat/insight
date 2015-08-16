@@ -132,9 +132,9 @@ gdb_register_info (ClientData clientData, Tcl_Interp *interp, int objc,
   int index;
   map_arg arg;
   map_func func;
-  static const char *commands[] = {"changed", "name", "size", "value", "type", 
+  static const char *commands[] = {"changed", "name", "size", "value", "type",
 			     "format", "group", "grouplist", NULL};
-  enum commands_enum { REGINFO_CHANGED, REGINFO_NAME, REGINFO_SIZE, REGINFO_VALUE, 
+  enum commands_enum { REGINFO_CHANGED, REGINFO_NAME, REGINFO_SIZE, REGINFO_VALUE,
 		       REGINFO_TYPE, REGINFO_FORMAT, REGINFO_GROUP, REGINFO_GROUPLIST };
 
   if (objc < 2)
@@ -149,7 +149,7 @@ gdb_register_info (ClientData clientData, Tcl_Interp *interp, int objc,
       result_ptr->flags |= GDBTK_IN_TCL_RESULT;
       return TCL_ERROR;
     }
-  
+
   /* Skip the option */
   objc -= 2;
   objv += 2;
@@ -223,19 +223,19 @@ get_register_size (int regnum, map_arg arg)
 
 static void
 get_register_types (int regnum, map_arg arg)
-{ 
+{
   struct type *reg_vtype;
   int i,n;
 
   reg_vtype = register_type (get_current_arch (), regnum);
-  
+
   if (TYPE_CODE (reg_vtype) == TYPE_CODE_UNION)
     {
       n = TYPE_NFIELDS (reg_vtype);
       /* limit to 16 types */
-      if (n > 16) 
+      if (n > 16)
 	n = 16;
-      
+
       for (i = 0; i < n; i++)
 	{
 	  Tcl_Obj *ar[3], *list;
@@ -247,7 +247,7 @@ get_register_types (int regnum, map_arg arg)
 	  if (TYPE_CODE (TYPE_FIELD_TYPE (reg_vtype, i)) == TYPE_CODE_FLT)
 	    ar[2] = Tcl_NewStringObj ("float", -1);
 	  else
-	    ar[2] = Tcl_NewStringObj ("int", -1);	    
+	    ar[2] = Tcl_NewStringObj ("int", -1);
 	  list = Tcl_NewListObj (3, ar);
 	  Tcl_ListObjAppendElement (gdbtk_interp, result_ptr->obj_ptr, list);
 	  xfree (buff);
@@ -263,7 +263,7 @@ get_register_types (int regnum, map_arg arg)
       if (TYPE_CODE (reg_vtype) == TYPE_CODE_FLT)
 	ar[2] = Tcl_NewStringObj ("float", -1);
       else
-	ar[2] = Tcl_NewStringObj ("int", -1);	    
+	ar[2] = Tcl_NewStringObj ("int", -1);
       list = Tcl_NewListObj (3, ar);
       xfree (buff);
       Tcl_ListObjAppendElement (gdbtk_interp, result_ptr->obj_ptr, list);
@@ -289,7 +289,7 @@ get_register (int regnum, map_arg arg)
   format = regformat[regnum];
   if (format == 0)
     format = 'x';
-  
+
   reg_vtype = regtype[regnum];
   if (reg_vtype == NULL)
     reg_vtype = register_type (get_current_arch (), regnum);
@@ -346,7 +346,7 @@ get_register (int regnum, map_arg arg)
 		 value_embedded_offset (val), 0,
 		 stb, 0, val, &opts, current_language);
     }
-  
+
   res = ui_file_xstrdup (stb, &dummy);
 
   if (result_ptr->flags & GDBTK_MAKES_LIST)
@@ -409,7 +409,7 @@ map_arg_registers (Tcl_Interp *interp, int objc, Tcl_Obj **objv,
 	      || *(gdbarch_register_name (get_current_arch (), regnum)) == '\0')
 	    continue;
 	  func (regnum, arg);
-	}      
+	}
       return TCL_OK;
     }
 
@@ -507,9 +507,9 @@ gdb_regformat (ClientData clientData, Tcl_Interp *interp,
     return TCL_ERROR;
 
 #ifdef _WIN64
-  type = (struct type *)strtoll (Tcl_GetStringFromObj (objv[1], NULL), NULL, 16);  
+  type = (struct type *)strtoll (Tcl_GetStringFromObj (objv[1], NULL), NULL, 16);
 #else
-  type = (struct type *)strtol (Tcl_GetStringFromObj (objv[1], NULL), NULL, 16);  
+  type = (struct type *)strtol (Tcl_GetStringFromObj (objv[1], NULL), NULL, 16);
 #endif
 
   fm = (int)*(Tcl_GetStringFromObj (objv[2], NULL));
@@ -522,7 +522,7 @@ gdb_regformat (ClientData clientData, Tcl_Interp *interp,
       gdbtk_set_result (interp, "Register number %d too large", regno);
       return TCL_ERROR;
     }
-  
+
   regformat[regno] = fm;
   regtype[regno] = type;
 
@@ -574,7 +574,7 @@ gdb_reggroup (ClientData clientData, Tcl_Interp *interp,
       Tcl_WrongNumArgs (interp, 0, objv, "gdb_reginfo group groupname");
       return TCL_ERROR;
     }
-  
+
   groupname = Tcl_GetStringFromObj (objv[0], NULL);
   if (groupname == NULL)
     {

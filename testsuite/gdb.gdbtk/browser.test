@@ -76,7 +76,7 @@ proc select {filename} {
 
 proc select_all {} {
   global browser
-  
+
   $browser component file_all invoke
 
 }
@@ -121,7 +121,7 @@ gdbtk_test browser-1.1 {file listbox contents} {
     lappend f 1
   }
 
-  join $f \ 
+  join $f \
 } {1 1}
 
 # Tests 2.* test starts with search mode.

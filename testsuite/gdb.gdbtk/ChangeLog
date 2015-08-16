@@ -61,14 +61,14 @@
 	now returns "-1" if a variable is out of scope.
 
 	* c_variable.test: Major changes required because varobj_update
-	now returns "-1" if a variable is out of scope. This fixes a bunch 
+	now returns "-1" if a variable is out of scope. This fixes a bunch
 	of XFAILS. Change bug reporting address.
-	
+
 	* windows.test: Remove HtmlViewer from list of windows.
 
 	* srcwin.test: Use "list get" instead of "listget" to
-	get contents of comboboxes. 
-	(2.1): Be less sensitive. 
+	get contents of comboboxes.
+	(2.1): Be less sensitive.
 
 	* srcwin2.test: Use "list get" instead of "listget" to
 	get contents of comboboxes
@@ -84,7 +84,7 @@
 
 2002-04-26  Martin M. Hunt  <hunt@redhat.com>
 
-	* defs (gdbtk_test_done): Call gdbtk_force_quit. 
+	* defs (gdbtk_test_done): Call gdbtk_force_quit.
 
 2002-04-26  Martin M. Hunt  <hunt@redhat.com>
 
@@ -259,8 +259,8 @@
 	* browser.test: Fixed up to match the new function browser.
 	This is not done yet...
 
-	* srcwin.test: Check for errors when the bbox is called for a text 
-	item that is not on screen (so bbox is "").  Return something more 
+	* srcwin.test: Check for errors when the bbox is called for a text
+	item that is not on screen (so bbox is "").  Return something more
 	useful.
 
 1999-03-01  James Ingham  <jingham@cygnus.com>
@@ -291,20 +291,20 @@
 	Tue Jan  5 12:40:52 1999  Keith Seitz  <keiths@cygnus.com>
 	* gdb.gdbtk/c_variable.c, c_variable.test, c_variable.exp: New C
 	language tests for variable object interface.
-	
+
 	* gdb.gdbtk/cpp_variable.h, cpp_variable.cc, cpp_variable.test,
 	cpp_variable.exp: New C++ language tests for variable object
 	interface.
-	
+
 	* gdb.gdbtk/Makefile.in (EXECUTABLES): Add c_variable and cpp_variable.
 
 	Tue Jan  5 12:33:47 1999  Keith Seitz  <keiths@cygnus.com>
 	lib/gdb.exp (gdbtk_analyze_results): Generic function
 	for outputting results of test run.
-	
+
 	* gdb.gdbtk/defs (gdbtk_test): Handle xpass and xfail.
 	(gdbtk_test_error): New proc which handles error aborts.
-	
+
 	* gdb.gdbtk/console.exp: Use gdbtk_analyze_results.
 	Check if we have a valid DISPLAY before running.
 	* gdb.gdbtk/browser.exp: Ditto.
@@ -345,8 +345,8 @@
 
 	* srcwin.exp: Source srcwin3.test, which will test source window
 	assembly debugging on executables built without "-g".
-	
-1999-01-29  Martin Hunt  <hunt@cygnus.com>	
+
+1999-01-29  Martin Hunt  <hunt@cygnus.com>
 
 	* srcwin.exp: Add srcwin2.test, which are basically the same
 	tests as srcwin.test, but run with a missing source file.

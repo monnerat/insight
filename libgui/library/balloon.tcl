@@ -265,7 +265,7 @@ itcl::class Balloon {
       if {$varname != ""} {
 	upvar $varname var
 	set _help_text($index) $var
-      } 
+      }
       set value $_help_text($index)
     } else {
       set value $_help_text($index)
@@ -454,12 +454,12 @@ proc BALLOON_find_balloon {window} {
   } else {
     set bname $top.__balloon
   }
-  
+
   # If the balloon help for this toplevel doesn't exist, then create
   # it.  Yes, this relies on a magic name for the balloon help widget.
   if {! [winfo exists $bname]} then {
     Balloon $bname $top
-  }  
+  }
   return $bname
 }
 
@@ -485,7 +485,7 @@ proc BALLOON_command_withdraw {window} {
   set b [BALLOON_find_balloon $window]
   $b _unmap $window
 }
-    
+
 # This implements "balloon variable".
 proc BALLOON_command_variable {window args} {
   if {[llength $args] == 0} then {

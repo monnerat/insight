@@ -7,13 +7,13 @@
 
 	* library/images2: Removed back.gif, build.gif, file.gif, fore.gif,
 	gdbtk.gif, load.gif, opt.gif, tools.gif, tools2_3d.gif, and vmake.gif.
-	
+
 2002-12-18  Martin M. Hunt  <hunt@redhat.com>
 
 	* library/main.tcl: Don't try to print errors to stderr on Windows.
 
 2002-12-18  Martin M. Hunt  <hunt@redhat.com>
-	
+
 	* library/regwin.itb (RegWin::update): When updating, check
 	that a cell still exists before checking its value.
 	(RegWin::_select_group): Clear cells with changed values before
@@ -24,8 +24,8 @@
 
 	* library/interface.tcl (gdbtk_tcl_fputs_target_err):
  	New function.
-	(gdbtk_tcl_fputs_target): Open console window if it is 
-	not already open.	
+	(gdbtk_tcl_fputs_target): Open console window if it is
+	not already open.
 	(gdbtk_gets): New function.
 	Opens a console window if necessary and calls Console::gets.
 
@@ -54,7 +54,7 @@
 	(_display_all): Ditto.
 	(_post_menu): Deleted.
 	(_select_group): New method. Callback for group optionmenu.
-	
+
 	* library/regwin.ith: New private variable _group.
 	New private method _select_group.  Removed _post_menu.
 
@@ -78,12 +78,12 @@
 
 2002-12-04  Martin M. Hunt  <hunt@redhat.com>
 
-	* library/regwin.itb (_but3): Fix help call. 
+	* library/regwin.itb (_but3): Fix help call.
 
 	* library/helpviewer.tcl (open_help): Fix KDE apps list.
 
 	* library/debugwin.itb (build_win): Fix help call.
-	
+
 	* library/regwin.itb (update): Remove some old code
 	that marked registers as changed when the target started.
 	(_build_win): Make changed registers more visible by
@@ -110,7 +110,7 @@
 	* library/vartree.itb (buildlayer): Check for error when updating
 	a variable's value.
 	(update_var): Ditto.
-	
+
 	* library/srcpref.itb: Latest tk doesn't support
 	"-col" as a grid option.  Use "-column".
 
@@ -135,7 +135,7 @@
 	* generic/gdbtk-hooks.c: Don't include tix.h.
 
 	* generic/gdbtkj-cmds.c: Don't include tix.h.
-	
+
 2002-11-27  Andrew Cagney  <cagney@redhat.com>
 
 	* generic/gdbtk-stack.c (get_frame_name): Use get_frame_type
@@ -146,7 +146,7 @@
 
 	* generic/gdbtk-stack.c (gdb_selected_frame): Use get_frame_base
 	instead of FRAME_FP.  Mention that get_frame_id() should be used.
-	
+
 2002-11-19  Andrew Cagney  <ac131313@redhat.com>
 
 	* generic/gdbtk-cmds.c (gdb_loc): Use get_frame_type instead of
@@ -161,53 +161,53 @@
 	frame_in_dummy with one to deprecated_frame_in_dummy.
 	* generic/gdbtk-cmds.c (gdb_loc): Ditto.
 
-2002-11-11  Martin M. Hunt  <hunt@redhat.com>	
+2002-11-11  Martin M. Hunt  <hunt@redhat.com>
 
 	* library/srctextwin.itb (do_key): Add arg to
 	print call.
 
-2002-11-11  Martin M. Hunt  <hunt@redhat.com>	
-	
+2002-11-11  Martin M. Hunt  <hunt@redhat.com>
+
 	* library/data.ith: Deleted.
 	* library/data.itb: Deleted.
-	
-2002-11-11  Martin M. Hunt  <hunt@redhat.com>		
+
+2002-11-11  Martin M. Hunt  <hunt@redhat.com>
 
 	* library/memwin.itb: Supply arg to _update_address.
 
-2002-11-11  Martin M. Hunt  <hunt@redhat.com>	
-	
+2002-11-11  Martin M. Hunt  <hunt@redhat.com>
+
 	* library/toolbar.tcl: Deleted this obsolete file.
 	* library/tclIndex: Rebuilt.
 
-2002-11-11  Martin M. Hunt  <hunt@redhat.com>		
+2002-11-11  Martin M. Hunt  <hunt@redhat.com>
 
 	* library/srcbar.itcl (create_help_menu): For unix systems,
 	if compatibility is set to KDE or GNOME, put the help menu
 	in the right place. Otherwise put it on the far right, like
 	Motif does.
 
-2002-11-11  Martin M. Hunt  <hunt@redhat.com>	
-	
+2002-11-11  Martin M. Hunt  <hunt@redhat.com>
+
 	* library/helpviewer.tcl: New file. Finds
 	an appropriate help browser and displays the help files.
 
 	* library/vartree.itb: Fix open_help calls.
-	
+
 	* library/helpviewer.ith: Deleted.
 	* library/helpviewer.itb: Deleted.
-	
-	* library/prefs.tcl (pref_set_defaults): Remove 
-	pref gdb/help/browser. Add pref gdb/help/browsername.  
-	We couldn't simply rename because it would break older 
-	versions of Insight that expect gdb/help/browser to be 
+
+	* library/prefs.tcl (pref_set_defaults): Remove
+	pref gdb/help/browser. Add pref gdb/help/browsername.
+	We couldn't simply rename because it would break older
+	versions of Insight that expect gdb/help/browser to be
 	a number.
 
 2002-11-08  Martin M. Hunt  <hunt@redhat.com>
 
 	* library/prefs.tcl (pref_save): Fix GDBtkInitVersion.
 	(pref_save): Check that value is not null before writing.
-	
+
 2002-11-07  Martin M. Hunt  <hunt@redhat.com>
 
 	* library/util.tcl (CygScrolledListbox): Delete.
@@ -219,12 +219,12 @@
 2002-11-06  Martin M. Hunt  <hunt@redhat.com>
 
 	* library/locals.tcl (build_win): Fix so window opens
-	on Windows.	
+	on Windows.
 
-2002-11-06  Martin M. Hunt  <hunt@redhat.com>	
+2002-11-06  Martin M. Hunt  <hunt@redhat.com>
 	* library/debugwin.itb: Remove VariableWin.  Add VarTree.
 
-2002-11-06  Martin M. Hunt  <hunt@redhat.com>	
+2002-11-06  Martin M. Hunt  <hunt@redhat.com>
 	* library/watch.tcl: Completely rewritten to use VarTree.
 	* library/locals.tcl: Completely rewritten to use VarTree.
 	* library/variables.tcl: Deleted.
@@ -232,32 +232,32 @@
 	* library/vartree.itb: New file. Implements a variable
 	tree.
 	* library/tclIndex: Rebuilt.
-	
+
 2002-11-06  Martin M. Hunt  <hunt@redhat.com>
 	* library/globalpref.itb (_build_win): Add radiobox
 	to select KDE/GNOME/default for pref gdb/compat. Remove
-	browser option. 
+	browser option.
 
-	* library/regwin.itb (build_win): Colors(hbg) has been 
+	* library/regwin.itb (build_win): Colors(hbg) has been
 	removed so use Colors(bg) instead.
 
 	* library/prefs.tcl (pref_set_defaults): Add a new
-	preference "gdb/compat" which can be set to KDE, GNOME, 
+	preference "gdb/compat" which can be set to KDE, GNOME,
 	Windows or default. This allows us to change Insight's
 	behavior based on windowing system.
 	(pref_set_colors): Attempt to read in .gtkrc files.
 	Do different things for KDE vs GNOME.
 	(pref_load_default): New function. Load default colors.
-	(pref_load_gnome): New function. Find and open GNOME file.	
-	(load_gnome_file): New function. Loads GNOME file.		
+	(pref_load_gnome): New function. Find and open GNOME file.
+	(load_gnome_file): New function. Loads GNOME file.
 	(pref_set_option_db): New function.  Set option database.
 
-2002-11-06  Martin M. Hunt  <hunt@redhat.com>	
+2002-11-06  Martin M. Hunt  <hunt@redhat.com>
 	* generic/gdbtk-varobj.c: Remove FREEIF and replace with xfree.
 	Make format_string static.
 	(variable_update): Return an object
 	with "-1" in it on error.
-	
+
 2002-11-06  Keith Seitz  <keiths@redhat.com>
 
 	* generic/gdbtk-hooks.c (gdbtk_call_command): Make a null
@@ -283,12 +283,12 @@
 	were being returned. Append results to result_ptr_obj_ptr.
 
 2002-10-10  Martin M. Hunt  <hunt@redhat.com>
-	
+
 	* library/session.tcl (save): Save target_cmd,
 	attach, load, run, and cont as session prefs.
 	(notice_file_change): Load in above session
 	prefs.
-	
+
 	* library/interface.tcl (set_target): Set icons busy
 	before attempting target command and set back to idle after.
 	(run_executable): Return on ATTACH_ERROR.
@@ -297,10 +297,10 @@
 	user to continue or cancel.
 
 2002-10-09  Martin M. Hunt  <hunt@redhat.com>
-	
+
 	* library/targetselection.itb (init_target_db): Add gdbserver
 	target.
-	(get_target_list): Always add "gdbserver" to list of valid 
+	(get_target_list): Always add "gdbserver" to list of valid
 	targets.
 	(valid_target): Always allow "gdbserver".
 
@@ -357,7 +357,7 @@
 	* plugins/: New folder to hold plugins.
 	* Makefile.am, Makefile.in, aclocal.m4, configure,
 	configure.in: New files.
-	
+
 2002-08-14  Keith Seitz  <keiths@redhat.com>
 
 	* generic/gdbtk.c (view_command): New function to display
@@ -416,10 +416,10 @@
 	library/globalpref.itb, library/memwin.itb, library/process.itb,
 	library/regwin.itb, library/srcpref.itb, library/srctextwin.itb,
 	library/stackwin.itb, library/tdump.tcl, library/tracedlg.tcl,
-	library/variables.tcl: Replace calls to [pref get gdb/fonts/*] 
+	library/variables.tcl: Replace calls to [pref get gdb/fonts/*]
 	for colors with references to Color array. Remove all tixOptions calls.
 	Fix up colors as necessary.
-	
+
 2002-05-31  Martin M. Hunt  <hunt@redhat.com>
 
 	* library/prefs.tcl (pref_read): If the regular expression
@@ -428,10 +428,10 @@
 2002-05-15  Martin M. Hunt  <hunt@redhat.com>
 
 	* library/help/register.html: Rewrite docs.
-	
+
 	* library/regwin.ith (_types): New private variable array to save
 	the possible types for each register.
-	(_type): New private variable array to save the selected type for 
+	(_type): New private variable array to save the selected type for
 	each register.
 	(_rows): New private variable. Number of rows in the table.
 	(_cols): New private variable. Number of cols in the table.
@@ -440,17 +440,17 @@
 	(_edit_menu): Deleted:
 	(_select): Deleted.
 	(_change_format): Add optional type argument.
-	
+
 	* library/regwin.itb (RegWin::_load_prefs): New method. Collects
 	all the prefs stuff here instead of in _layout_table. Prefs
 	code was all rewritten to handle new types and formats.
 	(RegWin::_build_win): Disable Double-1 binding. Bind
 	button 1 to edit the cell. Don't make an Edit menu item.
 	Remove Natural, Binary, Octal, and Raw formats. Add "Open
-	Memory Window" menu item. 
-	(RegWin::_dimensions): This function was being abused so I removed 
+	Memory Window" menu item.
+	(RegWin::_dimensions): This function was being abused so I removed
 	it. Replaced with inline code in _layout_table which saves its
-	computed values so it doesn't have to be recalculated unless 
+	computed values so it doesn't have to be recalculated unless
 	something changes.
 	(RegWin::_layout_table): Rewritten to be more efficient. Grabs
 	all values in one call to gdb_reginfo instead of one for each register.
@@ -458,9 +458,9 @@
 	(RegWin::_accept_edit): Use type information when setting value.
 	When done, call _unedit to remove tags.
 	(RegWin::_open_memory): Open memory window with initial value
-	set to the value of a register.	
+	set to the value of a register.
 	(RegWin::_but3): Add types menu items. Limit format options
-	to reasonable ones. Add "Open Memory Window". Add "Help" 
+	to reasonable ones. Add "Open Memory Window". Add "Help"
 	(RegWin::_edit): Just call _select_cell.
 	(RegWin::_edit_menu): Deleted.
 	(RegWin::_move): Don't recompute rows and cols; use _rows and
@@ -473,34 +473,34 @@
 	the insertion bar sometimes disappeared.
 	(RegWin::_unedit): Clear selection. Call focus. Don't change
 	any bindings.
-	(RegWin::_get_value): Eliminate previous crap and just call 
+	(RegWin::_get_value): Eliminate previous crap and just call
 	"gdb_reginfo value".
-	(RegWin::_change_format): Add optional type arg.  Call 
+	(RegWin::_change_format): Add optional type arg.  Call
 	"gdb_reginfo format".
 	(RegWin::_update): Get a list of all the changed registers
 	instead of checking one at a time.
 
 	* generic/gdbtk-register.c (Gdbtk_Register_Init): Don't
-	create gdb_pc_reg.  It is not used. Call register_gdbarch_swap 
+	create gdb_pc_reg.  It is not used. Call register_gdbarch_swap
 	with regformat and regtype.
 	(gdb_register_info): Add "type" and "format" options.
 	(get_pc_register): Delete.
-	(get_register_types): New function.  Returns list of valid types 
+	(get_register_types): New function.  Returns list of valid types
 	for a list of registers.
 	(get_register): Use saved format and type for each register. Check if
-	there are any registers yet (target not running). Use mem_file 
+	there are any registers yet (target not running). Use mem_file
 	to collect output. Append output to a list.
 	(map_arg_registers): If passed a list, iterate though each element
 	and build a list of values to return.
 	(setup_architecture_data): Memory was not being initialized, so
 	use xcalloc(). Allocate memory for regformat and regtype.
 	(gdb_regformat): New function called by "gdb_reginfo format".
-	
+
 2002-05-15  Martin M. Hunt  <hunt@redhat.com>
 
 	* generic/gdbtk-cmds.c (gdb_eval): For mem_file stuff, delete
 	the file when done and free memory.
-	
+
 2002-05-06  Martin M. Hunt  <hunt@redhat.com>
 
 	* library/session.tcl (notice_file_change): Catch the
@@ -560,7 +560,7 @@
 	* generic/gdbtk-register.c (register_changed_p): Use
 	frame_register_read instead of read_relative_register_raw_bytes.
 	(get_register): Delete out-of-date comment.
-	
+
 2002-04-08  Andrew Cagney  <ac131313@redhat.com>
 
 	* generic/gdbtk-wrapper.c (wrap_get_frame_block): Add missing NULL
@@ -612,7 +612,7 @@
 
 2002-03-07  Martin M. Hunt  <hunt@redhat.com>
 
-	* library/srctextwin.itb (SrcTextWin::showBPBalloon): Put 
+	* library/srctextwin.itb (SrcTextWin::showBPBalloon): Put
 	linefeeds between multiple breakpoints.
 
 2002-03-06  Martin M. Hunt  <hunt@redhat.com>
@@ -627,7 +627,7 @@
 	non-existent function command::end_multi_line_input.
 
 2002-03-06  Martin M. Hunt  <hunt@redhat.com>
-	
+
 	* library/bpwin.itb: Left-justify the labels in
 	the table.
 
@@ -661,12 +661,12 @@
 
 	* library/prefs.tcl (pref_read): If a preference specifies
 	"src-font", substitute "global/fixed".
-	(pref_set_defaults): Change defaults from "src-font" to 
+	(pref_set_defaults): Change defaults from "src-font" to
 	"global/fixed". Do not create font object "src-font". Do
 	not add hook to trace its changes.
 	(pref_src-font_trace): Remove.
 
-	* library/console.itb (Console::_update_option): Remove 
+	* library/console.itb (Console::_update_option): Remove
 	font update because this happens automatically.
 
 	* library/globalpref.itb: No need to set
@@ -688,7 +688,7 @@
 	* library/tracedlg.tcl: Ditto.
 	* library/variables.tcl: Ditto.
 	* library/watch.tcl: Ditto.
-	
+
 2002-03-01  Keith Seitz  <keiths@redhat.com>
 
 	* generic/gdbtk-register.c (register_changed_p): Don't use REGISTER_BYTES.
@@ -721,9 +721,9 @@
 
 2002-02-13  Martin M. Hunt  <hunt@redhat.com>
 
-	* generic/gdbtk-hooks.c (gdbtk_print_frame_info): Don't 
+	* generic/gdbtk-hooks.c (gdbtk_print_frame_info): Don't
 	set GDB globals current_source_symtab and current_source_line.
-	Let GDB do it. 
+	Let GDB do it.
 
 2002-02-13  Keith Seitz  <keiths@redhat.com>
 
@@ -790,7 +790,7 @@
 
 	* library/srctextwin.itb (enable): Check for existence of $twin.
 
-	* library/interface.tcl (gdbtk_tcl_exec_file_display): 
+	* library/interface.tcl (gdbtk_tcl_exec_file_display):
 	Set pathname in host-independent manner using "file" and
 	gdb_current_directory.
 
@@ -846,7 +846,7 @@
 	these are set by .gdbinit and will be recreated by it.
 	This is a bit of a hack and should be fixed properly
 	someday.
-	
+
 	* library/debugwin.itb: Fix incorrect button names
 	so they will be enabled/disabled properly.
 

@@ -1,4 +1,4 @@
-/* 
+/*
  * tkTableTag.c --
  *
  *	This module implements tags for table widgets.
@@ -91,7 +91,7 @@ typedef struct {
     unsigned int pstate, pjustify, pmultiline, pwrap, pshowtext;
 } TableJoinTag;
 
-/* 
+/*
  *----------------------------------------------------------------------
  *
  * TableImageProc --
@@ -591,7 +591,7 @@ FindRowColTag(Table *tablePtr, int cell, int mode)
     return tagPtr;
 }
 
-/* 
+/*
  *----------------------------------------------------------------------
  *
  * TableCleanupTag --
@@ -968,7 +968,7 @@ Table_TagCmd(ClientData clientData, register Tcl_Interp *interp,
 	    tagPtr = TableTagGetEntry(tablePtr, Tcl_GetString(objv[3]),
 		    0, NULL);
 
-	    /* 
+	    /*
 	     * If there were less than 6 args, we return the configuration
 	     * (for all or just one option), even for new tags
 	     */
@@ -1131,7 +1131,7 @@ Table_TagCmd(ClientData clientData, register Tcl_Interp *interp,
 	    }
 	    /* create hash key */
 	    TableMakeArrayIndex(row, col, buf);
-    
+
 	    if (STREQ(tagname, "active")) {
 		result = (tablePtr->activeRow+tablePtr->rowOffset==row &&
 			tablePtr->activeCol+tablePtr->colOffset==col);

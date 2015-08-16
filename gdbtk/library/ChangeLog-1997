@@ -63,7 +63,7 @@ Fri Dec  5 10:01:24 1997  Keith Seitz  <keiths@pizza.cygnus.com>
 Wed Nov 26 15:02:43 1997  Keith Seitz  <keiths@onions.cygnus.com>
 
 	* balloon.tcl, gettext.tcl: Remove obsolete files.
-	
+
 	* console.tcl (invoke): Remove debug line.
 
 	* src.tcl (update): Remove debug line.
@@ -82,7 +82,7 @@ Wed Nov 26 11:30:49 1997  Keith Seitz  <keiths@onions.cygnus.com>
 	* interface.tcl (gdbtk_tcl_readline): hack to get readline working
 
 	* lots: Merge with foundry's 11/18/97 build.
-	
+
 	* console.tcl (setprompt): Get prompt from gdb.
 
 	* prefs.tcl (pref_set_defaults): Add tracepoint defaults.
@@ -146,7 +146,7 @@ Fri Nov 14 00:00:42 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* pref.tcl (build_win): Don't delete subwidget.
 	(save): New method.
-	
+
 	* manage.tcl (manage_init): Change preferences title.
 
 	* prefs.tcl (pref_set_defaults): Define gdb/advanced.
@@ -237,7 +237,7 @@ Tue Nov 11 11:00:25 1997  Martin M. Hunt  <hunt@cygnus.com>
 	* variables.tcl (edit): Disable menus when in editing mode.
 
 Tue Nov 11 02:00:25 1997  Martin M. Hunt  <hunt@cygnus.com>
-	
+
 	* variables.tcl (selectionChanged): When selection changes,
 	cancel any editing in progress.
 	(build_win): Set background in text styles.
@@ -249,13 +249,13 @@ Mon Nov 10 12:22:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 	* variables.tcl (build_win): Set background color.
 
 Mon Nov 10 05:30:00 1997  Martin M. Hunt  <hunt@cygnus.com>
-	
+
 	* about.tcl (build_win): Bind button one to close
 	the window.
 
 	* tclIndex: Rebuilt.
-	
-Mon Nov 10 03:00:00 1997  Martin M. Hunt  <hunt@cygnus.com>	
+
+Mon Nov 10 03:00:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* download_pref.tcl (build_win): Fix reading of initial
 	baud rate.
@@ -273,7 +273,7 @@ Mon Nov 10 03:00:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* toolbar.tcl (create_menu_items): Catch GDB commands.
 	(create_menu_items): Remove automatic step.
-	
+
 	* srcbar.tcl (_set_run): Catch GDB commands.
 
 	* stack.tcl (build_win): Change background color.
@@ -282,15 +282,15 @@ Mon Nov 10 03:00:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 	(destructor): Remove breakpoint change hook.
 	(bp_type): Fix problem with toggling temp to normal bps.
 	(build_win): Add popup menu.
-	
+
 	* interface.tcl (gdbtk_tcl_query): Change title and type.
 
-Mon Nov 10 00:26:25 1997  Martin M. Hunt  <hunt@cygnus.com>	
+Mon Nov 10 00:26:25 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* pref.tcl (build_win): OK button wasn't working.
 
 	* main.tcl: Rework all the "automatic" downloading stuff so
-	it doesn't download and run when only the preferences are 
+	it doesn't download and run when only the preferences are
 	being displayed.
 
 	* src.tcl (open_src): Callback from IDE that opens
@@ -301,7 +301,7 @@ Mon Nov 10 00:26:25 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* images2/bp.gif, stack.gif, up,gif, down.gif, bottom.gif:
 	Updated icons.
-	
+
 Sun Nov  9 19:30:33 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* main.tcl (gdbtk_tcl_preloop): Remove uneeded if statement.
@@ -310,14 +310,14 @@ Sun Nov  9 19:30:33 1997  Martin M. Hunt  <hunt@cygnus.com>
 	* manage.tcl (manage_get_state): Remove.
 	(manage_init): Add save state to several windows.
 	(manage_create): Use ide_property instead of prefs to find window
-	geometry. 
+	geometry.
 	(manage_delete): Restructure to fix several bugs.
 	(manage_save): Use ide_property instead of prefs. Don't
 	call pref_save.
 	(manage_register_defaults): Remove calls to manage_get_state.
 
 	* tclIndex: Rebuilt.
-	
+
 Sun Nov  9 16:34:44 1997  Tom Tromey  <tromey@cygnus.com>
 
 	* pref.tcl (build_win): Removed View page.
@@ -394,7 +394,7 @@ Wed Nov  5 23:08:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 	to load.
 
 Wed Nov  5 00:31:53 1997  Martin M. Hunt  <hunt@cygnus.com>
-	
+
 	* manage.tcl (manage_delete): Only delete source window if
 	user answers yes to query.
 
@@ -417,7 +417,7 @@ Wed Nov  5 00:31:53 1997  Martin M. Hunt  <hunt@cygnus.com>
 	* mem_pref.tcl: Put focus and grab on window.
 
 	* memory.tcl: Balloon message change.
-	
+
 Mon Nov  3 11:04:44 1997  Tom Tromey  <tromey@cygnus.com>
 
 	* main.tcl (gdbtk_tcl_preloop): Look at main even if IDE running.
@@ -455,7 +455,7 @@ Thu Oct 30 12:50:28 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 Tue Oct 28 23:03:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 
-	* toolbar.tcl (create_buttons):  Clean up balloon help 
+	* toolbar.tcl (create_buttons):  Clean up balloon help
 	for buttons.
 	(create_menu_items): Move print menu items to srcbar.tcl.
 	Cleanup labels.
@@ -483,15 +483,15 @@ Tue Oct 28 01:06:15 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* manage.tcl (manage_delete): Unregister preferences
 	on exit.
-	
-	* src.tcl (constructor): Add sizebox under Windows. 
+
+	* src.tcl (constructor): Add sizebox under Windows.
 
 	* download.tcl (constructor): Remove shortcuts on buttons.
  	Put focus on "OK" button.
 
 	* download_pref.tcl (cancel): New function. Restores
 	previous values.
-	
+
 Tue Oct 21 15:28:29 1997  Tom Tromey  <tromey@cygnus.com>
 
 	* main.tcl: Main window now named "Foundry Debugger".
@@ -509,7 +509,7 @@ Fri Oct 24 14:03:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 	* toolbar.tcl (create_menu_items): Make "Window" menu
 	and IDE managed-menu, but don't put anything in it.
 
-Fri Oct 24 12:28:43 1997  Martin M. Hunt  <hunt@cygnus.com>	
+Fri Oct 24 12:28:43 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* toolbar.tcl (create_menu_items): Add View menu.
 
@@ -586,7 +586,7 @@ Sun Sep 28 04:20:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 	* stack.tcl: Use the same background color as the other windows.
 
 	* toolbar.tcl: Add "Automatic Step" menu item.
-	
+
 Fri Sep 26 21:10:11 1997  Keith Seitz  <keiths@pizza.cygnus.com>
 
 	* download.tcl (done): display bytes loaded as an integer.
@@ -601,22 +601,22 @@ Fri Sep 26 00:42:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 	(download): First set baud rate then target.  Then, depending
 	on preferences set a breakpoint at 'main' and 'exit' and run.
 	(set_baud): New function.
-	
+
 	* download_pref.tcl (build_win) Add checkbuttons for "Run until
 	'main'" and "Set breakpoint at 'exit'.
 	(change_baud): Set preference when baud changes.
 
 	* pref.tcl (reconfig): Correct problem with download options.
 
-	* prefs.tcl (pref_set_defaults): Define gdb/load/main, 
+	* prefs.tcl (pref_set_defaults): Define gdb/load/main,
 	gdb/load/exit, and gdb/load/baud.
 
 	* src.tcl (location): Fix a problem where the browse tag was
 	sometimes not deleted.
 
 	* manage.tcl: Add a window title for Download Options.
-	
-Thu Sep 25 15:39:00 1997  Martin M. Hunt  <hunt@cygnus.com>	
+
+Thu Sep 25 15:39:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* download_pref.tcl: New file. Creates a download options dialog.
 
@@ -629,7 +629,7 @@ Thu Sep 25 15:39:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 	* src.tcl: Set activebackground on popup to indicate color
 	of the breakpoint dot that will be set.
 
-Thu Sep 25 12:36:00 1997  Martin M. Hunt  <hunt@cygnus.com>	
+Thu Sep 25 12:36:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* download.tcl (done): Make sure all indicators show download
 	completed, even if we weren't properly notified.
@@ -642,7 +642,7 @@ Thu Sep 25 12:36:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 	target.
 
 	* images2/reg.gif: Updated image.
-	
+
 Thu Sep 25 08:58:44 1997  Keith Seitz  <keiths@onions.cygnus.com>
 
 	* src.tcl (config_win): don't focus src window on Enter events
@@ -660,13 +660,13 @@ Thu Sep 25 03:11:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* registers.tcl: Make it look more like memory window.
 
-	* toolbar.tcl, floatbar.tcl, srcbar.tcl: Update look of menus and toolbars 
+	* toolbar.tcl, floatbar.tcl, srcbar.tcl: Update look of menus and toolbars
 	to be closer to prototype.
 
 	* Makefile: Add download.tcl.
 
 	* tclIndex: Rebuilt.
-	
+
 	* images/memory.gif: Update.
 
 	* images/bp.gif: New file. Breakpoint icon.
@@ -707,14 +707,14 @@ Tue Sep 23 01:31:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 	and global.fixed. Change to be compatible with latest libide font code.
 
 	* prefs.tcl: Changes to get working with latest libide font code.
-	
-Mon Sep 22 15:16:00 1997  Martin M. Hunt  <hunt@cygnus.com>	
+
+Mon Sep 22 15:16:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* memory.tcl: Add editing.  Remove debugging lines.
 	Fix problems with resizing.
 
 	* mem_pref.tcl: Remove debugging line.
-	
+
 Fri Sep 19 08:22:25 1997  Keith Seitz  <keiths@onions.cygnus.com>
 
 	* variables.tcl (build_win): use preferences
@@ -735,7 +735,7 @@ Fri Sep 19 08:22:25 1997  Keith Seitz  <keiths@onions.cygnus.com>
 
 	* bp.tcl (bp_add): use preferences
 	(bp_modify): use preferences
-	
+
 
 	* src.tcl (SrcWin::constructor): use preferences
 	(build_win): use preferences
@@ -752,7 +752,7 @@ Wed Sep 17 13:52:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* src.tcl (config_win): Set bg color back to default.
 
-Tue Sep 16 23:10:00 1997  Martin M. Hunt  <hunt@cygnus.com>	
+Tue Sep 16 23:10:00 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* images2/*: Delete unused icons.
 
@@ -803,13 +803,13 @@ Tue Sep 16 05:55:31 1997  Keith Seitz  <keiths@onions.cygnus.com>
 	* watch.tcl (add): use a little more robust (if more obscure) method
 	of determining validity of a variable name
 	(label): translate % to $ in names
-	
+
 	* variables.tcl (Variable::setType): allow for convenience variables
 	(Variable::isConvenience): new method
 	(Variable::displayHex): allow for convenience variables
 	(VariableWin::edit): do not eval $data when editing (for conv. vars)
 	(VariableWin::postMenu): use virtual method label to title popup
-	
+
 Fri Sep 12 12:17:13 1997  Keith Seitz  <keiths@onions.cygnus.com>
 
 	* variables.tcl (Variable::value): when no display style specified,
@@ -839,7 +839,7 @@ Thu Sep 11 14:13:19 1997  Keith Seitz  <keiths@onions.cygnus.com>
 	intelligently
 	VariableWin::Editing: new protected variable
 	VariableWin::EditEntry: new protected variable
-	(Variable::isOpenable): make sure we can open unions 
+	(Variable::isOpenable): make sure we can open unions
 	(Variable::isUnamed): new method
 	(Variable::isUnion): new method
 	(Variable::setType): handle unions and unamed structs/unions better
@@ -852,7 +852,7 @@ Thu Sep 11 14:13:19 1997  Keith Seitz  <keiths@onions.cygnus.com>
 
 	* watch.tcl (WatchWin::build_win): change popup construction
 	(WatchWin::postMenu): redo menu layout to use dynamic indices of panes
-	
+
 
 Wed Sep 10 20:44:12 1997  Ian Lance Taylor  <ian@cygnus.com>
 
@@ -876,7 +876,7 @@ Mon Sep  8 12:10:26 1997  Martin M. Hunt  <hunt@cygnus.com>
 	* global_pref.tcl: Minor fix.
 
 	* images2/vmake.gif: Fix transparency.
-	
+
 Mon Sep  8 13:05:11 1997  Ian Lance Taylor  <ian@cygnus.com>
 
 	* interface.tcl (gdbtk_tcl_query): Use tk_messageBox rather than
@@ -901,7 +901,7 @@ Mon Sep  8 02:25:17 1997  Martin M. Hunt  <hunt@cygnus.com>
 	dynamically attaching/detaching toolbars.
 
 	* bp.tcl: New file.  Breakpoint window.
-	
+
 	* main.tcl: Change palette for debugging.
 
 	* pref.tcl: New file. Preferences dialog.
@@ -919,7 +919,7 @@ Mon Sep  8 02:25:17 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* toolbar_pref.tcl: Add icon combobox.  Add checkbuttons
 	for forcing toolbar to either float or be attached to src window.
-	
+
 	* Makefile: Add bp.tcl
 
 	* images/*: Fix transparency and add new icons.
@@ -939,7 +939,7 @@ Thu Sep  4 11:47:38 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* gettext.tcl, debug.tcl, balloon.tcl: Delete. Use
 	versions from libide instead.
-	
+
 Wed Sep  3 09:20:13 1997  Tom Tromey  <tromey@cygnus.com>
 
 	* main.tcl (add): Pass idewindow_no_state to idewindow_proc.
@@ -969,7 +969,7 @@ Mon Aug 25 03:06:35 1997  Keith Seitz  <keiths@pizza.cygnus.com>
 
         * src.tcl: (set_status) check if inferior is running first, and reset
         message for status window if it is not.
- 
+
 
 Mon Aug 25 00:28:39 1997  Martin M. Hunt  <hunt@pern.cygnus.com>
 
@@ -1134,11 +1134,11 @@ Sat Aug 23 21:55:54 1997  Ian Lance Taylor  <ian@cygnus.com>
 Sat Aug 23 17:36:06 1997  Martin M. Hunt  <hunt@pern.cygnus.com>
 
 	* src.tcl (name): Handle case where files are part of the
-	sources, but are unreadable. 
+	sources, but are unreadable.
 	(build_win): Set filename combobox size to default.
 
 	* manage.tcl: Remove breakpoint window from window list.
-	
+
 Sat Aug 23 16:49:53 1997  Keith Seitz  <keiths@onions.cygnus.com>
 
 	* src.tcl: remove old breakdot stuff
@@ -1216,7 +1216,7 @@ Thu Aug 21 02:52:35 1997  Martin M. Hunt  <hunt@pern.cygnus.com>
 
 	* prefs.tcl, manage.tcl: Minor cleanup.
 
-Thu Aug 21 00:39:35 1997  Martin M. Hunt  <hunt@pern.cygnus.com>	
+Thu Aug 21 00:39:35 1997  Martin M. Hunt  <hunt@pern.cygnus.com>
 
 	* main.tcl (ide_run_server) New function.  Starts GDB when
 	asked politely.
@@ -1225,18 +1225,18 @@ Thu Aug 21 00:39:35 1997  Martin M. Hunt  <hunt@pern.cygnus.com>
 	(exe_name): New function. Watches for changes in the
 	executable name.
 
-	* console.tcl (insert, einsert): Scroll so the insertion 
+	* console.tcl (insert, einsert): Scroll so the insertion
 	point can be seen.
 
 	* manage.tcl: SPecial hacks to create a global "console".
 	Needed because we can't have puts searching for a console
 	window everytime a puts arrives.
-	
+
 	* interface.tcl (gdbtk_tcl_fputs, gdbtk_tcl_fputs_error):
 	Write to the console if one exists, and do an update.
 
 	* tclIndex: Rebuilt.
-	
+
 Wed Aug 20 17:23:07 1997  Keith Seitz  <keiths@onions.cygnus.com>
 
 	* variables.tcl: (Variable::setType VariableWin::getPath) handle types
@@ -1272,7 +1272,7 @@ Tue Aug 19 14:52:59 1997  Keith Seitz  <keiths@onions.cygnus.com>
 	* locals.tcl: new file
 	* variables.tcl: new file
 	* watch.tcl: new file
-	
+
 
 Mon Aug 18 01:28:19 1997  Martin M. Hunt  <hunt@cygnus.com>
 
@@ -1294,7 +1294,7 @@ Sun Aug 17 01:59:02 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* src.tcl (location): Don't call gdb_listfuncs on
 	NULL filenames.
-	
+
 Sun Aug 17 00:18:02 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* src.tcl: Major changes to support file browsing.
@@ -1315,16 +1315,16 @@ Sun Aug 17 00:18:02 1997  Martin M. Hunt  <hunt@cygnus.com>
 	* tclIndex: Rebuilt.
 
 	* toolbar.tcl: Add call to source prefs.
- 	
+
 	* main.tcl: Change initial "src file" call to
 	"src location".
 
 Thu Aug 14 15:49:02 1997  Martin M. Hunt  <hunt@cygnus.com>
 
-	* manage.tcl (manage_create): Some fixes for IDE windows. 
+	* manage.tcl (manage_create): Some fixes for IDE windows.
 
 Thu Aug 14 03:18:10 1997  Martin M. Hunt  <hunt@cygnus.com>
-	
+
 	* register.tcl, stack.tcl (destructor): Remove hook.
 
 	* manage.tcl: Mostly rewritten from scratch to be
@@ -1340,17 +1340,17 @@ Thu Aug 14 03:18:10 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* src (destructor): Remove hooks.
 	(do_popup): Add a menu item to open another source window.
-	
+
 	* toolbar.tcl (build_win): Change "manage create" calls to
 	"manage open".  Bind button 3 on iconbar to "manage create".
-	
+
 	* prefs.tcl: Changes required for new features in manage.tcl.
-	
+
 	* tclIndex: Rebuilt.
 
 	* hooks.tcl (remove_hook): Fix.
 	(lremove): New function.
-	
+
 Tue Aug 12 16:06:04 1997  Ian Lance Taylor  <ian@cygnus.com>
 
 	* main.tcl: If running in the IDE, register the source window as
@@ -1378,7 +1378,7 @@ Mon Aug 11 13:47:49 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* Makefile: New file. Generates tclIndex when needed.
 
-	* manage.tcl (manage_init): Add an icon for GDB. 
+	* manage.tcl (manage_init): Add an icon for GDB.
 	(manage_create): Bind Map and Unmap for toolbar toplevel.
 	Tell window manager to display icon if one exists.
 	(manage_iconify): Iconify or deiconify all windows.
@@ -1392,7 +1392,7 @@ Mon Aug 11 13:47:49 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* images/cygnus_icon.gif: A cygnus logo with GDB on it.
 	For Unix window managers.
-	
+
 Fri Aug  8 16:01:20 1997  Ian Lance Taylor  <ian@cygnus.com>
 
 	* manage.tcl (manage): Add menu subcommand.
@@ -1446,12 +1446,12 @@ Tue Aug  5 01:42:56 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* src.tcl: Minor changes.
 
-	* global_pref.tcl: Bind return key to image dir entry 
+	* global_pref.tcl: Bind return key to image dir entry
 	widget.
 
 	* prefs.tcl: Add register prefs to notebook widget.
 	Change default for pref get to {} instead of 0.
-	
+
 Fri Aug  1 14:21:25 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* images/*: Smaller toolbar icons. Fix some gifs
@@ -1470,7 +1470,7 @@ Thu Jul 31 00:56:26 1997  Martin M. Hunt  <hunt@cygnus.com>
 
 	* src.tcl: Remove EDIT button. Change fonts to use global font if
 	no src font is specified.
-	
+
 	* toolbar.tcl: Enable Tools/Edit pulldown menu.
 
 Wed Jul 30 14:43:49 1997  Martin M. Hunt  <hunt@cygnus.com>

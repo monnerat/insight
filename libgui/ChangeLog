@@ -105,7 +105,7 @@
 2012-03-30  Roland Schwingel  <roland.schwingel@onevision.com>
 
 	* library/looknfeel.tcl: Update copyright to 1997-2012 Red Hat, Inc.
-	(standard_look_and_feel): Change default fonts on windows. 
+	(standard_look_and_feel): Change default fonts on windows.
 	Default and status font is now Tahoma size 10.
 	Source font is now Lucida Console size 9.
 
@@ -171,7 +171,7 @@
 	* src/Makefile.am (INCLUDES): Update.
 	* src/Makefile.in: Regenerate.
 	* src/paths.c (init_script): Accommodate builddir != srcdir.
-	
+
 2005-03-23  Martin Hunt  <hunt@redhat.com>
 
 	* configure.ac: Remove -fwritable-strings from CFLAGS.
@@ -197,16 +197,16 @@
 2003-02-11  Martin M. Hunt  <hunt@redhat.com>
 
 	* src/Makefile.am (libgui_a_SOURCES): Remove files that
-	are not used in Insight. Removed xpmlib.c, tclmain.c, 
-	tclwinfont.c, tkCanvEdge.c, tkGraphCanvas.c, 
-	tkCanvLayout.c, tkCanvLayout.h, tclmapi.c, tclwinmode.c, 
+	are not used in Insight. Removed xpmlib.c, tclmain.c,
+	tclwinfont.c, tkCanvEdge.c, tkGraphCanvas.c,
+	tkCanvLayout.c, tkCanvLayout.h, tclmapi.c, tclwinmode.c,
 	tclhelp.c, and tclgetdir.c.
 	* src/Makefile.in: Rebuilt.
-	
+
 2003-02-10  Martin M. Hunt  <hunt@redhat.com>
 
 	* library/balloon.tcl (Balloon): Don't bind MB 3.
-	
+
 2003-02-03  Martin M. Hunt  <hunt@redhat.com>
 
 	* library/combobox.tcl: Import combobox 2.2.1
@@ -219,14 +219,14 @@
 	to "tk::CancelRepeat". Needed for tk 8.4.1.
 	* src/tkTable.tcl.h: Ditto.
 	* library/combobox.tcl: Ditto.
-	
-	* src/Makefile.am: Remove tclsizebox.c. 
+
+	* src/Makefile.am: Remove tclsizebox.c.
 	* src/Makefile.in: Rebuilt.
 
 	* aclocal.m4: Rebuilt.
 	* Makefile.in: Rebuilt.
 	* configure: Rebuilt.
-	
+
 2002-12-03  Martin M. Hunt  <hunt@redhat.com>
 
 	* library/pane.tcl: auto_mkindex cannot rebuild
@@ -259,7 +259,7 @@
 
 2002-07-03  Martin M. Hunt  <hunt@redhat.com>
 
-	* library/panedwindow.tcl (_placePlanes): Make certain things 
+	* library/panedwindow.tcl (_placePlanes): Make certain things
 	are initialized before attempting to move panes.
 
 2002-06-07  Martin M. Hunt  <hunt@redhat.com>
@@ -293,7 +293,7 @@
 2002-02-05  Jim Blandy  <jimb@redhat.com>
 
 	De-Cygnify libgui.
-	
+
 	* library/Makefile.am (guidir): Name dir `redhat', not `cygnus'.
 	* src/Makefile.am (guidir): Same.
 	* library/Makefile.in, src/Makefile.in: Regenerated.
@@ -341,7 +341,7 @@
        Font changes to improve default look and feel.
        Increase default font size, use helvetica for
        menus, status bar and balloon help.
-	
+
 2001-09-08  Ian Roxborough <irox@redhat.com>
 
 	* all: Tcl/Tk8.3 upgrade merge.
@@ -356,7 +356,7 @@
 	third parameter, direction. This is so recursive calls
 	to _calcPos continue adjusting panes upward or downward
 	ans does not loop infinitely.
-	
+
 2001-08-24  Keith Seitz  <keiths@redhat.com>
 
 	* src/tkTable.tcl: Use "string compare" instead of "string
@@ -487,7 +487,7 @@
 	and depends on pre Itcl 3.1 paths.
 	* library/Makefile.in: Regen.
 	* src/Makefile.in: Regen.
-	
+
 2001-05-18  Keith Seitz  <keiths@cygnus.com>
 
 	* library/center.tcl (center_window): Allow centering
@@ -577,7 +577,7 @@ Fri Jun  9 20:43:40 2000  Christopher Faylor <cgf@cygnus.com>
 
 2000-04-18  James Ingham  <jingham@leda.cygnus.com>
 
-	* library/toolbar.tcl (TOOLBAR_button_up): If the pointer is still 
+	* library/toolbar.tcl (TOOLBAR_button_up): If the pointer is still
 	in the button, reraise the button after a press.
 
 2000-04-03  James Ingham  <jingham@leda.cygnus.com>
@@ -601,7 +601,7 @@ Fri Sep 17 19:14:15 1999  Andrew Cagney  <cagney@b1.cygnus.com>
 
 1999-08-10  James Ingham  <jingham@leda.cygnus.com>
 
-	* library/balloon.tcl (BALLOON_command_withdraw): New command, use 
+	* library/balloon.tcl (BALLOON_command_withdraw): New command, use
 	to remove the balloon before it's timeout has expired.
 
 1999-08-02  James Ingham  <jingham@leda.cygnus.com>
@@ -734,8 +734,8 @@ Wed Mar  3 16:57:21 1999  Khamis Abuelkombuz  <khamis@cygnus.com>
 
 1999-03-03  James Ingham  <jingham@cygnus.com>
 
-	* library/combobox.tcl (::combobox::setValue): Call the command in 
-	an after idle, so that the combobox gets a chance to unpost before 
+	* library/combobox.tcl (::combobox::setValue): Call the command in
+	an after idle, so that the combobox gets a chance to unpost before
 	the action is taken.
 
 1999-02-23  Martin Hunt  <hunt@cygnus.com>
@@ -750,7 +750,7 @@ Wed Mar  3 16:57:21 1999  Khamis Abuelkombuz  <khamis@cygnus.com>
 1999-02-17  Martin Hunt  <hunt@cygnus.com>
 
 	* library/internet.tcl (open_url): Change to open another
-	window for Netscape on Unix.  Returns 0 on failure, 1 on 
+	window for Netscape on Unix.  Returns 0 on failure, 1 on
 	success.
 
 1999-02-11  Syd Polk  <spolk@cygnus.com>
@@ -792,9 +792,9 @@ Wed Mar  3 16:57:21 1999  Khamis Abuelkombuz  <khamis@cygnus.com>
 	* library/panedwindow.tcl (cyg::PanedWindow::delete): Fix
 	variable name so this function works again.
 	* src/tkWarpPointer.c: New file. Implements tcl function
-	warp_pointer, used by the testsuite. 
+	warp_pointer, used by the testsuite.
 	* src/Makefile.am: Added tkWarpPointer.c.
-	
+
 	1998-12-17  Martin M. Hunt  <hunt@cygnus.com>
 
 	* library/panedwindow.tcl (cyg::PanedWindow::sashwidth): Change
@@ -804,15 +804,15 @@ Wed Mar  3 16:57:21 1999  Khamis Abuelkombuz  <khamis@cygnus.com>
 	array when a pane is deleted.
 	(cyg::PanedWindow::hide): Ditto.
 	(cyg::PanedWindow::replace): New function. Replaces an active
-	pane with an inactive (hidden) one. 
-	
+	pane with an inactive (hidden) one.
+
 	1998-12-16  Martin M. Hunt  <hunt@cygnus.com>
 
 	* library/panedwindow.tcl: New file. Implements
 	cyg::PanedWindow which is a generic paned window supporting
 	non-resizable panes, individual max and min pane sizes. It
 	has a very different look from the iwidget panedwindow.
-	
+
 	* library/pane.tcl: New file.  Basically an extended pane.itk
 	from the iwidgets distribution.
 
@@ -864,7 +864,7 @@ Wed Mar  3 16:57:21 1999  Khamis Abuelkombuz  <khamis@cygnus.com>
 	* src/tkTreeTable.h: Merge from Source-Navigator.
 
 	* src/tkTreeTable.c: Likewise.
-	
+
 1998-11-16  Ian Roxborough  <irox@cygnus.com>
 
 	* src/tkWinPrintText.c (PrintTextCmd): return OK
@@ -884,7 +884,7 @@ Wed Mar  3 16:57:21 1999  Khamis Abuelkombuz  <khamis@cygnus.com>
 	* aclocal.m4, configure: Regenerated.
 
 Thu Dec 17 11:46:04 1998  Keith Seitz  <keiths@cygnus.com>
- 
+
         * library/combobox.tcl (::combobox::computeGeometry): Allow
         the listbox to expand larger than the limits of the combobox.
         (::combobox::widgetProc): Pack the scrollbar before the listbox
@@ -1008,7 +1008,7 @@ Fri Oct  9 10:04:00 1998  Ian Roxborough  <irox@cygnus.com>
 	for the mask to zero before using.
 
 1998-10-05  Syd Polk  <spolk@cygnus.com>
-	
+
 	* configure: Regenerated with new autoconf
 
 Mon Oct  5 00:53:59 1998  Martin M. Hunt  <hunt@cygnus.com>
@@ -1077,7 +1077,7 @@ Tue Aug 25 17:22:36 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 Tue Aug 25 16:06:34 1998  Martin M. Hunt  <hunt@cygnus.com>
 
-	* library/combobox.tcl (::combobox::doInternalWidgetCommand): 
+	* library/combobox.tcl (::combobox::doInternalWidgetCommand):
 	Add "Curselection" widget command.
 
 Fri Aug 21 12:48:09 1998  Martin M. Hunt  <hunt@cygnus.com>
@@ -1127,29 +1127,29 @@ Mon Aug 17 16:20:38 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 Mon Aug 17 14:44:31 1998  Martin M. Hunt  <hunt@cygnus.com>
 
-	* library/Makefile.am (WISH): Run itcl_wish from the 
+	* library/Makefile.am (WISH): Run itcl_wish from the
 	proper place.
 
 Mon Aug 17 13:20:09 1998  Martin M. Hunt  <hunt@cygnus.com>
 
 	* library/combobox.tcl (::combobox::build): Initialize
 	oldValue. Don't pack scrollbar.
-	(::combobox::widgetProc): When items are inserted or deleted 
-	from the list, pack or forget the scrollbar, depending on 
+	(::combobox::widgetProc): When items are inserted or deleted
+	from the list, pack or forget the scrollbar, depending on
 	the size of the list and the max height.
-	(::combobox::setValue): Call the command callback even if 
+	(::combobox::setValue): Call the command callback even if
 	the value selected was the same as the previous value.
-	(::combobox::configure): Change listbox width as well 
+	(::combobox::configure): Change listbox width as well
 	as entry width. This keeps the scrollbar from being
 	truncated.
-	(::combobox::configure): Replace "oldValue" with "oldval" 
-	to avoid confusion with the variable that saves the 
+	(::combobox::configure): Replace "oldValue" with "oldval"
+	to avoid confusion with the variable that saves the
 	previous value for the entry. Fixes several bugs.
 	(::combobox::widgetProc): Unset tmpopt.
-	(::combobox::widgetProc): Pass the listbox widget to the 
+	(::combobox::widgetProc): Pass the listbox widget to the
 	computeGeometry proc so it can use it in its computations.
-	(::combobox::computeGeometry): Compute size of popup by 
-	requested size of listbox plus twice the bordersize of 
+	(::combobox::computeGeometry): Compute size of popup by
+	requested size of listbox plus twice the bordersize of
 	the popup.
 
 Thu Aug 13 22:55:36 1998  Martin M. Hunt  <hunt@cygnus.com>
@@ -1206,7 +1206,7 @@ Fri Jul 10 11:29:00 1998  Sean Mahan  <smahan@cygnus.com>
 
 	* src/tclgetdir.c: Merged from S-N.
 
-	* src/tclwinprint.c: Merged from S-N.  Includes new options for 
+	* src/tclwinprint.c: Merged from S-N.  Includes new options for
 	PostScript printing and once-per-job initialisation.
 
 	* src/tkCanvLayout.c: Merged from S-N.  Mostly cleanup.
@@ -1228,9 +1228,9 @@ Thu Jun  4 18:00:27 1998  Martin M. Hunt  <hunt@cygnus.com>
 	widget.
 	* src/Makefile.am: Add tkTable stuff.
 	* src/Makefile.in: Rebuilt.
-	* Makefile.in: Rebuilt.	
+	* Makefile.in: Rebuilt.
 	* doc/tkTable.n: Man page for tkTable.
-	
+
 Thu May 14 10:45:00 1998  Sean Mahan  <smahan@cygnus.com>
 
 	* library/prefs.tcl (PREFS_cmd_init): Changed name of global
@@ -1245,7 +1245,7 @@ Thu May 14 10:45:00 1998  Sean Mahan  <smahan@cygnus.com>
 
 Wed May 13 10:05:00 1998  Sean Mahan  <smahan@cygnus.com>
 
-	* library/prefs.tcl (PREFS_cmd_init):  Revert change by hunt that 
+	* library/prefs.tcl (PREFS_cmd_init):  Revert change by hunt that
 	used global variable "GDBTK_IDE" instead of libgui variable "IDE".
 	* configure.in: added support for "--enable-ide" option.
 	* configure: regenerated.
@@ -1333,18 +1333,18 @@ Tue Mar 24 02:06:59 1998  Martin M. Hunt  <hunt@cygnus.com>
 	* src/Makefile.am (libgui_a_SOURCES): Add tclmsgbox.c.
 	* src/Makefile.in: Rebuilt.
 	* src/tclmsgbox.c: New file.
-	
+
 Sun Mar 22 19:29:10 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 
 	* library/email.tcl: removed and replaced with internet.tcl.
-	* library/internet.tcl: added 
+	* library/internet.tcl: added
 
 Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 
 	Merged the files in library with the corresponding files in Foundry
-         
+
         - Tom Tromey  <tromey@cygnus.com>
-	* library/balloon.tcl 
+	* library/balloon.tcl
         (destructor): Cancel any pending after handlers.
         (showballoon): Unshow balloon after 6 seconds.
         (showballoon): On Windows, position balloon
@@ -1352,9 +1352,9 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
         (_recent_parent): New variable.
         (_enter): If new parent the same as old parent, eliminate delay.
         (showballoon): Set _recent_parent.
-	* library/bgerror.tcl 
+	* library/bgerror.tcl
         (bgerror): Display errorCode as well.
-	* library/center.tcl 
+	* library/center.tcl
         (center_window): Run "update idletasks" after
         setting window geometry.
 	* library/debug.tcl
@@ -1377,15 +1377,15 @@ Sat Mar 21 21:18:06 1998  Elena Zannoni  <ezannoni@kwikemart.cygnus.com>
 
         - Martin M. Hunt  <hunt@cygnus.com>
 	* library/list.tcl
-        (lrep): New function.  Replace an element in a list with a 
+        (lrep): New function.  Replace an element in a list with a
         new one.
 	* library/prefs.tcl
-        (PREFS_cmd_getd): Rewrite to call define then get. 
+        (PREFS_cmd_getd): Rewrite to call define then get.
          Fixes strange problem.
 
         - Ian Lance Taylor  <ian@cygnus.com>
 	* library/print.tcl
-        Expand tabs to spaces assuming there are tabstops every 
+        Expand tabs to spaces assuming there are tabstops every
         8 spaces.
 
 
@@ -1393,7 +1393,7 @@ Tue Feb 24 19:49:12 1998  Jonathan Larmour  <jlarmour@cygnus.co.uk>
 
 	* configure.in, src/Makefile.am: Add --enable-install-libgui
 	option to install libgui.a and header files if required
-	
+
 	* Makefile.in, aclocal.m4, configure, library/Makefile.in,
 	src/Makefile.in: regenerate with latest automake
 
@@ -1406,7 +1406,7 @@ Wed Jan 14 12:36:49 1998  Keith Seitz  <keiths@pizza.cygnus.com>
 	(tclIndex): Call SET_LIB_PATH.
 
 	* library/Makefile.in: Regenerate.
-	
+
 	* configure.in: Define TCL_SHARED if using shared library for Tcl
 
 	* configure: Regenerate.

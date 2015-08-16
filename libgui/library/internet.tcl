@@ -2,7 +2,7 @@
 # internet.tcl - tcl interface to various internet functions
 #
 # Copyright (C) 1998 Cygnus Solutions
-# 
+#
 
 # ------------------------------------------------------------------
 #  send_mail - send email
@@ -14,7 +14,7 @@ proc send_mail {to subject body} {
   switch -- $tcl_platform(platform) {
     windows {
       ide_mapi simple-send $to $subject $body
-    }    
+    }
     unix {
       exec echo $body | mail -s $subject $to &
     }

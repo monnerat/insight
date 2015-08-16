@@ -112,7 +112,7 @@ gdb_block_vars (ClientData clientData, Tcl_Interp *interp,
 
   start = string_to_core_addr (Tcl_GetStringFromObj (objv[1], NULL));
   end   = string_to_core_addr (Tcl_GetStringFromObj (objv[2], NULL));
-  
+
   block = get_frame_block (get_selected_frame (NULL), 0);
 
   while (block != 0)
@@ -172,7 +172,7 @@ gdb_get_blocks (ClientData clientData, Tcl_Interp *interp,
   CORE_ADDR pc;
 
   Tcl_SetListObj (result_ptr->obj_ptr, 0, NULL);
-  
+
   if (target_has_registers)
     {
       struct frame_info *frame = get_selected_frame (NULL);
@@ -211,10 +211,10 @@ gdb_get_blocks (ClientData clientData, Tcl_Interp *interp,
 		}
 	    }
 
-	  /* If we found a block with locals in it, add it to the list. 
+	  /* If we found a block with locals in it, add it to the list.
 	     Note that the ranges of start and end address for blocks
 	     are exclusive, so double-check against the PC */
-	  
+
 	  if (flags != 02 /* Not only junk. */ && pc < BLOCK_END (block))
 	    {
 	      char *addr;
@@ -534,7 +534,7 @@ gdb_stack (ClientData clientData, Tcl_Interp *interp,
          frames beyond the innermost stack frame */
       if (start == 0)
         {
-          fi = top; 
+          fi = top;
           while (fi && count--)
             {
               get_frame_name (interp, result_ptr->obj_ptr, fi);

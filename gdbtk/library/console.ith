@@ -14,7 +14,7 @@
 
 # ----------------------------------------------------------------------
 # Implements a console display widget using primitive widgets as the building
-# blocks.  
+# blocks.
 # ----------------------------------------------------------------------
 
 itcl::class Console {
@@ -25,7 +25,7 @@ itcl::class Console {
     variable throttle 2000
 
     method constructor {args}
-    method destructor {}   
+    method destructor {}
     method insert {line {tag ""}}
     method invoke {{controld 0}}
     method _insertion {args}

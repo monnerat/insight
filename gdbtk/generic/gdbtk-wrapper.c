@@ -687,7 +687,7 @@ GDB_find_relative_frame (struct frame_info *fi, int *start,
   args.args[0].ptr = fi;
   args.args[1].ptr = start;
 
-  r = call_wrapped_function ((catch_errors_ftype *) wrap_find_relative_frame, 
+  r = call_wrapped_function ((catch_errors_ftype *) wrap_find_relative_frame,
 			     &args);
   if (r != GDB_OK)
     return r;
@@ -713,7 +713,7 @@ GDB_get_current_frame (struct frame_info **result)
   struct gdb_wrapper_arguments args;
   gdb_result r;
 
-  r = call_wrapped_function ((catch_errors_ftype *) wrap_get_current_frame, 
+  r = call_wrapped_function ((catch_errors_ftype *) wrap_get_current_frame,
 			     &args);
   if (r != GDB_OK)
     return r;

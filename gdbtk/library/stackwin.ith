@@ -30,7 +30,7 @@ itcl::class StackWin {
 
   public {
     method reconfig {}
-    method constructor {args} 
+    method constructor {args}
     method destructor {}
 
     #

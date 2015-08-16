@@ -1,4 +1,4 @@
-/* 
+/*
  * tkTablePs.c --
  *
  *	This module implements postscript output for table widgets.
@@ -1097,7 +1097,7 @@ Tk_TablePsFont(interp, tablePtr, tkfont)
      */
 
     Tcl_DStringInit(&ds);
-    
+
     if (psInfoPtr->fontVar != NULL) {
 	char *list, **argv;
 	int objc;
@@ -1124,11 +1124,11 @@ Tk_TablePsFont(interp, tablePtr, tkfont)
 
 	    Tcl_DStringAppend(&ds, argv[0], -1);
 	    points = (int) size;
-	    
+
 	    ckfree((char *) argv);
 	    goto findfont;
 	}
-    } 
+    }
 
     points = Tk_PostscriptFontName(tkfont, &ds);
 

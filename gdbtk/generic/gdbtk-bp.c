@@ -160,11 +160,11 @@ gdbtk_read_next_line (void)
 
 /* set a breakpoint by source file and line number
    flags are as follows:
-   least significant 2 bits are disposition, rest is 
+   least significant 2 bits are disposition, rest is
    type (normally 0).
 
    enum bptype {
-   bp_breakpoint,                Normal breakpoint 
+   bp_breakpoint,                Normal breakpoint
    bp_hardware_breakpoint,      Hardware assisted breakpoint
    }
 
@@ -172,8 +172,8 @@ gdbtk_read_next_line (void)
    enum bpdisp {
    del,                         Delete it
    del_at_next_stop,            Delete at next stop, whether hit or not
-   disable,                     Disable it 
-   donttouch                    Leave it alone 
+   disable,                     Disable it
+   donttouch                    Leave it alone
    };
 */
 
@@ -198,7 +198,7 @@ gdb_find_bp_at_addr (ClientData clientData, Tcl_Interp *interp,
       Tcl_WrongNumArgs (interp, 1, objv, "address");
       return TCL_ERROR;
     }
-  
+
   if (Tcl_GetWideIntFromObj (interp, objv[1], &waddr) != TCL_OK)
     return TCL_ERROR;
   addr = waddr;
@@ -307,7 +307,7 @@ gdb_get_breakpoint_info (ClientData clientData, Tcl_Interp *interp, int objc,
 
   isPending = (b->loc == NULL);
   Tcl_SetListObj (result_ptr->obj_ptr, 0, NULL);
-  /* Pending breakpoints will display "<PENDING>" as the file name and the 
+  /* Pending breakpoints will display "<PENDING>" as the file name and the
      user expression into the Function field of the breakpoint view.
     "0" and "0" in the line number and address field.  */
   if (isPending)
@@ -566,7 +566,7 @@ gdb_set_bp (ClientData clientData, Tcl_Interp *interp,
  * events from gdb.
  */
 
-/* The next three functions use breakpoint_notify to allow the GUI 
+/* The next three functions use breakpoint_notify to allow the GUI
  * to handle creating, deleting and modifying breakpoints.  These three
  * functions are put into the appropriate gdb hooks in gdbtk_init.
  */
@@ -632,7 +632,7 @@ breakpoint_notify (int num, const char *action)
 
   if (Tcl_Eval (gdbtk_interp, buf) != TCL_OK)
     report_error ();
-  xfree(buf); 
+  xfree(buf);
 }
 
 /*
@@ -683,7 +683,7 @@ gdb_actions_command (ClientData clientData, Tcl_Interp *interp,
   gdbtk_obj_array_ptr = 1;
   if (gdbtk_obj_array_cnt && gdbtk_obj_array)
     commands = read_command_lines_1 (gdbtk_read_next_line, 1,
-				     check_tracepoint_command, tp);  
+				     check_tracepoint_command, tp);
   else
     commands = read_command_lines ("", 0, 1, check_tracepoint_command, tp);
 

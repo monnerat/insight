@@ -27,7 +27,7 @@ itcl::body SrcPref::constructor {args} {
 itcl::body SrcPref::_init_var {} {
   set vlist {gdb/src/PC_TAG gdb/src/STACK_TAG gdb/src/BROWSE_TAG
     gdb/src/run_attach gdb/src/run_load gdb/src/run_run
-    gdb/src/run_cont gdb/src/bp_fg gdb/src/temp_bp_fg 
+    gdb/src/run_cont gdb/src/bp_fg gdb/src/temp_bp_fg
     gdb/src/trace_fg gdb/src/thread_fg gdb/src/variableBalloons
     gdb/src/source2_fg gdb/src/tab_size gdb/mode gdb/editor
     gdb/B1_behavior}
@@ -57,7 +57,7 @@ itcl::body SrcPref::_build_win {} {
   label $w.pcl -text {Highlight}
   button $w.pcb -text {     } -activebackground $color -bg $color \
     -command [code $this _pick $color $w.pcb PC_TAG]
-  
+
   set color [pref get gdb/src/STACK_TAG]
   label $w.stl -text {Stack}
   button $w.stb -text {     } -activebackground $color -bg $color \
@@ -77,12 +77,12 @@ itcl::body SrcPref::_build_win {} {
   label $w.nbpl -text {Normal Breakpoint}
   button $w.nbpb -text {     } -activebackground $color -bg $color\
     -command [code $this _pick $color $w.nbpb bp_fg]
-  
+
   set color [pref get gdb/src/temp_bp_fg]
   label $w.tbpl -text {Temporary Breakpoint}
   button $w.tbpb -text {     } -activebackground $color -bg $color \
     -command [code $this _pick $color $w.tbpb temp_bp_fg]
-  
+
   set color [pref get gdb/src/thread_fg]
   label $w.dbpl -text {Thread Breakpoint}
   button $w.dbpb -text {     } -activebackground $color -bg $color \
@@ -116,7 +116,7 @@ itcl::body SrcPref::_build_win {} {
     -variable [scope _new(gdb/B1_behavior)] -value 0 -state $state
   radiobutton $w.sync  -text "Set/Clear Breakpoints" \
     -variable [scope _new(gdb/B1_behavior)] -value 1 -state $state
-  
+
   pack $w.async $w.sync -side top
 
   # Variable Balloons
@@ -153,8 +153,8 @@ itcl::body SrcPref::_build_win {} {
   pack $f.x.size -side left -padx 5 -pady 5
 
   # Disassembly flavor - We tell whether this architecture supports
-  # the flag by checking whether the flag exists.  
-  
+  # the flag by checking whether the flag exists.
+
   set have_disassembly_flavor 0
   set vals [list_disassembly_flavors]
   if {[llength $vals] != 0} {
@@ -164,17 +164,17 @@ itcl::body SrcPref::_build_win {} {
     combobox::combobox $f.dis.combo -maxheight 15 -width 15 \
       -font global/fixed -editable 0 -command [code $this _set_flavor] \
       -bg $::Colors(textbg)
-    
+
     foreach elem $vals {
       $f.dis.combo list insert end $elem
     }
-    
+
     set _saved_disassembly_flavor [get_disassembly_flavor]
     $f.dis.combo entryset $_saved_disassembly_flavor
-    
+
     pack $f.dis.l -side left
     pack $f.dis.combo -side left -padx 4
-    
+
   } else {
     set _saved_disassembly_flavor ""
   }
@@ -189,7 +189,7 @@ itcl::body SrcPref::_build_win {} {
   pack $f.colors -fill both -expand 1
   pack $f.rmv  -fill both -expand yes
   pack $f.x -fill x -expand yes
-  
+
   if {$have_disassembly_flavor} {
     pack $f.dis -side top -fill x -padx 4
   }
@@ -212,7 +212,7 @@ itcl::body SrcPref::_apply {} {
       #debug "$var = $_new($var)"
       pref set $var $_new($var)
     }
-    
+
     # Update color for changed values.
     global Colors
     set Colors(change) [pref get gdb/src/PC_TAG]
@@ -233,7 +233,7 @@ itcl::body SrcPref::cancel {} {
 # ------------------------------------------------------------------
 itcl::body SrcPref::_cancel {} {
   set any_changed 0
-  
+
   foreach elem [array names _saved] {
     set cur_val [pref get $elem]
     if {[string compare $cur_val $_saved($elem)] != 0} {
@@ -247,7 +247,7 @@ itcl::body SrcPref::_cancel {} {
     gdb_cmd "set disassembly-flavor $_saved_disassembly_flavor"
     pref set gdb/src/disassembly-flavor $_saved_disassembly_flavor
   }
-  
+
   if {$any_changed} {
     ManagedWin::restart
   }

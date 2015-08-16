@@ -124,10 +124,10 @@ itcl::class GDBToolBar {
   #                      made.
   # ------------------------------------------------------------------
   private method toolbar_add_button {name class command balloon args} {
-    
+
     lappend button_list \
             [eval _register_button 1 \$name \$class \$command \$balloon $args]
-    
+
   }
 
   # ------------------------------------------------------------------
@@ -141,7 +141,7 @@ itcl::class GDBToolBar {
     set Buttons($lname,align) $button_align
     eval label $lname -text \$text $args
     balloon register $lname $balloon
-    lappend button_list $lname    
+    lappend button_list $lname
   }
 
   # ------------------------------------------------------------------
@@ -161,13 +161,13 @@ itcl::class GDBToolBar {
   }
 
   # ------------------------------------------------------------------
-  #  PRIVATE METHOD:  toolbar_add_button_separator - 
+  #  PRIVATE METHOD:  toolbar_add_button_separator -
   # ------------------------------------------------------------------
 
   private method toolbar_add_button_separator {} {
     lappend button_list -
   }
- 
+
   # ------------------------------------------------------------------
   #  PRIVATE METHOD:  _register_button - Creates all the bookkeeping
   #           for a button,  without actually inserting it in the toolbar.
@@ -185,7 +185,7 @@ itcl::class GDBToolBar {
     foreach elem $class {
       switch $elem {
 	None {}
-	default { 
+	default {
 	  lappend button_classes($elem) $name
 	}
       }
@@ -194,20 +194,20 @@ itcl::class GDBToolBar {
    # If the button is not going to be inserted now...
    if {! $ins} {
      # This is a bit of a hack, but I need to bind the standard_toolbar bindings
-     # and appearances to these externally, since I am not inserting them in 
+     # and appearances to these externally, since I am not inserting them in
      # the original toolbar...
      # FIXME:  Have to add a method to the libgui toolbar to do this.
 
      # Make sure the button acts the way we want, not the default Tk way.
      $bname configure -takefocus 0 -highlightthickness 0 \
-                      -relief flat -borderwidth 1	
+                      -relief flat -borderwidth 1
      set index [lsearch -exact [bindtags $bname] Button]
      bindtags $bname [lreplace [bindtags $bname] $index $index ToolbarButton]
     }
 
     return $bname
   }
- 
+
   # ------------------------------------------------------------------
   #  METHOD:  create - Creates all the bookkeeping for a button,
   #           without actually inserting it in the toolbar.
@@ -218,25 +218,25 @@ itcl::class GDBToolBar {
   }
 
   # ------------------------------------------------------------------
-  #  METHOD:  itemconfigure - 
+  #  METHOD:  itemconfigure -
   # ------------------------------------------------------------------
-  
+
   method itemconfigure {button args} {
     eval $Buttons($button) configure $args
   }
 
   # ------------------------------------------------------------------
-  #  METHOD:  itembind - 
+  #  METHOD:  itembind -
   # ------------------------------------------------------------------
-  
+
   method itembind {button key cmd} {
     eval [list bind $Buttons($button) $key $cmd]
   }
 
   # ------------------------------------------------------------------
-  #  METHOD:  itemballoon - 
+  #  METHOD:  itemballoon -
   # ------------------------------------------------------------------
-  
+
   method itemballoon {button text} {
     eval [list balloon register $Buttons($button) $text]
   }
@@ -282,7 +282,7 @@ itcl::class GDBToolBar {
 
     grid $Buttons($name) -column [expr $before_col + $add_sep] \
       -row $before_row -pady 2
-    
+
   }
 
   # ------------------------------------------------------------------
@@ -304,7 +304,7 @@ itcl::class GDBToolBar {
 
     set name_col [gridCGet $Buttons($name) -column]
     set name_row [gridCGet $Buttons($name) -row]
-    
+
     grid remove $Buttons($name)
     if {$remove_sep} {
       set Buttons(-$name) [grid slaves $ButtonFrame \
@@ -321,20 +321,20 @@ itcl::class GDBToolBar {
               && $Buttons($slave,align) == "right")} {
 	grid configure $slave -column [expr $slave_col - 1 - $remove_sep]
       }
-    }    
+    }
   }
 
   # ------------------------------------------------------------------
-  #  METHOD:  toolbar_button_right_justify - 
+  #  METHOD:  toolbar_button_right_justify -
   # ------------------------------------------------------------------
-  
+
   method toolbar_button_right_justify {} {
     lappend button_list --
     set button_align "right"
   }
 
   # ------------------------------------------------------------------
-  #  METHOD:  toolbar_swap_button_lists - 
+  #  METHOD:  toolbar_swap_button_lists -
   # ------------------------------------------------------------------
 
   method toolbar_swap_button_lists {in_list out_list} {

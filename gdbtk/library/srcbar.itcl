@@ -133,7 +133,7 @@ itcl::class SrcBar {
     create_plugin_menu
 
     create_pref_menu
-    
+
     create_help_menu
 
     return 1
@@ -206,9 +206,9 @@ itcl::class SrcBar {
   }
 
   # ------------------------------------------------------------------
-  #  METHOD:  create_file_menu - Creates the standard file menu. 
+  #  METHOD:  create_file_menu - Creates the standard file menu.
   # ------------------------------------------------------------------
-  
+
   private method create_file_menu {} {
 
     $Menu add menubutton file "File" 0 -postcommand [code $this _post file]
@@ -216,10 +216,10 @@ itcl::class SrcBar {
   }
 
   # ------------------------------------------------------------------
-  #  METHOD:  create_run_menu - Creates the standard run menu, 
+  #  METHOD:  create_run_menu - Creates the standard run menu,
   #  or reconfigures it if it already exists.
   # ------------------------------------------------------------------
-  
+
   private method create_run_menu {} {
 
     if {![$Menu exists Run]} {
@@ -227,7 +227,7 @@ itcl::class SrcBar {
     } else {
       set run_menu [$Menu clear Run]
     }
-    
+
     set is_native [TargetSelection::native_debugging]
 
     if {$is_native} {
@@ -267,11 +267,11 @@ itcl::class SrcBar {
     }
 
     if { [pref get gdb/mode] } {
-      $Menu add separator 
+      $Menu add separator
 
       $Menu add command Other "Start collection" "$this do_tstop" \
 	-underline 0 -accelerator "Ctrl+B"
-         
+
       $Menu add command Other "Stop collection" "$this do_tstop" \
 	-underline 0  -accelerator "Ctrl+E" -state disabled
     }
@@ -280,31 +280,31 @@ itcl::class SrcBar {
   # ------------------------------------------------------------------
   #  METHOD:  create_view_menu - Creates the standard view menu
   # ------------------------------------------------------------------
-  
+
   private method create_view_menu {} {
 
     $Menu add menubutton view "View" 0
 
     $Menu add command Other "Stack" {ManagedWin::open StackWin} \
-      -underline 0 -accelerator "Ctrl+S" 
-      
+      -underline 0 -accelerator "Ctrl+S"
+
     $Menu add command Other "Registers" {ManagedWin::open RegWin} \
-      -underline 0 -accelerator "Ctrl+R" 
-      
+      -underline 0 -accelerator "Ctrl+R"
+
     $Menu add command Other "Memory" {ManagedWin::open MemWin} \
-      -underline 0 -accelerator "Ctrl+M" 
-      
+      -underline 0 -accelerator "Ctrl+M"
+
     $Menu add command Other "Watch Expressions" \
       {ManagedWin::open WatchWin} \
-      -underline 0 -accelerator "Ctrl+T" 
+      -underline 0 -accelerator "Ctrl+T"
     $Menu add command Other "Local Variables" \
       {ManagedWin::open LocalsWin} \
-      -underline 0 -accelerator "Ctrl+L" 
+      -underline 0 -accelerator "Ctrl+L"
 
     if {[pref get gdb/control_target]} {
       $Menu add command Other "Breakpoints" \
 	{ManagedWin::open BpWin -tracepoints 0} \
-	-underline 0 -accelerator "Ctrl+B" 
+	-underline 0 -accelerator "Ctrl+B"
     }
 
     if {[pref get gdb/mode]} {
@@ -316,11 +316,11 @@ itcl::class SrcBar {
     }
 
     $Menu add command Other "Console" {ManagedWin::open Console} \
-      -underline 2 -accelerator "Ctrl+N" 
-      
+      -underline 2 -accelerator "Ctrl+N"
+
     $Menu add command Other "Function Browser" \
       {ManagedWin::open BrowserWin} \
-      -underline 1 -accelerator "Ctrl+F" 
+      -underline 1 -accelerator "Ctrl+F"
     $Menu add command Other "Thread List" \
       {ManagedWin::open ProcessWin} \
       -underline 0 -accelerator "Ctrl+H"
@@ -335,34 +335,34 @@ itcl::class SrcBar {
   # ------------------------------------------------------------------
   #  METHOD:  create_control_menu - Creates the standard control menu
   # ------------------------------------------------------------------
-  
+
   private method create_control_menu {} {
 
     $Menu add menubutton cntrl "Control" 0
-    
+
     $Menu add command Control "Step" [code $source inferior step] \
       -underline 0 -accelerator S
-    
+
     $Menu add command Control "Next" [code $source inferior next] \
       -underline 0 -accelerator N
-    
+
     $Menu add command Control "Finish" \
       [code $source inferior finish] \
       -underline 0 -accelerator F
-    
+
     $Menu add command Control "Continue" \
       [code $source inferior continue] \
       -underline 0 -accelerator C
-    
+
     $Menu add separator
     $Menu add command Control "Step Asm Inst" \
       [code $source inferior stepi] \
       -underline 1 -accelerator S
-    
+
     $Menu add command Control "Next Asm Inst" \
       [code $source inferior nexti] \
       -underline 1 -accelerator N
-    
+
     # $Menu add separator
     # $Menu add command Other "Automatic Step" auto_step
   }
@@ -370,11 +370,11 @@ itcl::class SrcBar {
   # ------------------------------------------------------------------
   #  METHOD:  create_trace_menu - Creates the standard trace menu
   # ------------------------------------------------------------------
-  
+
   private method create_trace_menu {} {
 
     $Menu add menubutton trace "Trace" 0
-    
+
     $Menu add command Other "Save Trace Commands..." \
       "save_trace_commands" \
       -underline 0
@@ -383,30 +383,30 @@ itcl::class SrcBar {
 
     $Menu add command Trace "Next Hit" {tfind_cmd tfind} \
       -underline 0 -accelerator N
-    
+
     $Menu add command Trace "Previous Hit" {tfind_cmd "tfind -"} \
       -underline 0 -accelerator P
-    
+
     $Menu add command Trace "First Hit" {tfind_cmd "tfind start"} \
       -underline 0 -accelerator F
-    
+
     $Menu add command Trace "Next Line Hit" \
       {tfind_cmd "tfind line"} \
       -underline 5 -accelerator L
-    
+
     $Menu add command Trace "Next Hit Here" \
       {tfind_cmd "tfind tracepoint"} \
       -underline 9 -accelerator H
-    
+
     $Menu add separator
     $Menu add command Trace "Tfind Line..." \
       "ManagedWin::open TfindArgs -Type LN" \
       -underline 9 -accelerator E
-    
+
     $Menu add command Trace "Tfind PC..." \
       "ManagedWin::open TfindArgs -Type PC" \
       -underline 7 -accelerator C
-    
+
     $Menu add command Trace "Tfind Tracepoint..." \
       "ManagedWin::open TfindArgs -Type TP" \
       -underline 6 -accelerator T
@@ -418,7 +418,7 @@ itcl::class SrcBar {
 
   # ------------------------------------------------------------------
   #  METHOD:  create_plugin_menu - Creates the optional plugin menu
-  # ------------------------------------------------------------------  
+  # ------------------------------------------------------------------
   private method create_plugin_menu {} {
     global gdb_plugins
 
@@ -440,14 +440,14 @@ itcl::class SrcBar {
 
   # ------------------------------------------------------------------
   #  METHOD:  create_pref_menu - Creates the standard preferences menu
-  # ------------------------------------------------------------------  
+  # ------------------------------------------------------------------
   private method create_pref_menu {} {
 
     $Menu add menubutton pref "Preferences" 0
-    
+
     $Menu add command Other "Global..." \
       "ManagedWin::open GlobalPref -transient" -underline 0
-    
+
     $Menu add command Other "Source..." \
       "ManagedWin::open SrcPref -transient" -underline 0
 
@@ -482,7 +482,7 @@ itcl::class SrcBar {
 
   # ------------------------------------------------------------------
   #  METHOD:  create_help_menu - Creates the standard help menu
-  # ------------------------------------------------------------------  
+  # ------------------------------------------------------------------
   private method create_help_menu {} {
     # KDE and GNOME like the help menu to be the last item in the menubar.
     # The default Unix behavior is to be at the far right of the menubar.
@@ -506,7 +506,7 @@ itcl::class SrcBar {
   # Private.  Used at contruction time.
   # These were previously at the GDBToolBar...
   ####################################################################
-  
+
   # ------------------------------------------------------------------
   #  METHOD:  create_buttons - Add some buttons to the toolbar.
   #                         Returns list of buttons in form acceptable
@@ -594,40 +594,40 @@ itcl::class SrcBar {
   # ------------------------------------------------------------------
   #  METHOD:  create_control_buttons - Creates the step, continue, etc buttons.
   # ------------------------------------------------------------------
-  
+
   private method create_control_buttons {} {
     $Tool add button step Control [code $source inferior step] \
       "Step (S)" -image step_img
-    
+
     $Tool add button next Control [code $source inferior next] \
       "Next (N)" -image next_img
-    
+
     $Tool add button finish Control [code $source inferior finish] \
       "Finish (F)" -image finish_img
-    
+
     $Tool add button continue Control [code $source inferior continue] \
       "Continue (C)" -image continue_img
-    
+
     # A spacer before the assembly-level items looks good.  It helps
     # to indicate that these are somehow different.
     $Tool add separator
-    
+
     $Tool add button stepi Control [code $source inferior stepi] \
       "Step Asm Inst (S)" -image stepi_img
-    
+
     $Tool add button nexti Control [code $source inferior nexti] \
       "Next Asm Inst (N)" -image nexti_img
-    
+
     _set_stepi
 
     set Run_control_buttons {step next finish continue -stepi nexti}
-    
+
   }
 
   # ------------------------------------------------------------------
   #  METHOD:  create_trace_buttons - Creates the next hit, etc.
   # ------------------------------------------------------------------
-  
+
   private method create_trace_buttons {{show 0}} {
 
     if {$show} {
@@ -638,15 +638,15 @@ itcl::class SrcBar {
 
     $Tool $command tfindstart Trace {tfind_cmd "tfind start"} "First Hit <F>" \
       -image rewind_img
-    
+
     $Tool $command tfind Trace {tfind_cmd tfind} "Next Hit <N>" -image next_hit_img
-    
+
     $Tool $command tfindprev Trace {tfind_cmd "tfind -"} "Previous Hit <P>" \
       -image prev_hit_img
-    
+
     $Tool $command tfindline Trace {tfind_cmd "tfind line"} "Next Line Hit <L>" \
       -image next_line_img
-    
+
     $Tool $command tfindtp Trace { tfind_cmd "tfind tracepoint"} \
       "Next Hit Here <H>" -image next_check_img
 
@@ -656,7 +656,7 @@ itcl::class SrcBar {
   # ------------------------------------------------------------------
   #  METHOD:  create_window_buttons - Creates the registers, etc, buttons
   # ------------------------------------------------------------------
-  
+
   private method create_window_buttons {} {
     $Tool add button reg Other {ManagedWin::open RegWin} \
                            "Registers (Ctrl+R)" -image reg_img
@@ -682,7 +682,7 @@ itcl::class SrcBar {
       $Tool add button tp Other \
         {ManagedWin::open BpWin -tracepoints 1} \
 	"Tracepoints (Ctrl+T)" -image tp_img
-      
+
       $Tool add button tdump Trace {ManagedWin::open TdumpWin} \
                                "Tdump (Ctrl+D)" -image tdump_img
     }
@@ -694,7 +694,7 @@ itcl::class SrcBar {
   # ------------------------------------------------------------------
   #  METHOD:  create_stack_buttons - Creates the up down bottom stack buttons
   # ------------------------------------------------------------------
-  
+
   private method create_stack_buttons {} {
 
     $Tool add button down {Trace Control} \
@@ -714,7 +714,7 @@ itcl::class SrcBar {
   ####################################################################
   #
   # Auxiliary methods used by the toolbar
-  # 
+  #
   ####################################################################
 
   # ------------------------------------------------------------------
@@ -793,7 +793,7 @@ itcl::class SrcBar {
   #  METHOD:  _set_stepi - Set state of stepi/nexti buttons.
   # ------------------------------------------------------------------
   public method _set_stepi {} {
-    
+
     # Only do this in synchronous mode
     if {!$Tracing} {
       # In source-only mode, disable these buttons.  Otherwise, enable
@@ -812,7 +812,7 @@ itcl::class SrcBar {
   ####################################################################
   #
   # State control methods used by both the menu and the toolbar
-  # 
+  #
   ####################################################################
 
   # ------------------------------------------------------------------
@@ -833,7 +833,7 @@ itcl::class SrcBar {
   }
 
   # ------------------------------------------------------------------
-  #  METHOD:  set_control_mode - sets up the srcbar for browsing 
+  #  METHOD:  set_control_mode - sets up the srcbar for browsing
   #  a trace experiment.
   #   mode: 1 => browse mode
   #         0 => control mode
@@ -891,7 +891,7 @@ itcl::class SrcBar {
   #
   #  FIXME: Should not be accessing the base class internal data
   #         As the spec says, one must clear the menu and recreate it.
-  # ------------------------------------------------------------------  
+  # ------------------------------------------------------------------
   public method set_variable {event} {
     set varname [$event get variable]
     set value   [$event get value]
@@ -1001,7 +1001,7 @@ itcl::class SrcBar {
   ####################################################################
   #
   # Execute actions corresponding to menu events
-  # 
+  #
   ####################################################################
 
   # ------------------------------------------------------------------
@@ -1026,9 +1026,9 @@ itcl::class SrcBar {
     gdb_cmd "kill"
     run_hooks gdb_no_inferior_hook
   }
-  
+
   # ------------------------------------------------------------------
-  # METHOD:  do_connect: connect to a remote target 
+  # METHOD:  do_connect: connect to a remote target
   #                      in asynch mode if async is 1
   # ------------------------------------------------------------------
   method do_connect {menu {async 0}} {
@@ -1048,15 +1048,15 @@ itcl::class SrcBar {
   }
 
   # ------------------------------------------------------------------
-  # METHOD:  do_disconnect: disconnect from a remote target 
-  #                               in asynch mode if async is 1.   
-  #   
+  # METHOD:  do_disconnect: disconnect from a remote target
+  #                               in asynch mode if async is 1.
+  #
   # ------------------------------------------------------------------
   method do_disconnect {menu {async 0}} {
     debug "$menu $async"
     #
     # For now, these are the same, but they might be different...
-    # 
+    #
 
     gdbtk_disconnect $async
 
@@ -1067,7 +1067,7 @@ itcl::class SrcBar {
   ####################################################################
   #
   # Execute actions corresponding to toolbar events
-  # 
+  #
   ####################################################################
 
   # ------------------------------------------------------------------
@@ -1098,13 +1098,13 @@ itcl::class SrcBar {
   #
   # Execute actions that can be activated by both menu entries and
   # toolbar buttons
-  # 
+  #
   ####################################################################
 
   # ------------------------------------------------------------------
   # METHOD:  do_tstop: Change the GUI state, then do the tstop or
-  #                    tstart command, whichever is appropriate.   
-  #   
+  #                    tstart command, whichever is appropriate.
+  #
   # ------------------------------------------------------------------
   method do_tstop {} {
     debug "do_tstop called... Collecting is $Collecting"
@@ -1116,7 +1116,7 @@ itcl::class SrcBar {
 
       if {$Browsing} {
 	set ret [tk_messageBox -title "Warning" -message \
-"You are currently browsing a trace experiment. 
+"You are currently browsing a trace experiment.
 This command will clear the results of that experiment.
 Do you want to continue?" \
 		   -icon warning -type okcancel -default ok]
@@ -1141,7 +1141,7 @@ Do you want to continue?" \
       # Stop the trace experiment
       #
 
-      if {[tstop]} {	
+      if {[tstop]} {
         # FIXME: Must enable the Stop Collection menu item and
         # disable the Start Collection item
         $Tool itemconfigure tstop -image Movie_on_img
@@ -1193,7 +1193,7 @@ Do you want to continue?" \
   private common _loaded_src_images 0
 
   # These buttons go in the control area when we are browsing
-  protected variable Trace_control_buttons 
+  protected variable Trace_control_buttons
 
   # And these go in the control area when we are running
   protected variable Run_control_buttons

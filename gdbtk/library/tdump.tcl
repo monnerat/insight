@@ -74,7 +74,7 @@ itcl::class TdumpWin {
 	  -type ok
       } else {
 	#debug "tdum output is $tdump_output"
-	
+
 	$itk_component(stext) insert end $tdump_output
 	$itk_component(stext) see insert
       }

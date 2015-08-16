@@ -281,7 +281,7 @@ do_special_tests (void)
   int array[21];
   int a;
 
-  a = 1;   
+  a = 1;
   incr_a(2);
 }
 
@@ -295,4 +295,4 @@ main (int argc, char *argv [])
   exit (0);
 }
 
-  
+

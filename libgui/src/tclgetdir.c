@@ -187,7 +187,7 @@ get_directory_command (ClientData cd, Tcl_Interp *interp, int argc,
      allocator, but cygwin32 doesn't define the required interfaces
      yet.  */
 
-  
+
 
   /* Normalize the path for Tcl.  */
 #if (TCL_MAJOR_VERSION >= 8) && (TCL_MINOR_VERSION >= 1)

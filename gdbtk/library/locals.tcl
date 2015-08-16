@@ -27,14 +27,14 @@ itcl::class LocalsWin {
     gdbtk_busy
     build_win $itk_interior
     gdbtk_idle
-    
+
     add_hook gdb_no_inferior_hook "$this no_inferior"
     add_hook gdb_clear_file_hook [code $this clear_file]
     add_hook file_changed_hook [code $this clear_file]
 
     update dummy
   }
-  
+
 
   # ------------------------------------------------------------------
   #   PUBLIC METHOD:  busy - BusyEvent handler
@@ -70,7 +70,7 @@ itcl::class LocalsWin {
     set _frame {}
     $tree remove all
   }
-  
+
   # ------------------------------------------------------------------
   #  METHOD:  cursor - change the toplevel's cursor
   # ------------------------------------------------------------------
@@ -78,18 +78,18 @@ itcl::class LocalsWin {
     [winfo toplevel [namespace tail $this]] configure -cursor $what
     ::update idletasks
   }
-  
-  
+
+
   # ------------------------------------------------------------------
-  # METHOD: build_win - build window for variables. 
+  # METHOD: build_win - build window for variables.
   # ------------------------------------------------------------------
   method build_win {f} {
     #debug "$f"
-    
+
     set tree [VarTree $f.tree -type "local"]
     pack $f.tree -expand yes -fill both
     pack $f -expand yes -fill both
-    
+
     window_name "Local Variables"
     ::update idletasks
   }
@@ -137,14 +137,14 @@ itcl::class LocalsWin {
       # the stack layout, we could be more intelligent about
       # destroying variables, but we don't know that here (yet).
       debug "switching to frame at $current_frame"
-      
+
       # Destroy the old frame and create the new one
       catch {destroy $_frame}
       set _frame [Frame ::\#auto $current_frame]
       debug "created new frame: $_frame at [$_frame address]"
       return 1
     }
-    
+
     # Nothing changed
     #debug "3"
     return 0
@@ -157,7 +157,7 @@ itcl::class LocalsWin {
     # Check that a context switch has not occured
     if {[context_switch]} {
       debug "CONTEXT SWITCH"
-      
+
       # delete variables in tree
       $tree remove all
 
@@ -168,10 +168,10 @@ itcl::class LocalsWin {
       if {$_frame == ""} {return}
       # check for any new variables in the same frame
       $tree add [$_frame new]
-    }    
+    }
     after idle [code $tree update]
   }
-  
+
   protected variable Entry
   protected variable tree
   protected variable _frame {}

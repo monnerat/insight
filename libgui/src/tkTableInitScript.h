@@ -1,4 +1,4 @@
-/* 
+/*
  * tkTableInitScript.h --
  *
  *	This file contains common init script for tkTable

@@ -1,5 +1,5 @@
 #
-# Panedwindow  
+# Panedwindow
 # ----------------------------------------------------------------------
 # Implements a very general panedwindow which allows for mixing resizable
 # and non-resizable panes.  It also allows limits to be set on individual
@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------
 
 # Portions of this code are originally from the iwidget panedwindow which
-# is Copyright (c) 1995 DSC Technologies Corporation 
+# is Copyright (c) 1995 DSC Technologies Corporation
 
 itk::usual PanedWindow {
   keep -background -cursor
@@ -88,7 +88,7 @@ itcl::class cyg::PanedWindow {
 
 #
 # Provide a lowercased access method for the PanedWindow class.
-# 
+#
 proc ::cyg::panedwindow {pathName args} {
   uplevel ::cyg::PanedWindow $pathName $args
 }
@@ -106,11 +106,11 @@ itcl::body cyg::PanedWindow::constructor {args} {
   itk_option add hull.width hull.height
 
   pack propagate $itk_component(hull) no
-  
+
   bind pw-config-$this <Configure> [code $this _eventHandler %w %h]
   bindtags $itk_component(hull) \
     [linsert [bindtags $itk_component(hull)] 0 pw-config-$this]
-  
+
   eval itk_initialize $args
 }
 
@@ -153,7 +153,7 @@ itcl::configbody cyg::PanedWindow::orient {
 itcl::configbody cyg::PanedWindow::sashwidth {
   set pixels [winfo pixels $itk_component(hull) $itk_option(-sashwidth)]
   set itk_option(-sashwidth) $pixels
-  
+
   if {$_initialized} {
     # FIXME
     for {set i 1} {$i < [llength $_panes]} {incr i} {
@@ -187,10 +187,10 @@ itcl::configbody cyg::PanedWindow::sashcolor {
 # ------------------------------------------------------------------
 # METHOD: index index
 #
-# Searches the panes in the paned window for the one with the 
-# requested tag, numerical index, or keyword "end".  Returns the pane's 
+# Searches the panes in the paned window for the one with the
+# requested tag, numerical index, or keyword "end".  Returns the pane's
 # numerical index if found, otherwise error.
-# ------------------------------------------------------------------    
+# ------------------------------------------------------------------
 itcl::body cyg::PanedWindow::index {index} {
   if {[llength $_panes] > 0} {
     if {[regexp {(^[0-9]+$)} $index]} {
@@ -216,13 +216,13 @@ itcl::body cyg::PanedWindow::index {index} {
 # ------------------------------------------------------------------
 # METHOD: childsite ?index?
 #
-# Given an index return the specifc childsite path name.  Invoked 
-# without an index return a list of all the child site panes.  The 
+# Given an index return the specifc childsite path name.  Invoked
+# without an index return a list of all the child site panes.  The
 # list is ordered from the near side (left/top).
 # ------------------------------------------------------------------
 itcl::body cyg::PanedWindow::childsite {args} {
   #puts "childsite $args ($_initialized)"
-  
+
   if {[llength $args] == 0} {
     set children {}
     foreach pane $_panes {
@@ -240,8 +240,8 @@ itcl::body cyg::PanedWindow::childsite {args} {
 # METHOD: add tag ?option value option value ...?
 #
 # Add a new pane to the paned window to the far (right/bottom) side.
-# The method takes additional options which are passed on to the 
-# pane constructor.  These include -margin, and -minimum.  The path 
+# The method takes additional options which are passed on to the
+# pane constructor.  These include -margin, and -minimum.  The path
 # of the pane is returned.
 # ------------------------------------------------------------------
 itcl::body cyg::PanedWindow::add {tag args} {
@@ -250,19 +250,19 @@ itcl::body cyg::PanedWindow::add {tag args} {
   } {
     keep -background -cursor
   }
-  
+
   lappend _panes $tag
   lappend _activePanes $tag
-  reset  
+  reset
   return $itk_component($tag)
 }
 
 # ------------------------------------------------------------------
 # METHOD: insert index tag ?option value option value ...?
 #
-# Insert the specified pane in the paned window just before the one 
-# given by index.  Any additional options which are passed on to the 
-# pane constructor.  These include -margin, -minimum.  The path of 
+# Insert the specified pane in the paned window just before the one
+# given by index.  Any additional options which are passed on to the
+# pane constructor.  These include -margin, -minimum.  The path of
 # the pane is returned.
 # ------------------------------------------------------------------
 itcl::body cyg::PanedWindow::insert {index tag args} {
@@ -271,10 +271,10 @@ itcl::body cyg::PanedWindow::insert {index tag args} {
   } {
     keep -background -cursor
   }
-  
+
   set index [index $index]
   set _panes [linsert $_panes $index $tag]
-  lappend _activePanes $tag  
+  lappend _activePanes $tag
   reset
   return $itk_component($tag)
 }
@@ -291,14 +291,14 @@ itcl::body cyg::PanedWindow::delete {index} {
   # remove the itk component
   destroy $itk_component($tag)
   # remove it from panes list
-  set _panes [lreplace $_panes $index $index]  
-  
+  set _panes [lreplace $_panes $index $index]
+
   # remove its _frac value
   set ind [lsearch -exact $_activePanes $tag]
   if {$ind != -1 && [info exists _frac($ind)]} {
     unset _frac($ind)
   }
-  
+
   # this will reset _activePane and resize things
   reset
 }
@@ -306,12 +306,12 @@ itcl::body cyg::PanedWindow::delete {index} {
 # ------------------------------------------------------------------
 # METHOD: hide index
 #
-# Remove the specified pane from the paned window. 
+# Remove the specified pane from the paned window.
 # ------------------------------------------------------------------
 itcl::body cyg::PanedWindow::hide {index} {
   set index [index $index]
   set tag [lindex $_panes $index]
-  
+
   if {[set idx [lsearch -exact $_activePanes $tag]] != -1} {
     set _activePanes [lreplace $_activePanes $idx $idx]
     if {[info exists _frac($idx)]} {unset _frac($idx)}
@@ -341,7 +341,7 @@ itcl::body cyg::PanedWindow::replace {pane1 pane2} {
 itcl::body cyg::PanedWindow::show {index} {
   set index [index $index]
   set tag [lindex $_panes $index]
-  
+
   if {[lsearch -exact $_activePanes $tag] == -1} {
     lappend _activePanes $tag
   }
@@ -353,7 +353,7 @@ itcl::body cyg::PanedWindow::show {index} {
 # METHOD: paneconfigure index ?option? ?value option value ...?
 #
 # Configure a specified pane.  This method allows configuration of
-# panes from the PanedWindow level.  The options may have any of the 
+# panes from the PanedWindow level.  The options may have any of the
 # values accepted by the add method.
 # ------------------------------------------------------------------
 itcl::body cyg::PanedWindow::paneconfigure {index args} {
@@ -385,7 +385,7 @@ itcl::body cyg::PanedWindow::reset {} {
 itcl::body cyg::PanedWindow::_setActivePanes {} {
   set _prevActivePanes $_activePanes
   set _activePanes {}
-  
+
   foreach pane $_panes {
     if {[lsearch -exact $_prevActivePanes $pane] != -1} {
       lappend _activePanes $pane
@@ -410,7 +410,7 @@ itcl::body cyg::PanedWindow::_eventHandler {width height} {
     set _dimension $_width
     set _dir "width"
   }
-  
+
   if {$_initialized} {
     _resizeArray
     _placePanes
@@ -504,7 +504,7 @@ itcl::body cyg::PanedWindow::_resizeArray {} {
 	}
       }
     }
-    
+
     # bounds checking; look for panes that are too small or too large
     # if one is found, fix its size at the min or max and mark the
     # window non-resizable. Adjust percents and try again.
@@ -596,7 +596,7 @@ itcl::body cyg::PanedWindow::_resizeArray {} {
 # ------------------------------------------------------------------
 itcl::body cyg::PanedWindow::_startDrag {num} {
   #puts "startDrag $num"
-  
+
   set _minsashmoved $num
   set _maxsashmoved $num
 
@@ -612,7 +612,7 @@ itcl::body cyg::PanedWindow::_endDrag {where num} {
   #puts "endDrag $where $num"
 
   grab release $itk_component(sash$num)
-  
+
   # set new _frac values
   for {set i [expr $_minsashmoved-1]} {$i <= $_maxsashmoved} {incr i} {
     set _frac($i) \
@@ -663,7 +663,7 @@ itcl::body cyg::PanedWindow::_calcPos {where num {direction ""}} {
   set dir [expr $where - $_ploc($num)]
   #puts "calcPos $where $num $dir $direction"
   if {$dir == 0} { return }
-  
+
   # simplify expressions by computing these now
   set m [expr $num-1]
   set p [expr $num+1]
@@ -686,7 +686,7 @@ itcl::body cyg::PanedWindow::_calcPos {where num {direction ""}} {
   set upper2 [expr $_ploc($p) - $_pmin($num)]
 
   set done 0
-  
+
   #puts "lower1=$lower1 lower2=$lower2 _min($num)=$_min($num)"
   #puts "upper1=$upper1 upper2=$upper2 _max($num)=$_max($num)"
   if {$dir < 0 && $where > $_min($num)} {
@@ -749,7 +749,7 @@ itcl::body cyg::PanedWindow::_makeSashes {} {
   foreach sash $_sashes {
     destroy $itk_component($sash)
   }
-  
+
   set _sashes {}
   set skipped_first 0
   #
@@ -773,11 +773,11 @@ itcl::body cyg::PanedWindow::_makeSashes {} {
 	  keep -background
 	}
 	lappend _sashes sash$id
-	
+
 	set com $itk_component(sash$id)
 	$com configure -background $itk_option(-sashcolor)
 	bind $com <Button-1> [code $this _startDrag $id]
-	
+
 	switch $itk_option(-orient) {
 	  vertical {
 	    bind $com <B1-Motion> \
@@ -789,7 +789,7 @@ itcl::body cyg::PanedWindow::_makeSashes {} {
 	    # FIXME Windows should have a different cirsor
 	    $com configure -cursor sb_h_double_arrow
 	  }
-	  
+
 	  horizontal {
 	    bind $com <B1-Motion> \
 	      [code $this _handleDrag %y $id]
@@ -832,7 +832,7 @@ itcl::body cyg::PanedWindow::_placePanes {{start 0} {end end} {forget 0}} {
   #puts "placeplanes $start $end"
 
   if {!$_initialized} {
-    return 
+    return
   }
 
   if {$end=="end"} { set end [expr [llength $_activePanes] - 1] }
@@ -848,7 +848,7 @@ itcl::body cyg::PanedWindow::_placePanes {{start 0} {end end} {forget 0}} {
       place forget $itk_component($pane)
     }
   }
-  
+
   if {[string compare $itk_option(-orient) "vertical"]} {
     set i $start
     foreach pane $_updatePanes {
@@ -864,7 +864,7 @@ itcl::body cyg::PanedWindow::_placePanes {{start 0} {end end} {forget 0}} {
 	-y 0 -relx $_where($i) -relheight 1 \
 	-relwidth [expr $_where([expr $i + 1]) - $_where($i)]
       incr i
-    }    
+    }
   }
 
   for {set i [expr $start+1]} {$i <= $end} {incr i} {

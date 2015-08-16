@@ -15,7 +15,7 @@
 #  PUBLIC PROC:  dispatch - Dispatch the given event to all
 #                 event handlers. The name of the handler
 #                 method to call is stored in the event's
-#                 "handler" method.                  
+#                 "handler" method.
 # ------------------------------------------------------------
 itcl::body GDBEventHandler::dispatch {event} {
 

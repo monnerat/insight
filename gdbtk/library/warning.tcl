@@ -42,12 +42,12 @@ itcl::class WarningDlg {
 
   protected common ignore
 }
- 
+
 # -----------------------------------------------------------------------------
-# NAME: 
+# NAME:
 #       WarningDlg::constructor
 #
-# DESC: 
+# DESC:
 #       Creates the warning dialog.
 # -----------------------------------------------------------------------------
 itcl::body WarningDlg::constructor {args} {
@@ -62,30 +62,30 @@ itcl::body WarningDlg::constructor {args} {
     return
   } else {
     if {[info exists ignore($ignorable)]} {
-      if {$ignore($ignorable)} { 
+      if {$ignore($ignorable)} {
 	delete
-	return 
+	return
       }
     } else {
       set ignore($ignorable) 0
     }
   }
-  
+
   frame $itk_interior.f
   frame $itk_interior.f.a -relief raised -bd 1
   frame $itk_interior.f.b -relief raised -bd 1
   set f $itk_interior.f.a
-  
- 
+
+
   label $f.bitmap -bitmap warning
   label $f.lab -text $message
   pack $f.bitmap $f.lab -side left -padx 10 -pady 10
 
   if {$ignorable != ""} {
     checkbutton $itk_interior.f.b.ignore -text "Don't show this warning again" \
-      -variable [scope ignore($ignorable)] -anchor w 
+      -variable [scope ignore($ignorable)] -anchor w
   }
-  
+
   button $itk_interior.f.b.ok -text OK -underline 0 -command [code $this unpost]
   bind $itk_interior.f.b.ok <Return> \
     "$itk_interior.f.b.ok flash; $itk_interior.f.b.ok invoke"
@@ -95,8 +95,8 @@ itcl::body WarningDlg::constructor {args} {
     pack $itk_interior.f.b.ignore
   }
 
-  pack $itk_interior.f.b.ok -expand yes -side left 
-  pack $itk_interior.f.a 
+  pack $itk_interior.f.b.ok -expand yes -side left
+  pack $itk_interior.f.a
   pack $itk_interior.f.b  -fill x
   pack $itk_interior.f
 }

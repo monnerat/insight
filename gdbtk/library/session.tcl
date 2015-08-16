@@ -39,19 +39,19 @@ namespace eval Session {
     # directory, there is a ".gdbinit" file that will set
     # breakpoints on internal_error() and info_command().
     # If we then save and set them, they will accumulate.
-    # Possible fixes are to modify GDB so we can tell which 
-    # breakpoints were set from .gdbinit, or modify 
+    # Possible fixes are to modify GDB so we can tell which
+    # breakpoints were set from .gdbinit, or modify
     # _recreate_bps to record which breakpoints were
     # set before it was called.  For now, we simply detect the
     # most common case and fix it.
     set basename [string tolower [file tail $::gdb_exe_name]]
-    if {[string match "gdb*" $basename] 
+    if {[string match "gdb*" $basename]
 	|| [string match "insight*" $basename]} {
       set debugging_gdb 1
     } else {
       set debugging_gdb 0
     }
-    
+
     foreach bp_num [gdb_get_breakpoint_list] {
       lassign [gdb_get_breakpoint_info $bp_num] file function line_number \
 	address type enabled disposition ignore_count command_list \
@@ -59,13 +59,13 @@ namespace eval Session {
 
       # These breakpoints are set when debugging GDB with itself.
       # Ignore them so they don't accumulate. They get set again
-      # by .gdbinit anyway. 
+      # by .gdbinit anyway.
       if {$debugging_gdb} {
 	if {$function == "internal_error" || $function == "info_command"} {
 	  continue
 	}
       }
-      
+
       switch -glob -- $type {
 	"breakpoint" -
 	"hw breakpoint" {
@@ -110,13 +110,13 @@ namespace eval Session {
 
       lappend result [list $cmd $enabled $condition $command_list]
     }
-    
+
     return $result
   }
 
   # An internal function used when loading sessions.  It takes a
   # breakpoint string and recreates all the breakpoints.
-  proc _recreate_bps {specs} {  
+  proc _recreate_bps {specs} {
     foreach spec $specs {
       lassign $spec create enabled condition commands
 
@@ -182,7 +182,7 @@ namespace eval Session {
     set values(run_load) [pref get gdb/src/run_load]
     set values(run_run) [pref get gdb/src/run_run]
     set values(run_cont) [pref get gdb/src/run_cont]
-    
+
     # Breakpoints.
     set values(breakpoints) [_serialize_bps]
 
@@ -288,7 +288,7 @@ namespace eval Session {
       set ::gdb_target_cmd $values(target_cmd)
       set_baud
     }
-    
+
     if {[info exists values(run_attach)]} {
       pref set gdb/src/run_attach $values(run_attach)
       pref set gdb/src/run_load $values(run_load)

@@ -165,7 +165,7 @@ proc _gdbtk_export_target_info
   TARGET_INFO(run)    - (required) The complete "run" command, sans arguments,
 			to start a process on the target. For remote targets,
                         this is usually just "continue".
-  
+
 proc _gdbtk_xvfb_init
   This procedure actually determines whether the an Insight test should
   run and what DISPLAY it should use for that test. It is called by
@@ -307,7 +307,7 @@ proc gdbtk_test_done {}
   gdbtk_test_done is called at the very end of all tcl tests. It is used
   to exit Insight and return control back to the dejagnu driver which
   started the tests.
-  
+
 proc gdbtk_dotests {file args}
   Obsolete.
 
@@ -351,7 +351,7 @@ File: mytest.test
 1  if {![gdbtk_read_defs]} {
 2    break
 3  }
-4  
+4
 5  global objdir test_ran
 6  set program [file join $objdir mytest]
 7  if {[catch {gdbtk_test_file $program} t]} {

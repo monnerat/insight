@@ -44,7 +44,7 @@ itcl::class VarTree {
   common openbm
   common closedbm
   common initialized 0
-  common colors 
+  common colors
 
   private {
     method _init_data {}

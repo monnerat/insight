@@ -42,7 +42,7 @@ itcl::class Iipc {
     }
     set ::iipc 0
   }
-  
+
   private method init {} {
     debug "iipc init"
     set socklist {}

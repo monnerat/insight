@@ -60,7 +60,7 @@
 	(gdbtk_create_breakpoint): Change parameter from `int' to
 	`struct breakpoint *' and update function.
 	(gdbtk_delete_breakpoint): Likewise.
-	(gdbtk_modify_breakpoint): Likewise.	
+	(gdbtk_modify_breakpoint): Likewise.
 	(breakpoint_notify): Rewrite using ALL_BREAKPOINTS.
 
 2011-04-11  Keith Seitz  <keiths@redhat.com>

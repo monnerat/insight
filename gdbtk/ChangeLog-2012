@@ -123,7 +123,7 @@
 
 	* generic/gdbtk-bp.c: Updated copyright.
 	(gdb_find_bp_at_line): Don't access location struct
-	of breakpoint if it is NULL. 
+	of breakpoint if it is NULL.
 
 2012-04-13  Pierre Muller  <muller@ics.u-strasbg.fr>
 
@@ -138,17 +138,17 @@
 2012-03-30  Roland Schwingel  <roland.schwingel@onevision.com>
 
 	* library/globalpref.itb: Updated Copyright to 1997-2012 Red Hat, Inc.
-	(_build_win): Remove unneeded debug call. Fix packing of 
+	(_build_win): Remove unneeded debug call. Fix packing of
 	OK/Apply/Cancel buttons for newer tk versions. Small reformatting.
 
 2012-03-30  Roland Schwingel  <roland.schwingel@onevision.com>
 
 	* generic/gdbtk-register.c: Updated Copyright year to 2001-2012.
-	(get_register_types): Cast result of TYPE_FIELD_TYPE to size_t 
+	(get_register_types): Cast result of TYPE_FIELD_TYPE to size_t
 	instead of long.
 	(gdb_regformat): on windows 64bit use strtoll instead of strtol.
 	* generic/gdbtk-stack.c: Updated Copyright year to 2001-2012.
-	(gdb_get_vars_command): Don't cast clientData to long. Here 
+	(gdb_get_vars_command): Don't cast clientData to long. Here
 	checking of non NULL clientData is enough.
 
 2012-03-30  Roland Schwingel  <roland.schwingel@onevision.com>
@@ -167,7 +167,7 @@
 	* generic/gdbtk.c (gdbtk_init,tk_command): Replace deprecated access
 	to tcl interpreter result string with Tcl_GetStringResult().
 	* generic/gdbtk-hooks.c (gdbtk_read,gdbtk_readline,gdbtk_load_hash)
-	(gdbtk_query): Likewise. 
+	(gdbtk_query): Likewise.
 	(gdbtk_read): Simplified error handling in case "gdbtk_console_read"
 	fails. Some reformatting.
 

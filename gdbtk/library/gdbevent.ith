@@ -38,7 +38,7 @@ itcl::class GDBEvent {
 # ignore_count . BP's ignore count
 # commands ..... list of commands to run when BP hit
 # condition .... BP condition
-# thread ....... thread in which BP is set (or -1 for all threads) 
+# thread ....... thread in which BP is set (or -1 for all threads)
 # hit_count .... number of times BP has been hit
 # user_specification
 #             .. text the user initially used to set this breakpoint
@@ -92,7 +92,7 @@ itcl::class BreakpointEvent {
 # enabled ...... BP enabled?
 # pass_count ...
 # step_count ...
-# thread ....... thread in which BP is set (or -1 for all threads) 
+# thread ....... thread in which BP is set (or -1 for all threads)
 # hit_count .... number of times BP has been hit
 # actions ...... a list of actions to be performed when the tracepoint is hit
 itcl::class TracepointEvent {

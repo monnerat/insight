@@ -23,7 +23,7 @@ include $(srcdir)/tkTable_version.in
 TBL_COMMAND     = table
 
 tkTable.tcl.h: $(srcdir)/tkTable.tcl
-	sed -e '/^$\#/d' -e '/^$$/d' -e 's/\"/\\"/g' -e 's/^/"/' -e 's/$$/\\n"/' <$(srcdir)/tkTable.tcl >tkTable.tcl.h || rm tkTable.tcl.h 
+	sed -e '/^$\#/d' -e '/^$$/d' -e 's/\"/\\"/g' -e 's/^/"/' -e 's/$$/\\n"/' <$(srcdir)/tkTable.tcl >tkTable.tcl.h || rm tkTable.tcl.h
 
 
 

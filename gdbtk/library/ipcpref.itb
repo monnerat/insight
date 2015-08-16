@@ -27,7 +27,7 @@ itcl::body IPCPref::constructor {args} {
 itcl::body IPCPref::_init_var {} {
   set vlist [list gdb/ipc/enabled gdb/ipc/port gdb/ipc/step_button gdb/ipc/stop_button \
 	       gdb/ipc/cont_button gdb/ipc/exit gdb/ipc/run_button]
-  
+
   foreach var $vlist {
     set _saved($var) [pref get $var]
     set _new($var) $_saved($var)
@@ -91,7 +91,7 @@ itcl::body IPCPref::_apply {} {
   set enable_changed 0
   if {[pref get gdb/ipc/enabled] != $_new(gdb/ipc/enabled)} {
     set enable_changed 1
-  } 
+  }
   if {$_new(gdb/ipc/enabled) && [pref get gdb/ipc/port] != $_new(gdb/ipc/port)} {
     set enable_changed 1
   }

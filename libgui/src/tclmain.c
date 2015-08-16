@@ -55,7 +55,7 @@ ide_main (int argc, char *argv[], Tcl_AppInitProc *appInitProc)
 
   /* We set this to "1" so that the console window will work.  */
   Tcl_SetVar (interp, "tcl_interactive", "1", TCL_GLOBAL_ONLY);
- 
+
 #if IDE_ENABLED
     Tcl_SetVar (interp, "IDE_ENABLED", "1", TCL_GLOBAL_ONLY);
 #else

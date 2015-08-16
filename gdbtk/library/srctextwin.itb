@@ -42,7 +42,7 @@ itcl::body SrcTextWin::constructor {args} {
 				     [pref get gdb/src/thread_fg]]
     set break_images(bp_and_tp)   [makeBreakDot $size \
 				     [list [pref get gdb/src/trace_fg] \
-					[pref get gdb/src/bp_fg]]] 
+					[pref get gdb/src/bp_fg]]]
   }
 
   if {$ignore_var_balloons} {
@@ -50,21 +50,21 @@ itcl::body SrcTextWin::constructor {args} {
   } else {
     set UseVariableBalloons [pref get gdb/src/variableBalloons]
   }
-  
+
   set Linenums [pref get gdb/src/linenums]
-  
+
   #Initialize state variables
   _initialize_srctextwin
 
-  build_popups  
+  build_popups
   build_win
-  
+
   # add hooks
   if {$Tracing} {
     add_hook control_mode_hook "$this set_control_mode"
     add_hook gdb_trace_find_hook "$this trace_find_hook"
   }
-  
+
   if {$UseVariableBalloons} {
     add_hook gdb_idle_hook "$this updateBalloon"
   }
@@ -95,11 +95,11 @@ itcl::body SrcTextWin::trace_find_hook {tfnum tpnum} {
     if {$Browsing} {
       $twin tag remove STACK_TAG 1.0 end
     }
-  } 
+  }
 }
 
 # ------------------------------------------------------------------
-#  METHOD:  set_control_mode- switches the src window between 
+#  METHOD:  set_control_mode- switches the src window between
 #           browsing -> mode = 1
 #           controlling -> mode = 0
 # ------------------------------------------------------------------
@@ -110,7 +110,7 @@ itcl::body SrcTextWin::set_control_mode {mode} {
   } else {
     set Browsing 0
   }
-  
+
   switch $current(mode) {
     SOURCE {
       config_win $twin
@@ -125,8 +125,8 @@ itcl::body SrcTextWin::set_control_mode {mode} {
       config_win $twin
       config_win $bwin A
     }
-  }      
-  
+  }
+
 }
 
 # ------------------------------------------------------------------
@@ -146,7 +146,7 @@ itcl::body SrcTextWin::set_control_mode {mode} {
 # State:
 #    saved_y  - the y value of the mouse click that posted the popup
 #    saved_win- the Tk window which recieved the posting click
-# 
+#
 # Disable info:
 #    run_disabled - a list of {menu entry} pairs for all the menus that
 #                   should be disabled when you are not running
@@ -154,7 +154,7 @@ itcl::body SrcTextWin::set_control_mode {mode} {
 #                      when you are browsing a trace expt.
 #
 itcl::body SrcTextWin::build_popups {} {
-  
+
   set popups(bp) $itk_interior.bp_menu
   set popups(tp) $itk_interior.tp_menu
   set popups(bp_and_tp) $itk_interior.tp_bp_menu
@@ -167,56 +167,56 @@ itcl::body SrcTextWin::build_popups {} {
   if {![winfo exists $popups(source)]} {
     menu $popups(source) -tearoff 0
   }
-  
+
   if {![winfo exists $popups(break_rgn)]} {
     # breakpoint popup menu
     # don't enable hardware or conditional breakpoints until they are tested
     menu $popups(break_rgn) -tearoff 0
-    
+
     set bp_fg [pref get gdb/src/bp_fg]
     set tp_fg [pref get gdb/src/trace_fg]
-    
+
     if {[pref get gdb/control_target]} {
-      
+
       addPopup break_rgn "Continue to Here" "$this continue_to_here" \
 	[pref get gdb/src/PC_TAG] 0 0
       addPopup break_rgn "Jump to Here" "$this jump_to_here" \
 	[pref get gdb/src/PC_TAG] 0 0
       $popups(break_rgn) add separator
-      
-      addPopup break_rgn "Set Breakpoint" "$this set_bp_at_line" $bp_fg 
-      
+
+      addPopup break_rgn "Set Breakpoint" "$this set_bp_at_line" $bp_fg
+
       lappend popups(break_rgn-browse) 1
       lappend popups(break_rgn-control) 1
-      
+
       addPopup break_rgn "Set Temporary Breakpoint" "$this set_bp_at_line T" \
 	[pref get gdb/src/temp_bp_fg]
-      
+
       addPopup break_rgn "Set Breakpoint on Thread(s)..." \
 	"$this ask_thread_bp" [pref get gdb/src/thread_fg] 0 0
     }
-    
+
     if {$Tracing} {
       $popups(break_rgn) add separator
       addPopup break_rgn "Set Tracepoint" "$this set_tp_at_line" $tp_fg
     }
-    
+
   }
-  
+
   if {![winfo exists $popups(bp)]} {
     # this popup is used when the line contains a set breakpoint
     menu $popups(bp) -tearoff 0
-    
+
     if {!$Browsing && [pref get gdb/control_target]} {
       addPopup bp "Continue to Here" "$this continue_to_here" {} 0 0
       addPopup bp "Jump to Here" "$this jump_to_here" {} 0 0
-      $popups(bp) add separator    
+      $popups(bp) add separator
 
       addPopup bp "Disable Breakpoint" "$this enable_disable_at_line disable" \
 	$bp_fg
       $popups(bp) add separator
     }
-    
+
     addPopup bp "Delete Breakpoint" "$this remove_bp_at_line"
 
     # Currently you cannot set a tracepoint and a breakpoint at the same line...
@@ -228,48 +228,48 @@ itcl::body SrcTextWin::build_popups {} {
 
   if {![winfo exists $popups(tp)]} {
     # This is the popup to use when the line contains a set tracepoint
-    
+
     menu $popups(tp) -tearoff 0
-    
+
     if {[pref get gdb/control_target]} {
-      
+
       addPopup tp "Continue to Here" "$this continue_to_here" green 0 0
       addPopup tp "Jump to Here" "$this jump_to_here" {} 0 0
-      #	$popups(tp) add separator    
+      #	$popups(tp) add separator
 
       # Currently you cannot set a tracepoint and a breakpoint at the same line...
-      #      
+      #
       # 	addPopup tp "Set Breakpoint" "$this set_bp_at_line" $bp_fg
 
       # 	addPopup tp "Set Temporary Breakpoint" "$this set_bp_at_line T" \
 	# 	  [pref get gdb/src/temp_bp_fg]
-      
+
       # 	addPopup tp "Set Breakpoint on Thread(s)..." \
 	# 	  "$this ask_thread_bp" \
 	# 	  [pref get gdb/src/thread_fg] 0 0
     }
-    
+
     if {$Tracing} {
       $popups(tp) add separator
       addPopup tp "Modify Tracepoint" "$this set_tp_at_line" $tp_fg
       addPopup tp "Delete Tracepoint" "$this remove_tp_at_line" $tp_fg
     }
   }
-  
+
   # This is not currently used, since you can't set a bp & a tp on the same line.
   # N.B. however, we don't exclude this on the command line, but...
 
   if {![winfo exists $popups(bp_and_tp)]} {
-    
+
     # this popup is used when the line contains a set breakpoint & tracepoint
     menu $popups(bp_and_tp) -tearoff 0
-    
+
     if {!$Browsing && [pref get gdb/control_target]} {
       addPopup bp_and_tp "Continue to Here" "$this continue_to_here" \
 	green 0 0
       addPopup bp_and_tp "Jump to Here" "$this jump_to_here" \
 	green 0 0
-      $popups(bp_and_tp) add separator    
+      $popups(bp_and_tp) add separator
     }
 
     addPopup bp_and_tp "Delete Breakpoint" "$this remove_bp_at_line" $bp_fg
@@ -285,15 +285,15 @@ itcl::body SrcTextWin::build_popups {} {
 
     addPopup disabled_bp "Enable Breakpoint" \
       "$this enable_disable_at_line enable" $bp_fg
-    
+
     $popups(disabled_bp) add separator
     addPopup disabled_bp "Delete Breakpoint" "$this remove_bp_at_line"
   }
 
   if {![winfo exists $popups(tp_browse)]} {
-    
+
     # this popup is on a tracepoint when browsing.
-    
+
     menu $popups(tp_browse) -tearoff 0
     addPopup tp_browse "Next hit Here" "$this next_hit_at_line" \
       green
@@ -308,7 +308,7 @@ itcl::body SrcTextWin::build_win {} {
 
   set _tpane pane$filenum
   incr filenum
-  
+
   $itk_interior.p add $_tpane
   set pane1 [$itk_interior.p childsite $_tpane]
   set Stwc(gdbtk_scratch_widget:pane) $_tpane
@@ -387,7 +387,7 @@ itcl::body SrcTextWin::makeBreakDot {size colorList {image {}}} {
     $image configure -width $size -height $size
   }
 
-  if {[llength $colorList] == 1} { 
+  if {[llength $colorList] == 1} {
     set x1 1
     set x2 [expr {1 + $size}]
     set y1 1
@@ -402,7 +402,7 @@ itcl::body SrcTextWin::makeBreakDot {size colorList {image {}}} {
     $image put [lindex $colorList 0] -to 1 1 $x2 $y2
     $image put [lindex $colorList 1] -to [expr $x2 + 1] 1 $x3 $y2
   }
-  
+
   return $image
 }
 
@@ -413,7 +413,7 @@ itcl::body SrcTextWin::setTabs {win {asm S}} {
   set fsize [font measure [pref get gdb/src/font] "W"]
   set tsize [pref get gdb/src/tab_size]
   set rest ""
-  
+
   if {[string compare $asm "S"] != 0} {
     set first  [expr {$fsize * 12}]
     set second [expr {$fsize * 13}]
@@ -429,7 +429,7 @@ itcl::body SrcTextWin::setTabs {win {asm S}} {
     # tabs should be regularly spaced depending on prefs.
     if {$Linenums} {
       set first  [expr {$fsize * 6}]	;# "- " plus 4 digit line number
-      set second [expr {$fsize * 7}]	;# plus a space after the number 
+      set second [expr {$fsize * 7}]	;# plus a space after the number
       for {set i 1} {$i < 8} {incr i} {
 	lappend rest [expr {(7 + ($i * $tsize)) * $fsize}] left
       }
@@ -463,10 +463,10 @@ itcl::body SrcTextWin::enable_disable_src_tags {win how} {
   }
 
   if {[string compare $how browse] == 0} {
-    
+
     $win tag bind break_rgn_tag <Enter> { }
     $win tag bind break_rgn_tag <Leave> { }
-    
+
     foreach type $bp_types {
       $win tag bind ${type}_tag <Enter> { }
       $win tag bind ${type}_tag <Motion> { }
@@ -474,10 +474,10 @@ itcl::body SrcTextWin::enable_disable_src_tags {win how} {
     }
 
   } else {
-    
+
     $win tag bind break_rgn_tag <Enter> "$win config -cursor $cur1"
     $win tag bind break_rgn_tag <Leave> "$win config -cursor $cur2"
-    
+
     foreach type $bp_types {
       $win tag bind ${type}_tag <Enter> "$win config -cursor $cur1"
       $win tag bind ${type}_tag <Motion> "$this motion bp %W %x %y"
@@ -496,42 +496,42 @@ itcl::body SrcTextWin::enable_disable_src_tags {win how} {
 # ------------------------------------------------------------------
 itcl::body SrcTextWin::config_win {win {asm S}} {
 #  debug "$win $asm Tracing=$Tracing Browsing=$Browsing"
-  
+
   $win config -borderwidth 2 -insertwidth 0 -wrap none
-  
+
   # font
   set font [pref get gdb/src/font]
   $win configure -font $font -bg $::Colors(textbg) -fg $::Colors(textfg)
-  
+
   setTabs $win $asm
 
   # set up some tags.  should probably be done differently
   # !! change bg?
-  
+
   $win tag configure break_rgn_tag
   foreach type $bp_types {
-    $win tag configure ${type}_tag 
+    $win tag configure ${type}_tag
   }
-  $win tag configure tp_tag 
+  $win tag configure tp_tag
   $win tag configure source_tag2 -foreground [pref get gdb/src/source2_fg]
   $win tag configure PC_TAG -background [pref get gdb/src/PC_TAG]
   $win tag configure STACK_TAG -background [pref get gdb/src/STACK_TAG]
   $win tag configure BROWSE_TAG -background [pref get gdb/src/BROWSE_TAG]
-  
+
   # search tag used to highlight searches
   foreach option [$win tag configure sel] {
     set op [lindex $option 0]
     set val [lindex $option 4]
     eval $win tag configure search $op $val
   }
-  
+
   # bind mouse button 3 to the popup men
   $win tag bind source_tag <Button-3> "$this do_source_popup %X %Y %x %y"
   $win tag bind source_tag2 <Button-3> "$this do_source_popup %X %Y %x %y"
-  
+
   # bind mouse button 3 to the popup menus
   if {!$Browsing} {
-    
+
     $win tag bind break_rgn_tag <Button-3> \
       "$this do_tag_popup break_rgn %X %Y %y; break"
     foreach type $bp_types {
@@ -552,23 +552,23 @@ itcl::body SrcTextWin::config_win {win {asm S}} {
       $win tag bind ${type}_tag <Button-3> { }
     }
     $win tag bind bp_and_tp_tag <Button-3> "$this do_tag_popup tp_browse %X %Y %y; break"
-    
+
   }
-  
+
   # Disable printing and cut and paste keys; makes the window readonly
   # We do this so we don't have to enable and disable the
   # text widget everytime we want to modify it.
-  
+
   bind $win <Key> {if {"%A" != "{}"} {break}}
   bind $win <Delete> break
   bind $win <ButtonRelease-2> {break}
-  
+
   # GDB key bindings
   # We need to explicitly ignore keys with the Alt modifier, since
   # otherwise they will interfere with selecting menus on Windows.
-  
+
   if {!$Browsing && [pref get gdb/control_target]} {
-    bind_plain_key $win c "$this do_key continue; break" 
+    bind_plain_key $win c "$this do_key continue; break"
     bind_plain_key $win r "$this do_key run; break"
     bind_plain_key $win f "$this do_key finish; break"
   } else {
@@ -581,7 +581,7 @@ itcl::body SrcTextWin::config_win {win {asm S}} {
   bind_plain_key $win u "$this do_key up; break"
   bind_plain_key $win d "$this do_key down; break"
   bind_plain_key $win x "$this do_key quit; break"
-  
+
   if {!$Browsing && [pref get gdb/control_target]} {
     if {[string compare $asm "S"] != 0} {
       bind_plain_key $win s "$this do_key stepi; break"
@@ -591,7 +591,7 @@ itcl::body SrcTextWin::config_win {win {asm S}} {
       bind_plain_key $win n "$this do_key next; break"
     }
   }
-  
+
   bind_plain_key $win Control-h "$this do_key thread_list; break"
   bind_plain_key $win Control-f "$this do_key browser; break"
   bind_plain_key $win Control-d "$this do_key download; break"
@@ -605,21 +605,21 @@ itcl::body SrcTextWin::config_win {win {asm S}} {
     # Ctrl+F5 is another accelerator for Run
     bind_plain_key $win Control-F5 "$this do_key run"
   }
-  
+
   bind_plain_key $win Control-F11 "$this do_key debug"
   bind_plain_key $win Alt-v "$win yview scroll -1 pages"
   bind_plain_key $win Control-v [format {
     %s yview scroll 1 pages
     break
   } $win]
-  
-  # bind mouse button 1 to the breakpoint method or tracepoint, 
+
+  # bind mouse button 1 to the breakpoint method or tracepoint,
   # depending on the settings of the B1_behavior setting.  We don't
   # have to bind to bp_and_tp because that will fall through to either
   # the tp or the bp tag.  We have to put in the break so that we don't
   # both remove & reinsert a BP when we have both a tp & a bp on the same line.
   # If we are browsing, then disable Button-1
-  
+
   if {!$Browsing} {
     if {[pref get gdb/B1_behavior]} {
       $win tag bind break_rgn_tag <Button-1> "$this set_bp_at_line N $win %y; break"
@@ -639,10 +639,10 @@ itcl::body SrcTextWin::config_win {win {asm S}} {
     foreach type $bp_types {
       $win tag bind ${type}_tag <Button-1> { }
     }
-    $win tag bind tp_tag    <Button-1> { }      
+    $win tag bind tp_tag    <Button-1> { }
   }
-  
-  
+
+
   # avoid special handling of double and triple clicks in break area
   bind $win <Double-1> [format {
     if {[lsearch [%s tag names @%%x,%%y] break_rgn_tag] >= 0} {
@@ -654,7 +654,7 @@ itcl::body SrcTextWin::config_win {win {asm S}} {
       break
     }
   } $win $win]
-  
+
   # bind window shortcuts
   bind_plain_key $win Control-s "$this do_key stack"
   bind_plain_key $win Control-r "$this do_key registers"
@@ -669,18 +669,18 @@ itcl::body SrcTextWin::config_win {win {asm S}} {
     bind_plain_key $win Control-u "$this do_key tdump"
   }
   bind_plain_key $win Control-n "$this do_key console"
-  
+
   if {$Browsing} {
     enable_disable_src_tags $win browse
   } else {
     enable_disable_src_tags $win normal
-  }      
-  
+  }
+
   if {$UseVariableBalloons} {
     $win tag bind source_tag <Motion> "$this motion var %W %x %y"
     $win tag bind source_tag <Leave> "$this cancelMotion"
   }
-  
+
   # Up/Down arrow key bindings
   bind_plain_key $win Up [list %W yview scroll -1 units]
   bind_plain_key $win Down [list %W yview scroll +1 units]
@@ -695,14 +695,14 @@ itcl::body SrcTextWin::config_win {win {asm S}} {
 #  METHOD:  addPopup - adds a popup to one of the source popup menus
 # ------------------------------------------------------------------
 itcl::body SrcTextWin::addPopup {menu label command {abg {}} {browse 1} {run 1}} {
-  
+
   if {$abg == ""} {
-    $popups($menu) add command -label $label -command $command 
+    $popups($menu) add command -label $label -command $command
   } else {
     $popups($menu) add command -label $label -command $command \
       -activebackground $abg
   }
-  
+
   set index [$popups($menu) index last]
   if {!$run} {
     lappend popups(run_disabled) [list $menu $index]
@@ -710,7 +710,7 @@ itcl::body SrcTextWin::addPopup {menu label command {abg {}} {browse 1} {run 1}}
   if {!$browse} {
     lappend popups(browse_disabled) [list $menu $index]
   }
-  
+
 }
 
 # ------------------------------------------------------------------
@@ -724,8 +724,8 @@ itcl::body SrcTextWin::set_variable {event} {
   switch $var {
     disassembly-flavor {
         disassembly_changed
-    } 
-  }   
+    }
+  }
 }
 
 # ------------------------------------------------------------------
@@ -755,7 +755,7 @@ itcl::body SrcTextWin::disassembly_changed {} {
 # ------------------------------------------------------------------
 itcl::body SrcTextWin::reconfig {} {
 #  debug
-  
+
   # Make sure we redo the break images when we reconfigure
   set size [font measure [pref get gdb/src/font] "W"]
   makeBreakDot $size [pref get gdb/src/bp_fg] $break_images(bp)
@@ -776,14 +776,14 @@ itcl::body SrcTextWin::reconfig {} {
       setTabs $twin
     }
     SRC+ASM {
-      setTabs $twin 
+      setTabs $twin
       setTabs $bwin A
     }
     default {
       setTabs $twin A
     }
   }
-  
+
   # Variable Balloons
   if {$ignore_var_balloons} {
     set balloons 0
@@ -800,7 +800,7 @@ itcl::body SrcTextWin::reconfig {} {
       cancelMotion
       $twin tag bind source_tag <Motion> {}
       $twin tag bind source_tag <Leave> {}
-      $twin tag remove _show_variable 1.0 end 
+      $twin tag remove _show_variable 1.0 end
       remove_hook gdb_idle_hook [list $this updateBalloon]
     }
   }
@@ -851,7 +851,7 @@ itcl::body SrcTextWin::balloon_value {variable} {
   set value [string trim $value \ \r\t\n]
 
   # Insert the variable's type for things like ptrs, etc.
-  catch {$variable type} type 
+  catch {$variable type} type
   if {$value == "{...}"} {
     set val "$type $value"
   } elseif {[regexp -- {0x([0-9a-fA-F]+) <[a-zA-Z_].*} $value str]} {
@@ -939,7 +939,7 @@ itcl::body SrcTextWin::FillSource {w tagname filename funcname line addr pc_addr
       if {![LoadFile $w $filename $lib $mtime]} {
 	# failed to find source file
 	dbug W "Changing to ASSEMBLY"
-	
+
 	# We have to update this data here (it is also done by the caller)
 	# because we want to call mode, which calls mode_set, which calls
 	# location using these values.
@@ -949,7 +949,7 @@ itcl::body SrcTextWin::FillSource {w tagname filename funcname line addr pc_addr
 	set current(funcname) $funcname
 	set current(filename) $filename
 	set current(lib) $lib
-	
+
 	set oldmode SOURCE
 	$parent mode "" ASSEMBLY
 	return
@@ -986,7 +986,7 @@ itcl::body SrcTextWin::FillSource {w tagname filename funcname line addr pc_addr
   }
   # no source; switch to assembly
   dbug W "no source file; switch to assembly"
-  
+
   # We have to update this data here (it is also done by the caller)
   # because we want to call mode, which calls mode_set, which calls
   # location using these values.
@@ -1059,7 +1059,7 @@ itcl::body SrcTextWin::FillAssembly {w tagname filename funcname line addr pc_ad
     set current(filename) $filename
     set do_display_breaks 1
   }
-  
+
   # highlight proper line number
   _highlightAsmLine $win $addr $pc_addr $tagname $filename $funcname
 
@@ -1074,7 +1074,7 @@ itcl::body SrcTextWin::FillMixed {w tagname filename funcname line addr pc_addr 
   global gdb_running
   upvar ${w}win win
   upvar _${w}pane pane
-#  debug "$win $tagname $filename $funcname $line $addr $pc_addr"  
+#  debug "$win $tagname $filename $funcname $line $addr $pc_addr"
 
   if {$funcname == ""} {
     set oldpane $pane
@@ -1179,9 +1179,9 @@ itcl::body SrcTextWin::set_tag_to_stack {} {
 # ------------------------------------------------------------------
 itcl::body SrcTextWin::location {tagname filename funcname line addr pc_addr lib} {
 #  debug "$tagname $filename $line $addr $pc_addr,  mode=$current(mode) oldmode=$oldmode  cf=$current(filename) lib=$lib"
-  
+
   ClearTags
-  
+
    # It seems odd to do this as a string compare, but on the Alpha,
    # where ints are 32 bit but addresses are 64, a numerical compare
    # will overflow Tcl's ints.
@@ -1193,7 +1193,7 @@ itcl::body SrcTextWin::location {tagname filename funcname line addr pc_addr lib
     set pc(func) $funcname
     set pc(lib)  $lib
   }
-  
+
   if {$oldmode != "" \
 	&& [string compare $filename $current(filename)] != 0} {
 
@@ -1208,7 +1208,7 @@ itcl::body SrcTextWin::location {tagname filename funcname line addr pc_addr lib
       $parent mode "" $tmp 0
     }
   }
-  
+
   set oldpane $_tpane
 
   switch $current(mode) {
@@ -1292,7 +1292,7 @@ itcl::body SrcTextWin::display_line { win line } {
   # keep line near center of display
   set pixHeight [winfo height $win]
   set topLine [lindex [split [$win index @0,0] .] 0]
-  set botLine [lindex [split [$win index @0,${pixHeight}] .] 0]    
+  set botLine [lindex [split [$win index @0,${pixHeight}] .] 0]
   set margin [expr {int(0.2*($botLine - $topLine))}]
   if {$line < [expr {$topLine + $margin}]} {
     set num [expr {($topLine - $botLine) / 2}]
@@ -1312,7 +1312,7 @@ itcl::body SrcTextWin::display_line { win line } {
 
 itcl::body SrcTextWin::display_breaks {} {
 #  debug
-  
+
   # clear any previous breakpoints
   foreach type "$bp_types tp" {
     foreach {start stop} [$twin tag ranges ${type}_tag] {
@@ -1320,7 +1320,7 @@ itcl::body SrcTextWin::display_breaks {} {
       removeBreakTag $twin $linenum ${type}_tag
     }
   }
-  
+
   # now do second pane if it exists
   if {[info exists bwin]} {
     foreach type "$bp_types tp" {
@@ -1330,7 +1330,7 @@ itcl::body SrcTextWin::display_breaks {} {
       }
     }
   }
-  
+
   # Display any existing breakpoints.
   foreach bpnum [gdb_get_breakpoint_list] {
     set info [gdb_get_breakpoint_info $bpnum]
@@ -1357,15 +1357,15 @@ itcl::body SrcTextWin::display_breaks {} {
 # ------------------------------------------------------------------
 itcl::body SrcTextWin::insertBreakTag {win linenum tag} {
 #  debug "$win $linenum $tag"
-  
-  # Get the tags at the current line.  
-  
+
+  # Get the tags at the current line.
+
   # If there is a "break_rgn_tag", then there are currently no other
   # break/trace points at this line.  So replace the break_rgn_tag
   # with this tag.  Otherwise, add the new tag, and then the joint
   # tag.  We will query the length of the previous tag, so we don't have
   # to hard code it here.
-  
+
   # Find the nearest executable line
   for {set i 0} {$i < $ExecutableLineLimit} {incr i} {
     if {[line_is_executable $win [expr {$linenum + $i}]]} {
@@ -1376,7 +1376,7 @@ itcl::body SrcTextWin::insertBreakTag {win linenum tag} {
 
   set tag_list [$win tag names $linenum.0]
   set img_name [string range $tag 0 [expr [string length $tag] - 5]]
-  
+
   if {[lsearch $tag_list break_rgn_tag] != -1} {
     set stop [lindex [$win tag nextrange break_rgn_tag \
 			$linenum.0 "$linenum.0 lineend"] 1]
@@ -1404,7 +1404,7 @@ itcl::body SrcTextWin::insertBreakTag {win linenum tag} {
 
 # ------------------------------------------------------------------
 # METHOD: removeBreakTag - remove a break tag (breakpoint or tracepoint)
-#         from the given line.  If this is the last break tag on the 
+#         from the given line.  If this is the last break tag on the
 #         line reinstall the break_rgn_tag
 # ------------------------------------------------------------------
 itcl::body SrcTextWin::removeBreakTag {win linenum tag } {
@@ -1481,8 +1481,8 @@ itcl::body SrcTextWin::tracepoint {tp_event} {
 # ------------------------------------------------------------------
 #  METHOD:  bp - set and remove breakpoints
 #
-#  if $addr is valid, the breakpoint will be set in the assembly or 
-#  mixed window at that address.  If $line and $file are valid, 
+#  if $addr is valid, the breakpoint will be set in the assembly or
+#  mixed window at that address.  If $line and $file are valid,
 #  a breakpoint will be set in the source window if appropriate.
 # ------------------------------------------------------------------
 itcl::body SrcTextWin::bp {action bpnum addr {linenum {}} {file {}} {type 0} {enabled 0}  {thread -1}} {
@@ -1552,7 +1552,7 @@ itcl::body SrcTextWin::do_bp { win action linenum type bpnum enabled thread asm}
 	  # Also, for lack of a better solution, we will
 	  # just display an image corresponding to the
 	  # first found BP.  If you have a temporary and
-	  # a perm BP on the same line, the image for the one 
+	  # a perm BP on the same line, the image for the one
 	  # with the lower bpnum will be displayed.
 	  set inf [gdb_get_breakpoint_info $b]
 	  set action "modify"
@@ -1648,9 +1648,9 @@ itcl::body SrcTextWin::hasTP {win line} {
 
 # ------------------------------------------------------------------
 #  METHOD:  report_source_location
-#    
+#
 #    This function reports the "current" location in the source
-#    window, where current means what gdb_loc would return, if 
+#    window, where current means what gdb_loc would return, if
 #    that point is actually visible in the window, or the middle
 #    of the current window, if that point is not visible.
 #
@@ -1658,7 +1658,7 @@ itcl::body SrcTextWin::hasTP {win line} {
 #    The gdb_loc result for the location found
 # ------------------------------------------------------------------
 itcl::body SrcTextWin::report_source_location {} {
-  
+
   if {$current(filename) == ""} {
     error "No source file in window"
   }
@@ -1721,7 +1721,7 @@ itcl::body SrcTextWin::report_source_location {} {
 #           the line if it is a source line, or the address if it
 #           is an assembly line
 #    type - src if it is a source line, asm if an assembly line.
-#   set_cmd - for convenience, this is the command needed to set a 
+#   set_cmd - for convenience, this is the command needed to set a
 #             breakpoint at this address.
 # ------------------------------------------------------------------
 itcl::body SrcTextWin::lookup_line {win y} {
@@ -1738,9 +1738,9 @@ itcl::body SrcTextWin::lookup_line {win y} {
   set name [lindex [::file split $current(filename)] end]
 
   # If we are in the SOURCE window (either because the mode is SOURCE,
-  # or SRC+ASM, and we are in the upper pane, then return the 
+  # or SRC+ASM, and we are in the upper pane, then return the
   if {([string compare $current(mode) SOURCE] == 0)
-      || ([string compare $current(mode) SRC+ASM] == 0 
+      || ([string compare $current(mode) SRC+ASM] == 0
 	  && [string compare $win $twin] == 0)} {
     set addr $line
     set type "src"
@@ -1748,7 +1748,7 @@ itcl::body SrcTextWin::lookup_line {win y} {
     if {[info exists _map($Cname,line=$line)]} {
       set addr $_map($Cname,line=$line)
       set type "asm"
-    } else { 
+    } else {
       # This is a source line in MIXED mode
       set line_contents [$win get $line.0 "$line.0 lineend"]
       #debug "Looking at line: $line contents: \"$line_contents\""
@@ -1774,12 +1774,12 @@ itcl::body SrcTextWin::lookup_line {win y} {
 # ------------------------------------------------------------------
 #  METHOD:  continue_to_here - Advance to the line pointed to by the
 #  y coordinate in the window win.  If win is {} or y is -1, the values
-#  saved in the popups array are used.  
+#  saved in the popups array are used.
 #
 #  The threads parameter is not currently used.
 # ------------------------------------------------------------------
 itcl::body SrcTextWin::continue_to_here {{win {}} {y -1} {threads -1}} {
-  
+
   # Look up the line...  This foreach is an lassign...
   foreach {name line addr type set_cmd} [lookup_line $win $y] {
     break
@@ -1788,7 +1788,7 @@ itcl::body SrcTextWin::continue_to_here {{win {}} {y -1} {threads -1}} {
   set dont_change_appearance 1
   foreach i [gdb_get_breakpoint_list] {
     set enabled($i) [lindex [gdb_get_breakpoint_info $i] 5]
-  }	    
+  }
   gdb_cmd "disable"
   eval $set_cmd temp $threads
   gdb_immediate "continue"
@@ -1806,12 +1806,12 @@ itcl::body SrcTextWin::continue_to_here {{win {}} {y -1} {threads -1}} {
 # ------------------------------------------------------------------
 #  METHOD:  jump_to_here - Advance to the line pointed to by the
 #  y coordinate in the window win.  If win is {} or y is -1, the values
-#  saved in the popups array are used.  
+#  saved in the popups array are used.
 #
 #  The threads parameter is not currently used.
 # ------------------------------------------------------------------
 itcl::body SrcTextWin::jump_to_here {{win {}} {y -1} {threads -1}} {
-  
+
   # Look up the line...  This foreach is an lassign...
   foreach {name line addr type set_cmd} [lookup_line $win $y] {
     break
@@ -1823,14 +1823,14 @@ itcl::body SrcTextWin::jump_to_here {{win {}} {y -1} {threads -1}} {
   # FIXME: Even in the case we do have an address, I was not able to just
   # change the PC and get things updated wright.  While I work on that,
   # I will use the temp breakpoint and jump trick for that case as well.
-  
+
   set dont_change_appearance 1
-  
+
   foreach i [gdb_get_breakpoint_list] {
     set enabled($i) [lindex [gdb_get_breakpoint_info $i] 5]
-  }	    
+  }
   gdb_cmd "disable"
-  
+
   if {$type == "asm"} {
     gdb_immediate "tbreak *$addr"
     gdb_immediate "jump *$addr"
@@ -1857,14 +1857,14 @@ itcl::body SrcTextWin::jump_to_here {{win {}} {y -1} {threads -1}} {
 itcl::body SrcTextWin::set_bp_at_line {{type N} {win {}} {y -1} {threads "-1"}} {
 #  debug "$win $y $type $current(filename) Tracing=$Tracing"
   if {$Running} {return}
-  
+
   # Look up the line...  This foreach is an lassign...
 
   foreach {name line addr addr_type set_cmd} [lookup_line $win $y] {
     break
   }
 
-  foreach th $threads {    
+  foreach th $threads {
     switch $type {
       N {
 	if {[catch {eval $set_cmd normal $th} msg]} {
@@ -1876,7 +1876,7 @@ itcl::body SrcTextWin::set_bp_at_line {{type N} {win {}} {y -1} {threads "-1"}} 
 	  dbug W $msg
 	}
       }
-    }    
+    }
   }
 }
 
@@ -1893,7 +1893,7 @@ itcl::body SrcTextWin::enable_disable_at_line {action} {
 
   set y $popups(saved_y)
 
-  $twin tag remove _show_variable 1.0 end 
+  $twin tag remove _show_variable 1.0 end
   set line [lindex [split [$twin index @0,$y] .] 0]
   set bps ""
 
@@ -1932,9 +1932,9 @@ itcl::body SrcTextWin::enable_disable_at_line {action} {
 # when "threads" is set it means to set a bp on each thread in the list.
 # ------------------------------------------------------------------
 itcl::body SrcTextWin::remove_bp_at_line {{win {}} {y -1}} {
-  
+
   if {$Running} {return}
-  
+
   # Look up the line...  This foreach is an lassign...
 
   foreach {name line addr type} [lookup_line $win $y] {
@@ -1962,13 +1962,13 @@ itcl::body SrcTextWin::set_tp_at_line {{win {}} {y -1}} {
 #  debug "$win $y $current(filename) Tracing=$Tracing"
 
   if {$Running} {return}
-  
+
   # Look up the line...  This foreach is an lassign...
-  
+
   foreach {name line addr type} [lookup_line $win $y] {
     break
   }
-  
+
   switch $type {
     src {
       after idle [list ManagedWin::open TraceDlg -File $name -Lines $addr]
@@ -1988,13 +1988,13 @@ itcl::body SrcTextWin::next_hit_at_line {{win {}} {y -1}} {
 #  debug "$win $y $current(filename) Tracing=$Tracing"
 
   if {!$Browsing} {return}
-  
+
   # Look up the line...  This foreach is an lassign...
-  
+
   foreach {name line addr type} [lookup_line $win $y] {
     break
   }
-  
+
   # If the line and the addr are the same, then the specification was
   # given by line.  Otherwise is was a memory address.
 
@@ -2006,7 +2006,7 @@ itcl::body SrcTextWin::next_hit_at_line {{win {}} {y -1}} {
       tfind_cmd "tfind line *$addr"
     }
   }
-  
+
 }
 
 # ------------------------------------------------------------------
@@ -2015,11 +2015,11 @@ itcl::body SrcTextWin::next_hit_at_line {{win {}} {y -1}} {
 # when "threads" is set it means to set a bp on each thread in the list.
 # ------------------------------------------------------------------
 itcl::body SrcTextWin::remove_tp_at_line {{win {}} {y -1}} {
-  
+
   if {$Running} {return}
-  
+
   # Look up the line...  This foreach is an lassign...
-  
+
   foreach {name line addr type} [lookup_line $win $y] {
     break
   }
@@ -2031,13 +2031,13 @@ itcl::body SrcTextWin::remove_tp_at_line {{win {}} {y -1}} {
       set tp_num [gdb_tracepoint_exists *$addr]
     }
   }
-  
+
   if {$tp_num != -1} {
     if {[catch {gdb_cmd "delete tracepoints $tp_num"} errTxt]} {
       tk_messageBox -type error -message "Could not delete tracepoint number $tp_num
 Error was: $errTxt"
     }
-  } 
+  }
 
 }
 
@@ -2049,12 +2049,12 @@ itcl::body SrcTextWin::do_tag_popup {name X Y y} {
 
 #  debug "$name $X $Y $y"
 
-  if {$Running || [winfo ismapped $popups($name)]} { 
-    return 
-  }  
+  if {$Running || [winfo ismapped $popups($name)]} {
+    return
+  }
 
   set popups(saved_y) $y
-  set popups(saved_win) [winfo containing -displayof $itk_interior $X $Y] 
+  set popups(saved_win) [winfo containing -displayof $itk_interior $X $Y]
 
   # Hide variable balloons before showing the popup
   $twin tag remove _show_variable 1.0 end
@@ -2069,8 +2069,8 @@ itcl::body SrcTextWin::do_tag_popup {name X Y y} {
 # ------------------------------------------------------------------
 
 itcl::body SrcTextWin::do_source_popup { X Y x y } {
-  if {$Running || [winfo ismapped $popups(source)]} { 
-    return 
+  if {$Running || [winfo ismapped $popups(source)]} {
+    return
   }
 
   # Figure out what window we are over...
@@ -2083,10 +2083,10 @@ itcl::body SrcTextWin::do_source_popup { X Y x y } {
 
 
   # Try to get the selection.  If you fail, get the word around the
-  # click point.  
+  # click point.
   # Note that we don't have to worry about the user clicking over the
   # break area, since the break_rgn_tag will override this...
-  
+
   set hit_point [$win index @$x,$y]
   if {([$win tag ranges sel] != "")
       && ([$win compare sel.first < $hit_point]
@@ -2110,9 +2110,9 @@ itcl::body SrcTextWin::do_source_popup { X Y x y } {
     set target_range [$win get "$hit_point wordstart" "$hit_point wordend"]
     set range 0
   }
-  
+
   $popups(source) delete 0 end
-  
+
   if {$range && $Tracing} {
     # If the selection spans more than one line, it can't be a variable name...
     # So just insert the tracepoint range item
@@ -2129,7 +2129,7 @@ itcl::body SrcTextWin::do_source_popup { X Y x y } {
     } else {
       set variable [lindex [getVariable -1 -1 $target_range] 0]
     }
-    
+
     if {$variable != ""} {
       # LAME: check to see if VARIABLE is really a number (constants??)
       set is_var [catch {expr {$variable+1}}]
@@ -2151,7 +2151,7 @@ itcl::body SrcTextWin::do_source_popup { X Y x y } {
   $popups(source) add command -label "Open Source in external editor" \
     -command [code $parent edit]
 
-  tk_popup $popups(source) $X $Y 
+  tk_popup $popups(source) $X $Y
 }
 
 # ------------------------------------------------------------------
@@ -2164,7 +2164,7 @@ itcl::body SrcTextWin::addToWatch {var} {
 # ------------------------------------------------------------------
 #  METHOD:  do_key  -- wrapper for all key bindings
 # ------------------------------------------------------------------
-itcl::body SrcTextWin::do_key {key} {    
+itcl::body SrcTextWin::do_key {key} {
   if {!$Running} {
     switch $key {
       print        { print $top }
@@ -2229,7 +2229,7 @@ itcl::body SrcTextWin::mode_set {new_mode {go 1}} {
       set _bpane ""
       set _bwin ""
     }
-    
+
     set current(mode) $new_mode
     set mode_changed 1
 
@@ -2280,7 +2280,7 @@ itcl::body SrcTextWin::motion {type win x y} {
 # ------------------------------------------------------------------
 itcl::body SrcTextWin::showBPBalloon {win x y} {
   if {$Running} { return }
-  $win tag remove _show_variable 1.0 end 
+  $win tag remove _show_variable 1.0 end
   set line [lindex [split [$win index @0,$y] .] 0]
   set bps ""
 
@@ -2388,9 +2388,9 @@ itcl::body SrcTextWin::showBalloon {win x y} {
 
   if {[llength $variable] != 3} {
     return
-  }    
-  
-  # We get the variable name, and its start and stop indices in the text 
+  }
+
+  # We get the variable name, and its start and stop indices in the text
   # widget, so all we need to do is set the tag and register the balloon help
   set varName [lindex $variable 0]
   set start   [lindex $variable 1]
@@ -2405,11 +2405,11 @@ itcl::body SrcTextWin::showBalloon {win x y} {
   # 1) Only pop up a balloon if we are over the function in
   #    the currently selected frame, or in the static data for
   #    the file.
-  # 2) We would also like to exclude cases where the line that 
-  #    under the mouse cursor does not contain executable code, 
+  # 2) We would also like to exclude cases where the line that
+  #    under the mouse cursor does not contain executable code,
   #    but we can't since gdb considers continuation lines to not
   #    have executible code so we would lose on these...
-  
+
   set cur_fn [lindex [gdb_loc $file:$source_line] 1]
   set selected_frame_fn [lindex [gdb_loc] 1]
 
@@ -2449,10 +2449,10 @@ itcl::body SrcTextWin::getVariable {x y {line {}}} {
   if {$x != -1 && $y != -1} {
     # If we are over a selection, just report that:
     if {([$twin tag ranges sel] != "")
-	&& ([$twin compare sel.first < $hit_point] 
+	&& ([$twin compare sel.first < $hit_point]
 	    && [$twin compare $hit_point < sel.last])} {
       return [list [$twin get sel.first sel.last] [$twin index sel.first] [$twin index sel.last]]
-    } 
+    }
     # Since we will only be concerned with this line, get it
     set line [$twin get "$hit_point linestart" "$hit_point lineend"]
     # debug "new line=$line"
@@ -2589,7 +2589,7 @@ itcl::body SrcTextWin::tracepoint_range {win low high} {
       }
     }
   }
-  
+
   if {[info exists lines]} {
 #    debug "Got executible lines: $lines"
     if {[llength $lines]} {
@@ -2623,7 +2623,7 @@ itcl::body SrcTextWin::search {exp direction} {
       set end [$twin index "$index lineend"]
     } else {
       set index [$twin search -exact -count len -$direction -- $exp $SearchIndex]
-      
+
       if {$index != ""} {
 	set end [split $index .]
 	set line [lindex $end 0]
@@ -2663,10 +2663,10 @@ itcl::body SrcTextWin::search {exp direction} {
 #
 # ARGS:		w	"t" or "b" (for Top and Bottom pane)
 #		name	name to look for in cache. This will be a filename if
-#			we are filling in a source window, or an address 
+#			we are filling in a source window, or an address
 #			otherwise.
-#		asm	'S' for source, 
-#                       'A' for assembly mode 
+#		asm	'S' for source,
+#                       'A' for assembly mode
 #                       'M' for mixed mode.
 #		lib	library name
 #
@@ -2710,7 +2710,7 @@ itcl::body SrcTextWin::LoadFromCache {w name asm lib} {
     # If the text in this cache file is dirty, clean the window, and
     # return 1, which will tell the caller to refill it.  Otherwise
     # return 0, and the caller will just display the window.
-    
+
     if {$Stwc($name:dirty)} {
       $win delete 0.0 end
       set res 1
@@ -2723,7 +2723,7 @@ itcl::body SrcTextWin::LoadFromCache {w name asm lib} {
     debug "name=$name"
     # If we are trying to load a source file, check the time
     # to see if we need to update it.  If we can't stat the
-    # file then we probably can't open it either, so error 
+    # file then we probably can't open it either, so error
     # out.
 
     if {$loadingSource} {
@@ -2738,13 +2738,13 @@ itcl::body SrcTextWin::LoadFromCache {w name asm lib} {
       } else {
         set Stwc($full_name:pane) pane$filenum
 	set Stwc($name:mtime) $file_time
-      }    
+      }
     } else {
       # FIXME: This is wrong.  For Assembly files we need to
       # check whether the executable is newer than the cached
       # disassembly.  For mixed files, we need to check BOTH
       # the source file mtime, and the executable time.
-      
+
       set Stwc($full_name:pane) pane$filenum
       set Stwc($name:mtime) 0
     }
@@ -2778,7 +2778,7 @@ itcl::body SrcTextWin::LoadFromCache {w name asm lib} {
 # ------------------------------------------------------------------
 #  METHOD:  UnLoadFromCache - revert back to previously cached widget
 #  This is used when a new widget is created with LoadFromCache but
-#  there is a problem with filling the widget.  
+#  there is a problem with filling the widget.
 # ------------------------------------------------------------------
 
 itcl::body SrcTextWin::UnLoadFromCache {w oldpane name asm lib} {
@@ -2827,7 +2827,7 @@ itcl::body SrcTextWin::ask_thread_bp {} {
     show_warning "No threads were found.\nYou may only set breakpoints on threads\nthat have already been created."
     return
   }
-  
+
   set a [toplevel .[gensym]]
   wm title $a "Thread Selection"
 
@@ -2848,11 +2848,11 @@ itcl::body SrcTextWin::ask_thread_bp {} {
       if {[string length $line] > $width} {
 	set width [string length $line]
       }
-      $a.slb insert 0 $line 
+      $a.slb insert 0 $line
       incr i -1
     }
   }
-  $a.slb configure -visibleitems ${width}x$num_threads 
+  $a.slb configure -visibleitems ${width}x$num_threads
   [$a.slb component listbox] configure -bg $::Colors(textbg) -fg $::Colors(textfg)
 
   frame $a.b
@@ -2947,7 +2947,7 @@ itcl::body SrcTextWin::_initialize_srctextwin {} {
   set current(asm_line) 0
   set current(tag) "BROWSE_TAG"
   set current(mode) "SOURCE"
-  set current(lib) ""  
+  set current(lib) ""
 }
 
 # ------------------------------------------------------------------

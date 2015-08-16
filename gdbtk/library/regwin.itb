@@ -40,7 +40,7 @@
 # ------------------------------------------------------------------
 itcl::body RegWin::constructor {args} {
 
-  eval itk_initialize $args    
+  eval itk_initialize $args
 
   gdbtk_busy
 
@@ -121,7 +121,7 @@ itcl::body RegWin::_load_prefs {} {
       }
       pref setd gdb/reg/${nm}-format $_format($rn)
     }
-    
+
     gdb_reginfo format $rn $_type($rn,addr) $_format($rn)
 
     # Check if the user prefers not to show this register
@@ -156,7 +156,7 @@ itcl::body RegWin::_load_prefs {} {
 #                in the window, use RegWin::_layout_table.
 # ------------------------------------------------------------------
 itcl::body RegWin::_build_win {} {
- 
+
   # Create scrollbars and table
   itk_component add vscroll {
     scrollbar $itk_interior.vs -orient vertical
@@ -189,7 +189,7 @@ itcl::body RegWin::_build_win {} {
     [format "%s; break" [code $this _move right]]
   bind $itk_component(table) <3>        \
     [code $this _but3 %x %y %X %Y]
-  bind $itk_component(table) <Double-1> break 
+  bind $itk_component(table) <Double-1> break
   bind $itk_component(table) <1> \
     [code $this _edit %x %y]
   bind $itk_component(table) <Return>   \
@@ -220,7 +220,7 @@ itcl::body RegWin::_build_win {} {
     -state disabled
   $itk_component(table) tag raise active
   $itk_component(table) tag configure edit \
-    -state normal 
+    -state normal
   $itk_component(table) tag raise edit
   $itk_component(table) tag raise sel
 
@@ -231,7 +231,7 @@ itcl::body RegWin::_build_win {} {
     -labelpos w -command [code $this _select_group]
   eval $itk_component(frame).opt insert end [gdb_reginfo grouplist]
   $itk_component(frame).opt select "all"
-  
+
   pack $itk_component(frame).opt -anchor nw
   grid $itk_component(frame) -row 0 -columnspan 2 -sticky news
   grid $itk_component(table) -row 1 -column 0 -sticky news
@@ -272,7 +272,7 @@ itcl::body RegWin::_layout_table {} {
   _load_prefs
 
   # Fill data array with register names.
-  # 
+  #
   # The table is indexed by (row,col). All odd columns will contain
   # register values and all even columns will contain the labels.
   #
@@ -312,7 +312,7 @@ itcl::body RegWin::_layout_table {} {
     incr y
     if {$y == $_rows} {
       set _col_size([expr {$x+1}]) 0
-      
+
       # Size the column
       if {$::gdb_running} {
 	_size_column [expr {$x+1}] 1
@@ -321,7 +321,7 @@ itcl::body RegWin::_layout_table {} {
       $itk_component(table) width $x $_max_label_width
       $itk_component(table) tag col header $x
       $itk_component(table) tag col normal [expr {$x+1}]
-      
+
       set y 0
       incr x 2
     }
@@ -552,7 +552,7 @@ itcl::body RegWin::_but3 {x y X Y} {
       } else {
 	set state disabled
       }
-      
+
       if {$_type($rn,code) == "int"} {
 	$itk_component(popup) add command    \
 	  -label "Open Memory Window" -command [code $this _open_memory $rn]
@@ -639,7 +639,7 @@ itcl::body RegWin::_display_all {} {
 #  RETURNS:      Nothing
 #
 #  NOTES:        Event handler for <1> in table.
-#                
+#
 # ------------------------------------------------------------------
 itcl::body RegWin::_edit {x y} {
   _select_cell [$itk_component(table) index @$x,$y]
@@ -807,7 +807,7 @@ itcl::body RegWin::_unedit {} {
 
   if {$cell != ""} {
     $itk_component(table) selection clear all
-    $itk_component(table) tag cell normal $cell 
+    $itk_component(table) tag cell normal $cell
     focus $itk_component(table)
   }
 }
@@ -824,7 +824,7 @@ itcl::body RegWin::_unedit {} {
 #                      fetched
 #  RETURNS:      The register's value or ""
 #
-#  NOTES:        
+#  NOTES:
 # ------------------------------------------------------------------
 itcl::body RegWin::_get_value {rn} {
   if {[catch {gdb_reginfo value $rn} value]} {
@@ -845,7 +845,7 @@ itcl::body RegWin::_get_value {rn} {
 #
 #  RETURNS:      Nothing
 #
-#  NOTES:        
+#  NOTES:
 # ------------------------------------------------------------------
 itcl::body RegWin::_change_format {rn {newtype {}}} {
 
@@ -855,10 +855,10 @@ itcl::body RegWin::_change_format {rn {newtype {}}} {
     set _type($rn,name) $newtype
     pref setd gdb/reg/${name}-type $newtype
   }
-  
+
   gdb_reginfo format $rn $_type($rn,addr) $_format($rn)
 
-  # Set the new format in prefs. 
+  # Set the new format in prefs.
   pref setd gdb/reg/${name}-format $_format($rn)
 
   _update_register $rn
@@ -887,7 +887,7 @@ itcl::body RegWin::_update_register {rn} {
 #  DESCRIPTION:  Changes the register group. Callback
 #
 #  ARGUMENTS:
-#                
+#
 #  RETURNS:      Nothing
 # ------------------------------------------------------------------
 itcl::body RegWin::_select_group {} {
@@ -988,7 +988,7 @@ itcl::body RegWin::set_variable {event} {
   switch [$event get variable] {
     disassembly-flavor {
       _layout_table
-    } 
+    }
   }
 }
 
@@ -1039,11 +1039,11 @@ itcl::body RegWin::update {event} {
       lappend cols $col
     }
   }
-  
+
   foreach col $cols {
     set col [string trim $col ()]
     _size_column $col 0
   }
 
-  debug "END REGISTER UPDATE CALLBACK" 
+  debug "END REGISTER UPDATE CALLBACK"
 }

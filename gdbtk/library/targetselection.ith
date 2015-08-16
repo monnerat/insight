@@ -50,20 +50,20 @@ itcl::class TargetSelection {
     # widget actually mapped onto the screen is saved in MAPPED2.
     variable mapped1
     variable mapped2
-    
+
     variable Width 20
     variable MoreButton
     variable MoreFrame
     variable MoreLabel
 
     variable RunMethod
-    
+
     proc _init_prefs {}
     proc default_port {}
 
     method build_win {}
     method cancel {}
-    method change_baud {w {baud ""}}    
+    method change_baud {w {baud ""}}
     method change_target {w {name ""}}
     method config_dialog {t}
     method fill_rates {}
@@ -86,7 +86,7 @@ itcl::class TargetSelection {
   public {
     variable exportcancel 0
 
-    method constructor {args} 
+    method constructor {args}
     method reconfig {}
 
     proc get_target_list {}

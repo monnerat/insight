@@ -14,7 +14,7 @@
 
 itcl::class TopLevelWin {
   inherit ManagedWin
-  
+
   private variable frame ""
 
   constructor {args} {
@@ -23,8 +23,8 @@ itcl::class TopLevelWin {
     # create a container frame
     conFrame $itk_interior.container
     pack $itk_interior.container -fill both -expand 1
-    
-    # set up bindings for group iconification/deiconification    
+
+    # set up bindings for group iconification/deiconification
     # NOT IMPLEMENTED YET
     #set top [winfo toplevel [namespace tail $this]]
     #bind_for_toplevel_only $top <Unmap> {
@@ -35,7 +35,7 @@ itcl::class TopLevelWin {
     #}
     incr numTopWins
   }
-  
+
   public method conFrame {win} {
     set frame [cyg::panedwindow $win -height 5i]
     return $frame.con
@@ -54,7 +54,7 @@ itcl::class TopLevelWin {
     }
     set width [winfo reqwidth $childWin]
     $frame configure -width $width
-    
+
   }
 
   destructor {

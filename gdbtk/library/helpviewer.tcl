@@ -40,19 +40,19 @@ proc open_help {hfile} {
     }
     "GNOME" {
       set apps {htmlview firefox opera mozilla gnome-help khelpcenter}
-    }      
+    }
     default {
       set apps {htmlview firefox opera mozilla gnome-help khelpcenter netscape}
     }
   }
 
   # If the user has previously entered a browser name, append it
-  # to the list. Should it go first or last? 
+  # to the list. Should it go first or last?
   set bname [pref get gdb/help/browsername]
   if {$bname != ""} {
     lappend apps $bname
   }
-  
+
   # now loop through list checking each application
   foreach app $apps {
     debug "app=$app"
@@ -62,7 +62,7 @@ proc open_help {hfile} {
       return
     }
   }
-  
+
   # if we reached here, nothing worked, so prompt for a name
   set text "No help browser was found on your system.\n\
 Please enter the name of an HTML viewer application."

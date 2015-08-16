@@ -17,7 +17,7 @@
 # ------------------------------------------------------------------
 itcl::body BpWin::constructor {args} {
   window_name "Breakpoints" "BPs"
-  
+
   if {[pref getd gdb/bp/menu] != ""} {
     set mbar 0
   }
@@ -63,7 +63,7 @@ itcl::body BpWin::build_win {} {
   if {$tracepoints} {
     label $twin.num0 -text "Num" -relief raised -bd 2 -anchor center \
       -font global/fixed
-  } 
+  }
   label $twin.thread0 -text "Thread" -relief raised -bd 2 -anchor center \
     -font global/fixed
   label $twin.addr0 -text "Address" -relief raised -bd 2 -anchor center \
@@ -147,14 +147,14 @@ itcl::body BpWin::build_win {} {
   }
 
   set Menu [menu $itk_interior.pop -tearoff 0]
-  
+
   if { $tracepoints == 0 } {
     $Menu add radio -label "Normal" -variable _bp_disp($selected) \
       -value donttouch -underline 0
     $Menu add radio -label "Temporary" -variable _bp_disp($selected) \
       -value delete -underline 0
   } else {
-    $Menu add command -label "Actions" -underline 0 
+    $Menu add command -label "Actions" -underline 0
   }
   $Menu add separator
   $Menu add radio -label "Enabled" -variable _bp_en($selected) -value 1 -underline 0
@@ -215,7 +215,7 @@ itcl::body BpWin::bp_add {bp_event {tracepoint 0}} {
   set temp($i) ""
   switch $disposition {
     donttouch { set color [pref get gdb/src/bp_fg] }
-    delete { 
+    delete {
       set color [pref get gdb/src/temp_bp_fg]
       set temp($i) delete
     }
@@ -224,12 +224,12 @@ itcl::body BpWin::bp_add {bp_event {tracepoint 0}} {
     }
     default { set color yellow }
   }
-  
+
   if {$thread != "-1"} {set color [pref get gdb/src/thread_fg]}
 
   if {$gdbtk_platform(platform) == "windows"} {
     checkbutton $twin.en$i -relief flat -variable _bp_en($i) \
-      -activebackground $bg1 -command "$this bp_able $i" -fg $color 
+      -activebackground $bg1 -command "$this bp_able $i" -fg $color
   } else {
     checkbutton $twin.en$i -relief flat -variable _bp_en($i) \
       -command "$this bp_able $i" -activebackground $bg1 \
@@ -250,9 +250,9 @@ itcl::body BpWin::bp_add {bp_event {tracepoint 0}} {
     if {$thread == "-1"} {set thread "ALL"}
     label $twin.thread$i -text "$thread " -relief flat -anchor w -font global/fixed
   }
-  label $twin.file$i -text "$file " -relief flat -anchor w -font global/fixed 
+  label $twin.file$i -text "$file " -relief flat -anchor w -font global/fixed
   label $twin.line$i -text "[$bp_event get line] " -relief flat -anchor w -font global/fixed
-  label $twin.func$i -text "[$bp_event get function] " -relief flat -anchor w -font global/fixed 
+  label $twin.func$i -text "[$bp_event get function] " -relief flat -anchor w -font global/fixed
   if {$tracepoints} {
     label $twin.pass$i -text "[$bp_event get pass_count] " -relief flat -anchor w -font global/fixed
   }
@@ -327,7 +327,7 @@ itcl::body BpWin::bp_store {} {
     } else {
       puts $outH "break $bp_specifier"
     }
-      
+
     if {!$enable_p} {
       puts $outH "disable \$bpnum"
     }
@@ -362,10 +362,10 @@ itcl::body BpWin::bp_select { r } {
   set zz [list addr file func line]
   if {$tracepoints} {lappend zz num pass}
   if {$show_threads} {lappend zz thread}
-  
+
   if {$selected} {
     set i $selected
-    
+
     foreach thing $zz {
       $twin.${thing}${i}  configure -fg $::Colors(fg) -bg $bg1
     }
@@ -384,14 +384,14 @@ itcl::body BpWin::bp_select { r } {
     $itk_interior.m.bp entryconfigure "Enabled" -state disabled
     $itk_interior.m.bp entryconfigure "Disabled" -state disabled
     $itk_interior.m.bp entryconfigure "Remove" -state disabled
-    
+
     return
   }
 
   foreach thing $zz {
     $twin.${thing}${r} configure -fg $::Colors(sfg) -bg $::Colors(sbg)
   }
-  
+
   if {$tracepoints == 0} {
     $itk_interior.m.bp entryconfigure "Normal" -variable _bp_disp($r) \
       -command "$this bp_type $r" -state normal
@@ -415,7 +415,7 @@ itcl::body BpWin::bp_select { r } {
   $Menu entryconfigure "Disabled" -variable _bp_en($r)        \
     -command "$this bp_able $r" -state normal
   $Menu entryconfigure "Remove" -command "$this bp_remove $r" -state normal
-  
+
   set selected $r
 }
 
@@ -476,7 +476,7 @@ itcl::body BpWin::bp_modify {bp_event {tracepoint 0}} {
 
   switch $disposition {
     donttouch { set color [pref get gdb/src/bp_fg] }
-    delete { 
+    delete {
       set color [pref get gdb/src/temp_bp_fg]
     }
     tracepoint { set color [pref get gdb/src/trace_fg] }
@@ -486,7 +486,7 @@ itcl::body BpWin::bp_modify {bp_event {tracepoint 0}} {
   if {$thread != "-1"} {set color [pref get gdb/src/thread_fg]}
 
   if {$gdbtk_platform(platform) == "windows"} then {
-    $twin.en$i configure -fg $color 
+    $twin.en$i configure -fg $color
   } else {
     $twin.en$i configure -selectcolor $color
   }
@@ -517,7 +517,7 @@ itcl::body BpWin::bp_modify {bp_event {tracepoint 0}} {
 # ------------------------------------------------------------------
 itcl::body BpWin::bp_able { i } {
   global _bp_en
-  
+
   bp_select $i
 
   switch $Index_to_bptype($i) {
@@ -554,7 +554,7 @@ itcl::body BpWin::bp_remove { i } {
 #  METHOD:  bp_type - change the breakpoint type (disposition)
 # ------------------------------------------------------------------
 itcl::body BpWin::bp_type { i } {
-  
+
   if {$Index_to_bptype($i) != "breakpoint"} {
     return
   }
@@ -566,7 +566,7 @@ itcl::body BpWin::bp_type { i } {
     ignore_count commands cond thread hit_count user_spec
   bp_select $i
   switch $disposition {
-    delete {  
+    delete {
       gdb_cmd "delete $bpnum"
       gdb_cmd "break *$pc"
     }
@@ -679,7 +679,7 @@ itcl::body BpWin::bp_all { command } {
 }
 
 # ------------------------------------------------------------------
-#  METHOD:  get_actions - pops up the add trace dialog on a selected 
+#  METHOD:  get_actions - pops up the add trace dialog on a selected
 #                         tracepoint
 # ------------------------------------------------------------------
 itcl::body BpWin::get_actions {bpnum} {

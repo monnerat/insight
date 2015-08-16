@@ -1,4 +1,4 @@
-/* 
+/*
  * tkTableWin.c --
  *
  *	This module implements embedded windows for table widgets.
@@ -189,7 +189,7 @@ StickyParseProc(clientData, interp, tkwin, value, widgRec, offset)
     }
     ewPtr->sticky = sticky;
     return TCL_OK;
-}		
+}
 
 /*
  * ckallocs space for a new embedded window structure and clears the structure
@@ -212,7 +212,7 @@ TableNewEmbWindow(Table *tablePtr)
     return ewPtr;
 }
 
-/* 
+/*
  *----------------------------------------------------------------------
  *
  * EmbWinCleanup --
@@ -891,7 +891,7 @@ Table_WindowCmd(ClientData clientData, register Tcl_Interp *interp,
 	    return TCL_ERROR;
 	}
 
-	/* 
+	/*
 	 * If there were less than 6 args, we need
 	 * to do a printout of the config, even for new windows
 	 */

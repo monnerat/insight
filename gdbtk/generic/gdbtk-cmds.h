@@ -23,7 +23,7 @@
 
 /* This structure filled in gdbtk_call_wrapper and passed to
    the wrapped call function.
-   It stores the command pointer and arguments 
+   It stores the command pointer and arguments
    run in the wrapper function. */
 struct wrapped_call_args
   {

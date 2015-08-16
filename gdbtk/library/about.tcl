@@ -33,9 +33,9 @@ itcl::class About {
   }
 
   # Don't quit if this is the last window.  The only way that this can
-  # happen is if we are the splash screen. 
+  # happen is if we are the splash screen.
 
-  method quit_if_last {} { 
+  method quit_if_last {} {
     return 0
   }
 

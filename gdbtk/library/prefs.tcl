@@ -136,7 +136,7 @@ proc pref_read {} {
     } elseif {$home != ""} {
       set prefs_init_filename [file join $home $prefs_init_filename]
     }
-    
+
     # now set global options
     set gdb_ImageDir [file join $GDBTK_LIBRARY [pref get gdb/ImageDir]]
 
@@ -174,7 +174,7 @@ proc pref_save {{win {}}} {
       debug "ERROR: $fd"
       return
     }
-    
+
     puts $fd "\# GDBtk Init file"
     puts $fd {# GDBtkInitVersion: 1}
 
@@ -284,7 +284,7 @@ proc unescape_value {val version} {
     }
   }
 
-  return $val  
+  return $val
 }
 
 # ------------------------------------------------------------------
@@ -313,7 +313,7 @@ proc pref_set_defaults {} {
   } else {
     pref define gdb/compat	"default"
   }
-  
+
   # set download and execution options
   pref define gdb/load/verbose 0
   pref define gdb/load/main 1
@@ -360,7 +360,7 @@ proc pref_set_defaults {} {
   pref define gdb/src/top_control	  1;	# 1 srctextwin controls on top, 0 bottom
 
   # Define the run button's functions. These are defined here in case
-  # we do a "run" with an exec target (which never causes target.tcl to 
+  # we do a "run" with an exec target (which never causes target.tcl to
   # source)...
   pref define gdb/src/run_attach          0
   pref define gdb/src/run_load            0
@@ -378,7 +378,7 @@ proc pref_set_defaults {} {
 
   # Stack Window
   pref define gdb/stack/font              global/fixed
-  
+
   # Register Window
   pref define gdb/reg/rows                16
 
@@ -418,7 +418,7 @@ proc pref_set_defaults {} {
   pref define gdb/mem/ascii_char .
   pref define gdb/mem/bytes_per_row 16
   pref define gdb/mem/color green
-  
+
   # External editor.
   pref define gdb/editor ""
 
@@ -458,30 +458,30 @@ proc pref_set_defaults {} {
 ##########################################################################
 #
 # Everything below this point is code to try to determine the current OS
-# color scheme and use that.  It mostly works, but is not very compatible 
+# color scheme and use that.  It mostly works, but is not very compatible
 # with the use of multiple color schemes for different instances of Insight.
 #
 ##########################################################################
 proc pref_set_colors {home} {
   # set color palette
-  
+
   # In the past, tk widgets got their color information from Windows or
-  # the X resource database.  Unfortunately Insight is a mixture of widgets 
-  # from all over and was coded first in tcl and later in itcl.  So lots of 
+  # the X resource database.  Unfortunately Insight is a mixture of widgets
+  # from all over and was coded first in tcl and later in itcl.  So lots of
   # color inheritance is broken or wrong. And Insight has some special color
   # requirements. We also have to deal with new Unix desktops that don't use the Xrdb.
   # To enable us to fix that without hardcoding colors, we create a color
   # array here and use it as needed to force widgets to the correct colors.
-  
+
   global Colors
   debug
 
   # UNIX colors
-  
+
   # For KDE3 (and probably earlier versions) when the user sets
-  # a color scheme from the KDE control center, the appropriate color 
-  # information is set in the X resource database.  Well, most of it 
-  # is there but it is missing some settings, so we will carefully 
+  # a color scheme from the KDE control center, the appropriate color
+  # information is set in the X resource database.  Well, most of it
+  # is there but it is missing some settings, so we will carefully
   # adjust things.
   #
   # For GNOME, we read .gtkrc or .gtkrc-1.2-gnome2 and parse it
@@ -489,7 +489,7 @@ proc pref_set_colors {home} {
   # but with luck we can read enough to get the colors to mostly match.
 
   # If there is no information, we provide reasonable defaults.
-  
+
   # If some theme sets the text foreground and background to something unusual
   # then Insight won't be able to display sources and highlight things properly.
   # Therefore we will not change the textfg and textbg.
@@ -523,36 +523,36 @@ proc pref_set_colors {home} {
 
 	# create an empty entry widget so we can query its colors
 	entry .e
-	
+
 	# text background
 	# set Colors(textbg) [option get .e background {}]
 	set Colors(textbg) white
-	
+
 	# text foreground
 	#set Colors(textfg) [option get .e foreground {}]
 	set Colors(textfg) black
-	
+
 	# background
 	set Colors(bg) [option get . background {}]
 	if {$Colors(bg) == ""} {set Colors(bg) lightgray}
-	
+
 	# foreground
 	set Colors(fg) [option get . foreground {}]
 	if {$Colors(fg) == ""} {set Colors(fg) black}
-	
+
 	# selectBackground
 	set Colors(sbg) [option get .e selectBackground {}]
 	if {$Colors(sbg) == ""} {set Colors(sbg) blue}
-	
+
 	# selectForeground
 	set Colors(sfg) [option get .e selectForeground {}]
 	if {$Colors(sfg) == ""} {set Colors(sfg) white}
-	
+
 	destroy .e
 	pref_set_option_db 1
       }
     }
-    
+
     "GNOME" {
       pref_load_gnome $home
       pref_set_option_db 0
@@ -567,15 +567,15 @@ proc pref_set_colors {home} {
 proc pref_load_default {} {
   global Colors
   debug "loading default colors"
-  
+
   set Colors(textbg) white
   set Colors(textfg) black
   set Colors(bg) lightgray
   set Colors(fg) black
-  
+
   # selectBackground
   set Colors(sbg) blue
-  
+
   # selectForeground
   set Colors(sfg) white
 }
@@ -613,7 +613,7 @@ proc pref_load_gnome {home {possible_names {}}} {
 proc load_gnome_file {fd} {
   global Colors
   set found 0
-  
+
   while {[gets $fd line] >= 0} {
     if {[regexp {include \"([^\"]*)} $line foo incname]} {
       debug "include $incname $found"
@@ -630,7 +630,7 @@ proc load_gnome_file {fd} {
       }
       continue
     } elseif {[regexp "\[ \t\n\]*\(.+\) = \(.+\)" $line a name val] == 0} {
-      continue 
+      continue
     }
 
     if {[regexp "\"#......\"" $val a] == 1} {
@@ -706,7 +706,7 @@ proc load_gnome_file {fd} {
 	set Colors(prelight) $val
       }
     }
-  } 
+  }
 
   foreach c {fg bg sfg sbg dfg} {
     if {[info exists new($c)]} {
@@ -745,7 +745,7 @@ proc pref_set_option_db {makebg} {
   if {[info exists Colors(dfg)]} {
     option add *disabledForeground $Colors(dfg)
   }
-  
+
   if {$makebg} {
     # calculate trough and activebackground as 90% of background
     set dbg [recolor $::Colors(bg) 90]
@@ -753,7 +753,7 @@ proc pref_set_option_db {makebg} {
     option add *troughColor $dbg
   }
 
-  # Change the default select color for checkbuttons, etc to match 
+  # Change the default select color for checkbuttons, etc to match
   # selectBackground.
   if {$::gdbtk_platform(platform) == "unix"}  {
     option add *selectColor $Colors(sbg)

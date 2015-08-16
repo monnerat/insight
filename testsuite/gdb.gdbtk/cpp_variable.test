@@ -246,7 +246,7 @@ gdbtk_test cpp_variable-2.2 {format of v.v_pub_int} {
 } {natural}
 
 # Test: cpp_variable-2.2a
-# Desc: set variable v->v_pub_int=2112 
+# Desc: set variable v->v_pub_int=2112
 gdbtk_test cpp_variable-2.2a {set variable v.v_pub_int=2112} {
   set err [catch {gdb_cmd "set variable v.v_pub_int=2112"} txt]
   if {$err} {

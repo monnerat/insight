@@ -1,4 +1,4 @@
-/* Main function for gdb with insight.  
+/* Main function for gdb with insight.
 
    Copyright (C) 2002, 2014 Free Software Foundation, Inc.
 

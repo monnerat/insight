@@ -1,4 +1,4 @@
-2008-12-16  Denis Pilat  <denis.pilat@st.com> 
+2008-12-16  Denis Pilat  <denis.pilat@st.com>
 	on behalf of Nunzio Raciti  <nunzio.raciti@st.com>
 
 	* library/srctextwin.itb (_clear_cache): Take care of $p variable that
@@ -89,7 +89,7 @@
 	Add logic to deal with using a system-supplied Tcl/Tk.
 	* plugins/configure: Regenerated.
 	* plugins/Makefile.in: Regenerated.
-	
+
 2008-07-25  Tom Tromey  <tromey@redhat.com>
 
 	* generic/gdbtk-hooks.c: Include observer.h, not gdb-events.h.

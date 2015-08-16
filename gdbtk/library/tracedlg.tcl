@@ -23,7 +23,7 @@
 #    - Number of passes which we should collect the data
 #    - An ignore count after which data will start being collected
 # This method will destroy itself when the dialog is released. It returns
-# either one if a tracepoint was set/edited successfully or zero if 
+# either one if a tracepoint was set/edited successfully or zero if
 # the user bails out (cancel or destroy buttons).
 
 itcl::class TraceDlg {
@@ -81,7 +81,7 @@ itcl::class TraceDlg {
       } else {
 	set Exists 1
       }
-      
+
       set function [gdb_get_function "$File:$line"]
       if {"$last_function" != "$function"} {
 	lappend functions $function
@@ -107,9 +107,9 @@ itcl::class TraceDlg {
       }
       if {$line < $lowl} {
 	set lowl $line
-      } 
+      }
     }
-    
+
     # Look at all addresses
     foreach addr $Addresses {
       set num [gdb_tracepoint_exists "*$addr"]
@@ -118,7 +118,7 @@ itcl::class TraceDlg {
       } else {
 	set Exists 1
       }
-      
+
       set function [gdb_get_function "*$addr"]
       if {"$last_function" != "$function"} {
 	lappend functions $function
@@ -144,7 +144,7 @@ itcl::class TraceDlg {
       }
       if {$addr < $lowl} {
 	set lowl $addr
-      } 
+      }
     }
 
     if {$Lines != {}} {
@@ -285,7 +285,7 @@ itcl::class TraceDlg {
     grid columnconfigure $exp 0 -weight 1
     grid columnconfigure $exp 1 -weight 1
     grid columnconfigure $exp 2 -weight 1
-    grid columnconfigure $exp 3 -weight 1    
+    grid columnconfigure $exp 3 -weight 1
 
     # The "Actions" Frame
     set pass_frame [frame $act.pass]
@@ -293,7 +293,7 @@ itcl::class TraceDlg {
     set new_frame  [frame $act.new]
 
     # Pack these frames
-    pack $pass_frame -fill x 
+    pack $pass_frame -fill x
     pack $act_frame -fill both -expand 1
     pack $new_frame -side top -fill x
 
@@ -324,12 +324,12 @@ itcl::class TraceDlg {
 
     button $new_frame.add_but -text {Add} -command "$this add_action"
     pack $new_frame.combo $new_frame.add_but -side left -fill x \
-      -padx 5 -pady 5    
+      -padx 5 -pady 5
 
     button $new_frame.del_but -text {Delete} -state disabled \
       -command "$this delete_action"
     pack $new_frame.del_but -side right -fill x \
-      -padx 5 -pady 5    
+      -padx 5 -pady 5
 
     # Pack the main frames
     pack $bbox -side bottom -padx 5 -pady 8 -fill x
@@ -340,7 +340,7 @@ itcl::class TraceDlg {
     if {!$New} {
       add_all_actions $actions
     }
-    
+
     # !! FOR SOME REASON, THE *_FRAMES DO NOT GET MAPPED WHENEVER THE USER
     # WAITS A FEW SECONDS TO PLACE THIS DIALOG ON THE SCREEN. This is here
     # as a workaround so that the action-related widgets don't disappear...
@@ -400,7 +400,7 @@ itcl::class TraceDlg {
   }
 
   method done {status {steps 0} {data {}}} {
-    
+
     # We have just returned from the ActionDlg: must reinstall our grab
 #    after idle grab $this
 
@@ -447,7 +447,7 @@ itcl::class TraceDlg {
       $ActionLB insert $index "collect: $data"
     }
   }
-  
+
   # ------------------------------------------------------------------
   # METHOD: cancel - cancel the dialog and do not set the trace
   # ------------------------------------------------------------------
@@ -459,7 +459,7 @@ itcl::class TraceDlg {
   # METHOD: ok - validate the tracepoint and install it
   # ------------------------------------------------------------------
   method ok {} {
-    
+
     # We "dismiss" the dialog here...
     wm withdraw [winfo toplevel [namespace tail $this]]
 
@@ -467,7 +467,7 @@ itcl::class TraceDlg {
     # Check that we are collecting data
 
     # This is silly, but, hey, it works.
-    # Lines is the line number where the tp is 
+    # Lines is the line number where the tp is
     # in case of a tp-range it is the set of lines for that range
     if {$Lines != {}} {
       for {set i 0} {$i < [llength $Number]} {incr i} {
@@ -548,7 +548,7 @@ itcl::class TraceDlg {
 	}
       }
     }
-    
+
     ::delete object $this
   }
 
@@ -574,12 +574,12 @@ itcl::class TraceDlg {
 
       lappend data $datum
     }
-      
+
     return $data
   }
-  
+
   method add_all_actions {actions} {
-    
+
     set length [llength $actions]
     for {set i 0} {$i < $length} {incr i} {
       set action [lindex $actions $i]
@@ -602,7 +602,7 @@ itcl::class TraceDlg {
   }
 
   method get_actions {} {
-    
+
     set actions {}
     set list [$ActionLB get 0 end]
     foreach action $list {
@@ -625,7 +625,7 @@ itcl::class TraceDlg {
   }
 
   method edit {} {
-    
+
     set Selection [$ActionLB curselection]
     if {$Selection != ""} {
       set action [$ActionLB get $Selection]
@@ -640,8 +640,8 @@ itcl::class TraceDlg {
 	debug "unknown action: $action"
 	return
       }
-    
-      set data [split $data ,] 
+
+      set data [split $data ,]
       set len [llength $data]
       set real_data {}
       set special 0
@@ -675,7 +675,7 @@ itcl::class TraceDlg {
   }
 
   method get_selection {} {
-    
+
     set action [$ActionLB curselection]
     return [$ActionLB get $action]
   }
@@ -719,7 +719,7 @@ itcl::class TraceDlg {
 
 proc gdb_add_tracepoint {where passes actions {addr {}}} {
   #debug "gdb_add_tracepoint $where $passes $actions $addr"
-  
+
   # Install the tracepoint
   if {$where == "" && $addr != ""} {
     set where "*$addr"
@@ -775,12 +775,12 @@ proc gdb_edit_tracepoint {number passes actions} {
 
   # If there is a pass count, add that, too
   set err [catch {gdb_cmd "passcount $passes $number"} errTxt]
-    
+
   if $err {
     tk_messageBox -type ok -icon error -message $errTxt
     return
   }
-  
+
   set real_actions {}
   foreach action $actions {
     set steps [lindex $action 0]
@@ -794,10 +794,10 @@ proc gdb_edit_tracepoint {number passes actions} {
       lappend real_actions "collect $data"
     }
   }
-  
+
   if {[llength $real_actions] > 0} {
     lappend real_actions "end"
   }
-  
+
   gdb_actions $number $real_actions
 }

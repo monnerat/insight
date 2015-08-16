@@ -108,7 +108,7 @@ proc gdbtk_tcl_preloop { } {
   # If there was an error loading an executible specified on the command line
   # then we will have called pre_add_symbol, which would set us to busy,
   # but not the corresponding post_add_symbol.  Do this here just in case...
-  after idle gdbtk_idle 
+  after idle gdbtk_idle
   ManagedWin::startup
 
   if {$gdb_exe_name != ""} {
@@ -125,7 +125,7 @@ proc gdbtk_tcl_preloop { } {
       gdb_cmd "cd $current_dir"
     }
   }
-  
+
   gdbtk_update
 }
 
@@ -159,7 +159,7 @@ proc gdbtk_update {} {
   set e [UpdateEvent \#auto]
   GDBEventHandler::dispatch $e
   delete object $e
-  
+
   # Force the screen to update
   update
 }
@@ -212,8 +212,8 @@ proc gdbtk_idle {} {
 
   if {!$gdb_running} {
     set err [catch {run_hooks gdb_no_inferior_hook} txt]
-    if {$err} { 
-      dbug E "no_inferior_hook error: $txt" 
+    if {$err} {
+      dbug E "no_inferior_hook error: $txt"
     }
   }
 
@@ -228,7 +228,7 @@ define_hook download_progress_hook
 # ------------------------------------------------------------------
 proc gdbtk_quit_check {} {
   global gdb_downloading gdb_running gdb_exe_name
-  
+
   if {$gdb_downloading} {
     set msg "Downloading to target,\n really close the debugger?"
     if {![gdbtk_tcl_query $msg no]} {
@@ -244,7 +244,7 @@ proc gdbtk_quit_check {} {
       return 0
     }
   }
-  
+
   return 1
 }
 
@@ -316,7 +316,7 @@ proc gdbtk_tcl_query {message {default yes}} {
   if {[info exists gdb_checking_for_exit] && $gdb_checking_for_exit} {
     set modal "system"
   }
-  
+
   if {$gdbtk_platform(platform) == "windows"} {
     # On Windows, we want to only ask each question once.
     # If we're already asking the question, just wait for the answer
@@ -361,7 +361,7 @@ proc gdbtk_tcl_warning {message} {
   debug "$message"
 
 # ADD a warning message here if the gui must NOT display it
-# add the message at the beginning of the switch followed by - 
+# add the message at the beginning of the switch followed by -
 
   switch -regexp $message {
         "Unable to find dynamic linker breakpoint function.*" {return}
@@ -396,7 +396,7 @@ proc show_warning {message} {
 # On Unix tk_messageBox runs in the regular Tk event loop, so
 # another thread is not required.
 
- 
+
   if {$gdbtk_platform(platform) == "windows"} {
       ide_messageBox [list set r] -icon warning \
         -default ok -message $message -title $title \
@@ -406,7 +406,7 @@ proc show_warning {message} {
              -message $message -title $title \
              -type ok -parent .]
   }
-} 
+}
 
 # ------------------------------------------------------------------
 # PROC: gdbtk_tcl_ignorable_warning -
@@ -474,7 +474,7 @@ proc gdbtk_tcl_fputs_target {message} {
 proc gdbtk_tcl_fputs_target_err {message} {
   if {$::gdbtk_state(console) == ""} {
     ManagedWin::open Console -force
-  }  
+  }
   $::gdbtk_state(console) insert $message err_tag
 }
 
@@ -612,7 +612,7 @@ proc gdbtk_tcl_readline_end {} {
 }
 
 # ------------------------------------------------------------------
-# PROC: gdbtk_tcl_busy - this is called immediately before gdb 
+# PROC: gdbtk_tcl_busy - this is called immediately before gdb
 #    executes a command.
 #
 # ------------------------------------------------------------------
@@ -625,11 +625,11 @@ proc gdbtk_tcl_busy {} {
 
 ################################################################
 #
-# 
+#
 #
 
 # ------------------------------------------------------------------
-# PROC: gdbtk_tcl_idle - this is called immediately after gdb 
+# PROC: gdbtk_tcl_idle - this is called immediately after gdb
 #    executes a command.
 # ------------------------------------------------------------------
 proc gdbtk_tcl_idle {} {
@@ -647,7 +647,7 @@ proc gdbtk_tcl_idle {} {
 proc gdbtk_tcl_tstart {} {
   set srcwin [lindex [manage find src] 0]
   $srcwin.toolbar do_tstop 0
-  
+
 }
 
 # ------------------------------------------------------------------
@@ -656,7 +656,7 @@ proc gdbtk_tcl_tstart {} {
 proc gdbtk_tcl_tstop {} {
   set srcwin [lindex [manage find src] 0]
   $srcwin.toolbar do_tstop 0
-  
+
 }
 
 
@@ -776,7 +776,7 @@ proc gdbtk_tcl_file_changed {filename} {
 }
 
 # ------------------------------------------------------------------
-#  PROCEDURE: gdbtk_tcl_exec_file_display 
+#  PROCEDURE: gdbtk_tcl_exec_file_display
 #         This hook is called from exec_file_command. It's purpose
 #         is to setup the gui for a new file. Note that we cannot
 #         look for main, since this hook is called BEFORE we
@@ -788,7 +788,7 @@ proc gdbtk_tcl_file_changed {filename} {
 proc gdbtk_tcl_exec_file_display {filename} {
   global gdb_exe_changed
 
-  # DO NOT CALL set_exe here! 
+  # DO NOT CALL set_exe here!
 
   # Clear out the GUI, don't do it if filename is "" so that
   # you avoid distracting flashes in the source window.
@@ -812,9 +812,9 @@ proc gdbtk_tcl_exec_file_display {filename} {
 }
 
 # ------------------------------------------------------------------
-#  PROCEDURE: gdbtk_locate_main 
+#  PROCEDURE: gdbtk_locate_main
 #         This proc tries to locate a suitable main function from
-#         a list of names defined in the gdb/main_names preference; 
+#         a list of names defined in the gdb/main_names preference;
 #         returns the linespec (see below) if found, or a null string
 #         if not.
 #
@@ -846,12 +846,12 @@ proc gdbtk_locate_main {{init ""}} {
       break
     }
   }
-  if {$_main_cache == {} 
+  if {$_main_cache == {}
       && ![catch gdb_entry_point entry_point]
       && ![catch {gdb_loc "*$entry_point"} linespec]} {
     set _main_cache $linespec
   }
-  
+
   # need to see if result is valid
   lassign $_main_cache file func ffile line addr rest
   if {$addr == 0x0 && $func == {}} { set _main_cache {} }
@@ -874,13 +874,13 @@ proc set_exe_name {exe} {
   #debug "exe=$exe  gdb_exe_name=$gdb_exe_name"
 
   set gdb_exe_name $exe
-  set gdb_exe_changed 1    
+  set gdb_exe_changed 1
 }
 
 
 # ------------------------------------------------------------------
 # PROC: set_exe -
-# ------------------------------------------------------------------ 
+# ------------------------------------------------------------------
 proc set_exe {} {
   global gdb_exe_name gdb_exe_changed gdb_target_changed gdb_loaded file_done
 #  debug "gdb_exe_changed=$gdb_exe_changed gdb_exe_name=$gdb_exe_name"
@@ -919,7 +919,7 @@ proc set_exe {} {
 
 proc _open_file {{file ""}} {
   global gdb_running gdb_downloading gdbtk_platform
-  
+
   if {$gdb_running || $gdb_downloading} {
     # We are already running/downloading something..
     if {$gdb_running} {
@@ -934,21 +934,21 @@ proc _open_file {{file ""}} {
 
   if {[string compare $file ""] == 0} {
     set curFocus [focus]
-    
+
     # Make sure that this is really a modal dialog...
     # FIXME: Add a disable_all to ide_grab_support.
-    
+
     ide_grab_support disable_except {}
-    
+
     set file [tk_getOpenFile -parent . -title "Load New Executable"]
-  
+
     ide_grab_support enable_all
-    
+
     # If no one had the focus before, leave it that way (since I
-    # am not sure how this could happen...  Also, the vwait in 
+    # am not sure how this could happen...  Also, the vwait in
     # tk_getOpenFile could have allowed the curFocus window to actually
     # be destroyed, so make sure it is still around.
-    
+
     if {$curFocus != "" && [winfo exists $curFocus]} {
       raise [winfo toplevel $curFocus]
       focus $curFocus
@@ -957,7 +957,7 @@ proc _open_file {{file ""}} {
     tk_messageBox -message "File \"$file\" does not exist"
     return 0
   }
-    
+
 
   if {$file == ""} {
     return 0
@@ -968,7 +968,7 @@ proc _open_file {{file ""}} {
     set root [ide_cygwin_path to_posix $root]
     set file [ide_cygwin_path to_posix $file]
   }
-  
+
   catch {gdb_cmd "cd $root"}
 
   # Clear out gdb's internal state, so that it will allow us
@@ -977,7 +977,7 @@ proc _open_file {{file ""}} {
 
   # The gui needs to set this...
   set_exe_name $file
-  
+
   # set_exe needs to be called anywhere the gui does a file_command...
   if {[set_exe] == "cancel"} {
     gdbtk_update
@@ -1020,7 +1020,7 @@ proc _close_file {} {
 }
 
 # ------------------------------------------------------------------
-# PROC: set_target_name - Update the target name.  
+# PROC: set_target_name - Update the target name.
 #
 # This function will prompt for a new target and update
 # all variables.
@@ -1028,7 +1028,7 @@ proc _close_file {} {
 # If $prompt is 0 it will just update gdb_target_cmd from gdb_target.
 #
 # RETURN:
-#     1 if successful, 
+#     1 if successful,
 #     0 if the not (the user canceled the target selection dialog)
 # ------------------------------------------------------------------
 proc set_target_name {{prompt 1}} {
@@ -1085,7 +1085,7 @@ proc set_target_name {{prompt 1}} {
       set targ [lrep $targ "ethX" e=${hostname}]
     }
   }
-  
+
 #  debug "targ=$targ gdb_target_cmd=$gdb_target_cmd"
   if {$gdb_target_cmd != $targ || $gdb_target_changed} {
     set gdb_target_changed 1
@@ -1115,7 +1115,7 @@ proc set_target {} {
       return CANCELED
     }
   }
-  
+
   if {$gdb_target_changed} {
     set srcWin [lindex [ManagedWin::find SrcWin] 0]
 
@@ -1144,7 +1144,7 @@ using [lindex $gdb_target_cmd 1].\nVerify that the board is securely connected a
 necessary,\nmodify the port setting with the debugger preferences."
       return ERROR
     }
-    
+
     if {![catch {pref get gdb/load/$gdb_target_name-after_attaching} aa] && $aa != ""} {
       if {[catch {gdb_cmd $aa} err]} {
 	catch {[ManagedWin::find Console] insert $err err_tag}
@@ -1159,7 +1159,7 @@ necessary,\nmodify the port setting with the debugger preferences."
 # ------------------------------------------------------------------
 # PROC: run_executable -
 #
-# This procedure is used to run an executable.  It is called when the 
+# This procedure is used to run an executable.  It is called when the
 # run button is used.
 # ------------------------------------------------------------------
 proc run_executable { {auto_start 1} } {
@@ -1200,7 +1200,7 @@ proc run_executable { {auto_start 1} } {
     if {[pref get gdb/src/run_load] && $gdb_target_name != "exec"} {
       debug "Downloading..."
       set gdb_loaded 0
-      
+
       # if the app has not been downloaded or the app has already
       # started, we need to redownload before running
       if {!$gdb_loaded} {
@@ -1227,7 +1227,7 @@ proc run_executable { {auto_start 1} } {
       catch {gdb_cmd "clear exit"}
       catch {gdb_cmd "break exit"}
     }
-      
+
     if {[pref get gdb/load/main]} {
       set main "main"
       if {[set linespec [gdbtk_locate_main]] != ""} {
@@ -1266,7 +1266,7 @@ proc run_executable { {auto_start 1} } {
       tty::create
     }
 
-    # 
+    #
     # Run
 
     if {$auto_start} {
@@ -1305,7 +1305,7 @@ proc run_executable { {auto_start 1} } {
     } else {
       SrcWin::point_to_main
     }
-    
+
     gdbtk_update
     gdbtk_idle
   } elseif {[pref get gdb/mode]} {
@@ -1370,7 +1370,7 @@ proc gdbtk_attach_remote {} {
 }
 
 # ------------------------------------------------------------------
-# PROC:  gdbtk_connect: connect to a remote target 
+# PROC:  gdbtk_connect: connect to a remote target
 #                      in asynch mode if async is 1
 # ------------------------------------------------------------------
 proc gdbtk_connect {{async 0}} {
@@ -1475,7 +1475,7 @@ proc gdbtk_nexti {} {
 #  PROC: gdbtk_attached
 # ------------------------------------------------------------------
 #
-# This is called AFTER gdb has successfully done an attach.  Use it to 
+# This is called AFTER gdb has successfully done an attach.  Use it to
 # bring the GUI up to a current state...
 proc gdbtk_attached {} {
   gdbtk_update
@@ -1485,7 +1485,7 @@ proc gdbtk_attached {} {
 #  PROC: gdbtk_detached
 # ------------------------------------------------------------------
 #
-# This is called AFTER gdb has successfully done an detach.  Use it to 
+# This is called AFTER gdb has successfully done an detach.  Use it to
 # bring the GUI up to a current state...
 proc gdbtk_detached {} {
   if {!$::gdb_shutting_down} {
@@ -1500,7 +1500,7 @@ proc gdbtk_detached {} {
 # The stop button is tricky. In order to use the stop button,
 # the debugger must be able to keep gui alive while target_wait is
 # blocking (so that the user can interrupt or detach from it).
-# 
+#
 # The best solution for this is to capture gdb deep down where it can
 # block. For _any_ target board, this will be in either serial or
 # socket code. These places call deprecated_ui_loop_hook to keep us
@@ -1606,7 +1606,7 @@ proc gdbtk_attach_native {} {
 		    -message "Could not load symbols from $symbol_file."
 	    return
 	}
-	
+
 	if {[catch {gdb_cmd "attach $pid"} result]} {
 	    ManagedWin::open WarningDlg -transient \
 		    -message [list "Could not attach to $pid:\n$result"]
@@ -1693,7 +1693,7 @@ proc source_file {} {
 #
 # SYNOPSIS:	gdbtk_signal {name longname}
 #
-# DESC:		This procedure is called from GDB when a signal	
+# DESC:		This procedure is called from GDB when a signal
 #		is generated, for example, a SIGSEGV.
 #
 # ARGS:		name - The name of the signal, as returned by
@@ -1776,7 +1776,7 @@ proc initialize_gdbtk {} {
   # displayed to the user.
   set gdb_pretty_name ""
 
-  # gdb_exe_name is the name of the executable we are debugging.  
+  # gdb_exe_name is the name of the executable we are debugging.
   set gdb_exe_name ""
 
   # Initialize readline
@@ -1819,7 +1819,7 @@ proc initialize_gdbtk {} {
 proc gdbtk_tcl_architecture_changed {} {
   set e [ArchChangedEvent \#auto]
   # First perform global actions as a result of the architecture change.
-  gdb_reg_arch_changed $e 
+  gdb_reg_arch_changed $e
   # Now dispatch to all the other event handlers.
   GDBEventHandler::dispatch $e
   delete object $e
@@ -1837,7 +1837,7 @@ proc gdbtk_console_read {} {
 }
 
 # This is based on TIP 171 to enable better default behavior
-# with the MouseWheel event. I don't know why this is not in 
+# with the MouseWheel event. I don't know why this is not in
 # Tk yet (at least 8.5), but this allows all of our windows to
 # scroll without having to do anything.
 proc ::tk::MouseWheel {wFired X Y D {shifted 0}} {
