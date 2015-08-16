@@ -1,5 +1,5 @@
 # Tracepoint actions dialog for Insight.
-# Copyright (C) 1997, 1998, 1999, 2001 Red Hat, Inc.
+# Copyright (C) 1997-2015 Red Hat, Inc.
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License (GPL) as published by
@@ -13,7 +13,7 @@
 
 
 itcl::class ActionDlg {
-  inherit ManagedWin
+  inherit ManagedWin ModalDialog
 
   # ------------------------------------------------------------------
   # CONSTRUCTOR
