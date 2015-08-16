@@ -198,13 +198,13 @@ itcl::body BpWin::bp_add {bp_event {tracepoint 0}} {
 
   set number [$bp_event get number]
   set thread [$bp_event get thread]
-  set disposition [$bp_event get disposition]
   set file [$bp_event get file]
 
   if {$tracepoint} {
-    set diposition tracepoint
+    set disposition tracepoint
     set bptype tracepoint
   } else {
+    set disposition [$bp_event get disposition]
     set bptype breakpoint
   }
 
@@ -442,13 +442,13 @@ itcl::body BpWin::bp_modify {bp_event {tracepoint 0}} {
 
   set number [$bp_event get number]
   set thread [$bp_event get thread]
-  set disposition [$bp_event get disposition]
   set file [$bp_event get file]
 
   if {$tracepoint} {
     set disposition tracepoint
     set bptype tracepoint
   } else {
+    set disposition [$bp_event get disposition]
     set bptype breakpoint
   }
 
