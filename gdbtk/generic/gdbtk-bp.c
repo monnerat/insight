@@ -719,6 +719,14 @@ gdb_get_action_list (Tcl_Interp *interp,
                             Tcl_NewStringObj ("end", -1));
 }
 
+/* This implements the tcl command gdb_get_tracepoint_info
+ *
+ * Tcl Arguments:
+ *   tracepoint_number
+ * Tcl Result:
+ *   A list with {file, function, line_number, address, enabled?, pass_count,
+ *                step_count, thread, hit_count, {list_of_commands}}
+ */
 static int
 gdb_get_tracepoint_info (ClientData clientData, Tcl_Interp *interp,
 			 int objc, Tcl_Obj *CONST objv[])
