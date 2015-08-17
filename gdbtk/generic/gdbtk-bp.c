@@ -704,6 +704,21 @@ gdb_get_trace_frame_num (ClientData clientData, Tcl_Interp *interp,
 
 }
 
+static void
+gdb_get_action_list (Tcl_Interp *interp,
+                     Tcl_Obj *action_list, struct command_line *cl)
+{
+  for (; cl; cl = cl->next)
+    {
+      Tcl_ListObjAppendElement (interp, action_list,
+                                Tcl_NewStringObj (cl->line, -1));
+      if (cl->body_list)
+        gdb_get_action_list (interp, action_list, *cl->body_list);
+    }
+  Tcl_ListObjAppendElement (interp, action_list,
+                            Tcl_NewStringObj ("end", -1));
+}
+
 static int
 gdb_get_tracepoint_info (ClientData clientData, Tcl_Interp *interp,
 			 int objc, Tcl_Obj *CONST objv[])
@@ -712,7 +727,6 @@ gdb_get_tracepoint_info (ClientData clientData, Tcl_Interp *interp,
   int tpnum;
   struct tracepoint *tp;
   struct breakpoint *bp;
-  struct command_line *cl;
   Tcl_Obj *action_list;
   const char *filename, *funcname;
 
@@ -765,15 +779,9 @@ gdb_get_tracepoint_info (ClientData clientData, Tcl_Interp *interp,
 
   /* Append a list of actions */
   action_list = Tcl_NewObj ();
-  if (bp->commands != NULL)
-    {
-      for (cl = breakpoint_commands (bp); cl != NULL; cl = cl->next)
-	{
-	  Tcl_ListObjAppendElement (interp, action_list,
-				    Tcl_NewStringObj (cl->line, -1));
-	}
-      Tcl_ListObjAppendElement (interp, result_ptr->obj_ptr, action_list);
-    }
+  if (bp->commands)
+    gdb_get_action_list (interp, action_list, breakpoint_commands (bp));
+  Tcl_ListObjAppendElement (interp, result_ptr->obj_ptr, action_list);
 
   return TCL_OK;
 }

@@ -589,9 +589,15 @@ itcl::class TraceDlg {
 	set data [get_data $action]
       } elseif {[regexp "while-stepping" $action]} {
 	scan $action "while-stepping %d" steps
-	incr i
-	set action [lindex $actions $i]
-	set data [get_data $action]
+	set data {}
+	for {incr i} {$i < $length} {incr i} {
+	  set action [lindex $actions $i]
+	  if {[regexp "collect" $action]} {
+	    set data [concat $data [get_data $action]]
+	  } elseif {[regexp "end" $action]} {
+	    break
+	  }
+	}
       } elseif {[regexp "end" $action]} {
 	continue
       }
@@ -665,11 +671,13 @@ itcl::class TraceDlg {
       if {$Lines != {}} {
 	ManagedWin::open ActionDlg -File $File -Line [lindex $Lines 0] \
 	  -WhileStepping $whilestepping -Number [lindex $Number 0] \
-	  -Callback [list [code $this done]] -Data $real_data -Steps $steps
+	  -Callback [list [code $this done]] -Data [list $real_data] \
+	  -Steps $steps
       } else {
 	ManagedWin::open ActionDlg -File $File -Address [lindex $Addresses 0] \
 	  -WhileStepping $whilestepping -Number [lindex $Number 0] \
-	  -Callback [list [code $this done]] -Data $real_data -Steps $steps
+	  -Callback [list [code $this done]] -Data [list $real_data] \
+	  -Steps $steps
       }
     }
   }
