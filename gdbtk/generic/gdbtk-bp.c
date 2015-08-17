@@ -655,7 +655,7 @@ gdb_actions_command (ClientData clientData, Tcl_Interp *interp,
 {
   int tpnum;
   struct tracepoint *tp;
-  struct command_line *commands;
+  struct command_line *commands = NULL;
 
   if (objc != 3)
     {
@@ -684,8 +684,6 @@ gdb_actions_command (ClientData clientData, Tcl_Interp *interp,
   if (gdbtk_obj_array_cnt && gdbtk_obj_array)
     commands = read_command_lines_1 (gdbtk_read_next_line, 1,
 				     check_tracepoint_command, tp);
-  else
-    commands = read_command_lines ("", 0, 1, check_tracepoint_command, tp);
 
   breakpoint_set_commands ((struct breakpoint *) tp, commands);
   return TCL_OK;
