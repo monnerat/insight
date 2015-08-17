@@ -680,7 +680,7 @@ gdb_actions_command (ClientData clientData, Tcl_Interp *interp,
   /* Validate and set new tracepoint actions.  */
   Tcl_ListObjGetElements (interp, objv[2], &gdbtk_obj_array_cnt,
 			  &gdbtk_obj_array);
-  gdbtk_obj_array_ptr = 1;
+  gdbtk_obj_array_ptr = 0;
   if (gdbtk_obj_array_cnt && gdbtk_obj_array)
     commands = read_command_lines_1 (gdbtk_read_next_line, 1,
 				     check_tracepoint_command, tp);
