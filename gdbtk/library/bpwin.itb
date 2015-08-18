@@ -585,6 +585,10 @@ itcl::body BpWin::bp_delete {bp_event} {
   set number [$bp_event get number]
   for {set i 1} {$i < $next_row} {incr i} {
     if { $number == $index_to_bpnum($i) } {
+      if {$selected == $i} {
+        # Deselect.
+        bp_select $i
+      }
       if {$tracepoints} {
 	grid forget $twin.en$i $twin.num$i $twin.addr$i $twin.file$i \
 	  $twin.line$i $twin.func$i $twin.pass$i
@@ -598,8 +602,8 @@ itcl::body BpWin::bp_delete {bp_event} {
 	grid forget $twin.en$i $twin.addr$i $twin.file$i $twin.line$i $twin.func$i
 	destroy $twin.en$i $twin.addr$i $twin.file$i $twin.line$i $twin.func$i
       }
-      if {$selected == $i} {
-	set selected 0
+      if {$selected > $i} {
+        decr selected
       }
       return
     }
