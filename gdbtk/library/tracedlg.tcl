@@ -584,21 +584,21 @@ itcl::class TraceDlg {
     for {set i 0} {$i < $length} {incr i} {
       set action [lindex $actions $i]
 
-      if {[regexp "collect" $action]} {
+      if {[regexp {^\s*collect\y} $action]} {
 	set steps 0
 	set data [get_data $action]
-      } elseif {[regexp "while-stepping" $action]} {
+      } elseif {[regexp {^\s*while-stepping\y} $action]} {
 	scan $action "while-stepping %d" steps
 	set data {}
 	for {incr i} {$i < $length} {incr i} {
 	  set action [lindex $actions $i]
-	  if {[regexp "collect" $action]} {
+	  if {[regexp {^\s*collect\y} $action]} {
 	    set data [concat $data [get_data $action]]
-	  } elseif {[regexp "end" $action]} {
+	  } elseif {[regexp {^\s*end\y} $action]} {
 	    break
 	  }
 	}
-      } elseif {[regexp "end" $action]} {
+      } elseif {[regexp {^\s*end\y} $action]} {
 	continue
       }
 
@@ -612,11 +612,11 @@ itcl::class TraceDlg {
     set actions {}
     set list [$ActionLB get 0 end]
     foreach action $list {
-      if {[regexp "collect" $action]} {
+      if {[regexp {^\s*collect\y} $action]} {
 	scan $action "collect: %s" data
 	set steps 0
 	set whilestepping 0
-      } elseif {[regexp "while-stepping" $action]} {
+      } elseif {[regexp {^\s*while-stepping\y} $action]} {
 	scan $action "while-stepping (%d): %s" steps data
 	set whilestepping 1
       } else {
@@ -637,11 +637,11 @@ itcl::class TraceDlg {
 
     set Selection [$ActionLB curselection]
     set action [$ActionLB get $Selection]
-    if [regexp "collect" $action] {
+    if [regexp {^\s*collect\y} $action] {
       scan $action "collect: %s" data
       set steps 0
       set whilestepping 0
-    } elseif [regexp "while-stepping" $action] {
+    } elseif [regexp {^\s*while-stepping\y} $action] {
       scan $action "while-stepping (%d): %s" steps data
       set whilestepping 1
     } else {
