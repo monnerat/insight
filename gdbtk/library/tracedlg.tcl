@@ -347,6 +347,16 @@ itcl::class TraceDlg {
     #update idletasks
   }
 
+  method has_while_stepping {} {
+    set list [$ActionLB get 0 end]
+    foreach action $list {
+      if {[regexp {^\s*while-stepping\y} $action]} {
+        return 1
+      }
+    }
+    return 0
+  }
+
   method set_action_type {widget action} {
     set ActionType $action
   }
@@ -354,7 +364,7 @@ itcl::class TraceDlg {
   method add_action {} {
 
     if {"$ActionType" == "while-stepping"} {
-      if {$WhileStepping} {
+      if {[has_while_stepping]} {
 	# We are only allowed on of these...
 	tk_messageBox -icon error -type ok \
 	  -message "A tracepoint may only have one while-stepping action."
@@ -439,7 +449,6 @@ itcl::class TraceDlg {
 	set index "end"
       }
       $ActionLB insert $index "while-stepping ($steps): $data"
-      set WhileStepping 1
     } else {
       if {"$index" == ""} {
 	set index 0
@@ -718,7 +727,6 @@ itcl::class TraceDlg {
   protected variable ActionType {}
   protected variable ActionLB
   protected variable Actions
-  protected variable WhileStepping 0
   protected variable Selection {}
   protected variable New 0;		# set whenever there is a new tp to add
   protected variable Exists 0;		# set whenever a tracepoint in the range exists
