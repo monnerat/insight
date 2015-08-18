@@ -71,7 +71,10 @@ char *bpdisp[] =
  || (bp)->type == bp_watchpoint          \
  || (bp)->type == bp_hardware_watchpoint \
  || (bp)->type == bp_read_watchpoint     \
- || (bp)->type == bp_access_watchpoint)
+ || (bp)->type == bp_access_watchpoint   \
+ || (bp)->type == bp_tracepoint          \
+ || (bp)->type == bp_fast_tracepoint     \
+ || (bp)->type == bp_static_tracepoint)
 
 /*
  * Forward declarations

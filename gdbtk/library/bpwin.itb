@@ -615,11 +615,13 @@ itcl::body BpWin::breakpoint {bp_event} {
   set action [$bp_event get action]
   #debug "bp update $action [$bp_event get number] [$bp_event get type]"
 
-  switch $action {
-    modify  { bp_modify $bp_event 0 }
-    create  { bp_add $bp_event 0 }
-    delete  { bp_delete $bp_event }
-    default { dbug E "Unknown breakpoint action: $action" }
+  if {!$tracepoints} {
+    switch $action {
+      modify  { bp_modify $bp_event 0 }
+      create  { bp_add $bp_event 0 }
+      delete  { bp_delete $bp_event }
+      default { dbug E "Unknown breakpoint action: $action" }
+    }
   }
 }
 
@@ -632,11 +634,13 @@ itcl::body BpWin::tracepoint {tp_event} {
   set action [$tp_event get action]
   #debug "tp update $action [$tp_event get number]"
 
-  switch $action {
-    modify  { bp_modify $tp_event 1 }
-    create  { bp_add $tp_event 1 }
-    delete  { bp_delete $tp_event }
-    default { dbug E "Unknown tracepoint action: $action" }
+  if {$tracepoints} {
+    switch $action {
+      modify  { bp_modify $tp_event 1 }
+      create  { bp_add $tp_event 1 }
+      delete  { bp_delete $tp_event }
+      default { dbug E "Unknown tracepoint action: $action" }
+    }
   }
 }
 
