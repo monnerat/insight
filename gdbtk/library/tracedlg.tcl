@@ -631,54 +631,55 @@ itcl::class TraceDlg {
   }
 
   method edit {} {
+    # Can edit one at a time: select active only.
+    $ActionLB selection clear 0 end
+    $ActionLB selection set active active
 
     set Selection [$ActionLB curselection]
-    if {$Selection != ""} {
-      set action [$ActionLB get $Selection]
-      if [regexp "collect" $action] {
-	scan $action "collect: %s" data
-	set steps 0
-	set whilestepping 0
-      } elseif [regexp "while-stepping" $action] {
-	scan $action "while-stepping (%d): %s" steps data
-	set whilestepping 1
-      } else {
-	debug "unknown action: $action"
-	return
-      }
+    set action [$ActionLB get $Selection]
+    if [regexp "collect" $action] {
+      scan $action "collect: %s" data
+      set steps 0
+      set whilestepping 0
+    } elseif [regexp "while-stepping" $action] {
+      scan $action "while-stepping (%d): %s" steps data
+      set whilestepping 1
+    } else {
+      debug "unknown action: $action"
+      return
+    }
 
-      set data [split $data ,]
-      set len [llength $data]
-      set real_data {}
-      set special 0
-      for {set i 0} {$i < $len} {incr i} {
-	set a [lindex $data $i]
-	if {[string range $a 0 1] == "\$("} {
-	  set special 1
-	  set b $a
-	} elseif {$special} {
-	  lappend b $a
-	  if {[string index $a [expr {[string length $a]-1}]] == ")"} {
-	    lappend real_data [join $b ,]
-	    set special 0
-	  }
-	} else {
-	  lappend real_data $a
-	}
-      }
-
-      # !! lindex $Lines 0 -- better way?
-      if {$Lines != {}} {
-	ManagedWin::open ActionDlg -File $File -Line [lindex $Lines 0] \
-	  -WhileStepping $whilestepping -Number [lindex $Number 0] \
-	  -Callback [list [code $this done]] -Data [list $real_data] \
-	  -Steps $steps
+    set data [split $data ,]
+    set len [llength $data]
+    set real_data {}
+    set special 0
+    for {set i 0} {$i < $len} {incr i} {
+      set a [lindex $data $i]
+      if {[string range $a 0 1] == "\$("} {
+        set special 1
+        set b $a
+      } elseif {$special} {
+        lappend b $a
+        if {[string index $a [expr {[string length $a]-1}]] == ")"} {
+          lappend real_data [join $b ,]
+          set special 0
+        }
       } else {
-	ManagedWin::open ActionDlg -File $File -Address [lindex $Addresses 0] \
-	  -WhileStepping $whilestepping -Number [lindex $Number 0] \
-	  -Callback [list [code $this done]] -Data [list $real_data] \
-	  -Steps $steps
+        lappend real_data $a
       }
+    }
+
+    # !! lindex $Lines 0 -- better way?
+    if {$Lines != {}} {
+      ManagedWin::open ActionDlg -File $File -Line [lindex $Lines 0] \
+        -WhileStepping $whilestepping -Number [lindex $Number 0] \
+        -Callback [list [code $this done]] -Data [list $real_data] \
+        -Steps $steps
+    } else {
+      ManagedWin::open ActionDlg -File $File -Address [lindex $Addresses 0] \
+        -WhileStepping $whilestepping -Number [lindex $Number 0] \
+        -Callback [list [code $this done]] -Data [list $real_data] \
+        -Steps $steps
     }
   }
 
