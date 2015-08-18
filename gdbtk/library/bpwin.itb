@@ -602,9 +602,6 @@ itcl::body BpWin::bp_delete {bp_event} {
 	grid forget $twin.en$i $twin.addr$i $twin.file$i $twin.line$i $twin.func$i
 	destroy $twin.en$i $twin.addr$i $twin.file$i $twin.line$i $twin.func$i
       }
-      if {$selected > $i} {
-        decr selected
-      }
       return
     }
   }
