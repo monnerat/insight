@@ -1,5 +1,5 @@
 # GDBEventHandler class definition for Insight.
-# Copyright (C) 2001 Red Hat, Inc.
+# Copyright (C) 2001-2015 Red Hat, Inc.
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License (GPL) as published by
@@ -26,7 +26,7 @@ itcl::class GDBEventHandler {
 
   # See gdbevent.ith for descriptions of event
   public {
-    # Breakpiont/tracepoint events
+    # Breakpoint/tracepoint events
     method breakpoint {event} {}
     method tracepoint {event} {}
 
