@@ -487,7 +487,7 @@ itcl::body SrcTextWin::enable_disable_src_tags {win how} {
   }
 
   $win tag bind tp_tag <Enter> "$win config -cursor $cur1"
-  $win tag bind tp_tag <Motion> "$this motion bp %W %x %y"
+  $win tag bind tp_tag <Motion> "$this motion tp %W %x %y"
   $win tag bind tp_tag <Leave> "$this cancelMotion;$win config -cursor $cur2"
 }
 
@@ -2261,10 +2261,14 @@ itcl::body SrcTextWin::motion {type win x y} {
   # that contains a space.  These functions should error quietly.
   # but write to the debug window so we can trace problems.
 
-  if {$type == "var"} {
-    set cmd_bit ""
-  } else {
-    set cmd_bit BP
+  set cmd_bit ""
+  switch $type {
+    bp {
+      set cmd_bit BP
+    }
+    tp {
+      set cmd_bit TP
+    }
   }
   set cmd_line [format {
     if {[catch {%s show%sBalloon %s %d %d} err]} {
@@ -2363,6 +2367,98 @@ itcl::body SrcTextWin::showBPBalloon {win x y} {
   set tag_list [$win tag names $line.0]
   set break_tag [lindex $tag_list [lsearch -glob $tag_list *bp_tag]]
   set end [lindex [$win tag nextrange $break_tag $line.0 $line.end] 1]
+
+  if {$end != ""} {
+    $win tag add _show_variable $line.0 $end
+    balloon register $win $str _show_variable
+    balloon show $win _show_variable 1
+  }
+}
+
+# ------------------------------------------------------------------
+# METHOD:  showTPBalloon - show TP information in a balloon
+# ------------------------------------------------------------------
+itcl::body SrcTextWin::showTPBalloon {win x y} {
+  if {$Running} { return }
+  $win tag remove _show_variable 1.0 end
+  set line [lindex [split [$win index @0,$y] .] 0]
+  set bps ""
+
+  switch $current(mode) {
+    SRC+ASM {
+      if {$win == $bwin} {
+	if {[info exists _map($Cname,line=$line)]} {
+	  set addr $_map($Cname,line=$line)
+	  set bps [gdb_find_bp_at_addr $addr]
+	} else {
+	  return
+	}
+      }
+    }
+    ASSEMBLY {
+      if {[info exists _map($Cname,line=$line)]} {
+	set addr $_map($Cname,line=$line)
+	set bps [gdb_find_bp_at_addr $addr]
+      } else {
+	return
+      }
+    }
+    MIXED {
+      if {[info exists _map($Cname,line=$line)]} {
+	set addr $_map($Cname,line=$line)
+	set bps [gdb_find_bp_at_addr $addr]
+      } else {
+	return
+      }
+    }
+  }
+
+  if {$bps == ""} {
+    set bps [gdb_find_bp_at_line $current(filename) $line]
+  }
+
+  set str ""
+  set need_lf 0
+  foreach b $bps {
+    set tpinfo [gdb_get_tracepoint_info $b]
+    lassign $tpinfo file func linenum addr enabled pass_count \
+      step_count thread hit_count actions
+    set file [lindex [file split $file] end]
+    if {$enabled} {
+      set enabled "ENA"
+    } else {
+      set enabled "DIS"
+    }
+
+    if {$need_lf} {append str \n}
+
+    append str [format "tracepoint %d at %s:%d (%s)\n   %s pass: %d" \
+		  $b $file $linenum $addr $enabled $pass_count]
+
+    if {$thread != "-1"} {
+      append str "\n   threads: $thread"
+    }
+
+    if {$step_count != 0} {
+      append str "\n   step: $step_count"
+    }
+
+    set i [expr [llength $actions] - 1]
+    if {![catch {lreplace $actions $i $i} new]} {
+      set actions $new
+    }
+    set actions [join $actions ";"]
+    if {$actions != ""} {
+      if {[string length $actions] > 50} {
+	append str "\n   actions: [string range $actions 0 50] ..."
+      } else {
+	append str "\n   actions: $actions"
+      }
+    }
+    set need_lf 1
+  }
+
+  set end [lindex [$win tag nextrange tp_tag $line.0 $line.end] 1]
 
   if {$end != ""} {
     $win tag add _show_variable $line.0 $end

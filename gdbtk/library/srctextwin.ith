@@ -74,6 +74,7 @@ itcl::class SrcTextWin {
     method cancelMotion {}
     method motion {type win x y}
     method showBPBalloon {win x y}
+    method showTPBalloon {win x y}
     method showBalloon {win x y}
     method getVariable {x y {line {}}}
     method trace_help {args}
