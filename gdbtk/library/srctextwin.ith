@@ -146,13 +146,15 @@ itcl::class SrcTextWin {
   # bp
   # temp_bp
   # disabled_bp
-  # tp
   # thread_bp
+  # tp
+  # disabled_tp
   protected common break_images
 
   # This is the list of bp types.  Be nice, and don't put spaces in
   # any of the elements of this list...
   protected common bp_types {bp temp_bp disabled_bp thread_bp}
+  protected common tp_types {tp disabled_tp}
 
   # This variable is used in the "Continue to here" case, where we are
   # disabling then reenabling breakpoints behind the user's back to
@@ -161,7 +163,7 @@ itcl::class SrcTextWin {
 
   protected common TimeOut 100 ;# The timeout value for variable balloon help
 
-  # Executabe line search limit: When an executable changes, we might
+  # Executable line search limit: When an executable changes, we might
   # have a breakpoint at a location that is no longer valid.  This variable
   # limits the search for the "nearest" (next) executable line.
   protected common ExecutableLineLimit 100

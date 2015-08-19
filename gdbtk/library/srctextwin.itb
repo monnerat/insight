@@ -38,6 +38,8 @@ itcl::body SrcTextWin::constructor {args} {
 				     [pref get gdb/src/disabled_fg]]
     set break_images(tp)          [makeBreakDot $size \
 				     [pref get gdb/src/trace_fg]]
+    set break_images(disabled_tp) [makeBreakDot $size \
+				     [pref get gdb/src/disabled_fg]]
     set break_images(thread_bp)   [makeBreakDot $size \
 				     [pref get gdb/src/thread_fg]]
     set break_images(bp_and_tp)   [makeBreakDot $size \
@@ -162,6 +164,7 @@ itcl::body SrcTextWin::build_popups {} {
   set popups(break_rgn) $itk_interior.break_menu
   set popups(source) $itk_interior.src_menu
   set popups(disabled_bp) $itk_interior.disabled_bp_menu
+  set popups(disabled_tp) $itk_interior.disabled_tp_menu
 
   # This is a scratch popup menu we use when we are not over a bp...
   if {![winfo exists $popups(source)]} {
@@ -251,6 +254,8 @@ itcl::body SrcTextWin::build_popups {} {
 
     if {$Tracing} {
       $popups(tp) add separator
+      addPopup tp "Disable Tracepoint" \
+        "$this enable_disable_at_line disable" $tp_fg
       addPopup tp "Modify Tracepoint" "$this set_tp_at_line" $tp_fg
       addPopup tp "Delete Tracepoint" "$this remove_tp_at_line" $tp_fg
     }
@@ -288,6 +293,25 @@ itcl::body SrcTextWin::build_popups {} {
 
     $popups(disabled_bp) add separator
     addPopup disabled_bp "Delete Breakpoint" "$this remove_bp_at_line"
+  }
+
+  if {![winfo exists $popups(disabled_tp)]} {
+    menu $popups(disabled_tp) -tearoff 0
+
+    if {[pref get gdb/control_target]} {
+      addPopup disabled_tp "Continue to Here" "$this continue_to_here" green 0 0
+      addPopup disabled_tp "Jump to Here" "$this jump_to_here" {} 0 0
+      if {$Tracing} {
+        $popups(disabled_tp) add separator
+      }
+    }
+
+    if {$Tracing} {
+      addPopup disabled_tp "Enable Tracepoint" \
+        "$this enable_disable_at_line enable" $tp_fg
+      addPopup disabled_tp "Modify Tracepoint" "$this set_tp_at_line" $tp_fg
+      addPopup disabled_tp "Delete Tracepoint" "$this remove_tp_at_line" $tp_fg
+    }
   }
 
   if {![winfo exists $popups(tp_browse)]} {
@@ -486,9 +510,12 @@ itcl::body SrcTextWin::enable_disable_src_tags {win how} {
     }
   }
 
-  $win tag bind tp_tag <Enter> "$win config -cursor $cur1"
-  $win tag bind tp_tag <Motion> "$this motion tp %W %x %y"
-  $win tag bind tp_tag <Leave> "$this cancelMotion;$win config -cursor $cur2"
+  foreach type $tp_types {
+    $win tag bind ${type}_tag <Enter> "$win config -cursor $cur1"
+    $win tag bind ${type}_tag <Motion> "$this motion tp %W %x %y"
+    $win tag bind ${type}_tag <Leave> \
+      "$this cancelMotion;$win config -cursor $cur2"
+  }
 }
 
 # ------------------------------------------------------------------
@@ -509,10 +536,9 @@ itcl::body SrcTextWin::config_win {win {asm S}} {
   # !! change bg?
 
   $win tag configure break_rgn_tag
-  foreach type $bp_types {
+  foreach type "$bp_types $tp_types" {
     $win tag configure ${type}_tag
   }
-  $win tag configure tp_tag
   $win tag configure source_tag2 -foreground [pref get gdb/src/source2_fg]
   $win tag configure PC_TAG -background [pref get gdb/src/PC_TAG]
   $win tag configure STACK_TAG -background [pref get gdb/src/STACK_TAG]
@@ -534,19 +560,17 @@ itcl::body SrcTextWin::config_win {win {asm S}} {
 
     $win tag bind break_rgn_tag <Button-3> \
       "$this do_tag_popup break_rgn %X %Y %y; break"
-    foreach type $bp_types {
-      if {$type == "disabled_bp"} then {
-	set tag disabled_bp
-      } else {
-	set tag bp
-      }
+    foreach type "$bp_types $tp_types" {
+      regexp {^((?:disabled_)?).*(..)$} $type dummy dis tag
+      set tag "$dis$tag"
       $win tag bind ${type}_tag <Button-3> \
 	"$this do_tag_popup $tag %X %Y %y; break"
     }
-    $win tag bind tp_tag <Button-3> "$this do_tag_popup tp %X %Y %y; break"
     $win tag bind bp_and_tp_tag <Button-3> "$this do_tag_popup bp_and_tp %X %Y %y; break"
   } else {
-    $win tag bind tp_tag <Button-3> "$this do_tag_popup tp_browse %X %Y %y; break"
+    foreach type "$tp_types" {
+      $win tag bind ${type}_tag <Button-3> "$this do_tag_popup tp_browse %X %Y %y; break"
+    }
     $win tag bind break_rgn_tag <Button-3> { }
     foreach type $bp_types {
       $win tag bind ${type}_tag <Button-3> { }
@@ -626,20 +650,19 @@ itcl::body SrcTextWin::config_win {win {asm S}} {
       foreach type $bp_types {
 	$win tag bind ${type}_tag <Button-1> "$this remove_bp_at_line $win %y; break"
       }
-      $win tag bind tp_tag    <Button-1> "$this set_bp_at_line N $win %y; break"
+      foreach type $tp_types {
+        $win tag bind ${type}_tag <Button-1> "$this set_bp_at_line N $win %y; break"
+      }
     } else {
-      $win tag bind break_rgn_tag <Button-1> "$this set_tp_at_line $win %y; break"
-      foreach type $bp_types {
+      foreach type "break_rgn_tag $bp_types $tp_types" {
 	$win tag bind ${type}_tag <Button-1> "$this set_tp_at_line $win %y; break"
       }
-      $win tag bind tp_tag    <Button-1> "$this set_tp_at_line $win %y; break"
     }
   } else {
     $win tag bind break_rgn_tag <Button-1> { }
-    foreach type $bp_types {
+    foreach type "$bp_types $tp_types" {
       $win tag bind ${type}_tag <Button-1> { }
     }
-    $win tag bind tp_tag    <Button-1> { }
   }
 
 
@@ -1433,9 +1456,9 @@ itcl::body SrcTextWin::removeBreakTag {win linenum tag } {
   switch -glob $tag {
     *bp_tag {
       set only_one_tag [expr [set next_tag_index \
-				[lsearch -glob $tag_list tp_tag]] == -1]
+				[lsearch -glob $tag_list *tp_tag]] == -1]
     }
-    tp_tag {
+    *tp_tag {
       # Got to find out what kind of tag is here...
       set only_one_tag [expr [set next_tag_index \
 				[lsearch -glob $tag_list *bp_tag]] == -1]
@@ -1640,7 +1663,7 @@ itcl::body SrcTextWin::hasTP {win line} {
     set win $popups(saved_win)
   }
 
-  if {[lsearch -exact [$win tag names $line.0] tp_tag] == 1} {
+  if {[lsearch -glob [$win tag names $line.0] *tp_tag] == 1} {
     return 1
   }
   return 0
@@ -2458,7 +2481,12 @@ itcl::body SrcTextWin::showTPBalloon {win x y} {
     set need_lf 1
   }
 
-  set end [lindex [$win tag nextrange tp_tag $line.0 $line.end] 1]
+  # Scope out which tracepoint type is set here, and use the tag to get
+  # the break region range...
+
+  set tag_list [$win tag names $line.0]
+  set trace_tag [lindex $tag_list [lsearch -glob $tag_list *tp_tag]]
+  set end [lindex [$win tag nextrange $trace_tag $line.0 $line.end] 1]
 
   if {$end != ""} {
     $win tag add _show_variable $line.0 $end
