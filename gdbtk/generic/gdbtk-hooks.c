@@ -147,8 +147,6 @@ gdbtk_add_hooks (void)
   deprecated_file_changed_hook = gdbtk_file_changed;
   specify_exec_file_hook (gdbtk_exec_file_display);
 
-  deprecated_trace_start_stop_hook = gdbtk_trace_start_stop;
-
   deprecated_attach_hook            = gdbtk_attach;
   deprecated_detach_hook            = gdbtk_detach;
 
@@ -572,11 +570,17 @@ gdbtk_call_command (struct cmd_list_element *cmdblk,
   running_now = 0;
   if (cmdblk->theclass == class_run || cmdblk->theclass == class_trace)
     {
+      int tracerunning = current_trace_status ()->running;
 
       running_now = 1;
       if (!No_Update)
 	Tcl_Eval (gdbtk_interp, "gdbtk_tcl_busy");
       cmd_func (cmdblk, arg, from_tty);
+
+      /* Emulate trace start/stop hook. */
+      if (tracerunning != current_trace_status ()->running)
+        gdbtk_trace_start_stop (current_trace_status ()->running, from_tty);
+
       running_now = 0;
       if (!No_Update)
 	Tcl_Eval (gdbtk_interp, "gdbtk_tcl_idle");
