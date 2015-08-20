@@ -23,7 +23,19 @@ itcl::class ActionDlg {
 
     eval itk_initialize $args
 
-    set Registers [gdb_reginfo name]
+    set Registers {}
+    foreach regname [gdb_reginfo name] regcoll [gdb_reginfo collectable] {
+      if {$regcoll} {
+        lappend Registers $regname
+      }
+    }
+
+    set StackPointer {}
+    set spnum [gdb_reginfo special sp]
+    if {[gdb_reginfo collectable $spnum]} {
+      set StackPointer "\$[gdb_reginfo name $spnum]"
+    }
+    set StackCollect "*(char*)$StackPointer@64"
     if {$Line != ""} {
       set Locals  [gdb_get_locals "$File:$Line"]
       set Args    [gdb_get_args "$File:$Line"]
@@ -42,8 +54,12 @@ itcl::class ActionDlg {
     if {[llength $Locals] > 0} {
       lappend Variables  "All Locals"
     }
-    lappend Variables "All Registers"
-    lappend Variables "Collect Stack"
+    if {[llength $Registers] > 0} {
+      lappend Variables "All Registers"
+    }
+    if {$StackPointer != {}} {
+      lappend Variables "Collect Stack"
+    }
 
     build_win
 
@@ -570,7 +586,7 @@ itcl::class ActionDlg {
 	} elseif {"[string tolower $other]" == "collect stack"} {
 	  set i [lsearch $Variables "Collect Stack"]
 	  if {$i != -1} {
-	    # It's "All Arguments" on the Variables list
+	    # It's "Collect Stack" on the Variables list
 	    set add 1
 	    set lists [all_args 1]
 	    set list1 [lindex $lists 0]
@@ -806,5 +822,6 @@ itcl::class ActionDlg {
   protected variable AddButton
   protected variable RemoveButton
   protected variable OtherEntry
-  protected variable StackCollect {*(char*)$sp@64}
+  protected variable StackCollect
+  protected variable StackPointer
 }

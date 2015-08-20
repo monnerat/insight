@@ -47,6 +47,8 @@ static int gdb_register_info (ClientData, Tcl_Interp *, int, Tcl_Obj **);
 static void get_register (int, map_arg);
 static void get_register_name (int, map_arg);
 static void get_register_size (int, map_arg);
+static void get_register_types (int regnum, map_arg);
+static void get_register_collectable (int regnum, map_arg);
 static int map_arg_registers (Tcl_Interp *, int, Tcl_Obj **,
 			      map_func, map_arg);
 static void register_changed_p (int, map_arg);
@@ -54,8 +56,7 @@ static void setup_architecture_data (void);
 static int gdb_regformat (ClientData, Tcl_Interp *, int, Tcl_Obj **);
 static int gdb_reggroup (ClientData, Tcl_Interp *, int, Tcl_Obj **);
 static int gdb_reggrouplist (ClientData, Tcl_Interp *, int, Tcl_Obj **);
-
-static void get_register_types (int regnum, map_arg);
+static int gdb_regspecial (ClientData, Tcl_Interp *, int, Tcl_Obj **);
 
 /* This contains the previous values of the registers, since the last call to
    gdb_changed_register_list.
@@ -85,7 +86,8 @@ Gdbtk_Register_Init (Tcl_Interp *interp)
  * It returns the requested information about registers.
  *
  * Tcl Arguments:
- *    OPTION    - "changed", "name", "size", "value" (see below)
+ *    OPTION    - "changed", "name", "size", "value", "collectable",
+ *                "special"  (see below)
  *    REGNUM(S) - the register(s) for which info is requested
  *
  * Tcl Result:
@@ -124,6 +126,16 @@ Gdbtk_Register_Init (Tcl_Interp *interp)
  *    Returns a list of register values.
  *
  *    usage: gdb_reginfo value [regnum0, ..., regnumN]
+ *
+ * collectable
+ *    Returns a list of flags indicating if register is collectable or not.
+ *
+ *    usage gdb_reginfo collectable [regnum0, ..., regnumN]
+ *
+ * special
+ *    Returns a list of special register numbers.
+ *
+ *    usage gdb_reginfo special [sp | pc | ps] ...
  */
 static int
 gdb_register_info (ClientData clientData, Tcl_Interp *interp, int objc,
@@ -133,13 +145,16 @@ gdb_register_info (ClientData clientData, Tcl_Interp *interp, int objc,
   map_arg arg;
   map_func func;
   static const char *commands[] = {"changed", "name", "size", "value", "type",
-			     "format", "group", "grouplist", NULL};
-  enum commands_enum { REGINFO_CHANGED, REGINFO_NAME, REGINFO_SIZE, REGINFO_VALUE,
-		       REGINFO_TYPE, REGINFO_FORMAT, REGINFO_GROUP, REGINFO_GROUPLIST };
+                                   "format", "group", "grouplist",
+                                   "collectable", "special", NULL};
+  enum commands_enum { REGINFO_CHANGED, REGINFO_NAME, REGINFO_SIZE,
+                       REGINFO_VALUE, REGINFO_TYPE, REGINFO_FORMAT,
+                       REGINFO_GROUP, REGINFO_GROUPLIST, REGINFO_COLLECTABLE,
+                       REGINFO_SPECIAL };
 
   if (objc < 2)
     {
-      Tcl_WrongNumArgs (interp, 1, objv, "name|size|value|type|format|groups [regnum1 ... regnumN]");
+      Tcl_WrongNumArgs (interp, 1, objv, "changed|name|size|value|type|format|group|grouplist|collectable|special [regnum1 ... regnumN]");
       return TCL_ERROR;
     }
 
@@ -193,6 +208,10 @@ gdb_register_info (ClientData clientData, Tcl_Interp *interp, int objc,
       arg.ptr = NULL;
       break;
 
+    case REGINFO_COLLECTABLE:
+      func = get_register_collectable;
+      break;
+
     case REGINFO_FORMAT:
       return gdb_regformat (clientData, interp, objc, objv);
 
@@ -201,6 +220,9 @@ gdb_register_info (ClientData clientData, Tcl_Interp *interp, int objc,
 
     case REGINFO_GROUPLIST:
       return gdb_reggrouplist (clientData, interp, objc, objv);
+
+    case REGINFO_SPECIAL:
+      return gdb_regspecial (clientData, interp, objc, objv);
 
     default:
       return TCL_ERROR;
@@ -215,6 +237,18 @@ get_register_size (int regnum, map_arg arg)
   Tcl_ListObjAppendElement (gdbtk_interp, result_ptr->obj_ptr,
 			    Tcl_NewIntObj (register_size (get_current_arch (),
 							  regnum)));
+}
+
+static void
+get_register_collectable (int regnum, map_arg arg)
+{
+  int iscollectable = 1;
+
+  if (regnum >= gdbarch_num_regs (get_current_arch ()))
+    iscollectable = gdbarch_ax_pseudo_register_collect_p (get_current_arch ());
+
+  Tcl_ListObjAppendElement (gdbtk_interp, result_ptr->obj_ptr,
+			    Tcl_NewIntObj (iscollectable));
 }
 
 /* returns a list of valid types for a register */
@@ -599,6 +633,33 @@ gdb_reggroup (ClientData clientData, Tcl_Interp *interp,
     {
       if (gdbarch_register_reggroup_p (get_current_arch (), regnum, group))
 	Tcl_ListObjAppendElement (NULL, result_ptr->obj_ptr, Tcl_NewIntObj (regnum));
+    }
+  return TCL_OK;
+}
+
+static int
+gdb_regspecial (ClientData clientData, Tcl_Interp *interp,
+		  int objc, Tcl_Obj **objv)
+{
+  for (; objc; objc--)
+    {
+      char *s = Tcl_GetStringFromObj (*objv++, NULL);
+      int regnum;
+
+      if (!strcmp (s, "sp"))
+        regnum = gdbarch_sp_regnum (get_current_arch ());
+      else if (!strcmp (s, "pc"))
+        regnum = gdbarch_pc_regnum (get_current_arch ());
+      else if (!strcmp (s, "ps"))
+        regnum = gdbarch_ps_regnum (get_current_arch ());
+      else
+        {
+          gdbtk_set_result (interp, "Invalid special register %s", s);
+          return TCL_ERROR;
+        }
+
+      Tcl_ListObjAppendElement (NULL, result_ptr->obj_ptr,
+                                Tcl_NewIntObj (regnum));
     }
   return TCL_OK;
 }
