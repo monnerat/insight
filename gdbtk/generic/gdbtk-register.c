@@ -86,8 +86,8 @@ Gdbtk_Register_Init (Tcl_Interp *interp)
  * It returns the requested information about registers.
  *
  * Tcl Arguments:
- *    OPTION    - "changed", "name", "size", "value", "collectable",
- *                "special"  (see below)
+ *    OPTION    - "changed", "name", "size", "value", "type", "format",
+ *                "grouplist", "group", "collectable", "special"  (see below)
  *    REGNUM(S) - the register(s) for which info is requested
  *
  * Tcl Result:
@@ -127,15 +127,44 @@ Gdbtk_Register_Init (Tcl_Interp *interp)
  *
  *    usage: gdb_reginfo value [regnum0, ..., regnumN]
  *
+ * type
+ *    Returns a list of valid types for a register.
+ *    Normally this will be only one type, except for SIMD and other
+ *    special registers.
+ *    Each type is represented as a list of 3 elements:
+ *    - The type name
+ *    - The core address (as an hexadecimal string) of the type structure.
+ *    - "float" if it is a floating point type, else "int".
+ *
+ *    usage: gdb_reginfo type regnum
+ *
+ * format
+ *    Sets the format for a register.
+ *    This is necessary to allow "gdb_reginfo value" to return a list
+ *    of registers and values.
+ *
+ *    usage: gdb_reginfo format regno typeaddr format_char
+ *
+ * grouplist
+ *    Returns a list containing the names of the register groups for the
+ *    current architecture.
+ *
+ *    usage: gdb_reginfo grouplist
+ *
+ * group
+ *    Returns a list of the register names in a group.
+ *
+ *    usage: gdb_reginfo group groupname
+ *
  * collectable
  *    Returns a list of flags indicating if register is collectable or not.
  *
- *    usage gdb_reginfo collectable [regnum0, ..., regnumN]
+ *    usage: gdb_reginfo collectable [regnum0, ..., regnumN]
  *
  * special
  *    Returns a list of special register numbers.
  *
- *    usage gdb_reginfo special [sp | pc | ps] ...
+ *    usage: gdb_reginfo special [sp | pc | ps] ...
  */
 static int
 gdb_register_info (ClientData clientData, Tcl_Interp *interp, int objc,
@@ -566,7 +595,7 @@ gdb_regformat (ClientData clientData, Tcl_Interp *interp,
 
 /* gdb_reggrouplist returns the names of the register groups */
 /* for the current architecture. */
-/* Usage: gdb_reginfo groups */
+/* Usage: gdb_reginfo grouplist */
 
 static int
 gdb_reggrouplist (ClientData clientData, Tcl_Interp *interp,
@@ -663,4 +692,3 @@ gdb_regspecial (ClientData clientData, Tcl_Interp *interp,
     }
   return TCL_OK;
 }
-
