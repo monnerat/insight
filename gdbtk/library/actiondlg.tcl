@@ -443,117 +443,77 @@ itcl::class ActionDlg {
   # METHOD: change_other - add/remove a user defined type
   # ------------------------------------------------------------------
   method change_other {} {
-    set other [$OtherEntry get]
+    set other [string trim [$OtherEntry get] \ \r\t\n]
 
     if {"$other" != ""} {
       # Check for representation of special tag.
-      switch -nocase "$other"					\
-        {all locals}	-					\
-        {$loc}		{ set other "All Locals" }		\
-	{all registers}	-					\
-	{$reg}		{ set other "All Registers" }		\
-        {all arguments}	-					\
-        {$arg}		{ set other "All Arguments" }		\
-        {collect stack}	-					\
-        $StackCollect	{ set other "Collect Stack" }
+      switch -nocase -regexp "$other" {
+        {^all +locals$}		-
+        {^\$loc$}		{ set other "All Locals" }
+        {^all +registers$}	-
+        {^\$reg$}		{ set other "All Registers" }
+        {^all +arguments$}	-
+        {^\$arg$}		{ set other "All Arguments" }
+        {^collect +stack$}	{ set other "Collect Stack" }
+        default {
+          if {[regsub -all {[\ \r\t\n]} $other {} expression]} {
+            set other $expression
+          }
+          if {[string tolower "$other"] == "$StackCollect"} {
+            set other "Collect Stack"
+          }
+        }
+      }
 
+      # Check if we are adding or deleting.
       set added 0
+      set i [lsearch $Collect "$other"]
+      set add [expr {$i == -1}]
+      if {$add} {
+        upvar 0 Variables list1
+        upvar 0 Collect list2
+      } else {
+        upvar 0 Collect list1
+        upvar 0 Variables list2
+      }
+      set i [lsearch $list1 "$other"]
+      set j [lsearch $list2 "$other"]
 
       # Check if this is a local/register/arg
-      set i [lsearch $Locals "$other"]
-      if {$i != -1} {
-	set i [lsearch $Collect "$other"]
+      if {[lsearch $Locals "$other"] != -1} {
 	set added 1
-	if {$i != -1} {
-	  # It's a local on the collection list
-	  debug "local on collection list"
-	  set add 0
-	  set list1 [lreplace $Collect $i $i]
-	  set list2 [concat $Variables "$other"]
-	} else {
-	  # It's a local on the variables list
-	  debug "local on variable list"
-	  set add 1
-	  set i [lsearch $Variables "$other"]
-	  set list1 [lreplace $Variables $i $i]
-	  set list2 [concat $Collect "$other"]
-	}
+	set list1 [lreplace $list1 $i $i]
+	set list2 [concat $list2 "$other"]
       }
 
-      set i [lsearch $Registers [string trim "$other" \$]]
-      if {$i != -1} {
-	set i [lsearch $Collect "$other"]
+      if {[lsearch $Registers [string trimleft "$other" \$]] != -1} {
 	set added 1
-	if {$i != -1} {
-	  # It's a register on the collection list
-	  debug "register on collection list"
-	  set add 0
-	  set list1 [lreplace $Collect $i $i]
-	  set list2 [concat $Variables "$other"]
-	} else {
-	  # It's a register on the variables list
-	  debug "register on variable list"
-	  set add 1
-	  set i [lsearch $Variables "$other"]
-	  set list1 [lreplace $Variables $i $i]
-	  set list2 [concat $Collect "$other"]
-	}
+	set list1 [lreplace $list1 $i $i]
+	set list2 [concat $list2 "$other"]
       }
 
-      set i [lsearch $Args $other]
-      if {$i != -1} {
-	set i [lsearch $Collect "$other"]
+      if {[lsearch $Args "$other"] != -1} {
 	set added 1
-	if {$i != -1} {
-	  # It's an arg on the collection list
-	  debug "arg on collection list"
-	  set add 0
-	  set list1 [lreplace $Collect $i $i]
-	  set list2 [concat $Variables "$other"]
-	} else {
-	  # It's an arg on the variables list
-	  debug "arg on variable list"
-	  set add 1
-	  set i [lsearch $Variables "$other"]
-	  set list1 [lreplace $Variables $i $i]
-	  set list2 [concat $Collect "$other"]
-	}
+	set list1 [lreplace $list1 $i $i]
+	set list2 [concat $list2 "$other"]
       }
 
       if {!$added} {
-        set otherexpr [string tolower "$other"]
-	if {[regsub -all {[\ \r\t\n]} $otherexpr {} expression]} {
-          set otherexpr $expression
-          }
-	set i [lsearch $Collect "$other"]
-        if {$i == -1} {
-	  set i [lsearch $Collect "$otherexpr"]
-        }
-        set add [expr {$i == -1}]
-        if {$add} {
-          set list1 $Variables
-          set list2 $Collect
-        } else {
-          set list1 $Collect
-          set list2 $Variables
-        }
         # Check for special tags
         switch "$other" {
 	  "All Locals"		{ all_locals list1 list2 }
 	  "All Registers"	{ all_regs list1 list2 }
 	  "All Arguments"	{ all_args list1 list2 }
           "Collect Stack"	{
-	    set i [lsearch $list1 "$other"]
             if {$i != -1} {
               set list1 [lreplace $list1 $i $i]
             }
-	    set i [lsearch $list2 "$other"]
-            if {$i == -1 && "$StackCollect" != ""} {
+            if {$j == -1 && "$StackCollect" != ""} {
               lappend list2 "$other"
             }
           }
           default {
-            if {$i != -1} {
+            if {!$add} {
               # It's on the list -- remove it
               set list1 [lreplace $list1 $i $i]
             } else {
@@ -571,7 +531,7 @@ itcl::class ActionDlg {
               # do all syntax checking later
 	      if {$ok} {
 	        #debug "Keeping \"$other\""
-                set list2 [concat $list2 "$otherexpr"]
+                set list2 [concat $list2 "$other"]
               } else {
                 #debug "Discarding \"$other\""
               }
@@ -583,13 +543,6 @@ itcl::class ActionDlg {
       # Clear the entry
       $OtherEntry delete 0 end
 
-      if {$add} {
-	set Variables $list1
-	set Collect $list2
-      } else {
-	set Variables $list2
-	set Collect $list1
-      }
       fill_listboxes
     }
   }
