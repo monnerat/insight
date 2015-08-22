@@ -30,12 +30,12 @@ itcl::class ActionDlg {
       }
     }
 
-    set StackPointer {}
+    set StackCollect {}
     set spnum [gdb_reginfo special sp]
     if {[gdb_reginfo collectable $spnum]} {
-      set StackPointer "\$[gdb_reginfo name $spnum]"
+      set stkptr "\$[gdb_reginfo name $spnum]"
+      set StackCollect "*(char*)$stkptr@64"
     }
-    set StackCollect "*(char*)$StackPointer@64"
     if {$Line != ""} {
       set Locals  [gdb_get_locals "$File:$Line"]
       set Args    [gdb_get_args "$File:$Line"]
@@ -57,7 +57,7 @@ itcl::class ActionDlg {
     if {[llength $Registers] > 0} {
       lappend Variables "All Registers"
     }
-    if {$StackPointer != {}} {
+    if {$StackCollect != {}} {
       lappend Variables "Collect Stack"
     }
 
@@ -823,5 +823,4 @@ itcl::class ActionDlg {
   protected variable RemoveButton
   protected variable OtherEntry
   protected variable StackCollect
-  protected variable StackPointer
 }
