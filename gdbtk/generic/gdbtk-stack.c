@@ -341,6 +341,8 @@ gdb_get_vars_command (ClientData clientData, Tcl_Interp *interp,
     {
       ALL_BLOCK_SYMBOLS (block, iter, sym)
 	{
+          int isarg = 1;
+
 	  switch (SYMBOL_CLASS (sym))
 	    {
 	    default:
@@ -352,23 +354,21 @@ gdb_get_vars_command (ClientData clientData, Tcl_Interp *interp,
 	    case LOC_CONST_BYTES:	/* loc. byte seq.        */
 	    case LOC_UNRESOLVED:	/* unresolved static     */
 	    case LOC_OPTIMIZED_OUT:	/* optimized out         */
-	      break;
+	      continue;
 	    case LOC_ARG:	/* argument              */
 	    case LOC_REF_ARG:	/* reference arg         */
 	    case LOC_REGPARM_ADDR:	/* indirect register arg */
-	      if (arguments)
-		Tcl_ListObjAppendElement (interp, result_ptr->obj_ptr,
-					  Tcl_NewStringObj (SYMBOL_PRINT_NAME (sym), -1));
 	      break;
 	    case LOC_LOCAL:	/* stack local           */
 	    case LOC_STATIC:	/* static                */
 	    case LOC_REGISTER:	/* register              */
 	    case LOC_COMPUTED:	/* computed location     */
-	      if (!arguments)
-		Tcl_ListObjAppendElement (interp, result_ptr->obj_ptr,
-					  Tcl_NewStringObj (SYMBOL_PRINT_NAME (sym), -1));
+              isarg = SYMBOL_IS_ARGUMENT (sym);
 	      break;
 	    }
+	    if (arguments == isarg)
+		Tcl_ListObjAppendElement (interp, result_ptr->obj_ptr,
+					  Tcl_NewStringObj (SYMBOL_PRINT_NAME (sym), -1));
 	}
       if (BLOCK_FUNCTION (block))
 	break;
