@@ -606,21 +606,26 @@ itcl::class ActionDlg {
     # Add anything in the OtherEntry
     change_other
 
-    # Check that we are collecting data
-    if {[llength $Collect] == 0} {
+    # Check for null action.
+    set msg ""
+    if {$WhileStepping} {
+    set _TStepCount [string trim $_TStepCount]
+      if {[regexp {[^0-9]} $_TStepCount] || "0$_TStepCount" == 0} {
+        set msg "Invalid step count."
+      }
+    } elseif {[llength $Collect] == 0} {
       # No data!
       set msg "No data specified for the given action."
+    }
+
+    if {$msg != ""} {
       set answer [tk_messageBox -type ok -title "Tracepoint Error" \
-		    -icon error \
-		    -message $msg]
-      case $answer {
-	cancel {
-	  cancel
-	}
-	ok {
-	  return
-	}
+                    -icon error \
+                    -message $msg]
+      if {"$answer" == "ok"} {
+        return
       }
+      cancel
     }
 
     set i [lsearch $Collect "All Locals"]
@@ -674,7 +679,7 @@ itcl::class ActionDlg {
       set steps 0
     }
 
-    if {"$Data" != {}} {
+    if {$Editing} {
       set command "modify"
     } else {
       set command "add"
@@ -703,6 +708,7 @@ itcl::class ActionDlg {
   public variable Data {}
   public variable Steps {}
   public variable Address {}
+  public variable Editing 0
 
   # PROTECTED DATA
   protected variable WhileSteppingEntry

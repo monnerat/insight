@@ -621,6 +621,7 @@ itcl::class TraceDlg {
     set actions {}
     set list [$ActionLB get 0 end]
     foreach action $list {
+      set data ""
       if {[regexp {^\s*collect\y} $action]} {
 	scan $action "collect: %s" data
 	set steps 0
@@ -646,6 +647,7 @@ itcl::class TraceDlg {
 
     set Selection [$ActionLB curselection]
     set action [$ActionLB get $Selection]
+    set data ""
     if [regexp {^\s*collect\y} $action] {
       scan $action "collect: %s" data
       set steps 0
@@ -683,12 +685,12 @@ itcl::class TraceDlg {
       ManagedWin::open ActionDlg -File $File -Line [lindex $Lines 0] \
         -WhileStepping $whilestepping -Number [lindex $Number 0] \
         -Callback [list [code $this done]] -Data [list $real_data] \
-        -Steps $steps
+        -Steps $steps -Editing 1
     } else {
       ManagedWin::open ActionDlg -File $File -Address [lindex $Addresses 0] \
         -WhileStepping $whilestepping -Number [lindex $Number 0] \
         -Callback [list [code $this done]] -Data [list $real_data] \
-        -Steps $steps
+        -Steps $steps -Editing 1
     }
   }
 
@@ -768,7 +770,9 @@ proc gdb_add_tracepoint {where passes actions {addr {}}} {
 
     if {$steps} {
       lappend real_actions "while-stepping $steps"
-      lappend real_actions "collect $data"
+      if {"$data" != ""} {
+        lappend real_actions "collect $data"
+      }
       lappend real_actions "end"
     } else {
       lappend real_actions "collect $data"
@@ -805,7 +809,9 @@ proc gdb_edit_tracepoint {number passes actions} {
 
     if $steps {
       lappend real_actions "while-stepping $steps"
-      lappend real_actions "collect $data"
+      if {"$data" != ""} {
+        lappend real_actions "collect $data"
+      }
       lappend real_actions "end"
     } else {
       lappend real_actions "collect $data"
