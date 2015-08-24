@@ -70,6 +70,13 @@ itcl::class ActionDlg {
     if {"$Data" != {}} {
       change 1 $Data
     }
+
+    # Set dialog title.
+    if {$Editing} {
+      wm title [winfo toplevel [namespace tail $this]] "Edit Action"
+    } else {
+      wm title [winfo toplevel [namespace tail $this]] "Add Action"
+    }
   }
 
   # ------------------------------------------------------------------
