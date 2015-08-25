@@ -198,11 +198,13 @@ gdb_register_info (ClientData clientData, Tcl_Interp *interp, int objc,
   objc -= 2;
   objv += 2;
 
+  arg.integer = 0;
+  arg.ptr = NULL;
+
   switch ((enum commands_enum) index)
     {
     case REGINFO_CHANGED:
       func = register_changed_p;
-      arg.ptr = NULL;
       break;
 
     case REGINFO_NAME:
@@ -215,8 +217,6 @@ gdb_register_info (ClientData clientData, Tcl_Interp *interp, int objc,
 	    objc--;
 	    objv++;
 	  }
-	else
-	  arg.ptr = NULL;
 
 	func = get_register_name;
       }
@@ -224,17 +224,14 @@ gdb_register_info (ClientData clientData, Tcl_Interp *interp, int objc,
 
     case REGINFO_SIZE:
       func = get_register_size;
-      arg.ptr = NULL;
       break;
 
     case REGINFO_VALUE:
       func = get_register;
-      arg.ptr = NULL;
       break;
 
     case REGINFO_TYPE:
       func = get_register_types;
-      arg.ptr = NULL;
       break;
 
     case REGINFO_COLLECTABLE:
