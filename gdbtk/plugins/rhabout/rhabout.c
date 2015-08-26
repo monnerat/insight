@@ -4,7 +4,7 @@
 #include <tcl.h>
 
 /* Define the functions that implement your commands as required by Tcl */
-#ifdef __CYGWIN__
+#if defined(__WIN32__) || defined(_WIN64)
 #  define EXPORT __declspec(dllexport)
 #else
 #  define EXPORT /* nothing */
@@ -41,8 +41,8 @@ Rhabout_Init (Tcl_Interp *interp)
   return TCL_OK;
 }
 
-/* This is REQUIRED for cygwin */
-#ifdef __CYGWIN__
+/* This is REQUIRED for native windows implementations. */
+#ifdef TCL_PLATFORM_WIN
 #include <windows.h>
 #include <tclInt.h>
 

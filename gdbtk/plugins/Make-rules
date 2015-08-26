@@ -46,7 +46,7 @@ PLUGIN_MODULE = $(PLUGIN)$(TCL_SHLIB_SUFFIX)
 
 # Must include a path to tclWinInt.h on cygwin
 ifeq ($(TCL_SHLIB_SUFFIX),.dll)
-CYGWIN_CFLAGS=-I$(srcdir)/../../../../tcl/win
+CYGWIN_CFLAGS=$(TCL_PRIVATE_INCLUDE)
 else
 CYGWIN_CFLAGS=
 endif
