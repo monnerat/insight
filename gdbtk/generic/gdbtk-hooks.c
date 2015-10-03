@@ -33,6 +33,7 @@
 #include "cli/cli-decode.h"
 #include "observer.h"
 #include "gdbthread.h"
+#include "event-loop.h"
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -576,6 +577,13 @@ gdbtk_call_command (struct cmd_list_element *cmdblk,
       if (!No_Update)
 	Tcl_Eval (gdbtk_interp, "gdbtk_tcl_busy");
       cmd_func (cmdblk, arg, from_tty);
+
+      /* The above function may return before the target stops running even
+         in synchronous mode. Make sure the target is not running by
+         monitoring gdb events. */
+      while (!ptid_equal (inferior_ptid, null_ptid) &&
+             is_running (inferior_ptid))
+        gdb_do_one_event();
 
       /* Emulate trace start/stop hook. */
       if (tracerunning != current_trace_status ()->running)
