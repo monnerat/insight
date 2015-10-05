@@ -199,9 +199,8 @@ itcl::body SrcWin::_set_state {varname} {
   } else {
     set state disabled
   }
-  if {!$Tracing} {
-    $twin SetRunningState $state
-  }
+
+  $twin SetRunningState $state
 }
 
 # ------------------------------------------------------------------
