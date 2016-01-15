@@ -132,7 +132,7 @@ diff -Naurp a/MAINTAINERS b/MAINTAINERS
 diff -Naurp a/Makefile.def b/Makefile.def
 --- a/Makefile.def	2015-03-17 12:11:26.543037978 +0100
 +++ b/Makefile.def	2015-03-17 13:04:16.268924112 +0100
-@@ -73,9 +73,6 @@ host_modules= { module= libelf; lib_path
+@@ -74,9 +74,6 @@ host_modules= { module= libelf; lib_path
  host_modules= { module= gold; bootstrap=true; };
  host_modules= { module= gprof; };
  host_modules= { module= intl; bootstrap=true; };
@@ -142,7 +142,7 @@ diff -Naurp a/Makefile.def b/Makefile.def
  host_modules= { module= ld; bootstrap=true; };
  host_modules= { module= libbacktrace; bootstrap=true; };
  host_modules= { module= libcpp; bootstrap=true; };
-@@ -113,7 +110,6 @@ host_modules= { module= zlib; no_install
+@@ -114,7 +111,6 @@ host_modules= { module= zlib; no_install
  host_modules= { module= gdb; };
  host_modules= { module= expect; };
  host_modules= { module= guile; };
@@ -150,7 +150,7 @@ diff -Naurp a/Makefile.def b/Makefile.def
  host_modules= { module= libtermcap; no_check=true; 
                  missing=mostlyclean;
                  missing=clean;
-@@ -402,12 +398,6 @@ dependencies = { module=all-gdb; on=all-
+@@ -403,12 +399,6 @@ dependencies = { module=all-gdb; on=all-
  dependencies = { module=all-gdb; on=all-libdecnumber; };
  dependencies = { module=all-gdb; on=all-libtermcap; };
  
@@ -163,7 +163,7 @@ diff -Naurp a/Makefile.def b/Makefile.def
  // Host modules specific to binutils.
  dependencies = { module=configure-bfd; on=configure-libiberty; hard=true; };
  dependencies = { module=configure-bfd; on=configure-intl; };
-@@ -476,35 +466,11 @@ dependencies = { module=all-opcodes; on=
+@@ -477,35 +467,11 @@ dependencies = { module=all-opcodes; on=
  dependencies = { module=all-opcodes; on=all-intl; };
  
  // Other host modules in the 'src' repository.
