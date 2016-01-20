@@ -849,7 +849,7 @@ tracepoint_exists (char *args)
 
   location = string_to_event_location (&args, current_language);
   cleanup = make_cleanup_delete_event_location (location);
-  sals = decode_line_1 (location, DECODE_LINE_FUNFIRSTLINE, NULL, 0);
+  sals = decode_line_1 (location, DECODE_LINE_FUNFIRSTLINE, NULL, NULL, 0);
   if (sals.nelts == 1)
     {
       resolve_sal_pc (&sals.sals[0]);
