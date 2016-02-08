@@ -1,5 +1,5 @@
 /* Variable user interface layer for GDB, the GNU debugger.
-   Copyright (C) 1999-2015 Free Software Foundation, Inc.
+   Copyright (C) 1999-2016 Free Software Foundation, Inc.
 
    This file is part of GDB.
 
@@ -400,26 +400,38 @@ variable_create (Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[])
   return TCL_ERROR;
 }
 
+/* Delete tcl representation of variable. */
+static void
+variable_delete_tcl (Tcl_Interp *interp, struct varobj *var,
+                     int only_children_p)
+{
+  int i;
+
+  /* Delete children. */
+  for (i = 0; i < VEC_length (varobj_p, var->children); i++)
+    {
+      varobj_p child = VEC_index (varobj_p, var->children, i);
+
+      if (!child)
+        continue;
+      variable_delete_tcl (interp, child, 0);
+    }
+
+  if (only_children_p || !var->obj_name)
+    return;
+
+  /* Delete tcl variable now. */
+  uninstall_variable (interp, var->obj_name);
+}
+
 /* Delete the variable object VAR and its children */
 /* If only_children_p, Delete only the children associated with the object. */
 static void
 variable_delete (Tcl_Interp *interp, struct varobj *var,
 		 int only_children_p)
 {
-  char **dellist;
-  char **vc;
-
-  varobj_delete (var, &dellist, only_children_p);
-
-  vc = dellist;
-  while (*vc != NULL)
-    {
-      uninstall_variable (interp, *vc);
-      xfree (*vc);
-      vc++;
-    }
-
-  xfree (dellist);
+  variable_delete_tcl (interp, var, only_children_p);
+  varobj_delete (var, only_children_p);
 }
 
 /* Return a list of all the children of VAR, creating them if necessary. */
