@@ -1,6 +1,6 @@
 /* Startup code for Insight.
 
-   Copyright (C) 1994-2015 Free Software Foundation, Inc.
+   Copyright (C) 1994-2016 Free Software Foundation, Inc.
 
    Written by Stu Grossman <grossman@cygnus.com> of Cygnus Support.
 
@@ -511,8 +511,7 @@ x_event (int signo)
 #ifdef REQUEST_QUIT
 	  REQUEST_QUIT;
 #else
-	  if (immediate_quit)
-	    quit ();
+	  QUIT;
 #endif
 	}
     }
