@@ -1,5 +1,5 @@
 /* Tcl/Tk command definitions for Insight - Registers
-   Copyright (C) 2001-2015 Free Software Foundation, Inc.
+   Copyright (C) 2001-2016 Free Software Foundation, Inc.
 
    This file is part of GDB.
 
@@ -72,9 +72,9 @@ int
 Gdbtk_Register_Init (Tcl_Interp *interp)
 {
   Tcl_CreateObjCommand (interp, "gdb_reginfo", gdbtk_call_wrapper,
-                        gdb_register_info, NULL);
+                        (ClientData) gdb_register_info, NULL);
   Tcl_CreateObjCommand (interp, "gdb_reg_arch_changed", gdbtk_call_wrapper,
-			setup_architecture_data, NULL);
+			(ClientData) setup_architecture_data, NULL);
 
   /* Register/initialize any architecture specific data */
   setup_architecture_data ();
@@ -540,9 +540,9 @@ setup_architecture_data (void)
   numregs = (gdbarch_num_regs (target_gdbarch ())
 	     + gdbarch_num_pseudo_regs (target_gdbarch ()));
   old_regs_count = numregs;
-  old_regs = xcalloc (1, numregs * MAX_REGISTER_SIZE + 1);
-  regformat = (int *)xcalloc (numregs, sizeof(int));
-  regtype = (struct type **)xcalloc (numregs, sizeof(struct type **));
+  old_regs = (char *) xcalloc (1, numregs * MAX_REGISTER_SIZE + 1);
+  regformat = (int *) xcalloc (numregs, sizeof(int));
+  regtype = (struct type **) xcalloc (numregs, sizeof(struct type **));
 }
 
 /* gdb_regformat sets the format for a register */

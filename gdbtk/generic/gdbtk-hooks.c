@@ -197,7 +197,7 @@ gdbtk_two_elem_cmd (char *cmd_name, const char *argv1)
 
   arg_len = Tcl_ScanElement (argv1, &flags_ptr);
   cmd_len = strlen (cmd_name);
-  command = malloc (arg_len + cmd_len + 2);
+  command = (char *) malloc (arg_len + cmd_len + 2);
   strcpy (command, cmd_name);
   strcat (command, " ");
 
@@ -416,10 +416,11 @@ report_error (void)
  */
 
 void
-gdbtk_ignorable_warning (const char *class, const char *warning)
+gdbtk_ignorable_warning (const char *warnclass, const char *warning)
 {
   char *buf;
-  buf = xstrprintf ("gdbtk_tcl_ignorable_warning {%s} {%s}", class, warning);
+  buf = xstrprintf ("gdbtk_tcl_ignorable_warning {%s} {%s}",
+		    warnclass, warning);
   if (Tcl_Eval (gdbtk_interp, buf) != TCL_OK)
     report_error ();
   free(buf);

@@ -4,7 +4,7 @@
  *	This is the header file for the module that implements
  *	command structure lookups.
  *
- * Copyright (c) 1997,1998 Jeffrey Hobbs
+ * Copyright (c) 1997-2016 Jeffrey Hobbs
  *
  * See the file "license.terms" for information on usage and redistribution
  * of this file, and for a DISCLAIMER OF ALL WARRANTIES.
@@ -17,6 +17,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <tk.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* structure for use in parsing table commands/values */
 typedef struct {
@@ -48,5 +52,9 @@ extern char *	Cmd_BitGet _ANSI_ARGS_((ClientData clientData,
 					Tk_Window unused, char *widgRec,
 					int offset,
 					Tcl_FreeProc **freeProcPtr));
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _CMD_H_ */

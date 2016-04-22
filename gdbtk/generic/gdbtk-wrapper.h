@@ -1,5 +1,5 @@
 /* longjmp-free interface between gdb and gdbtk.
-   Copyright (C) 1999, 2000, 2002, 2008 Free Software Foundation, Inc.
+   Copyright (C) 1999-2016 Free Software Foundation, Inc.
 
 This file is part of GDB.  It contains routines to safely call common gdb
 functions without the fear of longjmp'ing.
@@ -94,7 +94,7 @@ extern gdb_result GDB_find_relative_frame (struct frame_info *fi,
 					   int *start,
 					   struct frame_info **result);
 extern gdb_result GDB_get_current_frame (struct frame_info **result);
-extern gdb_result GDB_varobj_update (struct varobj **varp, int explicit,
+extern gdb_result GDB_varobj_update (struct varobj **varp, int xplicit,
 				     VEC (varobj_update_result) **changes);
 #endif /* GDBTK_WRAPPER_H */
 

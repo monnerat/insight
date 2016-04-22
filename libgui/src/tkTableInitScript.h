@@ -3,11 +3,15 @@
  *
  *	This file contains common init script for tkTable
  *
- * Copyright (c) 1998 Jeffrey Hobbs
+ * Copyright (c) 1998-2016 Jeffrey Hobbs
  *
  * See the file "license.terms" for information on usage and redistribution
  * of this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*
  * The following string is the startup script executed when the table is
@@ -88,3 +92,7 @@ static char tkTableSafeInitScript[] = "if {[info proc tkTableInit]==\"\"} {\n\
 }\n\
 tkTableInit";
 
+
+#ifdef __cplusplus
+}
+#endif

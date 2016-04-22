@@ -315,7 +315,7 @@ variable_create (Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[])
   char *obj_name;
   int index;
   CORE_ADDR frame = (CORE_ADDR) -1;
-  int how_specified = USE_SELECTED_FRAME;
+  enum varobj_type how_specified = USE_SELECTED_FRAME;
 
   /* REMINDER: This command may be invoked in the following ways:
      gdb_variable create [NAME] [-expr EXPR] [-frame FRAME]

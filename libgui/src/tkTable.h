@@ -4,7 +4,7 @@
  *	This is the header file for the module that implements
  *	table widgets for the Tk toolkit.
  *
- * Copyright (c) 1997-2000 Jeffrey Hobbs
+ * Copyright (c) 1997-2016 Jeffrey Hobbs
  *
  * See the file "license.txt" for information on usage and redistribution
  * of this file, and for a DISCLAIMER OF ALL WARRANTIES.
@@ -16,6 +16,10 @@
 #define _TKTABLE_H_
 
 #include "config.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #ifdef TK_PLATFORM_WIN
 #   define WIN32_LEAN_AND_MEAN
@@ -665,5 +669,8 @@ extern void	TableAddFlash _ANSI_ARGS_((Table *tablePtr, int row, int col));
 #undef TCL_STORAGE_CLASS
 #define TCL_STORAGE_CLASS DLLIMPORT
 
-#endif /* _TKTABLE_H_ */
+#ifdef __cplusplus
+}
+#endif
 
+#endif /* _TKTABLE_H_ */

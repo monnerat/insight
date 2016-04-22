@@ -1,5 +1,5 @@
 /* Tcl/Tk interface routines header file.
-   Copyright (C) 1994-2015 Free Software Foundation, Inc.
+   Copyright (C) 1994-2016 Free Software Foundation, Inc.
 
    Written by Stu Grossman <grossman@cygnus.com> of Cygnus Support.
 
@@ -101,7 +101,6 @@ typedef struct gdbtk_result
 gdbtk_result;
 
 struct target_ops;
-struct ptid_t;
 
 /* These defines give the allowed values for the gdbtk_result.flags field. */
 

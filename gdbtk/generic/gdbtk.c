@@ -1,5 +1,5 @@
 /* Startup code for Insight
-   Copyright (C) 1994-2015 Free Software Foundation, Inc.
+   Copyright (C) 1994-2016 Free Software Foundation, Inc.
 
    Written by Stu Grossman <grossman@cygnus.com> of Cygnus Support.
 
@@ -89,7 +89,11 @@ long gdbtk_pid = -1;
 
 char *external_editor_command = NULL;
 
-extern int Tktable_Init (Tcl_Interp * interp);
+extern
+#ifdef __cplusplus
+	"C"
+#endif
+	int Tktable_Init (Tcl_Interp * interp);
 
 void gdbtk_init (void);
 

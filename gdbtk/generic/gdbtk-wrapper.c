@@ -1,5 +1,5 @@
 /* longjmp-free interface between gdb and gdbtk.
-   Copyright (C) 1999, 2000, 2002, 2008, 2013 Free Software Foundation, Inc.
+   Copyright (C) 1999-2016 Free Software Foundation, Inc.
 
    This file is part of GDB.
 
@@ -87,7 +87,7 @@ gdb_result GDB_find_relative_frame (struct frame_info *fi,
 
 gdb_result GDB_get_current_frame (struct frame_info **result);
 
-gdb_result GDB_varobj_update (struct varobj **varp, int explicit,
+gdb_result GDB_varobj_update (struct varobj **varp, int xplicit,
 			      VEC (varobj_update_result) **changes);
 
 /*
@@ -170,7 +170,7 @@ wrap_type_print (char *a)
 {
   struct gdb_wrapper_arguments **args = (struct gdb_wrapper_arguments **) a;
   value_ptr val = (value_ptr) (*args)->args[0].ptr;
-  char *varstring = (*args)->args[1].ptr;
+  char *varstring = (char *) (*args)->args[1].ptr;
   struct ui_file *stream = (struct ui_file *) (*args)->args[2].ptr;
   int show = (*args)->args[3].integer;
   type_print (value_type (val), varstring, stream, show);
@@ -732,20 +732,20 @@ wrap_get_current_frame (char *opaque_arg)
 }
 
 gdb_result
-GDB_varobj_update (struct varobj **varp, int explicit,
+GDB_varobj_update (struct varobj **varp, int xplicit,
 		   VEC (varobj_update_result) **changes)
 {
   struct gdb_wrapper_arguments args;
   gdb_result r;
 
   args.args[0].ptr = varp;
-  args.args[1].integer = explicit;
+  args.args[1].integer = xplicit;
 
   r = call_wrapped_function ((catch_errors_ftype *) wrap_varobj_update, &args);
   if (r != GDB_OK)
     return r;
 
-  *changes = args.result.ptr;
+  *changes = (VEC (varobj_update_result) *) args.result.ptr;
   return GDB_OK;
 }
 
@@ -754,7 +754,7 @@ static int wrap_varobj_update (char *opaque_arg)
   struct gdb_wrapper_arguments **args
     = (struct gdb_wrapper_arguments **) opaque_arg;
   struct varobj **varp = (struct varobj **) (*args)->args[0].ptr;
-  int explicit = (*args)->args[1].integer;
-  (*args)->result.ptr = varobj_update (varp, explicit);
+  int xplicit = (*args)->args[1].integer;
+  (*args)->result.ptr = varobj_update (varp, xplicit);
   return 1;
 }

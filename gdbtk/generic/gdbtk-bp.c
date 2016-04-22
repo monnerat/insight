@@ -1,5 +1,5 @@
 /* Tcl/Tk command definitions for Insight - Breakpoints.
-   Copyright (C) 2001-2015 Free Software Foundation, Inc.
+   Copyright (C) 2001-2016 Free Software Foundation, Inc.
 
    This file is part of GDB.
 
@@ -120,28 +120,29 @@ Gdbtk_Breakpoint_Init (Tcl_Interp *interp)
 {
   /* Breakpoint commands */
   Tcl_CreateObjCommand (interp, "gdb_find_bp_at_addr", gdbtk_call_wrapper,
-			gdb_find_bp_at_addr, NULL);
+			(ClientData) gdb_find_bp_at_addr, NULL);
   Tcl_CreateObjCommand (interp, "gdb_find_bp_at_line", gdbtk_call_wrapper,
-			gdb_find_bp_at_line, NULL);
+			(ClientData) gdb_find_bp_at_line, NULL);
   Tcl_CreateObjCommand (interp, "gdb_get_breakpoint_info", gdbtk_call_wrapper,
-			gdb_get_breakpoint_info, NULL);
+			(ClientData) gdb_get_breakpoint_info, NULL);
   Tcl_CreateObjCommand (interp, "gdb_get_breakpoint_list", gdbtk_call_wrapper,
-			gdb_get_breakpoint_list, NULL);
-  Tcl_CreateObjCommand (interp, "gdb_set_bp", gdbtk_call_wrapper, gdb_set_bp, NULL);
+			(ClientData) gdb_get_breakpoint_list, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_set_bp", gdbtk_call_wrapper,
+			(ClientData) gdb_set_bp, NULL);
 
   /* Tracepoint commands */
-  Tcl_CreateObjCommand (interp, "gdb_actions",
-			gdbtk_call_wrapper, gdb_actions_command, NULL);
-  Tcl_CreateObjCommand (interp, "gdb_get_trace_frame_num",
-			gdbtk_call_wrapper, gdb_get_trace_frame_num, NULL);
-  Tcl_CreateObjCommand (interp, "gdb_get_tracepoint_info",
-			gdbtk_call_wrapper, gdb_get_tracepoint_info, NULL);
-  Tcl_CreateObjCommand (interp, "gdb_get_tracepoint_list",
-			gdbtk_call_wrapper, gdb_get_tracepoint_list, NULL);
-  Tcl_CreateObjCommand (interp, "gdb_is_tracing",
-			gdbtk_call_wrapper, gdb_trace_status,	NULL);
-  Tcl_CreateObjCommand (interp, "gdb_tracepoint_exists",
-			gdbtk_call_wrapper, gdb_tracepoint_exists_command, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_actions", gdbtk_call_wrapper,
+			(ClientData) gdb_actions_command, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_get_trace_frame_num", gdbtk_call_wrapper,
+			(ClientData) gdb_get_trace_frame_num, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_get_tracepoint_info", gdbtk_call_wrapper,
+			(ClientData) gdb_get_tracepoint_info, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_get_tracepoint_list", gdbtk_call_wrapper,
+			(ClientData) gdb_get_tracepoint_list, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_is_tracing", gdbtk_call_wrapper,
+			(ClientData) gdb_trace_status,	NULL);
+  Tcl_CreateObjCommand (interp, "gdb_tracepoint_exists", gdbtk_call_wrapper,
+			(ClientData) gdb_tracepoint_exists_command, NULL);
 
   return TCL_OK;
 }
@@ -853,8 +854,8 @@ tracepoint_exists (char *args)
   if (sals.nelts == 1)
     {
       resolve_sal_pc (&sals.sals[0]);
-      file = xmalloc (strlen (SYMTAB_DIRNAME (sals.sals[0].symtab))
-		      + strlen (sals.sals[0].symtab->filename) + 1);
+      file = (char *) xmalloc (strlen (SYMTAB_DIRNAME (sals.sals[0].symtab)) +
+			       strlen (sals.sals[0].symtab->filename) + 1);
       if (file != NULL)
 	{
 	  strcpy (file, SYMTAB_DIRNAME (sals.sals[0].symtab));

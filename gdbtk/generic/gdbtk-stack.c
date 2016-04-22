@@ -1,5 +1,5 @@
 /* Tcl/Tk command definitions for Insight - Stack.
-   Copyright (C) 2001-2015 Free Software Foundation, Inc.
+   Copyright (C) 2001-2016 Free Software Foundation, Inc.
 
    This file is part of GDB.
 
@@ -64,20 +64,21 @@ int
 Gdbtk_Stack_Init (Tcl_Interp *interp)
 {
   Tcl_CreateObjCommand (interp, "gdb_block_variables", gdbtk_call_wrapper,
-			gdb_block_vars, NULL);
+			(ClientData) gdb_block_vars, NULL);
   Tcl_CreateObjCommand (interp, "gdb_get_blocks", gdbtk_call_wrapper,
-			gdb_get_blocks, NULL);
+			(ClientData) gdb_get_blocks, NULL);
   Tcl_CreateObjCommand (interp, "gdb_get_args", gdbtk_call_wrapper,
-			gdb_get_args_command, NULL);
+			(ClientData) gdb_get_args_command, NULL);
   Tcl_CreateObjCommand (interp, "gdb_get_locals", gdbtk_call_wrapper,
-			gdb_get_locals_command, NULL);
+			(ClientData) gdb_get_locals_command, NULL);
   Tcl_CreateObjCommand (interp, "gdb_selected_block", gdbtk_call_wrapper,
-			gdb_selected_block, NULL);
+			(ClientData) gdb_selected_block, NULL);
   Tcl_CreateObjCommand (interp, "gdb_selected_frame", gdbtk_call_wrapper,
-			gdb_selected_frame, NULL);
+			(ClientData) gdb_selected_frame, NULL);
   Tcl_CreateObjCommand (interp, "gdb_selected_frame_level", gdbtk_call_wrapper,
-			gdb_selected_frame_level, NULL);
-  Tcl_CreateObjCommand (interp, "gdb_stack", gdbtk_call_wrapper, gdb_stack, NULL);
+			(ClientData) gdb_selected_frame_level, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_stack", gdbtk_call_wrapper,
+			(ClientData) gdb_stack, NULL);
 
   return TCL_OK;
 }

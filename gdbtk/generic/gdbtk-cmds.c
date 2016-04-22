@@ -1,5 +1,5 @@
 /* Tcl/Tk command definitions for Insight.
-   Copyright (C) 1994-2015 Free Software Foundation, Inc.
+   Copyright (C) 1994-2016 Free Software Foundation, Inc.
 
    Written by Stu Grossman <grossman@cygnus.com> of Cygnus Support.
    Substantially augmented by Martin Hunt, Keith Seitz & Jim Ingham of
@@ -248,61 +248,66 @@ static int gdb_list_processes (ClientData,
 int
 Gdbtk_Init (Tcl_Interp *interp)
 {
-  Tcl_CreateObjCommand (interp, "gdb_cmd", gdbtk_call_wrapper, gdb_cmd, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_cmd", gdbtk_call_wrapper,
+			(ClientData) gdb_cmd, NULL);
   Tcl_CreateObjCommand (interp, "gdb_immediate", gdbtk_call_wrapper,
-			gdb_immediate_command, NULL);
-  Tcl_CreateObjCommand (interp, "gdb_loc", gdbtk_call_wrapper, gdb_loc, NULL);
-  Tcl_CreateObjCommand (interp, "gdb_path_conv", gdbtk_call_wrapper, gdb_path_conv,
-			NULL);
-  Tcl_CreateObjCommand (interp, "gdb_listfiles", gdbtk_call_wrapper, gdb_listfiles,
-			NULL);
-  Tcl_CreateObjCommand (interp, "gdb_listfuncs", gdbtk_call_wrapper, gdb_listfuncs,
-			NULL);
+			(ClientData) gdb_immediate_command, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_loc", gdbtk_call_wrapper,
+			(ClientData) gdb_loc, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_path_conv", gdbtk_call_wrapper,
+			(ClientData) gdb_path_conv, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_listfiles", gdbtk_call_wrapper,
+			(ClientData) gdb_listfiles, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_listfuncs", gdbtk_call_wrapper,
+			(ClientData) gdb_listfuncs, NULL);
   Tcl_CreateObjCommand (interp, "gdb_entry_point", gdbtk_call_wrapper,
-			gdb_entry_point, NULL);
-  Tcl_CreateObjCommand (interp, "gdb_update_mem", gdbtk_call_wrapper, gdb_update_mem,
-			NULL);
-  Tcl_CreateObjCommand (interp, "gdb_set_mem", gdbtk_call_wrapper, gdb_set_mem,
-			NULL);
-  Tcl_CreateObjCommand (interp, "gdb_stop", gdbtk_call_wrapper, gdb_stop, NULL);
-  Tcl_CreateObjCommand (interp, "gdb_restore_fputs", gdbtk_call_wrapper, gdb_restore_fputs,
-			NULL);
-  Tcl_CreateObjCommand (interp, "gdb_eval", gdbtk_call_wrapper, gdb_eval, NULL);
-  Tcl_CreateObjCommand (interp, "gdb_incr_addr", gdbtk_call_wrapper, gdb_incr_addr, NULL);
-  Tcl_CreateObjCommand (interp, "gdb_CA_to_TAS", gdbtk_call_wrapper, gdb_CA_to_TAS, NULL);
+			(ClientData) gdb_entry_point, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_update_mem", gdbtk_call_wrapper,
+			(ClientData) gdb_update_mem, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_set_mem", gdbtk_call_wrapper,
+			(ClientData) gdb_set_mem, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_stop", gdbtk_call_wrapper,
+			(ClientData) gdb_stop, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_restore_fputs", gdbtk_call_wrapper,
+			(ClientData) gdb_restore_fputs, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_eval", gdbtk_call_wrapper,
+			(ClientData) gdb_eval, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_incr_addr", gdbtk_call_wrapper,
+			(ClientData) gdb_incr_addr, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_CA_to_TAS", gdbtk_call_wrapper,
+			(ClientData) gdb_CA_to_TAS, NULL);
   Tcl_CreateObjCommand (interp, "gdb_clear_file", gdbtk_call_wrapper,
-			gdb_clear_file, NULL);
+			(ClientData) gdb_clear_file, NULL);
   Tcl_CreateObjCommand (interp, "gdb_confirm_quit", gdbtk_call_wrapper,
-			gdb_confirm_quit, NULL);
+			(ClientData) gdb_confirm_quit, NULL);
   Tcl_CreateObjCommand (interp, "gdb_force_quit", gdbtk_call_wrapper,
-			gdb_force_quit, NULL);
-  Tcl_CreateObjCommand (interp, "gdb_target_has_execution",
-			gdbtk_call_wrapper,
-			gdb_target_has_execution_command, NULL);
-  Tcl_CreateObjCommand (interp, "gdb_load_info", gdbtk_call_wrapper, gdb_load_info,
-			NULL);
+			(ClientData) gdb_force_quit, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_target_has_execution", gdbtk_call_wrapper,
+			(ClientData) gdb_target_has_execution_command, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_load_info", gdbtk_call_wrapper,
+			(ClientData) gdb_load_info, NULL);
   Tcl_CreateObjCommand (interp, "gdb_get_function", gdbtk_call_wrapper,
-			gdb_get_function_command, NULL);
+			(ClientData) gdb_get_function_command, NULL);
   Tcl_CreateObjCommand (interp, "gdb_get_line", gdbtk_call_wrapper,
-			gdb_get_line_command, NULL);
+			(ClientData) gdb_get_line_command, NULL);
   Tcl_CreateObjCommand (interp, "gdb_get_file", gdbtk_call_wrapper,
-			gdb_get_file_command, NULL);
-  Tcl_CreateObjCommand (interp, "gdb_prompt",
-			gdbtk_call_wrapper, gdb_prompt_command, NULL);
-  Tcl_CreateObjCommand (interp, "gdb_find_file",
-			gdbtk_call_wrapper, gdb_find_file_command, NULL);
-  Tcl_CreateObjCommand (interp, "gdb_loadfile", gdbtk_call_wrapper, gdb_loadfile,
-			NULL);
+			(ClientData) gdb_get_file_command, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_prompt", gdbtk_call_wrapper,
+			(ClientData) gdb_prompt_command, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_find_file", gdbtk_call_wrapper,
+			(ClientData) gdb_find_file_command, NULL);
+  Tcl_CreateObjCommand (interp, "gdb_loadfile", gdbtk_call_wrapper,
+			(ClientData) gdb_loadfile, NULL);
   Tcl_CreateObjCommand (interp, "gdb_load_disassembly", gdbtk_call_wrapper,
-			gdb_load_disassembly,  NULL);
+			(ClientData) gdb_load_disassembly,  NULL);
   Tcl_CreateObjCommand (gdbtk_interp, "gdb_search", gdbtk_call_wrapper,
-			gdb_search, NULL);
+			(ClientData) gdb_search, NULL);
   Tcl_CreateObjCommand (interp, "gdb_get_inferior_args", gdbtk_call_wrapper,
-			gdb_get_inferior_args, NULL);
+			(ClientData) gdb_get_inferior_args, NULL);
   Tcl_CreateObjCommand (interp, "gdb_set_inferior_args", gdbtk_call_wrapper,
-			gdb_set_inferior_args, NULL);
+			(ClientData) gdb_set_inferior_args, NULL);
   Tcl_CreateObjCommand (interp, "gdb_list_processes", gdbtk_call_wrapper,
-			gdb_list_processes, NULL);
+			(ClientData) gdb_list_processes, NULL);
 
   /* gdb_context is used for debugging multiple threads or tasks */
   Tcl_LinkVar (interp, "gdb_context_id",
@@ -446,7 +451,8 @@ static int
 wrapped_call (PTR opaque_args)
 {
   struct wrapped_call_args *args = (struct wrapped_call_args *) opaque_args;
-  args->val = (*args->func) (args->func, args->interp, args->objc, args->objv);
+  args->val = (*args->func) ((ClientData) args->func, args->interp,
+			     args->objc, args->objv);
   return 1;
 }
 
@@ -1203,13 +1209,14 @@ struct listfiles_info
 static void
 do_listfiles (const char *filename, const char *fullname, void *data)
 {
-  struct listfiles_info *info = data;
+  struct listfiles_info *info = (struct listfiles_info *) data;
 
   if (*info->numfilesp == *info->files_sizep)
     {
       *info->files_sizep *= 2;
-      *info->filesp = xrealloc (*info->filesp,
-				*info->files_sizep * sizeof (char *));
+      *info->filesp = (const char **) xrealloc (*info->filesp,
+						*info->files_sizep *
+						sizeof (char *));
     }
 
   if (filename)
@@ -1343,7 +1350,7 @@ gdb_search (ClientData clientData, Tcl_Interp *interp,
   struct cleanup *old_chain = NULL;
   Tcl_Obj *CONST * switch_objv;
   int index, switch_objc, i, show_files = 0;
-  domain_enum space = 0;
+  enum search_domain space = ALL_DOMAIN;
   char *regexp;
   int static_only, nfiles;
   Tcl_Obj **file_list;
@@ -2789,8 +2796,8 @@ gdb_loadfile (ClientData clientData, Tcl_Interp *interp, int objc,
 
   if (stat (file, &st) < 0)
     {
-      catch_errors (perror_with_name_wrapper, "gdbtk: get time stamp", "",
-                    RETURN_MASK_ALL);
+      catch_errors (perror_with_name_wrapper, (void *) "gdbtk: get time stamp",
+		    "", RETURN_MASK_ALL);
       return TCL_ERROR;
     }
 
@@ -2971,7 +2978,7 @@ gdb_path_conv (ClientData clientData, Tcl_Interp *interp,
 static int
 perror_with_name_wrapper (PTR args)
 {
-  perror_with_name (args);
+  perror_with_name ((const char *) args);
   return 1;
 }
 

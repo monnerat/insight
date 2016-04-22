@@ -1,7 +1,7 @@
 /* Insight Definitions for GDB, the GNU debugger.
    Written by Keith Seitz <kseitz@sources.redhat.com>
 
-   Copyright (C) 2003, 2004, 2008, 2011, 2012 Free Software Foundation, Inc.
+   Copyright (C) 2003-2016 Free Software Foundation, Inc.
 
    This file is part of Insight.
 
@@ -167,8 +167,9 @@ gdbtk_command_loop (void *data)
 static struct ui_out *
 gdbtk_interpreter_ui_out (struct interp *interp)
 {
-  struct gdbtk_interp_data *data = interp_data (interp);
+  struct gdbtk_interp_data *data;
 
+  data = (struct gdbtk_interp_data *) interp_data (interp);
   return data->uiout;
 }
 
