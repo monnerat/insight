@@ -96,7 +96,7 @@ diff -Naurp a/gdb/acinclude.m4 b/gdb/acinclude.m4
 diff -Naurp a/gdb/configure.ac b/gdb/configure.ac
 --- a/gdb/configure.ac	2015-03-09 14:32:57.356695263 +0100
 +++ b/gdb/configure.ac	2015-03-13 16:09:14.733115076 +0100
-@@ -2036,60 +2036,32 @@ if test "${enable_gdbtk}" = "yes"; then
+@@ -2053,60 +2053,32 @@ if test "${enable_gdbtk}" = "yes"; then
      if test -z "${no_tcl}" -a -z "${no_tk}"; then
  	SC_LOAD_TCLCONFIG
  
