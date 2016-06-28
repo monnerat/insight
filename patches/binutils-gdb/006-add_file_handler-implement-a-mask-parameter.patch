@@ -1,0 +1,222 @@
+From fa54d784789aebc2f3ef810f6cf6e2053a71d937 Mon Sep 17 00:00:00 2001
+From: Patrick Monnerat <patrick.monnerat@dh.com>
+Date: Fri, 24 Jun 2016 20:17:22 +0200
+Subject: [PATCH 2/2] add_file_handler: implement a mask parameter.
+
+---
+ gdb/event-loop.c    | 31 ++++++++++++++++++-------------
+ gdb/event-loop.h    |  8 +++++++-
+ gdb/event-top.c     |  2 +-
+ gdb/linux-nat.c     |  4 ++--
+ gdb/python/python.c |  2 +-
+ gdb/remote.c        |  2 +-
+ gdb/ser-base.c      |  4 ++--
+ gdb/tui/tui-io.c    |  2 +-
+ 8 files changed, 33 insertions(+), 22 deletions(-)
+
+diff --git a/gdb/event-loop.c b/gdb/event-loop.c
+index addddd6..b62ab19 100644
+--- a/gdb/event-loop.c
++++ b/gdb/event-loop.c
+@@ -36,13 +36,6 @@
+ #include "gdb_select.h"
+ #include "observer.h"
+ 
+-/* Tell create_file_handler what events we are interested in.
+-   This is used by the select version of the event loop.  */
+-
+-#define GDB_READABLE	(1<<1)
+-#define GDB_WRITABLE	(1<<2)
+-#define GDB_EXCEPTION	(1<<3)
+-
+ /* Data point to pass to the event handler.  */
+ typedef union event_data
+ {
+@@ -282,7 +275,7 @@ initialize_async_signal_handlers (void)
+   async_signal_handlers_serial_event = make_serial_event ();
+ 
+   add_file_handler (serial_event_fd (async_signal_handlers_serial_event),
+-		    async_signals_handler, NULL);
++		    0, async_signals_handler, NULL);
+ }
+ 
+ /* Timer function to cancel gdb_wait_for_event.
+@@ -444,11 +437,16 @@ start_event_loop (void)
+    doesn't have to know implementation details about the use of poll
+    vs. select.  */
+ void
+-add_file_handler (int fd, handler_func * proc, gdb_client_data client_data)
++add_file_handler (int fd, int mask, handler_func * proc,
++                  gdb_client_data client_data)
+ {
+ #ifdef HAVE_POLL
+   struct pollfd fds;
+ #endif
++  int pollmask;
++
++  if (!mask)
++    mask = GDB_READABLE | GDB_EXCEPTION;
+ 
+   if (use_poll)
+     {
+@@ -458,8 +456,16 @@ add_file_handler (int fd, handler_func * proc, gdb_client_data client_data)
+          m68k-motorola-sys, `poll' cannot be used to wait for `stdin'.
+          On m68k-motorola-sysv, tty's are not stream-based and not
+          `poll'able.  */
++      pollmask = 0;
++      if (mask & GDB_READABLE)
++        pollmask |= POLLIN | POLLRDHUP;
++      if (mask & GDB_WRITABLE)
++        pollmask |= POLLOUT;
++      if (mask & GDB_EXCEPTION)
++        pollmask |= POLLPRI;
+       fds.fd = fd;
+-      fds.events = POLLIN;
++      fds.events = pollmask;
++
+       if (poll (&fds, 1, 0) == 1 && (fds.revents & POLLNVAL))
+ 	use_poll = 0;
+ #else
+@@ -470,15 +476,14 @@ add_file_handler (int fd, handler_func * proc, gdb_client_data client_data)
+   if (use_poll)
+     {
+ #ifdef HAVE_POLL
+-      create_file_handler (fd, POLLIN, proc, client_data);
++      create_file_handler (fd, pollmask, proc, client_data);
+ #else
+       internal_error (__FILE__, __LINE__,
+ 		      _("use_poll without HAVE_POLL"));
+ #endif
+     }
+   else
+-    create_file_handler (fd, GDB_READABLE | GDB_EXCEPTION, 
+-			 proc, client_data);
++    create_file_handler (fd, mask, proc, client_data);
+ }
+ 
+ /* Add a file handler/descriptor to the list of descriptors we are
+diff --git a/gdb/event-loop.h b/gdb/event-loop.h
+index 23dee89..c33e538 100644
+--- a/gdb/event-loop.h
++++ b/gdb/event-loop.h
+@@ -69,6 +69,12 @@
+ 
+ #include "gdb_sys_time.h"
+ 
++/* Tell add_file_handler what events we are interested in. */
++
++#define GDB_READABLE	(1<<1)
++#define GDB_WRITABLE	(1<<2)
++#define GDB_EXCEPTION	(1<<3)
++
+ typedef void *gdb_client_data;
+ struct async_signal_handler;
+ struct async_event_handler;
+@@ -82,7 +88,7 @@ typedef void (timer_handler_func) (gdb_client_data);
+ extern void start_event_loop (void);
+ extern int gdb_do_one_event (struct timeval *expiration);
+ extern void delete_file_handler (int fd);
+-extern void add_file_handler (int fd, handler_func *proc, 
++extern void add_file_handler (int fd, int mask, handler_func *proc, 
+ 			      gdb_client_data client_data);
+ extern struct async_signal_handler *
+   create_async_signal_handler (sig_handler_func *proc, 
+diff --git a/gdb/event-top.c b/gdb/event-top.c
+index f43fd0a..0e9c0f2 100644
+--- a/gdb/event-top.c
++++ b/gdb/event-top.c
+@@ -1247,7 +1247,7 @@ gdb_setup_readline (void)
+      target program (inferior), but that must be registered only when
+      it actually exists (I.e. after we say 'run' or after we connect
+      to a remote target.  */
+-  add_file_handler (input_fd, stdin_event_handler, 0);
++  add_file_handler (input_fd, 0, stdin_event_handler, 0);
+ }
+ 
+ /* Disable command input through the standard CLI channels.  Used in
+diff --git a/gdb/linux-nat.c b/gdb/linux-nat.c
+index e6d525f..461c544 100644
+--- a/gdb/linux-nat.c
++++ b/gdb/linux-nat.c
+@@ -4441,7 +4441,7 @@ linux_nat_terminal_ours (struct target_ops *self)
+     return;
+ 
+   clear_sigint_trap ();
+-  add_file_handler (input_fd, stdin_event_handler, 0);
++  add_file_handler (input_fd, 0, stdin_event_handler, 0);
+   async_terminal_is_ours = 1;
+ }
+ 
+@@ -4522,7 +4522,7 @@ linux_nat_async (struct target_ops *ops, int enable)
+     {
+       if (!linux_async_pipe (1))
+ 	{
+-	  add_file_handler (linux_nat_event_pipe[0],
++	  add_file_handler (linux_nat_event_pipe[0], 0,
+ 			    handle_target_event, NULL);
+ 	  /* There may be pending events to handle.  Tell the event loop
+ 	     to poll them.  */
+diff --git a/gdb/python/python.c b/gdb/python/python.c
+index 1f1fece..8081cef 100644
+--- a/gdb/python/python.c
++++ b/gdb/python/python.c
+@@ -1008,7 +1008,7 @@ gdbpy_initialize_events (void)
+ 
+   gdbpy_serial_event = make_serial_event ();
+   add_file_handler (serial_event_fd (gdbpy_serial_event),
+-		    gdbpy_run_events, NULL);
++		    0, gdbpy_run_events, NULL);
+ 
+   return 0;
+ }
+diff --git a/gdb/remote.c b/gdb/remote.c
+index 1f0d67c..a57dc0a 100644
+--- a/gdb/remote.c
++++ b/gdb/remote.c
+@@ -5937,7 +5937,7 @@ remote_terminal_ours (struct target_ops *self)
+   /* See FIXME in remote_terminal_inferior.  */
+   if (remote_async_terminal_ours_p)
+     return;
+-  add_file_handler (input_fd, stdin_event_handler, 0);
++  add_file_handler (input_fd, 0, stdin_event_handler, 0);
+   remote_async_terminal_ours_p = 1;
+ }
+ 
+diff --git a/gdb/ser-base.c b/gdb/ser-base.c
+index c51be07..393fb6d 100644
+--- a/gdb/ser-base.c
++++ b/gdb/ser-base.c
+@@ -82,7 +82,7 @@ reschedule (struct serial *scb)
+ 	case NOTHING_SCHEDULED:
+ 	  if (scb->bufcnt == 0)
+ 	    {
+-	      add_file_handler (scb->fd, fd_event, scb);
++	      add_file_handler (scb->fd, 0, fd_event, scb);
+ 	      next_state = FD_SCHEDULED;
+ 	    }
+ 	  else
+@@ -94,7 +94,7 @@ reschedule (struct serial *scb)
+ 	  if (scb->bufcnt == 0)
+ 	    {
+ 	      delete_timer (scb->async_state);
+-	      add_file_handler (scb->fd, fd_event, scb);
++	      add_file_handler (scb->fd, 0, fd_event, scb);
+ 	      next_state = FD_SCHEDULED;
+ 	    }
+ 	  else
+diff --git a/gdb/tui/tui-io.c b/gdb/tui/tui-io.c
+index 3fa32db..375fefd 100644
+--- a/gdb/tui/tui-io.c
++++ b/gdb/tui/tui-io.c
+@@ -553,7 +553,7 @@ tui_initialize_io (void)
+   (void) fcntl (tui_readline_pipe[0], F_SETFL, O_NDELAY);
+ #endif
+ #endif
+-  add_file_handler (tui_readline_pipe[0], tui_readline_output, 0);
++  add_file_handler (tui_readline_pipe[0], 0, tui_readline_output, 0);
+ #else
+   tui_rl_outstream = stdout;
+ #endif
+-- 
+1.9.3
+

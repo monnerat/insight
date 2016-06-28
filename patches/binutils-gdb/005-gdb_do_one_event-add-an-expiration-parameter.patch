@@ -1,0 +1,160 @@
+From fc68e5a259e32e9154ed28b246c8da3c299576ec Mon Sep 17 00:00:00 2001
+From: Patrick Monnerat <patrick.monnerat@dh.com>
+Date: Fri, 24 Jun 2016 19:41:23 +0200
+Subject: [PATCH 1/2] gdb_do_one_event: add an expiration parameter.
+
+---
+ gdb/event-loop.c | 60 ++++++++++++++++++++++++++++++++++++++++++++------------
+ gdb/event-loop.h |  4 +++-
+ gdb/top.c        |  4 ++--
+ 3 files changed, 53 insertions(+), 15 deletions(-)
+
+diff --git a/gdb/event-loop.c b/gdb/event-loop.c
+index 60ef2a5..addddd6 100644
+--- a/gdb/event-loop.c
++++ b/gdb/event-loop.c
+@@ -285,17 +285,29 @@ initialize_async_signal_handlers (void)
+ 		    async_signals_handler, NULL);
+ }
+ 
++/* Timer function to cancel gdb_wait_for_event.
++   Should normally never be called. */
++static void
++cancel_wait (gdb_client_data clientdata)
++{
++  int * idp = (int *) clientdata;
++
++  *idp = 0; /* Timer has already been deleted. */
++}
++
+ /* Process one high level event.  If nothing is ready at this time,
+    wait for something to happen (via gdb_wait_for_event), then process
+    it.  Returns >0 if something was done otherwise returns <0 (this
+    can happen if there are no event sources to wait for).  */
+ 
+ int
+-gdb_do_one_event (void)
++gdb_do_one_event (struct timeval *expiration)
+ {
+   static int event_source_head = 0;
+   const int number_of_sources = 3;
+   int current = 0;
++  int timerid = 0;
++  int res = 0;
+ 
+   /* First let's see if there are any asynchronous signal handlers
+      that are ready.  These would be the result of invoking any of the
+@@ -307,8 +319,6 @@ gdb_do_one_event (void)
+      round-robin fashion.  */
+   for (current = 0; current < number_of_sources; current++)
+     {
+-      int res;
+-
+       switch (event_source_head)
+ 	{
+ 	case 0:
+@@ -341,14 +351,40 @@ gdb_do_one_event (void)
+   /* Block waiting for a new event.  If gdb_wait_for_event returns -1,
+      we should get out because this means that there are no event
+      sources left.  This will make the event loop stop, and the
+-     application exit.  */
+-
+-  if (gdb_wait_for_event (1) < 0)
+-    return -1;
+-
+-  /* If gdb_wait_for_event has returned 1, it means that one event has
+-     been handled.  We break out of the loop.  */
+-  return 1;
++     application exit.
++     If an expiration time has been given, a new timer is set accordingly
++     to adjust wait timeout computation.  It is deleted upon
++     gdb_wait_for_event termination and thus should never be triggered.
++     When the expiration time has already been reached, events are not
++     monitored again: they already have been checked in the loop above. */
++
++  if (expiration)
++    {
++      struct timeval tv;
++      int ms = 0;
++
++      gettimeofday (&tv, NULL);
++      if (tv.tv_sec > expiration->tv_sec)
++        return res;
++      tv.tv_sec = expiration->tv_sec - tv.tv_sec;
++      if (tv.tv_usec > expiration->tv_usec)
++        {
++          if (!tv.tv_sec)
++            return res;
++          tv.tv_usec = 1000000 + expiration->tv_usec - tv.tv_usec;
++          tv.tv_sec--;
++        }
++      else
++        tv.tv_usec = expiration->tv_usec - tv.tv_usec;
++      ms = tv.tv_sec * 1000 + tv.tv_usec / 1000;
++      if (!ms)
++        return res;
++      timerid = create_timer (ms, cancel_wait, (gdb_client_data) &timerid);
++    }
++  res = gdb_wait_for_event (1);
++  if (timerid)
++    delete_timer (timerid);
++  return res;
+ }
+ 
+ /* Start up the event loop.  This is the entry point to the event loop
+@@ -367,7 +403,7 @@ start_event_loop (void)
+ 
+       TRY
+ 	{
+-	  result = gdb_do_one_event ();
++	  result = gdb_do_one_event (NULL);
+ 	}
+       CATCH (ex, RETURN_MASK_ALL)
+ 	{
+diff --git a/gdb/event-loop.h b/gdb/event-loop.h
+index 7159d97..23dee89 100644
+--- a/gdb/event-loop.h
++++ b/gdb/event-loop.h
+@@ -67,6 +67,8 @@
+ 
+    Corollary tasks are the creation and deletion of event sources.  */
+ 
++#include "gdb_sys_time.h"
++
+ typedef void *gdb_client_data;
+ struct async_signal_handler;
+ struct async_event_handler;
+@@ -78,7 +80,7 @@ typedef void (timer_handler_func) (gdb_client_data);
+ /* Exported functions from event-loop.c */
+ 
+ extern void start_event_loop (void);
+-extern int gdb_do_one_event (void);
++extern int gdb_do_one_event (struct timeval *expiration);
+ extern void delete_file_handler (int fd);
+ extern void add_file_handler (int fd, handler_func *proc, 
+ 			      gdb_client_data client_data);
+diff --git a/gdb/top.c b/gdb/top.c
+index f5ef718..15346c1 100644
+--- a/gdb/top.c
++++ b/gdb/top.c
+@@ -378,7 +378,7 @@ check_frame_language_change (void)
+ void
+ wait_sync_command_done (void)
+ {
+-  while (gdb_do_one_event () >= 0)
++  while (gdb_do_one_event (NULL) >= 0)
+     if (!sync_execution)
+       break;
+ }
+@@ -852,7 +852,7 @@ gdb_readline_wrapper (const char *prompt)
+     (*after_char_processing_hook) ();
+   gdb_assert (after_char_processing_hook == NULL);
+ 
+-  while (gdb_do_one_event () >= 0)
++  while (gdb_do_one_event (NULL) >= 0)
+     if (gdb_readline_wrapper_done)
+       break;
+ 
+-- 
+1.9.3
+

@@ -30,6 +30,7 @@
 #include "cli/cli-cmds.h"
 #include "cli/cli-decode.h"
 #include "exceptions.h"
+#include "event-loop.h"
 
 #include "tcl.h"
 #include "tk.h"
@@ -161,7 +162,7 @@ gdbtk_command_loop (void *data)
   close_bfds ();
 #endif
 
-  Tk_MainLoop ();
+  start_event_loop ();
 }
 
 static struct ui_out *
