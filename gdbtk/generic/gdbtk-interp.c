@@ -31,6 +31,7 @@
 #include "cli/cli-decode.h"
 #include "exceptions.h"
 #include "event-loop.h"
+#include "top.h"
 
 #include "tcl.h"
 #include "tk.h"
@@ -42,7 +43,6 @@
 #endif
 
 
-static void gdbtk_command_loop (void *);
 static void hack_disable_interpreter_exec (char *, int);
 void _initialize_gdbtk_interp (void);
 
@@ -130,18 +130,22 @@ gdbtk_interpreter_exec (void *data, const char *command_str)
   return exception_none;
 }
 
-/* This function is called instead of gdb's internal command loop.  This is the
-   last chance to do anything before entering the main Tk event loop.
-   At the end of the command, we enter the main loop.
-   DATA is the interpreter cookie, currently unused.  */
+/* Callback telling gdb we are supporting command editing. */
+static int
+gdbtk_supports_command_editing (struct interp *self)
+{
+  return 0;
+}
+
+/* This function is called before entering gdb's internal command loop.
+   This is the last chance to do anything before entering the event loop. */
 
 static void
-gdbtk_command_loop (void *data)
+gdbtk_pre_command_loop (struct interp *self)
 {
-  extern FILE *instream;
-
-  /* We no longer want to use stdin as the command input stream */
-  instream = NULL;
+  /* We no longer want to use stdin as the command input stream: disable
+     events from stdin. */
+  main_ui->input_fd = -1;
 
   if (Tcl_Eval (gdbtk_interp, "gdbtk_tcl_preloop") != TCL_OK)
     {
@@ -161,8 +165,6 @@ gdbtk_command_loop (void *data)
 #ifdef _WIN32
   close_bfds ();
 #endif
-
-  start_event_loop ();
 }
 
 static struct ui_out *
@@ -174,19 +176,28 @@ gdbtk_interpreter_ui_out (struct interp *interp)
   return data->uiout;
 }
 
-void
-_initialize_gdbtk_interp (void)
+/* Factory for GUI interpreter. */
+static struct interp *
+gdbtk_interp_factory (const char *name)
 {
-  static const struct interp_procs procs = {
+  static const struct interp_procs gdbtk_interp_procs = {
     gdbtk_interpreter_init,             /* init_proc */
     gdbtk_interpreter_resume,           /* resume_proc */
     gdbtk_interpreter_suspend,	        /* suspend_proc */
     gdbtk_interpreter_exec,             /* exec_proc */
     gdbtk_interpreter_ui_out,		/* ui_out_proc */
     NULL,                               /* set_logging_proc */
-    gdbtk_command_loop                  /* command_loop_proc */
+    gdbtk_pre_command_loop,             /* pre_command_loop_proc */
+    gdbtk_supports_command_editing      /* supports_command_editing_proc */
   };
+
+  return interp_new (name, &gdbtk_interp_procs, NULL);
+}
+
+void
+_initialize_gdbtk_interp (void)
+{
   /* Does not run in target-async mode. */
   target_async_permitted = 0;
-  interp_add (interp_new ("insight", &procs));
+  interp_factory_register (INTERP_INSIGHT, gdbtk_interp_factory);
 }

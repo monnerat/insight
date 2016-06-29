@@ -375,7 +375,7 @@ gdbtk_warning (const char *warning, va_list args)
       struct ui_file *svstderr = gdb_stderr;
 
       deprecated_warning_hook = NULL;
-      gdb_stderr = stderr_fileopen ();
+      gdb_stderr = stderr_fileopen (stderr);
       vwarning (warning, args);
       gdb_flush (gdb_stderr);
       ui_file_delete (gdb_stderr);

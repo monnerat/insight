@@ -1,0 +1,26 @@
+From 7d0fb2e749cf9bc616d3161c27f62f3e0f72f235 Mon Sep 17 00:00:00 2001
+From: Patrick Monnerat <patrick.monnerat@dh.com>
+Date: Wed, 29 Jun 2016 16:25:14 +0200
+Subject: [PATCH] Avoid creating a file handler for a negative file descriptor.
+
+---
+ gdb/event-loop.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/gdb/event-loop.c b/gdb/event-loop.c
+index 09d4aac..b93e963 100644
+--- a/gdb/event-loop.c
++++ b/gdb/event-loop.c
+@@ -447,6 +447,9 @@ add_file_handler (int fd, int mask, handler_func * proc,
+ #endif
+   int pollmask;
+ 
++  if (fd < 0)
++    return;
++
+   if (!mask)
+     mask = GDB_READABLE | GDB_EXCEPTION;
+ 
+-- 
+1.9.3
+

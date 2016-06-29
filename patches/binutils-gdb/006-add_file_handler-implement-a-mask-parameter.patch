@@ -1,26 +1,26 @@
-From fa54d784789aebc2f3ef810f6cf6e2053a71d937 Mon Sep 17 00:00:00 2001
+From cf9005baaf7ebc43c2921ce9917efdb5fbaad317 Mon Sep 17 00:00:00 2001
 From: Patrick Monnerat <patrick.monnerat@dh.com>
-Date: Fri, 24 Jun 2016 20:17:22 +0200
-Subject: [PATCH 2/2] add_file_handler: implement a mask parameter.
+Date: Tue, 28 Jun 2016 19:40:31 +0200
+Subject: [PATCH 2/2] add_file_handler: implement a mask parameter
 
 ---
  gdb/event-loop.c    | 31 ++++++++++++++++++-------------
  gdb/event-loop.h    |  8 +++++++-
  gdb/event-top.c     |  2 +-
- gdb/linux-nat.c     |  4 ++--
+ gdb/linux-nat.c     |  2 +-
  gdb/python/python.c |  2 +-
- gdb/remote.c        |  2 +-
  gdb/ser-base.c      |  4 ++--
+ gdb/target.c        |  2 +-
  gdb/tui/tui-io.c    |  2 +-
- 8 files changed, 33 insertions(+), 22 deletions(-)
+ 8 files changed, 32 insertions(+), 21 deletions(-)
 
 diff --git a/gdb/event-loop.c b/gdb/event-loop.c
-index addddd6..b62ab19 100644
+index 35e6115..09d4aac 100644
 --- a/gdb/event-loop.c
 +++ b/gdb/event-loop.c
-@@ -36,13 +36,6 @@
- #include "gdb_select.h"
+@@ -37,13 +37,6 @@
  #include "observer.h"
+ #include "top.h"
  
 -/* Tell create_file_handler what events we are interested in.
 -   This is used by the select version of the event loop.  */
@@ -32,7 +32,7 @@ index addddd6..b62ab19 100644
  /* Data point to pass to the event handler.  */
  typedef union event_data
  {
-@@ -282,7 +275,7 @@ initialize_async_signal_handlers (void)
+@@ -283,7 +276,7 @@ initialize_async_signal_handlers (void)
    async_signal_handlers_serial_event = make_serial_event ();
  
    add_file_handler (serial_event_fd (async_signal_handlers_serial_event),
@@ -41,7 +41,7 @@ index addddd6..b62ab19 100644
  }
  
  /* Timer function to cancel gdb_wait_for_event.
-@@ -444,11 +437,16 @@ start_event_loop (void)
+@@ -446,11 +439,16 @@ start_event_loop (void)
     doesn't have to know implementation details about the use of poll
     vs. select.  */
  void
@@ -59,7 +59,7 @@ index addddd6..b62ab19 100644
  
    if (use_poll)
      {
-@@ -458,8 +456,16 @@ add_file_handler (int fd, handler_func * proc, gdb_client_data client_data)
+@@ -460,8 +458,16 @@ add_file_handler (int fd, handler_func * proc, gdb_client_data client_data)
           m68k-motorola-sys, `poll' cannot be used to wait for `stdin'.
           On m68k-motorola-sysv, tty's are not stream-based and not
           `poll'able.  */
@@ -77,7 +77,7 @@ index addddd6..b62ab19 100644
        if (poll (&fds, 1, 0) == 1 && (fds.revents & POLLNVAL))
  	use_poll = 0;
  #else
-@@ -470,15 +476,14 @@ add_file_handler (int fd, handler_func * proc, gdb_client_data client_data)
+@@ -472,15 +478,14 @@ add_file_handler (int fd, handler_func * proc, gdb_client_data client_data)
    if (use_poll)
      {
  #ifdef HAVE_POLL
@@ -122,32 +122,23 @@ index 23dee89..c33e538 100644
  extern struct async_signal_handler *
    create_async_signal_handler (sig_handler_func *proc, 
 diff --git a/gdb/event-top.c b/gdb/event-top.c
-index f43fd0a..0e9c0f2 100644
+index 072ad2a..431a250 100644
 --- a/gdb/event-top.c
 +++ b/gdb/event-top.c
-@@ -1247,7 +1247,7 @@ gdb_setup_readline (void)
-      target program (inferior), but that must be registered only when
-      it actually exists (I.e. after we say 'run' or after we connect
-      to a remote target.  */
--  add_file_handler (input_fd, stdin_event_handler, 0);
-+  add_file_handler (input_fd, 0, stdin_event_handler, 0);
+@@ -1284,7 +1284,7 @@ gdb_setup_readline (int editing)
+      Another source is going to be the target program (inferior), but
+      that must be registered only when it actually exists (I.e. after
+      we say 'run' or after we connect to a remote target.  */
+-  add_file_handler (ui->input_fd, stdin_event_handler, ui);
++  add_file_handler (ui->input_fd, 0, stdin_event_handler, ui);
  }
  
  /* Disable command input through the standard CLI channels.  Used in
 diff --git a/gdb/linux-nat.c b/gdb/linux-nat.c
-index e6d525f..461c544 100644
+index fd2df5f..d1e5381 100644
 --- a/gdb/linux-nat.c
 +++ b/gdb/linux-nat.c
-@@ -4441,7 +4441,7 @@ linux_nat_terminal_ours (struct target_ops *self)
-     return;
- 
-   clear_sigint_trap ();
--  add_file_handler (input_fd, stdin_event_handler, 0);
-+  add_file_handler (input_fd, 0, stdin_event_handler, 0);
-   async_terminal_is_ours = 1;
- }
- 
-@@ -4522,7 +4522,7 @@ linux_nat_async (struct target_ops *ops, int enable)
+@@ -4520,7 +4520,7 @@ linux_nat_async (struct target_ops *ops, int enable)
      {
        if (!linux_async_pipe (1))
  	{
@@ -157,10 +148,10 @@ index e6d525f..461c544 100644
  	  /* There may be pending events to handle.  Tell the event loop
  	     to poll them.  */
 diff --git a/gdb/python/python.c b/gdb/python/python.c
-index 1f1fece..8081cef 100644
+index 3a272a9..5287298 100644
 --- a/gdb/python/python.c
 +++ b/gdb/python/python.c
-@@ -1008,7 +1008,7 @@ gdbpy_initialize_events (void)
+@@ -1009,7 +1009,7 @@ gdbpy_initialize_events (void)
  
    gdbpy_serial_event = make_serial_event ();
    add_file_handler (serial_event_fd (gdbpy_serial_event),
@@ -169,19 +160,6 @@ index 1f1fece..8081cef 100644
  
    return 0;
  }
-diff --git a/gdb/remote.c b/gdb/remote.c
-index 1f0d67c..a57dc0a 100644
---- a/gdb/remote.c
-+++ b/gdb/remote.c
-@@ -5937,7 +5937,7 @@ remote_terminal_ours (struct target_ops *self)
-   /* See FIXME in remote_terminal_inferior.  */
-   if (remote_async_terminal_ours_p)
-     return;
--  add_file_handler (input_fd, stdin_event_handler, 0);
-+  add_file_handler (input_fd, 0, stdin_event_handler, 0);
-   remote_async_terminal_ours_p = 1;
- }
- 
 diff --git a/gdb/ser-base.c b/gdb/ser-base.c
 index c51be07..393fb6d 100644
 --- a/gdb/ser-base.c
@@ -204,8 +182,21 @@ index c51be07..393fb6d 100644
  	      next_state = FD_SCHEDULED;
  	    }
  	  else
+diff --git a/gdb/target.c b/gdb/target.c
+index 6f69ac3..5e03049 100644
+--- a/gdb/target.c
++++ b/gdb/target.c
+@@ -523,7 +523,7 @@ target_terminal_ours (void)
+   /* Always add the current UI's input file handler, regardless of
+      terminal_state, because terminal_state is only valid for the main
+      UI.  */
+-  add_file_handler (ui->input_fd, stdin_event_handler, ui);
++  add_file_handler (ui->input_fd, 0, stdin_event_handler, ui);
+ 
+   /* See target_terminal_inferior.  */
+   if (ui != main_ui)
 diff --git a/gdb/tui/tui-io.c b/gdb/tui/tui-io.c
-index 3fa32db..375fefd 100644
+index ed79b44..1fe3733 100644
 --- a/gdb/tui/tui-io.c
 +++ b/gdb/tui/tui-io.c
 @@ -553,7 +553,7 @@ tui_initialize_io (void)

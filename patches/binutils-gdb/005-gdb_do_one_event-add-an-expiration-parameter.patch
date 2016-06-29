@@ -1,4 +1,4 @@
-From fc68e5a259e32e9154ed28b246c8da3c299576ec Mon Sep 17 00:00:00 2001
+From 335414e093efe6369da0bad704abb8aa1e71b461 Mon Sep 17 00:00:00 2001
 From: Patrick Monnerat <patrick.monnerat@dh.com>
 Date: Fri, 24 Jun 2016 19:41:23 +0200
 Subject: [PATCH 1/2] gdb_do_one_event: add an expiration parameter.
@@ -10,10 +10,10 @@ Subject: [PATCH 1/2] gdb_do_one_event: add an expiration parameter.
  3 files changed, 53 insertions(+), 15 deletions(-)
 
 diff --git a/gdb/event-loop.c b/gdb/event-loop.c
-index 60ef2a5..addddd6 100644
+index f94a6fa..35e6115 100644
 --- a/gdb/event-loop.c
 +++ b/gdb/event-loop.c
-@@ -285,17 +285,29 @@ initialize_async_signal_handlers (void)
+@@ -286,17 +286,29 @@ initialize_async_signal_handlers (void)
  		    async_signals_handler, NULL);
  }
  
@@ -44,7 +44,7 @@ index 60ef2a5..addddd6 100644
  
    /* First let's see if there are any asynchronous signal handlers
       that are ready.  These would be the result of invoking any of the
-@@ -307,8 +319,6 @@ gdb_do_one_event (void)
+@@ -308,8 +320,6 @@ gdb_do_one_event (void)
       round-robin fashion.  */
    for (current = 0; current < number_of_sources; current++)
      {
@@ -53,7 +53,7 @@ index 60ef2a5..addddd6 100644
        switch (event_source_head)
  	{
  	case 0:
-@@ -341,14 +351,40 @@ gdb_do_one_event (void)
+@@ -342,14 +352,40 @@ gdb_do_one_event (void)
    /* Block waiting for a new event.  If gdb_wait_for_event returns -1,
       we should get out because this means that there are no event
       sources left.  This will make the event loop stop, and the
@@ -102,7 +102,7 @@ index 60ef2a5..addddd6 100644
  }
  
  /* Start up the event loop.  This is the entry point to the event loop
-@@ -367,7 +403,7 @@ start_event_loop (void)
+@@ -368,7 +404,7 @@ start_event_loop (void)
  
        TRY
  	{
@@ -134,19 +134,19 @@ index 7159d97..23dee89 100644
  extern void add_file_handler (int fd, handler_func *proc, 
  			      gdb_client_data client_data);
 diff --git a/gdb/top.c b/gdb/top.c
-index f5ef718..15346c1 100644
+index 3174f3c..6ba01fc 100644
 --- a/gdb/top.c
 +++ b/gdb/top.c
-@@ -378,7 +378,7 @@ check_frame_language_change (void)
+@@ -541,7 +541,7 @@ check_frame_language_change (void)
  void
  wait_sync_command_done (void)
  {
 -  while (gdb_do_one_event () >= 0)
 +  while (gdb_do_one_event (NULL) >= 0)
-     if (!sync_execution)
+     if (current_ui->prompt_state != PROMPT_BLOCKED)
        break;
  }
-@@ -852,7 +852,7 @@ gdb_readline_wrapper (const char *prompt)
+@@ -1022,7 +1022,7 @@ gdb_readline_wrapper (const char *prompt)
      (*after_char_processing_hook) ();
    gdb_assert (after_char_processing_hook == NULL);
  
