@@ -97,7 +97,7 @@ diff -Naurp a/configure.ac b/configure.ac
      ;;
    powerpc-*-beos*)
      noconfigdirs="$noconfigdirs gdb"
-@@ -2755,7 +2740,7 @@ if echo " ${target_configdirs} " | grep
+@@ -2758,7 +2743,7 @@ if echo " ${target_configdirs} " | grep
    bootstrap_target_libs=${bootstrap_target_libs}target-libmpx,
  fi
  
@@ -106,7 +106,7 @@ diff -Naurp a/configure.ac b/configure.ac
  # Use 'maybe' since enable_gdbtk might be true even if tk isn't available
  # and in that case we want gdb to be built without tk.  Ugh!
  # In fact I believe gdb is the *only* package directly dependent on tk,
-@@ -2763,7 +2748,7 @@ fi
+@@ -2766,7 +2751,7 @@ fi
  # leave out the maybe dependencies when enable_gdbtk is false.  I'm not
  # 100% sure that that's safe though.
  
