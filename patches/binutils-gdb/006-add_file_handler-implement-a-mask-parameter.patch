@@ -138,7 +138,7 @@ diff --git a/gdb/linux-nat.c b/gdb/linux-nat.c
 index fd2df5f..d1e5381 100644
 --- a/gdb/linux-nat.c
 +++ b/gdb/linux-nat.c
-@@ -4520,7 +4520,7 @@ linux_nat_async (struct target_ops *ops, int enable)
+@@ -4570,7 +4570,7 @@ linux_nat_async (struct target_ops *ops, int enable)
      {
        if (!linux_async_pipe (1))
  	{
