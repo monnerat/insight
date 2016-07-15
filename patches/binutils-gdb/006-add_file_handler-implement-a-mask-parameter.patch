@@ -151,7 +151,7 @@ diff --git a/gdb/python/python.c b/gdb/python/python.c
 index 3a272a9..5287298 100644
 --- a/gdb/python/python.c
 +++ b/gdb/python/python.c
-@@ -1009,7 +1009,7 @@ gdbpy_initialize_events (void)
+@@ -1018,7 +1018,7 @@ gdbpy_initialize_events (void)
  
    gdbpy_serial_event = make_serial_event ();
    add_file_handler (serial_event_fd (gdbpy_serial_event),
