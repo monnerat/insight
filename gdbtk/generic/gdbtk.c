@@ -45,6 +45,16 @@
 
 #include <tcl.h>
 #include <tk.h>
+
+/* Satisfy new constant declaration macros for old Tcl versions. */
+
+#ifndef CONST84
+#define CONST84
+#endif
+#ifndef CONST86
+#define CONST86
+#endif
+
 #include "guitcl.h"
 #include "gdbtk.h"
 
@@ -404,7 +414,7 @@ gdbtk_notifier_timeout (gdb_client_data clientData)
 
 /* Tcl notifier procedure to start a timer. */
 static void
-gdbtk_notifier_set_timer (Tcl_Time *timeptr)
+gdbtk_notifier_set_timer (CONST86 Tcl_Time *timeptr)
 {
   if (gdbtk_notifier_data.timer_id)
     {
@@ -425,7 +435,7 @@ gdbtk_notifier_set_timer (Tcl_Time *timeptr)
 /* Tcl notifier procedure to wait for an event.
  * Use gdb event loop wait function. */
 static int
-gdbtk_notifier_wait_for_event (Tcl_Time *timeptr)
+gdbtk_notifier_wait_for_event (CONST86 Tcl_Time *timeptr)
 {
   int i;
   struct timeval expiration;
@@ -541,14 +551,14 @@ gdbtk_notifier_service_mode_hook (int mode)
 /* Notifier definition structure. */
 static Tcl_NotifierProcs gdbtk_notifier_procs =
   {
-    gdbtk_notifier_set_timer,
-    gdbtk_notifier_wait_for_event,
-    gdbtk_notifier_create_file_handler,
-    gdbtk_notifier_delete_file_handler,
-    gdbtk_notifier_initialize,
-    gdbtk_notifier_finalize,
-    gdbtk_notifier_alert,
-    gdbtk_notifier_service_mode_hook
+    (Tcl_SetTimerProc *) gdbtk_notifier_set_timer,
+    (Tcl_WaitForEventProc *) gdbtk_notifier_wait_for_event,
+    (Tcl_CreateFileHandlerProc *) gdbtk_notifier_create_file_handler,
+    (Tcl_DeleteFileHandlerProc *) gdbtk_notifier_delete_file_handler,
+    (Tcl_InitNotifierProc *) gdbtk_notifier_initialize,
+    (Tcl_FinalizeNotifierProc *) gdbtk_notifier_finalize,
+    (Tcl_AlertNotifierProc *) gdbtk_notifier_alert,
+    (Tcl_ServiceModeHookProc *) gdbtk_notifier_service_mode_hook
 };
 
 
