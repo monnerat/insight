@@ -1,23 +1,6 @@
-From cf9005baaf7ebc43c2921ce9917efdb5fbaad317 Mon Sep 17 00:00:00 2001
-From: Patrick Monnerat <patrick.monnerat@dh.com>
-Date: Tue, 28 Jun 2016 19:40:31 +0200
-Subject: [PATCH 2/2] add_file_handler: implement a mask parameter
-
----
- gdb/event-loop.c    | 31 ++++++++++++++++++-------------
- gdb/event-loop.h    |  8 +++++++-
- gdb/event-top.c     |  2 +-
- gdb/linux-nat.c     |  2 +-
- gdb/python/python.c |  2 +-
- gdb/ser-base.c      |  4 ++--
- gdb/target.c        |  2 +-
- gdb/tui/tui-io.c    |  2 +-
- 8 files changed, 32 insertions(+), 21 deletions(-)
-
-diff --git a/gdb/event-loop.c b/gdb/event-loop.c
-index 35e6115..09d4aac 100644
---- a/gdb/event-loop.c
-+++ b/gdb/event-loop.c
+diff -Naurp binutils-gdb.orig/gdb/event-loop.c binutils-gdb.new/gdb/event-loop.c
+--- binutils-gdb.orig/gdb/event-loop.c	2016-08-10 12:24:37.824382196 +0200
++++ binutils-gdb.new/gdb/event-loop.c	2016-08-10 12:28:24.562925857 +0200
 @@ -37,13 +37,6 @@
  #include "observer.h"
  #include "top.h"
@@ -59,7 +42,7 @@ index 35e6115..09d4aac 100644
  
    if (use_poll)
      {
-@@ -460,8 +458,16 @@ add_file_handler (int fd, handler_func * proc, gdb_client_data client_data)
+@@ -460,8 +458,16 @@ add_file_handler (int fd, handler_func *
           m68k-motorola-sys, `poll' cannot be used to wait for `stdin'.
           On m68k-motorola-sysv, tty's are not stream-based and not
           `poll'able.  */
@@ -77,7 +60,7 @@ index 35e6115..09d4aac 100644
        if (poll (&fds, 1, 0) == 1 && (fds.revents & POLLNVAL))
  	use_poll = 0;
  #else
-@@ -472,15 +478,14 @@ add_file_handler (int fd, handler_func * proc, gdb_client_data client_data)
+@@ -472,15 +478,14 @@ add_file_handler (int fd, handler_func *
    if (use_poll)
      {
  #ifdef HAVE_POLL
@@ -95,10 +78,9 @@ index 35e6115..09d4aac 100644
  }
  
  /* Add a file handler/descriptor to the list of descriptors we are
-diff --git a/gdb/event-loop.h b/gdb/event-loop.h
-index 23dee89..c33e538 100644
---- a/gdb/event-loop.h
-+++ b/gdb/event-loop.h
+diff -Naurp binutils-gdb.orig/gdb/event-loop.h binutils-gdb.new/gdb/event-loop.h
+--- binutils-gdb.orig/gdb/event-loop.h	2016-08-10 12:24:37.824382196 +0200
++++ binutils-gdb.new/gdb/event-loop.h	2016-08-10 12:28:24.563925855 +0200
 @@ -69,6 +69,12 @@
  
  #include "gdb_sys_time.h"
@@ -112,7 +94,7 @@ index 23dee89..c33e538 100644
  typedef void *gdb_client_data;
  struct async_signal_handler;
  struct async_event_handler;
-@@ -82,7 +88,7 @@ typedef void (timer_handler_func) (gdb_client_data);
+@@ -82,7 +88,7 @@ typedef void (timer_handler_func) (gdb_c
  extern void start_event_loop (void);
  extern int gdb_do_one_event (struct timeval *expiration);
  extern void delete_file_handler (int fd);
@@ -121,24 +103,22 @@ index 23dee89..c33e538 100644
  			      gdb_client_data client_data);
  extern struct async_signal_handler *
    create_async_signal_handler (sig_handler_func *proc, 
-diff --git a/gdb/event-top.c b/gdb/event-top.c
-index 072ad2a..431a250 100644
---- a/gdb/event-top.c
-+++ b/gdb/event-top.c
-@@ -1284,7 +1284,7 @@ gdb_setup_readline (int editing)
-      Another source is going to be the target program (inferior), but
-      that must be registered only when it actually exists (I.e. after
-      we say 'run' or after we connect to a remote target.  */
+diff -Naurp binutils-gdb.orig/gdb/event-top.c binutils-gdb.new/gdb/event-top.c
+--- binutils-gdb.orig/gdb/event-top.c	2016-08-10 11:04:45.000000000 +0200
++++ binutils-gdb.new/gdb/event-top.c	2016-08-10 12:29:56.148738475 +0200
+@@ -555,7 +555,7 @@ stdin_event_handler (int error, gdb_clie
+ void
+ ui_register_input_event_handler (struct ui *ui)
+ {
 -  add_file_handler (ui->input_fd, stdin_event_handler, ui);
 +  add_file_handler (ui->input_fd, 0, stdin_event_handler, ui);
  }
  
- /* Disable command input through the standard CLI channels.  Used in
-diff --git a/gdb/linux-nat.c b/gdb/linux-nat.c
-index fd2df5f..d1e5381 100644
---- a/gdb/linux-nat.c
-+++ b/gdb/linux-nat.c
-@@ -4570,7 +4570,7 @@ linux_nat_async (struct target_ops *ops, int enable)
+ /* See top.h.  */
+diff -Naurp binutils-gdb.orig/gdb/linux-nat.c binutils-gdb.new/gdb/linux-nat.c
+--- binutils-gdb.orig/gdb/linux-nat.c	2016-07-01 14:47:27.000000000 +0200
++++ binutils-gdb.new/gdb/linux-nat.c	2016-08-10 12:28:24.565925851 +0200
+@@ -4570,7 +4570,7 @@ linux_nat_async (struct target_ops *ops,
      {
        if (!linux_async_pipe (1))
  	{
@@ -147,10 +127,9 @@ index fd2df5f..d1e5381 100644
  			    handle_target_event, NULL);
  	  /* There may be pending events to handle.  Tell the event loop
  	     to poll them.  */
-diff --git a/gdb/python/python.c b/gdb/python/python.c
-index 3a272a9..5287298 100644
---- a/gdb/python/python.c
-+++ b/gdb/python/python.c
+diff -Naurp binutils-gdb.orig/gdb/python/python.c binutils-gdb.new/gdb/python/python.c
+--- binutils-gdb.orig/gdb/python/python.c	2016-07-15 18:54:55.000000000 +0200
++++ binutils-gdb.new/gdb/python/python.c	2016-08-10 12:28:24.566925849 +0200
 @@ -1018,7 +1018,7 @@ gdbpy_initialize_events (void)
  
    gdbpy_serial_event = make_serial_event ();
@@ -160,10 +139,9 @@ index 3a272a9..5287298 100644
  
    return 0;
  }
-diff --git a/gdb/ser-base.c b/gdb/ser-base.c
-index c51be07..393fb6d 100644
---- a/gdb/ser-base.c
-+++ b/gdb/ser-base.c
+diff -Naurp binutils-gdb.orig/gdb/ser-base.c binutils-gdb.new/gdb/ser-base.c
+--- binutils-gdb.orig/gdb/ser-base.c	2016-04-14 12:05:21.000000000 +0200
++++ binutils-gdb.new/gdb/ser-base.c	2016-08-10 12:28:24.566925849 +0200
 @@ -82,7 +82,7 @@ reschedule (struct serial *scb)
  	case NOTHING_SCHEDULED:
  	  if (scb->bufcnt == 0)
@@ -182,23 +160,9 @@ index c51be07..393fb6d 100644
  	      next_state = FD_SCHEDULED;
  	    }
  	  else
-diff --git a/gdb/target.c b/gdb/target.c
-index 6f69ac3..5e03049 100644
---- a/gdb/target.c
-+++ b/gdb/target.c
-@@ -523,7 +523,7 @@ target_terminal_ours (void)
-   /* Always add the current UI's input file handler, regardless of
-      terminal_state, because terminal_state is only valid for the main
-      UI.  */
--  add_file_handler (ui->input_fd, stdin_event_handler, ui);
-+  add_file_handler (ui->input_fd, 0, stdin_event_handler, ui);
- 
-   /* See target_terminal_inferior.  */
-   if (ui != main_ui)
-diff --git a/gdb/tui/tui-io.c b/gdb/tui/tui-io.c
-index ed79b44..1fe3733 100644
---- a/gdb/tui/tui-io.c
-+++ b/gdb/tui/tui-io.c
+diff -Naurp binutils-gdb.orig/gdb/tui/tui-io.c binutils-gdb.new/gdb/tui/tui-io.c
+--- binutils-gdb.orig/gdb/tui/tui-io.c	2016-07-15 18:54:55.000000000 +0200
++++ binutils-gdb.new/gdb/tui/tui-io.c	2016-08-10 12:28:24.569925843 +0200
 @@ -553,7 +553,7 @@ tui_initialize_io (void)
    (void) fcntl (tui_readline_pipe[0], F_SETFL, O_NDELAY);
  #endif
@@ -208,6 +172,3 @@ index ed79b44..1fe3733 100644
  #else
    tui_rl_outstream = stdout;
  #endif
--- 
-1.9.3
-
