@@ -1,18 +1,6 @@
-From 335414e093efe6369da0bad704abb8aa1e71b461 Mon Sep 17 00:00:00 2001
-From: Patrick Monnerat <patrick.monnerat@dh.com>
-Date: Fri, 24 Jun 2016 19:41:23 +0200
-Subject: [PATCH 1/2] gdb_do_one_event: add an expiration parameter.
-
----
- gdb/event-loop.c | 60 ++++++++++++++++++++++++++++++++++++++++++++------------
- gdb/event-loop.h |  4 +++-
- gdb/top.c        |  4 ++--
- 3 files changed, 53 insertions(+), 15 deletions(-)
-
-diff --git a/gdb/event-loop.c b/gdb/event-loop.c
-index f94a6fa..35e6115 100644
---- a/gdb/event-loop.c
-+++ b/gdb/event-loop.c
+diff -Naurp binutils-gdb.orig/gdb/event-loop.c binutils-gdb.new/gdb/event-loop.c
+--- binutils-gdb.orig/gdb/event-loop.c	2016-07-30 16:03:29.710728947 +0100
++++ binutils-gdb.new/gdb/event-loop.c	2016-09-28 14:32:16.089787852 +0100
 @@ -286,17 +286,29 @@ initialize_async_signal_handlers (void)
  		    async_signals_handler, NULL);
  }
@@ -58,25 +46,23 @@ index f94a6fa..35e6115 100644
       we should get out because this means that there are no event
       sources left.  This will make the event loop stop, and the
 -     application exit.  */
--
--  if (gdb_wait_for_event (1) < 0)
--    return -1;
--
--  /* If gdb_wait_for_event has returned 1, it means that one event has
--     been handled.  We break out of the loop.  */
--  return 1;
 +     application exit.
 +     If an expiration time has been given, a new timer is set accordingly
 +     to adjust wait timeout computation.  It is deleted upon
 +     gdb_wait_for_event termination and thus should never be triggered.
 +     When the expiration time has already been reached, events are not
 +     monitored again: they already have been checked in the loop above. */
-+
+ 
+-  if (gdb_wait_for_event (1) < 0)
+-    return -1;
 +  if (expiration)
 +    {
 +      struct timeval tv;
 +      int ms = 0;
-+
+ 
+-  /* If gdb_wait_for_event has returned 1, it means that one event has
+-     been handled.  We break out of the loop.  */
+-  return 1;
 +      gettimeofday (&tv, NULL);
 +      if (tv.tv_sec > expiration->tv_sec)
 +        return res;
@@ -111,10 +97,9 @@ index f94a6fa..35e6115 100644
  	}
        CATCH (ex, RETURN_MASK_ALL)
  	{
-diff --git a/gdb/event-loop.h b/gdb/event-loop.h
-index 7159d97..23dee89 100644
---- a/gdb/event-loop.h
-+++ b/gdb/event-loop.h
+diff -Naurp binutils-gdb.orig/gdb/event-loop.h binutils-gdb.new/gdb/event-loop.h
+--- binutils-gdb.orig/gdb/event-loop.h	2016-07-30 16:03:29.711728955 +0100
++++ binutils-gdb.new/gdb/event-loop.h	2016-09-28 14:32:16.089787852 +0100
 @@ -67,6 +67,8 @@
  
     Corollary tasks are the creation and deletion of event sources.  */
@@ -124,7 +109,7 @@ index 7159d97..23dee89 100644
  typedef void *gdb_client_data;
  struct async_signal_handler;
  struct async_event_handler;
-@@ -78,7 +80,7 @@ typedef void (timer_handler_func) (gdb_client_data);
+@@ -78,7 +80,7 @@ typedef void (timer_handler_func) (gdb_c
  /* Exported functions from event-loop.c */
  
  extern void start_event_loop (void);
@@ -133,20 +118,19 @@ index 7159d97..23dee89 100644
  extern void delete_file_handler (int fd);
  extern void add_file_handler (int fd, handler_func *proc, 
  			      gdb_client_data client_data);
-diff --git a/gdb/top.c b/gdb/top.c
-index 3174f3c..6ba01fc 100644
---- a/gdb/top.c
-+++ b/gdb/top.c
-@@ -561,7 +561,7 @@ check_frame_language_change (void)
- void
- wait_sync_command_done (void)
- {
+diff -Naurp binutils-gdb.orig/gdb/top.c binutils-gdb.new/gdb/top.c
+--- binutils-gdb.orig/gdb/top.c	2016-09-28 14:16:13.762391190 +0100
++++ binutils-gdb.new/gdb/top.c	2016-09-28 14:33:10.689282343 +0100
+@@ -565,7 +565,7 @@ wait_sync_command_done (void)
+   struct cleanup *old_chain = make_cleanup_restore_current_ui ();
+   struct ui *ui = current_ui;
+ 
 -  while (gdb_do_one_event () >= 0)
 +  while (gdb_do_one_event (NULL) >= 0)
-     if (current_ui->prompt_state != PROMPT_BLOCKED)
+     if (ui->prompt_state != PROMPT_BLOCKED)
        break;
- }
-@@ -1042,7 +1042,7 @@ gdb_readline_wrapper (const char *prompt)
+ 
+@@ -1051,7 +1051,7 @@ gdb_readline_wrapper (const char *prompt
      (*after_char_processing_hook) ();
    gdb_assert (after_char_processing_hook == NULL);
  
@@ -155,6 +139,3 @@ index 3174f3c..6ba01fc 100644
      if (gdb_readline_wrapper_done)
        break;
  
--- 
-1.9.3
-

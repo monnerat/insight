@@ -4,7 +4,7 @@
 diff -Naurp a/gdb/acinclude.m4 b/gdb/acinclude.m4
 --- a/gdb/acinclude.m4	2015-03-03 13:23:50.771005619 +0100
 +++ b/gdb/acinclude.m4	2015-03-13 16:10:43.167922450 +0100
-@@ -247,44 +247,76 @@ fi
+@@ -244,44 +244,76 @@ fi
  ])
  
  dnl Find the location of the private Tcl headers
@@ -96,7 +96,7 @@ diff -Naurp a/gdb/acinclude.m4 b/gdb/acinclude.m4
 diff -Naurp a/gdb/configure.ac b/gdb/configure.ac
 --- a/gdb/configure.ac	2015-03-09 14:32:57.356695263 +0100
 +++ b/gdb/configure.ac	2015-03-13 16:09:14.733115076 +0100
-@@ -2059,60 +2059,32 @@ if test "${enable_gdbtk}" = "yes"; then
+@@ -2056,60 +2056,32 @@ if test "${enable_gdbtk}" = "yes"; then
      if test -z "${no_tcl}" -a -z "${no_tk}"; then
  	SC_LOAD_TCLCONFIG
  
@@ -176,7 +176,7 @@ diff -Naurp a/gdb/configure.ac b/gdb/configure.ac
 diff -Naurp a/gdb/Makefile.in b/gdb/Makefile.in
 --- a/gdb/Makefile.in	2015-03-09 14:32:57.315694895 +0100
 +++ b/gdb/Makefile.in	2015-03-13 16:09:14.734115086 +0100
-@@ -524,7 +524,7 @@ SUBDIR_GDBTK_SRCS = \
+@@ -519,7 +519,7 @@ SUBDIR_GDBTK_SRCS = \
  	gdbtk/generic/gdbtk-main.c
  SUBDIR_GDBTK_DEPS = $(LIBGUI) $(TCL_DEPS) $(TK_DEPS)
  SUBDIR_GDBTK_LDFLAGS=

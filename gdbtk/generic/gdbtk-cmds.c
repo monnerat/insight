@@ -546,7 +546,7 @@ gdb_force_quit (ClientData clientData, Tcl_Interp *interp,
       return TCL_ERROR;
     }
 
-  quit_force ((char *) NULL, 1);
+  quit_force ((int *) NULL, 1);
   return TCL_OK;
 }
 
