@@ -175,7 +175,7 @@ itcl::class WatchWin {
     set var [string trim $var +-\;\ \r\n,]
 
     # Make sure that we have a valid variable
-    set err [catch {gdb_cmd "set variable $var"} errTxt]
+    set err [catch {gdb_cmd "set variable 0,$var"} errTxt]
     if {$err} {
       dbug W "ERROR adding variable: $errTxt"
       ManagedWin::open WarningDlg -transient \
