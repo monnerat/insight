@@ -1,6 +1,6 @@
 diff -Naurp binutils-gdb.orig/gdb/event-loop.c binutils-gdb.new/gdb/event-loop.c
 --- binutils-gdb.orig/gdb/event-loop.c	2016-07-30 16:03:29.710728947 +0100
-+++ binutils-gdb.new/gdb/event-loop.c	2016-09-28 14:32:16.089787852 +0100
++++ binutils-gdb.new/gdb/event-loop.c	2016-10-28 12:34:54.592738054 +0100
 @@ -286,17 +286,29 @@ initialize_async_signal_handlers (void)
  		    async_signals_handler, NULL);
  }
@@ -99,7 +99,7 @@ diff -Naurp binutils-gdb.orig/gdb/event-loop.c binutils-gdb.new/gdb/event-loop.c
  	{
 diff -Naurp binutils-gdb.orig/gdb/event-loop.h binutils-gdb.new/gdb/event-loop.h
 --- binutils-gdb.orig/gdb/event-loop.h	2016-07-30 16:03:29.711728955 +0100
-+++ binutils-gdb.new/gdb/event-loop.h	2016-09-28 14:32:16.089787852 +0100
++++ binutils-gdb.new/gdb/event-loop.h	2016-10-28 12:34:54.593738064 +0100
 @@ -67,6 +67,8 @@
  
     Corollary tasks are the creation and deletion of event sources.  */
@@ -119,18 +119,18 @@ diff -Naurp binutils-gdb.orig/gdb/event-loop.h binutils-gdb.new/gdb/event-loop.h
  extern void add_file_handler (int fd, handler_func *proc, 
  			      gdb_client_data client_data);
 diff -Naurp binutils-gdb.orig/gdb/top.c binutils-gdb.new/gdb/top.c
---- binutils-gdb.orig/gdb/top.c	2016-09-28 14:16:13.762391190 +0100
-+++ binutils-gdb.new/gdb/top.c	2016-09-28 14:33:10.689282343 +0100
-@@ -565,7 +565,7 @@ wait_sync_command_done (void)
-   struct cleanup *old_chain = make_cleanup_restore_current_ui ();
+--- binutils-gdb.orig/gdb/top.c	2016-10-28 11:35:18.679159905 +0100
++++ binutils-gdb.new/gdb/top.c	2016-10-28 12:34:54.593738064 +0100
+@@ -567,7 +567,7 @@ wait_sync_command_done (void)
+   scoped_restore save_ui = make_scoped_restore (&current_ui);
    struct ui *ui = current_ui;
  
 -  while (gdb_do_one_event () >= 0)
 +  while (gdb_do_one_event (NULL) >= 0)
      if (ui->prompt_state != PROMPT_BLOCKED)
        break;
- 
-@@ -1051,7 +1051,7 @@ gdb_readline_wrapper (const char *prompt
+ }
+@@ -1050,7 +1050,7 @@ gdb_readline_wrapper (const char *prompt
      (*after_char_processing_hook) ();
    gdb_assert (after_char_processing_hook == NULL);
  

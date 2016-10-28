@@ -106,7 +106,7 @@ diff -Naurp binutils-gdb.orig/gdb/event-loop.h binutils-gdb.new/gdb/event-loop.h
 diff -Naurp binutils-gdb.orig/gdb/event-top.c binutils-gdb.new/gdb/event-top.c
 --- binutils-gdb.orig/gdb/event-top.c	2016-08-10 11:04:45.000000000 +0200
 +++ binutils-gdb.new/gdb/event-top.c	2016-08-10 12:29:56.148738475 +0200
-@@ -563,7 +563,7 @@ stdin_event_handler (int error, gdb_clie
+@@ -513,7 +513,7 @@ stdin_event_handler (int error, gdb_clie
  void
  ui_register_input_event_handler (struct ui *ui)
  {
@@ -130,7 +130,7 @@ diff -Naurp binutils-gdb.orig/gdb/linux-nat.c binutils-gdb.new/gdb/linux-nat.c
 diff -Naurp binutils-gdb.orig/gdb/python/python.c binutils-gdb.new/gdb/python/python.c
 --- binutils-gdb.orig/gdb/python/python.c	2016-07-15 18:54:55.000000000 +0200
 +++ binutils-gdb.new/gdb/python/python.c	2016-08-10 12:28:24.566925849 +0200
-@@ -1019,7 +1019,7 @@ gdbpy_initialize_events (void)
+@@ -1013,7 +1013,7 @@ gdbpy_initialize_events (void)
  
    gdbpy_serial_event = make_serial_event ();
    add_file_handler (serial_event_fd (gdbpy_serial_event),
