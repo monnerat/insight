@@ -38,11 +38,6 @@ gdb_result GDB_evaluate_expression (struct expression *, value_ptr *);
 
 gdb_result GDB_type_print (value_ptr, char *, struct ui_file *, int);
 
-gdb_result GDB_val_print (struct type *type, char *valaddr,
-			  CORE_ADDR address, struct ui_file *stream,
-			  int format, int deref_ref, int recurse,
-			  enum val_prettyformat pretty);
-
 gdb_result GDB_value_equal (value_ptr, value_ptr, int *);
 
 /*
@@ -101,8 +96,6 @@ static int wrap_type_print (char *);
 static int wrap_evaluate_expression (char *);
 
 static int wrap_value_fetch_lazy (char *);
-
-static int wrap_val_print (char *);
 
 static int wrap_value_equal (char *);
 
@@ -174,57 +167,6 @@ wrap_type_print (char *a)
   struct ui_file *stream = (struct ui_file *) (*args)->args[2].ptr;
   int show = (*args)->args[3].integer;
   type_print (value_type (val), varstring, stream, show);
-  return 1;
-}
-
-gdb_result
-GDB_val_print (struct type *type,
-	       char *valaddr,
-	       CORE_ADDR address,
-	       struct ui_file *stream,
-	       int format,
-	       int deref_ref,
-	       int recurse,
-	       enum val_prettyformat pretty)
-{
-  struct gdb_wrapper_arguments args;
-
-  args.args[0].ptr = type;
-  args.args[1].ptr = valaddr;
-  args.args[2].ptr = &address;
-  args.args[3].ptr = stream;
-  args.args[4].integer = format;
-  args.args[5].integer = deref_ref;
-  args.args[6].integer = recurse;
-  args.args[7].integer = pretty;
-
-  return call_wrapped_function ((catch_errors_ftype *) wrap_val_print, &args);
-}
-
-static int
-wrap_val_print (char *a)
-{
-  struct gdb_wrapper_arguments **args = (struct gdb_wrapper_arguments **) a;
-  struct type *type;
-  const gdb_byte *valaddr;
-  CORE_ADDR address;
-  struct ui_file *stream;
-  int format;
-  int recurse;
-  struct value_print_options opts;
-
-  type = (struct type *) (*args)->args[0].ptr;
-  valaddr = (gdb_byte *) (*args)->args[1].ptr;
-  address = *(CORE_ADDR *) (*args)->args[2].ptr;
-  stream = (struct ui_file *) (*args)->args[3].ptr;
-  format = (*args)->args[4].integer;
-  get_formatted_print_options (&opts, format);
-  opts.deref_ref = (*args)->args[5].integer;
-  recurse = (*args)->args[6].integer;
-  opts.prettyformat = (enum val_prettyformat) (*args)->args[7].integer;
-
-  val_print (type, valaddr, 0, address, stream, recurse, NULL, &opts,
-             current_language);
   return 1;
 }
 

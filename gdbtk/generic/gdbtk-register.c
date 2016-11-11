@@ -402,7 +402,7 @@ get_register (int regnum, map_arg arg)
       get_formatted_print_options (&opts, format);
       opts.deref_ref = 1;
       opts.prettyformat = Val_prettyformat_default;
-      val_print (reg_vtype, value_contents_for_printing (val),
+      val_print (reg_vtype,
 		 value_embedded_offset (val), 0,
 		 stb, 0, val, &opts, current_language);
     }

@@ -130,7 +130,7 @@ diff -Naurp binutils-gdb.orig/gdb/linux-nat.c binutils-gdb.new/gdb/linux-nat.c
 diff -Naurp binutils-gdb.orig/gdb/python/python.c binutils-gdb.new/gdb/python/python.c
 --- binutils-gdb.orig/gdb/python/python.c	2016-07-15 18:54:55.000000000 +0200
 +++ binutils-gdb.new/gdb/python/python.c	2016-08-10 12:28:24.566925849 +0200
-@@ -1013,7 +1013,7 @@ gdbpy_initialize_events (void)
+@@ -1006,7 +1006,7 @@ gdbpy_initialize_events (void)
  
    gdbpy_serial_event = make_serial_event ();
    add_file_handler (serial_event_fd (gdbpy_serial_event),

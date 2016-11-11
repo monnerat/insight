@@ -58,10 +58,6 @@ extern gdb_result GDB_evaluate_expression (struct expression *expr,
 					   value_ptr * val);
 extern gdb_result GDB_type_print (value_ptr val, char *varstring,
 				  struct ui_file *stream, int show);
-extern gdb_result GDB_val_print (struct type *type, char *valaddr,
-				 CORE_ADDR address, struct ui_file *stream,
-				 int format, int deref_ref, int recurse,
-				 enum val_prettyformat pretty);
 extern gdb_result GDB_value_fetch_lazy (value_ptr value);
 extern gdb_result GDB_value_equal (value_ptr val1, value_ptr val2,
 				   int *result);

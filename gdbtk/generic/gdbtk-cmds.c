@@ -690,7 +690,7 @@ static int
 gdb_eval (ClientData clientData, Tcl_Interp *interp,
 	  int objc, Tcl_Obj *CONST objv[])
 {
-  struct expression *expr;
+  expression_up expr;
   struct cleanup *old_chain = NULL;
   int format = 0;
   value_ptr val;
@@ -708,15 +708,15 @@ gdb_eval (ClientData clientData, Tcl_Interp *interp,
   if (objc == 3)
     format = *(Tcl_GetStringFromObj (objv[2], NULL));
 
+  stb = mem_fileopen ();
+  old_chain = make_cleanup_ui_file_delete (stb);
+
   get_formatted_print_options (&opts, format);
 
   expr = parse_expression (Tcl_GetStringFromObj (objv[1], NULL));
-  old_chain = make_cleanup (free_current_contents, &expr);
-  val = evaluate_expression (expr);
+  val = evaluate_expression (expr.get ());
 
   /* "Print" the result of the expression evaluation. */
-  stb = mem_fileopen ();
-  make_cleanup_ui_file_delete (stb);
   common_val_print (val, stb, 0, &opts, current_language);
   result = ui_file_xstrdup (stb, &dummy);
   Tcl_SetObjResult (interp, Tcl_NewStringObj (result, -1));

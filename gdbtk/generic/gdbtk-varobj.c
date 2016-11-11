@@ -74,9 +74,9 @@ static Tcl_Obj *variable_update (Tcl_Interp * interp, struct varobj **var);
 
 /* Helper functions for the above subcommands. */
 
-static void install_variable (Tcl_Interp *, char *);
+static void install_variable (Tcl_Interp *, const char *);
 
-static void uninstall_variable (Tcl_Interp *, char *);
+static void uninstall_variable (Tcl_Interp *, const char *);
 
 /* String representations of gdb's format codes */
 static char *format_string[] =
@@ -269,9 +269,8 @@ variable_obj_command (ClientData clientData, Tcl_Interp *interp,
 
     case VARIABLE_NAME:
       {
-	char *name = varobj_get_expression (var);
-	Tcl_SetObjResult (interp, Tcl_NewStringObj (name, -1));
-	xfree (name);
+	std::string name = varobj_get_expression (var);
+	Tcl_SetObjResult (interp, Tcl_NewStringObj (name.c_str (), -1));
       }
       break;
 
@@ -417,11 +416,11 @@ variable_delete_tcl (Tcl_Interp *interp, struct varobj *var,
       variable_delete_tcl (interp, child, 0);
     }
 
-  if (only_children_p || !var->obj_name)
+  if (only_children_p)
     return;
 
   /* Delete tcl variable now. */
-  uninstall_variable (interp, var->obj_name);
+  uninstall_variable (interp, var->obj_name.c_str ());
 }
 
 /* Delete the variable object VAR and its children */
@@ -441,7 +440,7 @@ variable_children (Tcl_Interp *interp, struct varobj *var)
   Tcl_Obj *list;
   VEC(varobj_p) *children;
   struct varobj *child;
-  char *childname;
+  const char *childname;
   int ix, from, to;
 
   list = Tcl_NewListObj (0, NULL);
@@ -549,37 +548,32 @@ static int
 variable_type (Tcl_Interp *interp, int objc,
 	       Tcl_Obj *CONST objv[], struct varobj *var)
 {
-  const char *first;
-  const char *last;
-  char *string;
-  Tcl_RegExp regexp;
+  size_t pos;
+  std::string string;
 
   /* For the "fake" variables, do not return a type.
      Their type is NULL anyway */
   /* FIXME: varobj_get_type() calls type_print(), so we may have to wrap
      its call here and return TCL_ERROR in the case it errors out */
-  if ((string = varobj_get_type (var)) == NULL)
+  string = varobj_get_type (var);
+  if (string.length () == 0)
     {
       Tcl_ResetResult (interp);
       return TCL_OK;
     }
 
-  first = string;
-
   /* gdb will print things out like "struct {...}" for anonymous structs.
      In gui-land, we don't want the {...}, so we strip it here. */
-  regexp = Tcl_RegExpCompile (interp, "{...}");
-  if (Tcl_RegExpExec (interp, regexp, string, first))
+  pos = string.find ("{...}");
+  if (pos != std::string::npos)
     {
       /* We have an anonymous struct/union/class/enum */
-      Tcl_RegExpRange (regexp, 0, &first, &last);
-      if (*(first - 1) == ' ')
-	first--;
-      string[first - string] = '\0';
+      if (pos && string[pos - 1] == ' ')
+	pos--;
+      string = string.substr (0, pos);
     }
 
-  Tcl_SetObjResult (interp, Tcl_NewStringObj (string, -1));
-  xfree (string);
+  Tcl_SetObjResult (interp, Tcl_NewStringObj (string.c_str (), -1));
   return TCL_OK;
 }
 
@@ -589,7 +583,7 @@ static int
 variable_value (Tcl_Interp *interp, int objc,
 		Tcl_Obj *CONST objv[], struct varobj *var)
 {
-  char *r;
+  std::string r;
 
   /* If we're setting the value of the variable, objv[2] will contain the
      variable's new value. */
@@ -627,15 +621,14 @@ variable_value (Tcl_Interp *interp, int objc,
 
   r = varobj_get_value (var);
 
-  if (r == NULL)
+  if (r.length () == 0)
     {
       gdbtk_set_result (interp, "Could not read variable object value after assignment");
       return TCL_ERROR;
     }
   else
     {
-      Tcl_SetObjResult (interp, Tcl_NewStringObj (r, -1));
-      xfree (r);
+      Tcl_SetObjResult (interp, Tcl_NewStringObj (r.c_str (), -1));
       return TCL_OK;
     }
 }
@@ -686,7 +679,7 @@ variable_print (Tcl_Interp *interp, int objc,
 /* Install the given variable VAR into the tcl interpreter with
    the object name NAME. */
 static void
-install_variable (Tcl_Interp *interp, char *name)
+install_variable (Tcl_Interp *interp, const char *name)
 {
   Tcl_CreateObjCommand (interp, name, variable_obj_command,
 			NULL, NULL);
@@ -694,7 +687,7 @@ install_variable (Tcl_Interp *interp, char *name)
 
 /* Uninstall the object VAR in the tcl interpreter. */
 static void
-uninstall_variable (Tcl_Interp *interp, char *varname)
+uninstall_variable (Tcl_Interp *interp, const char *varname)
 {
   Tcl_DeleteCommand (interp, varname);
 }
