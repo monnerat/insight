@@ -2,8 +2,8 @@
 - Determine installed tcl/tk platform.
 
 diff -Naurp a/gdb/acinclude.m4 b/gdb/acinclude.m4
---- a/gdb/acinclude.m4	2015-03-03 13:23:50.771005619 +0100
-+++ b/gdb/acinclude.m4	2015-03-13 16:10:43.167922450 +0100
+--- a/gdb/acinclude.m4	2016-10-31 16:30:59.890619965 +0100
++++ b/gdb/acinclude.m4	2016-11-25 14:35:02.114813699 +0100
 @@ -246,44 +246,76 @@ fi
  ])
  
@@ -94,8 +94,8 @@ diff -Naurp a/gdb/acinclude.m4 b/gdb/acinclude.m4
  ])
  
 diff -Naurp a/gdb/configure.ac b/gdb/configure.ac
---- a/gdb/configure.ac	2015-03-09 14:32:57.356695263 +0100
-+++ b/gdb/configure.ac	2015-03-13 16:09:14.733115076 +0100
+--- a/gdb/configure.ac	2016-11-25 14:24:44.200083830 +0100
++++ b/gdb/configure.ac	2016-11-25 14:35:02.115813705 +0100
 @@ -2043,60 +2043,32 @@ if test "${enable_gdbtk}" = "yes"; then
      if test -z "${no_tcl}" -a -z "${no_tk}"; then
  	SC_LOAD_TCLCONFIG
@@ -174,14 +174,14 @@ diff -Naurp a/gdb/configure.ac b/gdb/configure.ac
  	# Include some libraries that Tcl and Tk want.
  	TCL_LIBS='$(LIBGUI) $(TK) $(TCL) $(X11_LDFLAGS) $(X11_LIBS)'
 diff -Naurp a/gdb/Makefile.in b/gdb/Makefile.in
---- a/gdb/Makefile.in	2015-03-09 14:32:57.315694895 +0100
-+++ b/gdb/Makefile.in	2015-03-13 16:09:14.734115086 +0100
-@@ -520,7 +520,7 @@ SUBDIR_GDBTK_SRCS = \
- 	gdbtk/generic/gdbtk-main.c
+--- a/gdb/Makefile.in	2016-11-25 14:24:44.190083746 +0100
++++ b/gdb/Makefile.in	2016-11-25 14:36:23.590282737 +0100
+@@ -593,7 +593,7 @@ SUBDIR_GDBTK_SRCS = \
+ 
  SUBDIR_GDBTK_DEPS = $(LIBGUI) $(TCL_DEPS) $(TK_DEPS)
- SUBDIR_GDBTK_LDFLAGS=
--SUBDIR_GDBTK_CFLAGS= -DGDBTK
+ SUBDIR_GDBTK_LDFLAGS =
+-SUBDIR_GDBTK_CFLAGS = -DGDBTK
 +SUBDIR_GDBTK_CFLAGS= -DGDBTK -D@TCL_PLATFORM_DEFINE@ -D@TK_PLATFORM_DEFINE@
  
- CONFIG_OBS= @CONFIG_OBS@
- CONFIG_SRCS= @CONFIG_SRCS@
+ CONFIG_OBS = @CONFIG_OBS@
+ CONFIG_SRCS = @CONFIG_SRCS@
