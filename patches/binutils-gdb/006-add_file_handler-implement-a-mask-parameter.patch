@@ -118,7 +118,7 @@ diff -Naurp binutils-gdb.orig/gdb/event-top.c binutils-gdb.new/gdb/event-top.c
 diff -Naurp binutils-gdb.orig/gdb/linux-nat.c binutils-gdb.new/gdb/linux-nat.c
 --- binutils-gdb.orig/gdb/linux-nat.c	2016-07-01 14:47:27.000000000 +0200
 +++ binutils-gdb.new/gdb/linux-nat.c	2016-08-10 12:28:24.565925851 +0200
-@@ -4578,7 +4578,7 @@ linux_nat_async (struct target_ops *ops,
+@@ -4577,7 +4577,7 @@ linux_nat_async (struct target_ops *ops,
      {
        if (!linux_async_pipe (1))
  	{
@@ -130,7 +130,7 @@ diff -Naurp binutils-gdb.orig/gdb/linux-nat.c binutils-gdb.new/gdb/linux-nat.c
 diff -Naurp binutils-gdb.orig/gdb/python/python.c binutils-gdb.new/gdb/python/python.c
 --- binutils-gdb.orig/gdb/python/python.c	2016-07-15 18:54:55.000000000 +0200
 +++ binutils-gdb.new/gdb/python/python.c	2016-08-10 12:28:24.566925849 +0200
-@@ -1006,7 +1006,7 @@ gdbpy_initialize_events (void)
+@@ -951,7 +951,7 @@ gdbpy_initialize_events (void)
  
    gdbpy_serial_event = make_serial_event ();
    add_file_handler (serial_event_fd (gdbpy_serial_event),

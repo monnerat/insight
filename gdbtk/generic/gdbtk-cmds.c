@@ -1,5 +1,5 @@
 /* Tcl/Tk command definitions for Insight.
-   Copyright (C) 1994-2016 Free Software Foundation, Inc.
+   Copyright (C) 1994-2017 Free Software Foundation, Inc.
 
    Written by Stu Grossman <grossman@cygnus.com> of Cygnus Support.
    Substantially augmented by Martin Hunt, Keith Seitz & Jim Ingham of
@@ -956,8 +956,7 @@ static int
 gdb_load_info (ClientData clientData, Tcl_Interp *interp,
 	       int objc, Tcl_Obj *CONST objv[])
 {
-  bfd *loadfile_bfd;
-  struct cleanup *old_cleanups;
+  gdb_bfd_ref_ptr loadfile_bfd;
   asection *s;
   Tcl_Obj *ob[2];
 
@@ -969,11 +968,9 @@ gdb_load_info (ClientData clientData, Tcl_Interp *interp,
       gdbtk_set_result (interp, "Open of %s failed", filename);
       return TCL_ERROR;
     }
-  old_cleanups = make_cleanup_bfd_unref (loadfile_bfd);
 
-  if (!bfd_check_format (loadfile_bfd, bfd_object))
+  if (!bfd_check_format (loadfile_bfd.get (), bfd_object))
     {
-      do_cleanups (old_cleanups);
       gdbtk_set_result (interp, "Bad Object File");
       return TCL_ERROR;
     }
@@ -997,7 +994,6 @@ gdb_load_info (ClientData clientData, Tcl_Interp *interp,
 	}
     }
 
-  do_cleanups (old_cleanups);
   return TCL_OK;
 }
 
