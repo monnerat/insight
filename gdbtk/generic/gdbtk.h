@@ -1,5 +1,5 @@
 /* Tcl/Tk interface routines header file.
-   Copyright (C) 1994-2016 Free Software Foundation, Inc.
+   Copyright (C) 1994-2017 Free Software Foundation, Inc.
 
    Written by Stu Grossman <grossman@cygnus.com> of Cygnus Support.
 
@@ -84,11 +84,12 @@ extern int load_in_progress;
 /* This is the main gdbtk interpreter.  It is defined and initialized
    in gdbtk.c */
 
-extern Tcl_Interp *gdbtk_interp;
+extern Tcl_Interp *gdbtk_tcl_interp;
 
 /*
- * This structure controls how the gdb output is fed into gdbtk_call_wrapper invoked
- * commands.  See the explanation of gdbtk_fputs in gdbtk_hooks.c for more details.
+ * This structure controls how the gdb output is fed into gdbtk_call_wrapper
+ * invoked commands.  See the explanation of gdbtk_file::write in gdbtk_hooks.c
+ * for more details.
  */
 
 typedef struct gdbtk_result
@@ -105,9 +106,9 @@ struct target_ops;
 /* These defines give the allowed values for the gdbtk_result.flags field. */
 
 #define GDBTK_TO_RESULT     1	/* This controls whether output from
-				   gdbtk_fputs goes to the command result, or
-				   to gdbtk_tcl_fputs. */
-#define GDBTK_MAKES_LIST    2	/* whether gdbtk_fputs adds the
+				   gdbtk_file::write goes to the command
+                                   result, or to gdbtk_tcl_fputs. */
+#define GDBTK_MAKES_LIST    2	/* whether gdbtk_file::write adds the
 				   element it is outputting as a string, or
 				   as a separate list element. */
 #define GDBTK_IN_TCL_RESULT 4	/* Indicates that the result is already in the
@@ -118,11 +119,12 @@ struct target_ops;
 				   the Tcl result if you want, but beware, it will
 				   not then be preserved across recursive
 				   gdbtk_call_wrapper invocations. */
-#define GDBTK_ERROR_STARTED 8	/* This one is just used in gdbtk_fputs.  If we
-				   see some output on stderr, we need to clear
-				   the result we have been accumulating, or the
-				   error and the previous successful output
-				   will get mixed, which would be confusing. */
+#define GDBTK_ERROR_STARTED 8	/* This one is just used in gdbtk_file::write.
+                                   If we see some output on stderr, we need to
+                                   clear the result we have been accumulating,
+                                   or the error and the previous successful
+                                   output will get mixed, which would be
+                                   confusing. */
 #define GDBTK_ERROR_ONLY    16	/* Indicates that all incoming I/O is
 				   to be treated as if it had arrived for gdb_stderr. This is
 				   used to help error_begin in utils.c. */
@@ -161,10 +163,8 @@ extern void gdbtk_interactive (void);
 extern int x_event (int);
 extern int gdbtk_two_elem_cmd (char *, const char *);
 extern int target_is_native (struct target_ops *t);
-extern void gdbtk_fputs (const char *, struct ui_file *);
 extern struct ui_file *gdbtk_fileopen (void);
-extern struct ui_file *gdbtk_fileopenin (void);
-extern int gdbtk_disable_fputs;
+extern bool gdbtk_disable_write;
 extern ptid_t gdbtk_get_ptid (void);
 
 #ifdef _WIN32

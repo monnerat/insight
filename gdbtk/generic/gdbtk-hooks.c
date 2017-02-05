@@ -1,6 +1,6 @@
 /* Startup code for Insight.
 
-   Copyright (C) 1994-2016 Free Software Foundation, Inc.
+   Copyright (C) 1994-2017 Free Software Foundation, Inc.
 
    Written by Stu Grossman <grossman@cygnus.com> of Cygnus Support.
 
@@ -61,7 +61,7 @@
 #include "gdbcmd.h"
 
 
-volatile int in_fputs = 0;
+volatile bool gdbtk_in_write = false;
 
 /* Set by gdb_stop, this flag informs x_event to tell its caller
    that it should forcibly detach from the target. */
@@ -99,13 +99,15 @@ void report_error (void);
 static void gdbtk_annotate_signal (void);
 static void gdbtk_param_changed (const char *, const char *);
 
-/*
- * gdbtk_fputs can't be static, because we need to call it in gdbtk.c.
- * See note there for details.
- */
+/* I/O stream for gdbtk. */
 
-long gdbtk_read (struct ui_file *, char *, long);
-void gdbtk_fputs (const char *, struct ui_file *);
+class gdbtk_file : public ui_file
+{
+public:
+  long read (char *buf, long length_buf);
+  void write (const char *buf, long length_buf);
+};
+
 static int gdbtk_load_hash (const char *, unsigned long);
 
 static ptid_t gdbtk_ptid;
@@ -160,11 +162,11 @@ gdbtk_add_hooks (void)
 }
 
 /* These control where to put the gdb output which is created by
-   {f}printf_{un}filtered and friends.  gdbtk_fputs is the lowest
+   {f}printf_{un}filtered and friends.  gdbtk_file::write is the lowest
    level of these routines and capture all output from the rest of
    GDB.
 
-   The reason to use the result_ptr rather than the gdbtk_interp's result
+   The reason to use the result_ptr rather than the gdbtk_tcl_interp's result
    directly is so that a call_wrapper invoked function can preserve its result
    across calls into Tcl which might be made in the course of the function's
    execution.
@@ -203,7 +205,7 @@ gdbtk_two_elem_cmd (char *cmd_name, const char *argv1)
 
   Tcl_ConvertElement (argv1, command + cmd_len + 1, flags_ptr);
 
-  result = Tcl_Eval (gdbtk_interp, command);
+  result = Tcl_Eval (gdbtk_tcl_interp, command);
   if (result != TCL_OK)
     report_error ();
   free (command);
@@ -211,33 +213,23 @@ gdbtk_two_elem_cmd (char *cmd_name, const char *argv1)
 }
 
 struct ui_file *
-gdbtk_fileopenin (void)
-{
-  struct ui_file *file = ui_file_new ();
-  set_ui_file_read (file, gdbtk_read);
-  return file;
-}
-
-struct ui_file *
 gdbtk_fileopen (void)
 {
-  struct ui_file *file = ui_file_new ();
-  set_ui_file_fputs (file, gdbtk_fputs);
-  return file;
+  return new gdbtk_file;
 }
 
 /* This handles input from the gdb console.
  */
 
 long
-gdbtk_read (struct ui_file *stream, char *buf, long sizeof_buf)
+gdbtk_file::read (char *buf, long sizeof_buf)
 {
   int result;
   size_t actual_len;
 
-  if (stream == gdb_stdtargin)
+  if (this == gdb_stdtargin)
     {
-      result = Tcl_Eval (gdbtk_interp, "gdbtk_console_read");
+      result = Tcl_Eval (gdbtk_tcl_interp, "gdbtk_console_read");
       if (result != TCL_OK)
         {
           report_error ();
@@ -247,7 +239,7 @@ gdbtk_read (struct ui_file *stream, char *buf, long sizeof_buf)
         }
       else
         {
-          const char *tclResult = Tcl_GetStringResult (gdbtk_interp);
+          const char *tclResult = Tcl_GetStringResult (gdbtk_tcl_interp);
           actual_len = strlen (tclResult);
 
           /* Truncate the string if it is too big for the caller's buffer.  */
@@ -285,53 +277,61 @@ gdbtk_read (struct ui_file *stream, char *buf, long sizeof_buf)
  *    UNLESS it was coming to gdb_stderr.  Then we place it in the result_ptr
  *    anyway, so it can be dealt with.
  *
+ * This method only supports text output, so null bytes cannot appear in
+ * output data.
+ *
  */
 
 void
-gdbtk_fputs (const char *ptr, struct ui_file *stream)
+gdbtk_file::write (const char *buf, long length_buf)
 {
-  if (gdbtk_disable_fputs)
+  std::string tmp;
+  char *ptr;
+
+  if (gdbtk_disable_write || length_buf < 0)
     return;
 
-  in_fputs = 1;
+  gdbtk_in_write = true;
+  tmp = std::string(buf, (size_t) length_buf);
+  ptr = (char *) tmp.data ();
 
-  if (stream == gdb_stdlog)
-    gdbtk_two_elem_cmd ("gdbtk_tcl_fputs_log", (char *) ptr);
-  else if (stream == gdb_stdtarg)
-    gdbtk_two_elem_cmd ("gdbtk_tcl_fputs_target", (char *) ptr);
+  if (this == gdb_stdlog)
+    gdbtk_two_elem_cmd ("gdbtk_tcl_fputs_log", ptr);
+  else if (this == gdb_stdtarg)
+    gdbtk_two_elem_cmd ("gdbtk_tcl_fputs_target", ptr);
   else if (result_ptr != NULL)
     {
       if (result_ptr->flags & GDBTK_TO_RESULT)
 	{
 	  if (result_ptr->flags & GDBTK_MAKES_LIST)
 	    Tcl_ListObjAppendElement (NULL, result_ptr->obj_ptr,
-				      Tcl_NewStringObj ((char *) ptr, -1));
+				      Tcl_NewStringObj (ptr, -1));
 	  else
-	    Tcl_AppendToObj (result_ptr->obj_ptr, (char *) ptr, -1);
+	    Tcl_AppendToObj (result_ptr->obj_ptr, ptr, -1);
 	}
-      else if (stream == gdb_stderr || result_ptr->flags & GDBTK_ERROR_ONLY)
+      else if (this == gdb_stderr || result_ptr->flags & GDBTK_ERROR_ONLY)
 	{
 	  if (result_ptr->flags & GDBTK_ERROR_STARTED)
-	    Tcl_AppendToObj (result_ptr->obj_ptr, (char *) ptr, -1);
+	    Tcl_AppendToObj (result_ptr->obj_ptr, ptr, -1);
 	  else
 	    {
-	      Tcl_SetStringObj (result_ptr->obj_ptr, (char *) ptr, -1);
+	      Tcl_SetStringObj (result_ptr->obj_ptr, ptr, -1);
 	      result_ptr->flags |= GDBTK_ERROR_STARTED;
 	    }
 	}
       else
 	{
-	  gdbtk_two_elem_cmd ("gdbtk_tcl_fputs", (char *) ptr);
+	  gdbtk_two_elem_cmd ("gdbtk_tcl_fputs", ptr);
 	  if (result_ptr->flags & GDBTK_MAKES_LIST)
 	    gdbtk_two_elem_cmd ("gdbtk_tcl_fputs", " ");
 	}
     }
   else
     {
-      gdbtk_two_elem_cmd ("gdbtk_tcl_fputs", (char *) ptr);
+      gdbtk_two_elem_cmd ("gdbtk_tcl_fputs", ptr);
     }
 
-  in_fputs = 0;
+  gdbtk_in_write = false;
 }
 
 /*
@@ -343,13 +343,13 @@ gdbtk_getpid(void)
 {
   long mypid = -1;
 
-  if (Tcl_Eval (gdbtk_interp, "pid") == TCL_OK)
+  if (Tcl_Eval (gdbtk_tcl_interp, "pid") == TCL_OK)
     {
-      Tcl_Obj *pidobj = Tcl_GetObjResult (gdbtk_interp);
+      Tcl_Obj *pidobj = Tcl_GetObjResult (gdbtk_tcl_interp);
 
       if (pidobj)
         {
-          if (Tcl_GetLongFromObj (gdbtk_interp, pidobj, &mypid) != TCL_OK)
+          if (Tcl_GetLongFromObj (gdbtk_tcl_interp, pidobj, &mypid) != TCL_OK)
             mypid = -1;
         }
     }
@@ -375,10 +375,10 @@ gdbtk_warning (const char *warning, va_list args)
       struct ui_file *svstderr = gdb_stderr;
 
       deprecated_warning_hook = NULL;
-      gdb_stderr = stderr_fileopen (stderr);
+      gdb_stderr = new stderr_file (stderr);
       vwarning (warning, args);
       gdb_flush (gdb_stderr);
-      ui_file_delete (gdb_stderr);
+      delete gdb_stderr;
 
       /* Restore previous values, since if we vforked, global storage is shared
          with parent. */
@@ -406,8 +406,8 @@ gdbtk_warning (const char *warning, va_list args)
 void
 report_error (void)
 {
-  TclDebug ('E', Tcl_GetVar (gdbtk_interp, "errorInfo", TCL_GLOBAL_ONLY));
-  /*  Tcl_BackgroundError(gdbtk_interp); */
+  TclDebug ('E', Tcl_GetVar (gdbtk_tcl_interp, "errorInfo", TCL_GLOBAL_ONLY));
+  /*  Tcl_BackgroundError(gdbtk_tcl_interp); */
 }
 
 /*
@@ -421,7 +421,7 @@ gdbtk_ignorable_warning (const char *warnclass, const char *warning)
   char *buf;
   buf = xstrprintf ("gdbtk_tcl_ignorable_warning {%s} {%s}",
 		    warnclass, warning);
-  if (Tcl_Eval (gdbtk_interp, buf) != TCL_OK)
+  if (Tcl_Eval (gdbtk_tcl_interp, buf) != TCL_OK)
     report_error ();
   free(buf);
 }
@@ -429,7 +429,7 @@ gdbtk_ignorable_warning (const char *warnclass, const char *warning)
 static void
 gdbtk_register_changed (struct frame_info *frame, int regno)
 {
-  if (Tcl_Eval (gdbtk_interp, "gdbtk_register_changed") != TCL_OK)
+  if (Tcl_Eval (gdbtk_tcl_interp, "gdbtk_register_changed") != TCL_OK)
     report_error ();
 }
 
@@ -437,7 +437,7 @@ static void
 gdbtk_memory_changed (struct inferior *inferior, CORE_ADDR addr,
 		      ssize_t len, const bfd_byte *data)
 {
-  if (Tcl_Eval (gdbtk_interp, "gdbtk_memory_changed") != TCL_OK)
+  if (Tcl_Eval (gdbtk_tcl_interp, "gdbtk_memory_changed") != TCL_OK)
     report_error ();
 }
 
@@ -476,7 +476,7 @@ x_event (int signo)
   static Tcl_Obj *varname = NULL;
 
   /* Do nor re-enter this code or enter it while collecting gdb output. */
-  if (in_x_event || in_fputs)
+  if (in_x_event || gdbtk_in_write)
     return 0;
 
   /* Also, only do things while the target is running (stops and redraws).
@@ -501,12 +501,14 @@ x_event (int signo)
 	{
 #if TCL_MAJOR_VERSION == 8 && (TCL_MINOR_VERSION < 1 || TCL_MINOR_VERSION > 2)
 	  Tcl_Obj *varnamestrobj = Tcl_NewStringObj ("download_cancel_ok", -1);
-	  varname = Tcl_ObjGetVar2 (gdbtk_interp, varnamestrobj, NULL, TCL_GLOBAL_ONLY);
+	  varname = Tcl_ObjGetVar2 (gdbtk_tcl_interp, varnamestrobj,
+                                    NULL, TCL_GLOBAL_ONLY);
 #else
-	  varname = Tcl_GetObjVar2 (gdbtk_interp, "download_cancel_ok", NULL, TCL_GLOBAL_ONLY);
+	  varname = Tcl_GetObjVar2 (gdbtk_tcl_interp, "download_cancel_ok",
+                                    NULL, TCL_GLOBAL_ONLY);
 #endif
 	}
-      if ((Tcl_GetIntFromObj (gdbtk_interp, varname, &val) == TCL_OK) && val)
+      if (Tcl_GetIntFromObj (gdbtk_tcl_interp, varname, &val) == TCL_OK && val)
 	{
 	  set_quit_flag ();
 #ifdef REQUEST_QUIT
@@ -547,12 +549,12 @@ gdbtk_readline (const char *prompt)
 
   if (result == TCL_OK)
     {
-      return (xstrdup (Tcl_GetStringResult (gdbtk_interp)));
+      return (xstrdup (Tcl_GetStringResult (gdbtk_tcl_interp)));
     }
   else
     {
-      gdbtk_fputs (Tcl_GetStringResult (gdbtk_interp), gdb_stdout);
-      gdbtk_fputs ("\n", gdb_stdout);
+      gdb_stdout->puts (Tcl_GetStringResult (gdbtk_tcl_interp));
+      gdb_stdout->puts ("\n");
       return (NULL);
     }
 }
@@ -560,7 +562,7 @@ gdbtk_readline (const char *prompt)
 static void
 gdbtk_readline_end (void)
 {
-  if (Tcl_Eval (gdbtk_interp, "gdbtk_tcl_readline_end") != TCL_OK)
+  if (Tcl_Eval (gdbtk_tcl_interp, "gdbtk_tcl_readline_end") != TCL_OK)
     report_error ();
 }
 
@@ -575,7 +577,7 @@ gdbtk_call_command (struct cmd_list_element *cmdblk,
 
       running_now = 1;
       if (!No_Update)
-	Tcl_Eval (gdbtk_interp, "gdbtk_tcl_busy");
+	Tcl_Eval (gdbtk_tcl_interp, "gdbtk_tcl_busy");
       cmd_func (cmdblk, arg, from_tty);
 
       /* The above function may return before the target stops running even
@@ -591,7 +593,7 @@ gdbtk_call_command (struct cmd_list_element *cmdblk,
 
       running_now = 0;
       if (!No_Update)
-	Tcl_Eval (gdbtk_interp, "gdbtk_tcl_idle");
+	Tcl_Eval (gdbtk_tcl_interp, "gdbtk_tcl_idle");
     }
   else
     cmd_func (cmdblk, arg, from_tty);
@@ -613,7 +615,7 @@ gdbtk_param_changed (const char *param, const char *value)
   Tcl_DStringAppendElement (&cmd, param);
   Tcl_DStringAppendElement (&cmd, value);
 
-  if (Tcl_Eval (gdbtk_interp, Tcl_DStringValue (&cmd)) != TCL_OK)
+  if (Tcl_Eval (gdbtk_tcl_interp, Tcl_DStringValue (&cmd)) != TCL_OK)
     report_error ();
 
   Tcl_DStringFree (&cmd);
@@ -629,11 +631,11 @@ gdbtk_load_hash (const char *section, unsigned long num)
 {
   char *buf;
   buf = xstrprintf ("Download::download_hash %s %ld", section, num);
-  if (Tcl_Eval (gdbtk_interp, buf) != TCL_OK)
+  if (Tcl_Eval (gdbtk_tcl_interp, buf) != TCL_OK)
     report_error ();
   free(buf);
 
-  return atoi (Tcl_GetStringResult (gdbtk_interp));
+  return atoi (Tcl_GetStringResult (gdbtk_tcl_interp));
 }
 
 
@@ -649,7 +651,7 @@ gdbtk_pre_add_symbol (const char *name)
 static void
 gdbtk_post_add_symbol (void)
 {
-  if (Tcl_Eval (gdbtk_interp, "gdbtk_tcl_post_add_symbol") != TCL_OK)
+  if (Tcl_Eval (gdbtk_tcl_interp, "gdbtk_tcl_post_add_symbol") != TCL_OK)
     report_error ();
 }
 
@@ -687,7 +689,7 @@ gdbtk_query (const char *query, va_list args)
   gdbtk_two_elem_cmd ("gdbtk_tcl_query", buf);
   free(buf);
 
-  val = atol (Tcl_GetStringResult (gdbtk_interp));
+  val = atol (Tcl_GetStringResult (gdbtk_tcl_interp));
   return val;
 }
 
@@ -715,15 +717,15 @@ gdbtk_trace_find (int tfnum, int tpnum)
   Tcl_Obj *cmdObj;
 
   cmdObj = Tcl_NewListObj (0, NULL);
-  Tcl_ListObjAppendElement (gdbtk_interp, cmdObj,
+  Tcl_ListObjAppendElement (gdbtk_tcl_interp, cmdObj,
 			    Tcl_NewStringObj ("gdbtk_tcl_trace_find_hook", -1));
-  Tcl_ListObjAppendElement (gdbtk_interp, cmdObj, Tcl_NewIntObj (tfnum));
-  Tcl_ListObjAppendElement (gdbtk_interp, cmdObj, Tcl_NewIntObj (tpnum));
+  Tcl_ListObjAppendElement (gdbtk_tcl_interp, cmdObj, Tcl_NewIntObj (tfnum));
+  Tcl_ListObjAppendElement (gdbtk_tcl_interp, cmdObj, Tcl_NewIntObj (tpnum));
 #if TCL_MAJOR_VERSION == 8 && (TCL_MINOR_VERSION < 1 || TCL_MINOR_VERSION > 2)
-  if (Tcl_GlobalEvalObj (gdbtk_interp, cmdObj) != TCL_OK)
+  if (Tcl_GlobalEvalObj (gdbtk_tcl_interp, cmdObj) != TCL_OK)
     report_error ();
 #else
-  if (Tcl_EvalObj (gdbtk_interp, cmdObj, TCL_EVAL_GLOBAL) != TCL_OK)
+  if (Tcl_EvalObj (gdbtk_tcl_interp, cmdObj, TCL_EVAL_GLOBAL) != TCL_OK)
     report_error ();
 #endif
 }
@@ -742,9 +744,9 @@ gdbtk_trace_start_stop (int start, int from_tty)
 {
 
   if (start)
-    Tcl_GlobalEval (gdbtk_interp, "gdbtk_tcl_tstart");
+    Tcl_GlobalEval (gdbtk_tcl_interp, "gdbtk_tcl_tstart");
   else
-    Tcl_GlobalEval (gdbtk_interp, "gdbtk_tcl_tstop");
+    Tcl_GlobalEval (gdbtk_tcl_interp, "gdbtk_tcl_tstop");
 
 }
 
@@ -790,7 +792,7 @@ gdbtk_annotate_signal (void)
      a necessary stop button evil. We don't want signal notification
      to interfere with the elaborate and painful stop button detach
      timeout. */
-  Tcl_Eval (gdbtk_interp, "gdbtk_stop_idle_callback");
+  Tcl_Eval (gdbtk_tcl_interp, "gdbtk_stop_idle_callback");
 
   if (ptid_equal (inferior_ptid, null_ptid))
     return;
@@ -800,7 +802,7 @@ gdbtk_annotate_signal (void)
   buf = xstrprintf ("gdbtk_signal %s {%s}",
 	     gdb_signal_to_name (tp->suspend.stop_signal),
 	     gdb_signal_to_string (tp->suspend.stop_signal));
-  if (Tcl_Eval (gdbtk_interp, buf) != TCL_OK)
+  if (Tcl_Eval (gdbtk_tcl_interp, buf) != TCL_OK)
     report_error ();
   free(buf);
 }
@@ -808,7 +810,8 @@ gdbtk_annotate_signal (void)
 static void
 gdbtk_attach (void)
 {
-  if (Tcl_Eval (gdbtk_interp, "after idle \"update idletasks;gdbtk_attached\"") != TCL_OK)
+  if (Tcl_Eval (gdbtk_tcl_interp,
+                "after idle \"update idletasks;gdbtk_attached\"") != TCL_OK)
     {
       report_error ();
     }
@@ -817,7 +820,7 @@ gdbtk_attach (void)
 static void
 gdbtk_detach (void)
 {
-  if (Tcl_Eval (gdbtk_interp, "gdbtk_detached") != TCL_OK)
+  if (Tcl_Eval (gdbtk_tcl_interp, "gdbtk_detached") != TCL_OK)
     {
       report_error ();
     }
@@ -827,7 +830,7 @@ gdbtk_detach (void)
 static void
 gdbtk_architecture_changed (struct gdbarch *ignore)
 {
-  Tcl_Eval (gdbtk_interp, "gdbtk_tcl_architecture_changed");
+  Tcl_Eval (gdbtk_tcl_interp, "gdbtk_tcl_architecture_changed");
 }
 
 ptid_t

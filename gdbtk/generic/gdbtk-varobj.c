@@ -1,5 +1,5 @@
 /* Variable user interface layer for GDB, the GNU debugger.
-   Copyright (C) 1999-2016 Free Software Foundation, Inc.
+   Copyright (C) 1999-2017 Free Software Foundation, Inc.
 
    This file is part of GDB.
 
@@ -639,17 +639,9 @@ static int
 variable_print (Tcl_Interp *interp, int objc,
 		Tcl_Obj *CONST objv[], struct varobj *var)
 {
-  struct ui_file *stream = NULL;
+  string_file stream;
   int ret = TCL_ERROR;
-  char * r = NULL;
   volatile struct gdb_exception except;
-
-  stream = mem_fileopen ();
-  if (!stream)
-    {
-      gdbtk_set_result (interp, "Allocation error");
-      return TCL_ERROR;
-    }
 
   TRY
     {
@@ -658,9 +650,8 @@ variable_print (Tcl_Interp *interp, int objc,
       varobj_formatted_print_options (&opts, varobj_get_display_format (var));
       opts.deref_ref = 1;
       opts.raw = 0;
-      common_val_print (var->value, stream, 0, &opts, current_language);
-      r = ui_file_xstrdup (stream, NULL);
-      Tcl_SetObjResult (interp, Tcl_NewStringObj (r, -1));
+      common_val_print (var->value, &stream, 0, &opts, current_language);
+      Tcl_SetObjResult (interp, Tcl_NewStringObj (stream.data (), -1));
       ret = TCL_OK;
     }
   CATCH (except, RETURN_MASK_ERROR)
@@ -669,8 +660,6 @@ variable_print (Tcl_Interp *interp, int objc,
     }
   END_CATCH
 
-  xfree (r);
-  ui_file_delete (stream);
   return ret;
 }
 

@@ -1,7 +1,7 @@
 /* Insight Definitions for GDB, the GNU debugger.
    Written by Keith Seitz <kseitz@sources.redhat.com>
 
-   Copyright (C) 2003-2016 Free Software Foundation, Inc.
+   Copyright (C) 2003-2017 Free Software Foundation, Inc.
 
    This file is part of Insight.
 
@@ -46,14 +46,28 @@
 static void hack_disable_interpreter_exec (char *, int);
 void _initialize_gdbtk_interp (void);
 
-struct gdbtk_interp_data
+/* The gdb interpreter. */
+
+class gdbtk_interp final : public interp
 {
-  struct ui_file *_stdout;
-  struct ui_file *_stderr;
-  struct ui_file *_stdlog;
-  struct ui_file *_stdtarg;
-  struct ui_file *_stdtargin;
-  struct ui_out *uiout;
+public:
+  gdbtk_interp (const char * name): interp (name)
+  {}
+
+  void init (bool top_level) override;
+  void resume () override;
+  void suspend () override;
+  gdb_exception exec (const char * command_str) override;
+  ui_out *interp_ui_out () override;
+  void set_logging (ui_file_up logfile, bool logging_redirect) override;
+  void pre_command_loop () override;
+
+  ui_file *_stdout;
+  ui_file *_stderr;
+  ui_file *_stdlog;
+  ui_file *_stdtarg;
+  ui_file *_stdtargin;
+  ui_out *uiout;
 };
 
 /* See note in gdbtk_interpreter_init */
@@ -63,22 +77,20 @@ hack_disable_interpreter_exec (char *args, int from_tty)
   error ("interpreter-exec not available when running Insight");
 }
 
-static void *
-gdbtk_interpreter_init (struct interp *interp, int top_level)
+void
+gdbtk_interp::init (bool top_level)
 {
   /* Disable interpreter-exec. It causes us big trouble right now. */
   struct cmd_list_element *cmd = NULL;
   struct cmd_list_element *alias = NULL;
   struct cmd_list_element *prefix = NULL;
-  struct gdbtk_interp_data *data;
 
-  data = XCNEW (struct gdbtk_interp_data);
-  data->_stdout = gdbtk_fileopen ();
-  data->_stderr = gdbtk_fileopen ();
-  data->_stdlog = gdbtk_fileopen ();
-  data->_stdtarg = gdbtk_fileopen ();
-  data->_stdtargin = gdbtk_fileopenin ();
-  data->uiout = cli_out_new (data->_stdout),
+  _stdout = gdbtk_fileopen ();
+  _stderr = gdbtk_fileopen ();
+  _stdlog = gdbtk_fileopen ();
+  _stdtarg = gdbtk_fileopen ();
+  _stdtargin = gdbtk_fileopen ();
+  uiout = cli_out_new (_stdout),
 
   gdbtk_init ();
 
@@ -86,22 +98,20 @@ gdbtk_interpreter_init (struct interp *interp, int top_level)
     {
       set_cmd_cfunc (cmd, hack_disable_interpreter_exec);
     }
-
-  return data;
 }
 
-static int
-gdbtk_interpreter_resume (void *data)
+void
+gdbtk_interp::resume ()
 {
   static int started = 0;
-  struct gdbtk_interp_data *d = (struct gdbtk_interp_data *) data;
+
   gdbtk_add_hooks ();
 
-  gdb_stdout = d->_stdout;
-  gdb_stderr = d->_stderr;
-  gdb_stdlog = d->_stdlog;
-  gdb_stdtarg = d->_stdtarg;
-  gdb_stdtargin = d->_stdtargin;
+  gdb_stdout = _stdout;
+  gdb_stderr = _stderr;
+  gdb_stdlog = _stdlog;
+  gdb_stdtarg = _stdtarg;
+  gdb_stdtargin = _stdtargin;
 
   /* 2003-02-11 keiths: We cannot actually source our main Tcl file in
      our interpreter's init function because any errors that may
@@ -114,47 +124,37 @@ gdbtk_interpreter_resume (void *data)
       started = 1;
       gdbtk_source_start_file ();
     }
-
-  return 1;
 }
 
-static int
-gdbtk_interpreter_suspend (void *data)
+void
+gdbtk_interp::suspend ()
 {
-  return 1;
 }
 
-static struct gdb_exception
-gdbtk_interpreter_exec (void *data, const char *command_str)
+gdb_exception
+gdbtk_interp::exec (const char *command_str)
 {
   return exception_none;
-}
-
-/* Callback telling gdb we are supporting command editing. */
-static int
-gdbtk_supports_command_editing (struct interp *self)
-{
-  return 0;
 }
 
 /* This function is called before entering gdb's internal command loop.
    This is the last chance to do anything before entering the event loop. */
 
-static void
-gdbtk_pre_command_loop (struct interp *self)
+void
+gdbtk_interp::pre_command_loop ()
 {
   /* We no longer want to use stdin as the command input stream: disable
      events from stdin. */
   main_ui->input_fd = -1;
 
-  if (Tcl_Eval (gdbtk_interp, "gdbtk_tcl_preloop") != TCL_OK)
+  if (Tcl_Eval (gdbtk_tcl_interp, "gdbtk_tcl_preloop") != TCL_OK)
     {
       const char *msg;
 
       /* Force errorInfo to be set up propertly.  */
-      Tcl_AddErrorInfo (gdbtk_interp, "");
+      Tcl_AddErrorInfo (gdbtk_tcl_interp, "");
 
-      msg = Tcl_GetVar (gdbtk_interp, "errorInfo", TCL_GLOBAL_ONLY);
+      msg = Tcl_GetVar (gdbtk_tcl_interp, "errorInfo", TCL_GLOBAL_ONLY);
 #ifdef _WIN32
       MessageBox (NULL, msg, NULL, MB_OK | MB_ICONERROR | MB_TASKMODAL);
 #else
@@ -167,31 +167,22 @@ gdbtk_pre_command_loop (struct interp *self)
 #endif
 }
 
-static struct ui_out *
-gdbtk_interpreter_ui_out (struct interp *interp)
+ui_out *
+gdbtk_interp::interp_ui_out ()
 {
-  struct gdbtk_interp_data *data;
+  return uiout;
+}
 
-  data = (struct gdbtk_interp_data *) interp_data (interp);
-  return data->uiout;
+void
+gdbtk_interp::set_logging (ui_file_up logfile, bool logging_redirect)
+{
 }
 
 /* Factory for GUI interpreter. */
 static struct interp *
 gdbtk_interp_factory (const char *name)
 {
-  static const struct interp_procs gdbtk_interp_procs = {
-    gdbtk_interpreter_init,             /* init_proc */
-    gdbtk_interpreter_resume,           /* resume_proc */
-    gdbtk_interpreter_suspend,	        /* suspend_proc */
-    gdbtk_interpreter_exec,             /* exec_proc */
-    gdbtk_interpreter_ui_out,		/* ui_out_proc */
-    NULL,                               /* set_logging_proc */
-    gdbtk_pre_command_loop,             /* pre_command_loop_proc */
-    gdbtk_supports_command_editing      /* supports_command_editing_proc */
-  };
-
-  return interp_new (name, &gdbtk_interp_procs, NULL);
+  return new gdbtk_interp (name);
 }
 
 void

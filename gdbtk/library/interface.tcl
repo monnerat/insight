@@ -1,5 +1,5 @@
 # Interface between GDB and Insight.
-# Copyright (C) 1997-2015 Red Hat, Inc.
+# Copyright (C) 1997-2017 Red Hat, Inc.
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License (GPL) as published by
@@ -199,7 +199,7 @@ proc gdbtk_idle {} {
   # Put the unfiltered hook back in place, just in case
   # somebody swapped it out, and then died before they
   # could replace it.
-  gdb_restore_fputs
+  gdb_restore_write
 
   set err [catch {run_hooks gdb_idle_hook}]
   if {$err} {
@@ -421,8 +421,8 @@ proc gdbtk_tcl_ignorable_warning {class message} {
 # ------------------------------------------------------------------
 proc gdbtk_tcl_fputs {message} {
   global gdbtk_state
-  # Restore the fputs hook, in case anyone forgot to put it back...
-  gdb_restore_fputs
+  # Restore the write hook, in case anyone forgot to put it back...
+  gdb_restore_write
 
   if {[info exists gdbtk_state(console)] &&   $gdbtk_state(console) != ""} {
     $gdbtk_state(console) insert $message

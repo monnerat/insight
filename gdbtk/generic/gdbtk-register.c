@@ -1,5 +1,5 @@
 /* Tcl/Tk command definitions for Insight - Registers
-   Copyright (C) 2001-2016 Free Software Foundation, Inc.
+   Copyright (C) 2001-2017 Free Software Foundation, Inc.
 
    This file is part of GDB.
 
@@ -260,7 +260,7 @@ gdb_register_info (ClientData clientData, Tcl_Interp *interp, int objc,
 static void
 get_register_size (int regnum, map_arg arg)
 {
-  Tcl_ListObjAppendElement (gdbtk_interp, result_ptr->obj_ptr,
+  Tcl_ListObjAppendElement (gdbtk_tcl_interp, result_ptr->obj_ptr,
 			    Tcl_NewIntObj (register_size (get_current_arch (),
 							  regnum)));
 }
@@ -273,7 +273,7 @@ get_register_collectable (int regnum, map_arg arg)
   if (regnum >= gdbarch_num_regs (get_current_arch ()))
     iscollectable = gdbarch_ax_pseudo_register_collect_p (get_current_arch ());
 
-  Tcl_ListObjAppendElement (gdbtk_interp, result_ptr->obj_ptr,
+  Tcl_ListObjAppendElement (gdbtk_tcl_interp, result_ptr->obj_ptr,
 			    Tcl_NewIntObj (iscollectable));
 }
 
@@ -309,7 +309,8 @@ get_register_types (int regnum, map_arg arg)
 	  else
 	    ar[2] = Tcl_NewStringObj ("int", -1);
 	  list = Tcl_NewListObj (3, ar);
-	  Tcl_ListObjAppendElement (gdbtk_interp, result_ptr->obj_ptr, list);
+	  Tcl_ListObjAppendElement (gdbtk_tcl_interp,
+                                    result_ptr->obj_ptr, list);
 	  xfree (buff);
 	}
     }
@@ -326,7 +327,7 @@ get_register_types (int regnum, map_arg arg)
 	ar[2] = Tcl_NewStringObj ("int", -1);
       list = Tcl_NewListObj (3, ar);
       xfree (buff);
-      Tcl_ListObjAppendElement (gdbtk_interp, result_ptr->obj_ptr, list);
+      Tcl_ListObjAppendElement (gdbtk_tcl_interp, result_ptr->obj_ptr, list);
     }
 }
 
@@ -338,10 +339,8 @@ get_register (int regnum, map_arg arg)
   enum lval_type lval;
   struct type *reg_vtype;
   int format;
-  struct cleanup *old_chain = NULL;
-  struct ui_file *stb;
+  string_file stb;
   long dummy;
-  char *res;
   struct gdbarch *gdbarch;
   struct value *val;
   struct frame_info *frame;
@@ -374,9 +373,6 @@ get_register (int regnum, map_arg arg)
       return;
     }
 
-  stb = mem_fileopen ();
-  old_chain = make_cleanup_ui_file_delete (stb);
-
   if (format == 'r')
     {
       /* shouldn't happen. raw format is deprecated */
@@ -393,7 +389,7 @@ get_register (int regnum, map_arg arg)
 	  sprintf (ptr, "%02x", (unsigned char) valaddr[idx]);
 	  ptr += 2;
 	}
-      fputs_unfiltered (buf, stb);
+      fputs_unfiltered (buf, &stb);
     }
   else
     {
@@ -404,18 +400,13 @@ get_register (int regnum, map_arg arg)
       opts.prettyformat = Val_prettyformat_default;
       val_print (reg_vtype,
 		 value_embedded_offset (val), 0,
-		 stb, 0, val, &opts, current_language);
+		 &stb, 0, val, &opts, current_language);
     }
 
-  res = ui_file_xstrdup (stb, &dummy);
-
   if (result_ptr->flags & GDBTK_MAKES_LIST)
-    Tcl_ListObjAppendElement (NULL, result_ptr->obj_ptr, Tcl_NewStringObj (res, -1));
+    Tcl_ListObjAppendElement (NULL, result_ptr->obj_ptr, Tcl_NewStringObj (stb.data (), -1));
   else
-    Tcl_SetStringObj (result_ptr->obj_ptr, res, -1);
-
-  xfree (res);
-  do_cleanups (old_chain);
+    Tcl_SetStringObj (result_ptr->obj_ptr, stb.data (), -1);
 }
 
 static void
