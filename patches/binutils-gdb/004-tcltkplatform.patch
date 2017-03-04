@@ -176,7 +176,7 @@ diff -Naurp a/gdb/configure.ac b/gdb/configure.ac
 diff -Naurp a/gdb/Makefile.in b/gdb/Makefile.in
 --- a/gdb/Makefile.in	2016-11-25 14:24:44.190083746 +0100
 +++ b/gdb/Makefile.in	2016-11-25 14:36:23.590282737 +0100
-@@ -593,7 +593,7 @@ SUBDIR_GDBTK_SRCS = \
+@@ -605,7 +605,7 @@ SUBDIR_GDBTK_SRCS = \
  
  SUBDIR_GDBTK_DEPS = $(LIBGUI) $(TCL_DEPS) $(TK_DEPS)
  SUBDIR_GDBTK_LDFLAGS =
