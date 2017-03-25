@@ -118,7 +118,7 @@ diff -Naurp binutils-gdb.orig/gdb/event-top.c binutils-gdb.new/gdb/event-top.c
 diff -Naurp binutils-gdb.orig/gdb/linux-nat.c binutils-gdb.new/gdb/linux-nat.c
 --- binutils-gdb.orig/gdb/linux-nat.c	2016-07-01 14:47:27.000000000 +0200
 +++ binutils-gdb.new/gdb/linux-nat.c	2016-08-10 12:28:24.565925851 +0200
-@@ -4577,7 +4577,7 @@ linux_nat_async (struct target_ops *ops,
+@@ -4570,7 +4570,7 @@ linux_nat_async (struct target_ops *ops,
      {
        if (!linux_async_pipe (1))
  	{
