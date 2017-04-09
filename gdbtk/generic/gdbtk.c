@@ -211,7 +211,7 @@ TclDebug (char level, const char *fmt,...)
   char *buf;
   const char *v[3];
   char *merge;
-  char *priority;
+  const char *priority;
 
   switch (level)
     {
@@ -769,7 +769,7 @@ gdbtk_init (void)
     char *srcdir = (char *) alloca (cygwin_posix_to_win32_path_list_buf_size (SRC_DIR));
     cygwin_posix_to_win32_path_list (SRC_DIR, srcdir);
 #else /* !__CYGWIN */
-    char *srcdir = SRC_DIR;
+    const char *srcdir = SRC_DIR;
 #endif /* !__CYGWIN */
     Tcl_SetVar2 (gdbtk_tcl_interp, "GDBStartup", "srcdir", srcdir, TCL_GLOBAL_ONLY);
   }
@@ -1031,7 +1031,7 @@ gdbtk_find_main";
 
   if (gdbtk_source_filename != NULL)
     {
-      char *s = "after idle source ";
+      const char *s = "after idle source ";
       char *script = concat (s, gdbtk_source_filename, (char *) NULL);
       Tcl_Eval (gdbtk_tcl_interp, script);
       free (gdbtk_source_filename);

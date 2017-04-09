@@ -234,7 +234,7 @@ initialize_paths";
 
 /* Initialize the global Paths variable.  */
 int
-ide_initialize_paths (Tcl_Interp *interp, char *appname)
+ide_initialize_paths (Tcl_Interp *interp, const char *appname)
 {
   if (Tcl_SetVar (interp, "ide_application_name", appname,
 		  TCL_GLOBAL_ONLY) == NULL)

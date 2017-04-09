@@ -85,7 +85,7 @@ int x_event (int);
 static int gdbtk_query (const char *, va_list);
 static void gdbtk_warning (const char *, va_list);
 static char *gdbtk_readline (const char *);
-static void gdbtk_readline_begin (char *format,...);
+static void gdbtk_readline_begin (const char *format,...);
 static void gdbtk_readline_end (void);
 static void gdbtk_pre_add_symbol (const char *);
 static void gdbtk_print_frame_info (struct symtab *, int, int, int);
@@ -192,7 +192,7 @@ gdbtk_restore_result_ptr (void *old_result_ptr)
 /* This allows you to Tcl_Eval a tcl command which takes
    a command word, and then a single argument. */
 int
-gdbtk_two_elem_cmd (char *cmd_name, const char *argv1)
+gdbtk_two_elem_cmd (const char *cmd_name, const char *argv1)
 {
   char *command;
   int result, flags_ptr, arg_len, cmd_len;
@@ -525,7 +525,7 @@ x_event (int signo)
 
 /* VARARGS */
 static void
-gdbtk_readline_begin (char *format,...)
+gdbtk_readline_begin (const char *format,...)
 {
   va_list args;
   char *buf;
@@ -644,7 +644,7 @@ gdbtk_load_hash (const char *section, unsigned long num)
 static void
 gdbtk_pre_add_symbol (const char *name)
 {
-  gdbtk_two_elem_cmd ("gdbtk_tcl_pre_add_symbol", (char *) name);
+  gdbtk_two_elem_cmd ("gdbtk_tcl_pre_add_symbol", name);
 }
 
 /* This hook is called whenever we finish loading a symbol file. */

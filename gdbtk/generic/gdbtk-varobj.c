@@ -79,7 +79,7 @@ static void install_variable (Tcl_Interp *, const char *);
 static void uninstall_variable (Tcl_Interp *, const char *);
 
 /* String representations of gdb's format codes */
-static char *format_string[] =
+static const char *format_string[] =
   {"natural", "binary", "decimal", "hexadecimal", "octal"};
 
 

@@ -26,7 +26,7 @@ ide_create_xpm_image_type (void);
    directory $datadir/IDE_APPNAME/.
    Returns a standard Tcl result.  */
 extern int
-ide_initialize_paths (Tcl_Interp *, char *ide_appname);
+ide_initialize_paths (Tcl_Interp *, const char *ide_appname);
 
 /* This tries to find the application-specific startup file.  If it is
    found, it is sourced.  If not, an error results.  The file is

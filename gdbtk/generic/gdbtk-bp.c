@@ -51,7 +51,7 @@ extern void report_error (void);
    of the breakpoint structure (respectively) into something gdbtk understands.
    They are also used in gdbtk-hooks.c */
 
-char *bptypes[] =
+const char *bptypes[] =
   {"none", "breakpoint", "hw breakpoint", "until",
    "finish", "watchpoint", "hw watchpoint",
    "read watchpoint", "acc watchpoint",
@@ -61,7 +61,7 @@ char *bptypes[] =
    "catch unload", "catch fork", "catch vfork",
    "catch exec", "catch catch", "catch throw"
   };
-char *bpdisp[] =
+const char *bpdisp[] =
   {"delete", "delstop", "disable", "donttouch"};
 
 /* Is this breakpoint interesting to a user interface? */

@@ -135,7 +135,7 @@ struct disassembly_client_data
   Tcl_Obj *result_obj[3];
   const char *asm_argv[14];
   const char *source_argv[7];
-  char *map_arr;
+  const char *map_arr;
   Tcl_DString src_to_line_prefix;
   Tcl_DString pc_to_line_prefix;
   Tcl_DString line_to_pc_prefix;
