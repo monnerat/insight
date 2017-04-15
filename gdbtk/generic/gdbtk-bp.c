@@ -316,7 +316,7 @@ gdb_get_breakpoint_info (ClientData clientData, Tcl_Interp *interp, int objc,
     "0" and "0" in the line number and address field.  */
   if (isPending)
     {
-      addr_string = event_location_to_string(b->location);
+      addr_string = event_location_to_string(b->location.get ());
 
       Tcl_ListObjAppendElement (NULL, result_ptr->obj_ptr,
                                 Tcl_NewStringObj ("<PENDING>", -1));
@@ -366,7 +366,7 @@ gdb_get_breakpoint_info (ClientData clientData, Tcl_Interp *interp, int objc,
   Tcl_ListObjAppendElement (NULL, result_ptr->obj_ptr,
 			    Tcl_NewIntObj (b->hit_count));
 
-  addr_string = w ? w->exp_string : event_location_to_string(b->location);
+  addr_string = w? w->exp_string: event_location_to_string(b->location.get ());
   Tcl_ListObjAppendElement (NULL, result_ptr->obj_ptr,
 			    Tcl_NewStringObj (addr_string, -1));
 
@@ -496,8 +496,7 @@ gdb_set_bp (ClientData clientData, Tcl_Interp *interp,
   int ret = TCL_ERROR;
   int temp, ignore_count, thread, pending, enabled;
   char *address, *typestr, *condition;
-  struct event_location *location;
-  struct cleanup *cleanup;
+  event_location_up location;
   struct gdb_exception e;
 
   /* Insight does not use all of these (yet?).  */
@@ -540,11 +539,11 @@ gdb_set_bp (ClientData clientData, Tcl_Interp *interp,
     }
 
   location = string_to_event_location (&address, current_language);
-  cleanup = make_cleanup_delete_event_location (location);
 
   TRY
     {
-      create_breakpoint (get_current_arch (), location, condition, thread,
+      create_breakpoint (get_current_arch (), location.get (), condition,
+			 thread,
 			 NULL,
 			 0	/* condition and thread are valid */,
 			 temp,
@@ -561,7 +560,6 @@ gdb_set_bp (ClientData clientData, Tcl_Interp *interp,
     }
   END_CATCH
 
-  do_cleanups (cleanup);
   return ret;
 }
 
@@ -659,7 +657,7 @@ gdb_actions_command (ClientData clientData, Tcl_Interp *interp,
 {
   int tpnum;
   struct tracepoint *tp;
-  struct command_line *commands = NULL;
+  command_line_up commands;
 
   if (objc != 3)
     {
@@ -689,7 +687,7 @@ gdb_actions_command (ClientData clientData, Tcl_Interp *interp,
     commands = read_command_lines_1 (gdbtk_read_next_line, 1,
 				     check_tracepoint_command, tp);
 
-  breakpoint_set_commands ((struct breakpoint *) tp, commands);
+  breakpoint_set_commands ((struct breakpoint *) tp, std::move (commands));
   return TCL_OK;
 }
 
@@ -843,14 +841,13 @@ tracepoint_exists (char *args)
   int ix;
   struct breakpoint *tp;
   struct symtabs_and_lines sals;
-  struct event_location *location;
-  struct cleanup *cleanup;
+  event_location_up location;
   char *file = NULL;
   int result = -1;
 
   location = string_to_event_location (&args, current_language);
-  cleanup = make_cleanup_delete_event_location (location);
-  sals = decode_line_1 (location, DECODE_LINE_FUNFIRSTLINE, NULL, NULL, 0);
+  sals = decode_line_1 (location.get (),
+			DECODE_LINE_FUNFIRSTLINE, NULL, NULL, 0);
   if (sals.nelts == 1)
     {
       resolve_sal_pc (&sals.sals[0]);
@@ -879,7 +876,6 @@ tracepoint_exists (char *args)
     }
   if (file != NULL)
     free (file);
-  do_cleanups (cleanup);
   return result;
 }
 

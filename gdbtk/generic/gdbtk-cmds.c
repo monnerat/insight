@@ -1006,8 +1006,7 @@ gdb_get_line_command (ClientData clientData, Tcl_Interp *interp,
 {
   struct symtabs_and_lines sals;
   char *args;
-  struct event_location *location;
-  struct cleanup *cleanup;
+  event_location_up location;
 
   if (objc != 2)
     {
@@ -1017,16 +1016,14 @@ gdb_get_line_command (ClientData clientData, Tcl_Interp *interp,
 
   args = Tcl_GetStringFromObj (objv[1], NULL);
   location = string_to_event_location (&args, current_language);
-  cleanup = make_cleanup_delete_event_location (location);
-  sals = decode_line_1 (location, DECODE_LINE_FUNFIRSTLINE, NULL, NULL, 0);
+  sals = decode_line_1 (location.get (),
+			DECODE_LINE_FUNFIRSTLINE, NULL, NULL, 0);
   if (sals.nelts == 1)
     Tcl_SetIntObj (result_ptr->obj_ptr, sals.sals[0].line);
   else
     Tcl_SetStringObj (result_ptr->obj_ptr, "N/A", -1);
 
-  do_cleanups (cleanup);
   return TCL_OK;
-
 }
 
 /* This implements the tcl command "gdb_get_file"
@@ -1045,8 +1042,7 @@ gdb_get_file_command (ClientData clientData, Tcl_Interp *interp,
 {
   struct symtabs_and_lines sals;
   char *args;
-  struct event_location *location;
-  struct cleanup *cleanup;
+  event_location_up location;
 
   if (objc != 2)
     {
@@ -1056,14 +1052,13 @@ gdb_get_file_command (ClientData clientData, Tcl_Interp *interp,
 
   args = Tcl_GetStringFromObj (objv[1], NULL);
   location = string_to_event_location (&args, current_language);
-  cleanup = make_cleanup_delete_event_location (location);
-  sals = decode_line_1 (location, DECODE_LINE_FUNFIRSTLINE, NULL, NULL, 0);
+  sals = decode_line_1 (location.get (),
+			DECODE_LINE_FUNFIRSTLINE, NULL, NULL, 0);
   if (sals.nelts == 1)
     Tcl_SetStringObj (result_ptr->obj_ptr, sals.sals[0].symtab->filename, -1);
   else
     Tcl_SetStringObj (result_ptr->obj_ptr, "N/A", -1);
 
-  do_cleanups (cleanup);
   return TCL_OK;
 }
 
@@ -1083,8 +1078,7 @@ gdb_get_function_command (ClientData clientData, Tcl_Interp *interp,
   const char *function;
   struct symtabs_and_lines sals;
   char *args;
-  struct event_location *location;
-  struct cleanup *cleanup;
+  event_location_up location;
 
   if (objc != 2)
     {
@@ -1094,8 +1088,8 @@ gdb_get_function_command (ClientData clientData, Tcl_Interp *interp,
 
   args = Tcl_GetStringFromObj (objv[1], NULL);
   location = string_to_event_location (&args, current_language);
-  cleanup = make_cleanup_delete_event_location (location);
-  sals = decode_line_1 (location, DECODE_LINE_FUNFIRSTLINE, NULL, NULL, 0);
+  sals = decode_line_1 (location.get (),
+			DECODE_LINE_FUNFIRSTLINE, NULL, NULL, 0);
   if (sals.nelts == 1)
     {
       resolve_sal_pc (&sals.sals[0]);
@@ -1105,7 +1099,6 @@ gdb_get_function_command (ClientData clientData, Tcl_Interp *interp,
   else
     Tcl_SetStringObj (result_ptr->obj_ptr, "N/A", -1);
 
-  do_cleanups (cleanup);
   return TCL_OK;
 }
 

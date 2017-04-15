@@ -1,5 +1,5 @@
 /* Tcl/Tk command definitions for Insight - Stack.
-   Copyright (C) 2001-2016 Free Software Foundation, Inc.
+   Copyright (C) 2001-2017 Free Software Foundation, Inc.
 
    This file is part of GDB.
 
@@ -288,7 +288,6 @@ gdb_get_vars_command (ClientData clientData, Tcl_Interp *interp,
   const struct block *block;
   char *args;
   struct block_iterator iter;
-  struct cleanup *cleanup;
   int i, arguments;
 
   if (objc > 2)
@@ -299,7 +298,6 @@ gdb_get_vars_command (ClientData clientData, Tcl_Interp *interp,
     }
 
   arguments = clientData != NULL ? 1 : 0;
-  cleanup = make_cleanup (null_cleanup, NULL);
 
   /* Initialize the result pointer to an empty list. */
 
@@ -307,16 +305,15 @@ gdb_get_vars_command (ClientData clientData, Tcl_Interp *interp,
 
   if (objc == 2)
     {
-      struct event_location *location;
+      event_location_up location;
 
       args = Tcl_GetStringFromObj (objv[1], NULL);
       location = string_to_event_location (&args, current_language);
-      make_cleanup_delete_event_location (location);
-      sals = decode_line_1 (location, DECODE_LINE_FUNFIRSTLINE, NULL, NULL, 0);
+      sals = decode_line_1 (location.get (),
+			    DECODE_LINE_FUNFIRSTLINE, NULL, NULL, 0);
       if (sals.nelts == 0)
 	{
 	  gdbtk_set_result (interp, "error decoding line");
-          do_cleanups (cleanup);
 	  return TCL_ERROR;
 	}
 
@@ -330,10 +327,7 @@ gdb_get_vars_command (ClientData clientData, Tcl_Interp *interp,
     {
       /* Specified currently selected frame */
       if (!target_has_registers)
-        {
-          do_cleanups (cleanup);
-	  return TCL_OK;
-        }
+	return TCL_OK;
 
       block = get_frame_block (get_selected_frame (NULL), 0);
     }
@@ -377,7 +371,6 @@ gdb_get_vars_command (ClientData clientData, Tcl_Interp *interp,
 	block = BLOCK_SUPERBLOCK (block);
     }
 
-  do_cleanups (cleanup);
   return TCL_OK;
 }
 
