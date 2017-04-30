@@ -1,3 +1,14 @@
+IMPORTANT NOTE:
+
+The insight graphical debugger is now back to its legitimate location at
+https://sourceware.org/git/?p=insight.git.
+The current github repository will NOT be updated anymore and will be removed
+soon.
+Please update your git location to git://sourceware.org/git/insight.git.
+
+YOU HAVE BEEN WARNED !!!
+
+
 		insight: the gdb tcl/tk graphic interface
 		-----------------------------------------
 
